@@ -1,19 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const nodemailerExpressHandlebars = require('nodemailer-express-handlebars');
-const nodemailer = require('nodemailer');
-const handlebars = require('express-handlebars');
-const path = require('path');
-const express = require("express");
-const router = express.Router();
-let transporter = nodemailer.createTransport({
+var nodemailerExpressHandlebars = require('nodemailer-express-handlebars');
+var nodemailer = require('nodemailer');
+var handlebars = require('express-handlebars');
+var path = require('path');
+import * as express from "express";
+var router = express.Router();
+var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'this1234567890is1234567890test@gmail.com',
         pass: 'Mapex133'
     }
 });
-let sut = nodemailerExpressHandlebars({
+var sut = nodemailerExpressHandlebars({
     viewEngine: handlebars.create({
         extname: 'hbs',
         defaultLayout: path.resolve(__dirname, '../../views/layouts/default.hbs'),
@@ -25,10 +23,10 @@ let sut = nodemailerExpressHandlebars({
 });
 transporter.use('compile', sut);
 function mailer() {
-    return (req, res, next) => {
+    return function (req, res, next) {
         req.transporter = transporter;
         next();
     };
 }
-exports.mailer = mailer;
+export { mailer };
 //# sourceMappingURL=emailer.js.map

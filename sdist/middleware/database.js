@@ -1,28 +1,25 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const pg_1 = require("pg");
-const combiner_1 = require("../config/combiner");
-const queries_1 = require("../functions/queries");
-const pool = new pg_1.Pool(combiner_1.dbConfig);
-let db = {
-    query: (text, params) => pool.query(text, params)
+import { Pool } from 'pg';
+import { dbConfig } from "../config/combiner";
+import { Query } from '../functions/queries';
+var pool = new Pool(dbConfig);
+var db = {
+    query: function (text, params) { return pool.query(text, params); }
 };
-exports.db = db;
 function init(databaseInformation) {
-    const pool = new pg_1.Pool(databaseInformation);
-    return (req, res, next) => {
-        let client;
+    var pool = new Pool(databaseInformation);
+    return function (req, res, next) {
+        var client;
         pool.connect()
-            .then((client) => {
+            .then(function (client) {
             // events to release
-            req.on('abort', () => {
+            req.on('abort', function () {
                 client.release();
                 req.aQuery = null;
             });
-            req.on('timeout', () => {
+            req.on('timeout', function () {
                 req.abort();
             });
-            res.on('close', () => {
+            res.on('close', function () {
                 client.release();
                 req.aQuery = null;
             });
@@ -31,13 +28,14 @@ function init(databaseInformation) {
                 req.aQuery = null;
             });
             console.log('database running');
-            req.aQuery = new queries_1.Query(client);
+            req.aQuery = new Query(client);
             next();
         })
-            .catch((err) => {
+            .catch(function (err) {
             client.release();
             return console.error('Error executing query', err.stack);
         });
     };
 }
+export { db };
 //# sourceMappingURL=database.js.map

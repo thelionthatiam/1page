@@ -1,21 +1,19 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const helper = require("../functions/helpers");
-const async_database_1 = require("../middleware/async-database");
-const express = require("express");
-const router = express.Router();
+import * as helper from '../functions/helpers';
+import { db } from '../middleware/async-database';
+import * as express from "express";
+var router = express.Router();
 function check(req, res, next) {
     if (req.session.user && req.sessionID) {
-        async_database_1.db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
-            .then((result) => {
+        db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
+            .then(function (result) {
             if (result.rows[0].sessionid === req.sessionID) {
-                return async_database_1.db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
+                return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
             }
             else {
                 helper.genError(res, 'login', "you were no longer logged in, try to log in again");
             }
         })
-            .then((result) => {
+            .then(function (result) {
             if (result.rows[0].permission === 'admin') {
                 next();
             }
@@ -25,7 +23,7 @@ function check(req, res, next) {
             else if (result.rows[0].permission === 'guest') {
             }
         })
-            .catch((error) => {
+            .catch(function (error) {
             console.log(error.stack);
             helper.genError(res, 'login', "you were no longer logged in, try to log in again");
         });
@@ -35,19 +33,18 @@ function check(req, res, next) {
         helper.genError(res, 'login', "you were no longer logged in, try to log in again");
     }
 }
-exports.check = check;
 function adminCheck(req, res, next) {
     if (req.session.user && req.sessionID && req.session.user.permission === 'admin') {
-        async_database_1.db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
-            .then((result) => {
+        db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
+            .then(function (result) {
             if (result.rows[0].sessionid === req.sessionID) {
-                return async_database_1.db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
+                return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
             }
             else {
                 helper.genError(res, 'login', "you were no longer logged in, try to log in again");
             }
         })
-            .then((result) => {
+            .then(function (result) {
             if (result.rows[0].permission === 'admin') {
                 console.log('admin approved');
                 next();
@@ -59,7 +56,7 @@ function adminCheck(req, res, next) {
             else if (result.rows[0].permission === 'guest') {
             }
         })
-            .catch((error) => {
+            .catch(function (error) {
             console.log(error.stack);
             helper.genError(res, 'login', "you were no longer logged in, try to log in again");
         });
@@ -69,5 +66,5 @@ function adminCheck(req, res, next) {
         helper.genError(res, 'login', "you were no longer logged in or you do not have permission to access this page");
     }
 }
-exports.adminCheck = adminCheck;
+export { check, adminCheck };
 //# sourceMappingURL=session-check.js.map

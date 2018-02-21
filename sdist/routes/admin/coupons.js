@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("../../functions/helpers");
-const express = require("express");
-const async_database_1 = require("../../middleware/async-database");
-const router = express.Router();
-let cpn = {
+import { dbErrTranslator } from '../../functions/helpers';
+import * as express from 'express';
+import { db } from '../../middleware/async-database';
+var router = express.Router();
+var cpn = {
     name: '',
     description: '',
     discount: 0,
@@ -13,33 +11,33 @@ let cpn = {
     uuid: ''
 };
 router.route('/coupons')
-    .post((req, res) => {
+    .post(function (req, res) {
     cpn.name = req.body.name;
     cpn.description = req.body.description;
     cpn.discount = req.body.discount;
     cpn.expires_on = req.body.expires_on;
     cpn.applies_to = req.body.applies_to;
-    let query = 'INSERT INTO coupons(name, description, discount, expires_on, applies_to) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-    let input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to];
-    async_database_1.db.query(query, input)
-        .then((result) => {
+    var query = 'INSERT INTO coupons(name, description, discount, expires_on, applies_to) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+    var input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to];
+    db.query(query, input)
+        .then(function (result) {
         res.redirect('/admin/coupons');
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err);
-        let userError = helpers_1.dbErrTranslator(err.message);
+        var userError = dbErrTranslator(err.message);
         res.render('error', { dbError: userError });
     });
 })
-    .get((req, res) => {
-    async_database_1.db.query("SELECT * FROM coupons", [])
-        .then((result) => {
-        let couponContent = result.rows;
+    .get(function (req, res) {
+    db.query("SELECT * FROM coupons", [])
+        .then(function (result) {
+        var couponContent = result.rows;
         res.render('admin/coupons/coupons', {
             couponContent: couponContent
         });
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err);
         res.render('error', {
             errName: err.message,
@@ -47,15 +45,15 @@ router.route('/coupons')
         });
     });
 });
-router.get('/new-coupon', (req, res, next) => {
+router.get('/new-coupon', function (req, res, next) {
     res.render('admin/coupons/new-coupon', {});
 });
 router.route('/coupons/:uuid')
-    .get((req, res) => {
-    let uuid = req.query.uuid;
-    async_database_1.db.query("SELECT * FROM coupons WHERE coupon_uuid = $1", [uuid])
-        .then((result) => {
-        let coupon = result.rows[0];
+    .get(function (req, res) {
+    var uuid = req.query.uuid;
+    db.query("SELECT * FROM coupons WHERE coupon_uuid = $1", [uuid])
+        .then(function (result) {
+        var coupon = result.rows[0];
         cpn.uuid = uuid;
         cpn.name = coupon.name;
         cpn.description = coupon.description;
@@ -64,56 +62,56 @@ router.route('/coupons/:uuid')
         cpn.applies_to = coupon.applies_to;
         res.render('admin/coupons/edit-coupon', cpn);
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err.stack);
         res.render('error', { dbError: err.stack });
     });
 })
-    .put((req, res) => {
+    .put(function (req, res) {
     cpn.name = req.body.name;
     cpn.description = req.body.description;
     cpn.discount = req.body.discount;
     cpn.expires_on = req.body.expires_on;
     cpn.applies_to = req.body.applies_to;
     cpn.uuid = req.body.uuid;
-    let query = 'UPDATE coupons SET (name, description, discount, expires_on, applies_to) = ($1, $2, $3, $4, $5, $6, $7) WHERE coupon_uuidname = $8';
-    let input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to, cpn.uuid];
-    async_database_1.db.query(query, input)
-        .then((result) => {
+    var query = 'UPDATE coupons SET (name, description, discount, expires_on, applies_to) = ($1, $2, $3, $4, $5, $6, $7) WHERE coupon_uuidname = $8';
+    var input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to, cpn.uuid];
+    db.query(query, input)
+        .then(function (result) {
         res.redirect('/admin/coupons');
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err.stack);
         res.render('error', { dbError: err.stack });
     });
 })
-    .delete((req, res) => {
+    .delete(function (req, res) {
     cpn.uuid = req.body.uuid;
-    async_database_1.db.query('DELETE FROM coupons WHERE coupon_uuid = $1', [cpn.uuid])
-        .then((result) => {
+    db.query('DELETE FROM coupons WHERE coupon_uuid = $1', [cpn.uuid])
+        .then(function (result) {
         res.redirect('/admin/coupons');
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err.stack);
         res.render('error', { dbError: err.stack });
     });
 });
-router.post('/coupons/issue-coupon', (req, res) => {
-    let coupon_uuid = req.body.uuid;
-    async_database_1.db.query('SELECT cart_uuid FROM cart', [])
-        .then((result) => {
-        let cart_uuids = result.rows;
-        let promiseArray = [];
-        for (let i = 0; i < cart_uuids.length; i++) {
-            promiseArray.push(async_database_1.db.query('INSERT INTO cart_coupons(coupon_uuid, cart_uuid) VALUES ($1, $2)', [coupon_uuid, cart_uuids[i].cart_uuid]));
+router.post('/coupons/issue-coupon', function (req, res) {
+    var coupon_uuid = req.body.uuid;
+    db.query('SELECT cart_uuid FROM cart', [])
+        .then(function (result) {
+        var cart_uuids = result.rows;
+        var promiseArray = [];
+        for (var i = 0; i < cart_uuids.length; i++) {
+            promiseArray.push(db.query('INSERT INTO cart_coupons(coupon_uuid, cart_uuid) VALUES ($1, $2)', [coupon_uuid, cart_uuids[i].cart_uuid]));
         }
         return Promise.all(promiseArray);
     })
-        .then((result) => {
+        .then(function (result) {
         console.log(result);
         res.redirect('admin/coupons');
     })
-        .catch((error) => {
+        .catch(function (error) {
         console.log(error);
         res.render('error');
     });

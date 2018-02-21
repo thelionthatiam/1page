@@ -1,6 +1,6 @@
 function cardinalityGuess(password) {
-    let cardinality = 0;
-    let lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
+    var cardinality = 0;
+    var lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
     if (password.match(lowerCase)) {
         cardinality = cardinality + 26;
         console.log('positive lowercase search', 'cardinality', cardinality);
@@ -21,9 +21,9 @@ function cardinalityGuess(password) {
 }
 // entropy
 function entropy(password) {
-    let length = password.length;
+    var length = password.length;
     console.log(length);
-    let cardinality = cardinalityGuess(password);
+    var cardinality = cardinalityGuess(password);
     console.log(cardinality);
     return length * (Math.log2(cardinality));
 }
@@ -34,20 +34,20 @@ function round(value, precision) {
 }
 //simple brute-force scorer
 function scorer(password) {
-    let cardinality = cardinalityGuess(password);
-    let symbolOptions = Math.pow(cardinality, password.length);
-    let entropy = password.length * (Math.log2(cardinality));
+    var cardinality = cardinalityGuess(password);
+    var symbolOptions = Math.pow(cardinality, password.length);
+    var entropy = password.length * (Math.log2(cardinality));
     ;
     return round(entropy, 2);
 }
 // password strength checker
-let form = $('#password');
-let passIndicator = $('#passIndicator');
-let passScorer = $('#passScorer > p');
+var form = $('#password');
+var passIndicator = $('#passIndicator');
+var passScorer = $('#passScorer > p');
 form.keyup(function () {
     console.log('running');
-    let entropy = scorer($(this).val());
-    let length = $(this).val().length;
+    var entropy = scorer($(this).val());
+    var length = $(this).val().length;
     passIndicator.addClass('passIndicator');
     if (length === 0) {
         form.removeClass('passing');

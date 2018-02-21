@@ -1,67 +1,74 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const validation_1 = require("./validation");
+import { ValidationError, Email, Permission, CharOnly, NumOnly, UUID, Bool, String } from './validation';
 // THIS COULD LIVE SOMEWHERE ELSE
-class ValidationResult {
-    static isValid(args, obj) {
-        for (let k in obj) {
+var ValidationResult = /** @class */ (function () {
+    function ValidationResult() {
+    }
+    ValidationResult.isValid = function (args, obj) {
+        for (var k in obj) {
             if (args.hasOwnProperty(k)) {
-                let res = obj[k];
+                var res = obj[k];
                 if (!res.isOkay)
                     return res;
             }
             else {
-                let message = 'MISSING PROPERTY: ' + k;
-                throw new validation_1.ValidationError(null, message);
+                var message = 'MISSING PROPERTY: ' + k;
+                throw new ValidationError(null, message);
             }
         }
-    }
-    get isOkay() { return false; }
-}
-class UserSession {
-    constructor(args = {}) {
+    };
+    Object.defineProperty(ValidationResult.prototype, "isOkay", {
+        get: function () { return false; },
+        enumerable: true,
+        configurable: true
+    });
+    return ValidationResult;
+}());
+var UserSession = /** @class */ (function () {
+    function UserSession(args) {
+        if (args === void 0) { args = {}; }
         this.email = args.email;
         this.uuid = args.uuid;
         this.permission = args.permission;
         this.name = args.name;
     }
-    static fromJSON(args) {
-        let res = UserSession.validate(args);
+    UserSession.fromJSON = function (args) {
+        var res = UserSession.validate(args);
         if (res.isOkay) {
-            let res = new UserSession({
-                email: validation_1.Email.create(args.email),
-                uuid: validation_1.UUID.create(args.uuid),
-                permission: validation_1.Permission.create(args.permission),
-                name: validation_1.CharOnly.create(args.name),
+            var res_1 = new UserSession({
+                email: Email.create(args.email),
+                uuid: UUID.create(args.uuid),
+                permission: Permission.create(args.permission),
+                name: CharOnly.create(args.name),
             });
-            return res.toJSON();
+            return res_1.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            email: validation_1.Email.validate(args.email),
-            uuid: validation_1.UUID.validate(args.uuid),
-            permission: validation_1.Permission.validate(args.permission),
-            name: validation_1.CharOnly.validate(args.name),
+    };
+    UserSession.validate = function (args) {
+        var propValidation = {
+            email: Email.validate(args.email),
+            uuid: UUID.validate(args.uuid),
+            permission: Permission.validate(args.permission),
+            name: CharOnly.validate(args.name),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    UserSession.prototype.toJSON = function () {
         return {
             email: this.email.toString(),
             uuid: this.uuid.toString(),
             permission: this.permission.toString(),
             name: this.name.toString()
         };
-    }
-}
-exports.UserSession = UserSession;
-class UserDB {
-    constructor(args = {}) {
+    };
+    return UserSession;
+}());
+var UserDB = /** @class */ (function () {
+    function UserDB(args) {
+        if (args === void 0) { args = {}; }
         this.email = args.email;
         this.user_uuid = args.user_uuid;
         this.permission = args.permission;
@@ -69,36 +76,36 @@ class UserDB {
         this.name = args.name;
         this.password = args.password;
     }
-    static fromJSON(args) {
-        let res = UserDB.validate(args);
+    UserDB.fromJSON = function (args) {
+        var res = UserDB.validate(args);
         if (res.isOkay) {
-            let res = new UserDB({
-                email: validation_1.Email.create(args.email),
-                user_uuid: validation_1.UUID.create(args.user_uuid),
-                permission: validation_1.Permission.create(args.permission),
-                phone: validation_1.NumOnly.create(args.phone),
-                name: validation_1.CharOnly.create(args.name),
-                password: validation_1.String.create(args.password)
+            var res_2 = new UserDB({
+                email: Email.create(args.email),
+                user_uuid: UUID.create(args.user_uuid),
+                permission: Permission.create(args.permission),
+                phone: NumOnly.create(args.phone),
+                name: CharOnly.create(args.name),
+                password: String.create(args.password)
             });
-            return res.toJSON();
+            return res_2.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            email: validation_1.Email.validate(args.email),
-            user_uuid: validation_1.UUID.validate(args.user_uuid),
-            permission: validation_1.Permission.validate(args.permission),
-            phone: validation_1.NumOnly.validate(args.phone),
-            name: validation_1.CharOnly.validate(args.name),
-            password: validation_1.String.validate(args.password)
+    };
+    UserDB.validate = function (args) {
+        var propValidation = {
+            email: Email.validate(args.email),
+            user_uuid: UUID.validate(args.user_uuid),
+            permission: Permission.validate(args.permission),
+            phone: NumOnly.validate(args.phone),
+            name: CharOnly.validate(args.name),
+            password: String.validate(args.password)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    UserDB.prototype.toJSON = function () {
         return {
             email: this.email.toString(),
             user_uuid: this.user_uuid.toString(),
@@ -107,90 +114,93 @@ class UserDB {
             name: this.name.toString(),
             password: this.password.toString()
         };
-    }
-}
-exports.UserDB = UserDB;
+    };
+    return UserDB;
+}());
 // user_uuid
 // org_uuid
 // active
-class UserOrgsDB {
-    constructor(args = {}) {
+var UserOrgsDB = /** @class */ (function () {
+    function UserOrgsDB(args) {
+        if (args === void 0) { args = {}; }
         this.user_uuid = args.user_uuid;
         this.org_uuid = args.org_uuid;
         this.active = args.active;
     }
-    static fromJSON(args) {
-        let res = UserOrgsDB.validate(args);
+    UserOrgsDB.fromJSON = function (args) {
+        var res = UserOrgsDB.validate(args);
         if (res.isOkay) {
-            let res = new UserOrgsDB({
-                user_uuid: validation_1.UUID.create(args.user_uuid),
-                org_uuid: validation_1.UUID.create(args.org_uuid),
-                active: validation_1.Bool.create(args.active),
+            var res_3 = new UserOrgsDB({
+                user_uuid: UUID.create(args.user_uuid),
+                org_uuid: UUID.create(args.org_uuid),
+                active: Bool.create(args.active),
             });
-            return res.toJSON();
+            return res_3.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            user_uuid: validation_1.UUID.validate(args.user_uuid),
-            org_uuid: validation_1.UUID.validate(args.org_uuid),
-            active: validation_1.Bool.validate(args.active),
+    };
+    UserOrgsDB.validate = function (args) {
+        var propValidation = {
+            user_uuid: UUID.validate(args.user_uuid),
+            org_uuid: UUID.validate(args.org_uuid),
+            active: Bool.validate(args.active),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    UserOrgsDB.prototype.toJSON = function () {
         return {
             user_uuid: this.user_uuid.toString(),
             org_uuid: this.org_uuid.toString(),
             active: this.active.toString(),
         };
-    }
-}
-exports.UserOrgsDB = UserOrgsDB;
-class CartDB {
-    constructor(args = {}) {
+    };
+    return UserOrgsDB;
+}());
+var CartDB = /** @class */ (function () {
+    function CartDB(args) {
+        if (args === void 0) { args = {}; }
         this.user_uuid = args.user_uuid;
         this.cart_uuid = args.cart_uuid;
         this.card_number = args.card_number;
     }
-    static fromJSON(args) {
-        let res = CartDB.validate(args);
+    CartDB.fromJSON = function (args) {
+        var res = CartDB.validate(args);
         if (res.isOkay) {
-            let res = new CartDB({
-                user_uuid: validation_1.UUID.create(args.user_uuid),
-                cart_uuid: validation_1.UUID.create(args.cart_uuid),
-                card_number: validation_1.NumOnly.create(args.card_number),
+            var res_4 = new CartDB({
+                user_uuid: UUID.create(args.user_uuid),
+                cart_uuid: UUID.create(args.cart_uuid),
+                card_number: NumOnly.create(args.card_number),
             });
-            return res.toJSON();
+            return res_4.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            user_uuid: validation_1.UUID.validate(args.user_uuid),
-            cart_uuid: validation_1.UUID.validate(args.cart_uuid),
-            card_number: validation_1.NumOnly.validate(args.card_number),
+    };
+    CartDB.validate = function (args) {
+        var propValidation = {
+            user_uuid: UUID.validate(args.user_uuid),
+            cart_uuid: UUID.validate(args.cart_uuid),
+            card_number: NumOnly.validate(args.card_number),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    CartDB.prototype.toJSON = function () {
         return {
             user_uuid: this.user_uuid.toString(),
             cart_uuid: this.cart_uuid.toString(),
             card_number: this.card_number.toString(),
         };
-    }
-}
-exports.CartDB = CartDB;
-class OrgsDB {
-    constructor(args = {}) {
+    };
+    return CartDB;
+}());
+var OrgsDB = /** @class */ (function () {
+    function OrgsDB(args) {
+        if (args === void 0) { args = {}; }
         this.org_uuid = args.org_uuid;
         this.org_sku = args.org_sku;
         this.name = args.name;
@@ -198,36 +208,36 @@ class OrgsDB {
         this.cause = args.cause;
         this.link = args.link;
     }
-    static fromJSON(args) {
-        let res = OrgsDB.validate(args);
+    OrgsDB.fromJSON = function (args) {
+        var res = OrgsDB.validate(args);
         if (res.isOkay) {
-            let res = new OrgsDB({
-                org_uuid: validation_1.UUID.create(args.org_uuid),
-                org_sku: validation_1.String.create(args.org_sku),
-                name: validation_1.CharOnly.create(args.name),
-                description: validation_1.String.create(args.description),
-                cause: validation_1.CharOnly.create(args.cause),
-                link: validation_1.String.create(args.link),
+            var res_5 = new OrgsDB({
+                org_uuid: UUID.create(args.org_uuid),
+                org_sku: String.create(args.org_sku),
+                name: CharOnly.create(args.name),
+                description: String.create(args.description),
+                cause: CharOnly.create(args.cause),
+                link: String.create(args.link),
             });
-            return res.toJSON();
+            return res_5.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            org_uuid: validation_1.UUID.validate(args.org_uuid),
-            org_sku: validation_1.String.validate(args.org_sku),
-            name: validation_1.CharOnly.validate(args.name),
-            description: validation_1.String.validate(args.description),
-            cause: validation_1.CharOnly.validate(args.cause),
-            link: validation_1.String.validate(args.link),
+    };
+    OrgsDB.validate = function (args) {
+        var propValidation = {
+            org_uuid: UUID.validate(args.org_uuid),
+            org_sku: String.validate(args.org_sku),
+            name: CharOnly.validate(args.name),
+            description: String.validate(args.description),
+            cause: CharOnly.validate(args.cause),
+            link: String.validate(args.link),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    OrgsDB.prototype.toJSON = function () {
         return {
             org_uuid: this.org_uuid.toString(),
             org_sku: this.org_sku.toString(),
@@ -236,11 +246,12 @@ class OrgsDB {
             cause: this.cause.toString(),
             link: this.link.toString(),
         };
-    }
-}
-exports.OrgsDB = OrgsDB;
-class UserSettings {
-    constructor(args = {}) {
+    };
+    return OrgsDB;
+}());
+var UserSettings = /** @class */ (function () {
+    function UserSettings(args) {
+        if (args === void 0) { args = {}; }
         this.user_uuid = args.user_uuid;
         this.payment_scheme = args.payment_scheme;
         this.snooze_price = args.snooze_price;
@@ -250,40 +261,40 @@ class UserSettings {
         this.snooze_max = args.snooze_max;
         this.active_payment = args.active_payment;
     }
-    static fromJSON(args) {
-        let res = UserSettings.validate(args);
+    UserSettings.fromJSON = function (args) {
+        var res = UserSettings.validate(args);
         if (res.isOkay) {
-            let res = new UserSettings({
-                user_uuid: validation_1.UUID.create(args.user_uuid),
-                payment_scheme: validation_1.String.create(args.payment_scheme),
-                snooze_price: validation_1.NumOnly.create(args.snooze_price),
-                dismiss_price: validation_1.NumOnly.create(args.dismiss_price),
-                wake_price: validation_1.NumOnly.create(args.wake_price),
-                month_max: validation_1.NumOnly.create(args.month_max),
-                snooze_max: validation_1.NumOnly.create(args.snooze_max),
-                active_payment: validation_1.UUID.create(args.active_payment)
+            var res_6 = new UserSettings({
+                user_uuid: UUID.create(args.user_uuid),
+                payment_scheme: String.create(args.payment_scheme),
+                snooze_price: NumOnly.create(args.snooze_price),
+                dismiss_price: NumOnly.create(args.dismiss_price),
+                wake_price: NumOnly.create(args.wake_price),
+                month_max: NumOnly.create(args.month_max),
+                snooze_max: NumOnly.create(args.snooze_max),
+                active_payment: UUID.create(args.active_payment)
             });
-            return res.toJSON();
+            return res_6.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
         }
-    }
-    static validate(args) {
-        let propValidation = {
-            user_uuid: validation_1.UUID.validate(args.user_uuid),
-            payment_scheme: validation_1.String.validate(args.payment_scheme),
-            snooze_price: validation_1.NumOnly.validate(args.snooze_price),
-            dismiss_price: validation_1.NumOnly.validate(args.dismiss_price),
-            wake_price: validation_1.NumOnly.validate(args.wake_price),
-            month_max: validation_1.NumOnly.validate(args.month_max),
-            snooze_max: validation_1.NumOnly.validate(args.snooze_max),
-            active_payment: validation_1.UUID.validate(args.active_payment)
+    };
+    UserSettings.validate = function (args) {
+        var propValidation = {
+            user_uuid: UUID.validate(args.user_uuid),
+            payment_scheme: String.validate(args.payment_scheme),
+            snooze_price: NumOnly.validate(args.snooze_price),
+            dismiss_price: NumOnly.validate(args.dismiss_price),
+            wake_price: NumOnly.validate(args.wake_price),
+            month_max: NumOnly.validate(args.month_max),
+            snooze_max: NumOnly.validate(args.snooze_max),
+            active_payment: UUID.validate(args.active_payment)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
-    }
-    toJSON() {
+    };
+    UserSettings.prototype.toJSON = function () {
         return {
             user_uuid: this.user_uuid.toString(),
             payment_scheme: this.payment_scheme.toString(),
@@ -294,7 +305,97 @@ class UserSettings {
             snooze_max: this.snooze_max.toString(),
             active_payment: this.active_payment.toString()
         };
-    }
-}
-exports.UserSettings = UserSettings;
+    };
+    return UserSettings;
+}());
+// NOT COMPLETED
+// class Transactions {
+//   readonly user_uuid?: UUID;
+//   recipient?: CharOnly;
+//   payment_uuid?: UUID;
+//   snoozes?: NumOnly;
+//   dismisses?: NumOnly;
+//   wakes?: NumOnly;
+//   total?: NumOnly;
+//
+//
+//   private constructor(args:{
+//     user_uuid?: UUID;
+//     org_uuid?: UUID;
+//     active?: Bool;
+//   } = {}) {
+//     this.user_uuid   = args.user_uuid;
+//     this.org_uuid  = args.org_uuid;
+//     this.active = args.active;
+//   }
+//
+//   static fromJSON(args: {[key: string]: any}) : Transactions {
+//     let res = Transactions.validate(args);
+//     if (res.isOkay) {
+//       let res = new Transactions({
+//         email: Email.create(args.email),
+//       })
+//       return res.toJSON();
+//     } else {
+//       throw new Error ('error happens at fromJSON');
+//     }
+//   }
+//
+//   static validate(args: {[key: string] : any}) : ValidationResult {
+//     let propValidation = {
+//       email: Email.validate(args.email),
+//     }
+//     ValidationResult.isValid(args, propValidation)
+//     return { isOkay: true };
+//   }
+//
+//   toJSON() : any {
+//     return {
+//       email: this.email.toString(),
+//     };
+//   }
+// }
+// DUMMY COPY
+// class User {
+//   readonly user_uuid?: UUID;
+//   readonly org_uuid?: UUID;
+//   readonly active?: Bool;
+//
+//   private constructor(args:{
+//     user_uuid?: UUID;
+//     org_uuid?: UUID;
+//     active?: Bool;
+//   } = {}) {
+//     this.user_uuid   = args.user_uuid;
+//     this.org_uuid  = args.org_uuid;
+//     this.active = args.active;
+//   }
+//
+//   static fromJSON(args: {[key: string]: any}) : User {
+//     let res = User.validate(args);
+//     if (res.isOkay) {
+//       let res = new User({
+//         email: Email.create(args.email),
+//       })
+//       return res.toJSON();
+//     } else {
+//       throw new Error ('error happens at fromJSON');
+//     }
+//   }
+//
+//   static validate(args: {[key: string] : any}) : ValidationResult {
+//     let propValidation = {
+//       email: Email.validate(args.email),
+//     }
+//     ValidationResult.isValid(args, propValidation)
+//     return { isOkay: true };
+//   }
+//
+//   toJSON() : any {
+//     return {
+//       email: this.email.toString(),
+//     };
+//   }
+// }
+export { UserSession, UserDB, UserOrgsDB, CartDB, OrgsDB, UserSettings };
 //# sourceMappingURL=value-objects.js.map

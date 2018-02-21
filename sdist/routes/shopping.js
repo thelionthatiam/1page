@@ -1,20 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("../functions/helpers");
-const express = require("express");
-const database_1 = require("../middleware/database");
-const router = express.Router();
-let viewPrefix = 'shopping/';
+import { dbErrTranslator } from '../functions/helpers';
+import * as express from 'express';
+import { db } from '../middleware/database';
+var router = express.Router();
+var viewPrefix = 'shopping/';
 router.route('/products')
-    .post((req, res) => {
+    .post(function (req, res) {
     // all happens via admin
 })
-    .get((req, res) => {
-    let email = req.session.user.email;
-    database_1.db.query('SELECT * FROM products', [])
-        .then((result) => {
-        let productContent = result.rows;
-        for (let i = 0; i < productContent.length; i++) {
+    .get(function (req, res) {
+    var email = req.session.user.email;
+    db.query('SELECT * FROM products', [])
+        .then(function (result) {
+        var productContent = result.rows;
+        for (var i = 0; i < productContent.length; i++) {
             productContent[i].email = email;
         }
         res.render(viewPrefix + 'products', {
@@ -22,9 +20,9 @@ router.route('/products')
             email: email
         });
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log(err);
-        let userError = helpers_1.dbErrTranslator(err.message);
+        var userError = dbErrTranslator(err.message);
         res.render(viewPrefix + 'products', { dbError: userError });
     });
 });

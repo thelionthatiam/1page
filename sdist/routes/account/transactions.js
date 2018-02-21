@@ -1,62 +1,60 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const transaction_calc_1 = require("../../functions/transaction-calc");
-const r = require("../../resources/value-objects");
-const mailer = require("../../middleware/emailer");
-const router = express.Router();
+import * as express from 'express';
+import { stripe } from '../../functions/transaction-calc';
+import * as r from '../../resources/value-objects';
+import * as mailer from '../../middleware/emailer';
+var router = express.Router();
 router.use('/transact', mailer.mailer());
 router.route('/transact')
-    .post((req, res) => {
-    let dismisses;
-    let unpaidDismisses;
-    let dismissTot;
-    let snoozes;
-    let unpaidSnoozes;
-    let snoozeTot;
-    let wakes;
-    let unpaidWakes;
-    let wakeTot;
-    let total;
-    let payment_uuid;
-    let recipient;
-    let org_trans_total;
-    let trans_uuid;
-    let revenue;
-    let snoozePrice;
-    let dismissPrice;
-    let wakePrice;
-    let user = r.UserSession.fromJSON(req.session.user);
+    .post(function (req, res) {
+    var dismisses;
+    var unpaidDismisses;
+    var dismissTot;
+    var snoozes;
+    var unpaidSnoozes;
+    var snoozeTot;
+    var wakes;
+    var unpaidWakes;
+    var wakeTot;
+    var total;
+    var payment_uuid;
+    var recipient;
+    var org_trans_total;
+    var trans_uuid;
+    var revenue;
+    var snoozePrice;
+    var dismissPrice;
+    var wakePrice;
+    var user = r.UserSession.fromJSON(req.session.user);
     req.aQuery.selectUnpaidSnoozes([user.uuid, false])
-        .then((result) => {
+        .then(function (result) {
         console.log('snoozes', result.rowCount);
         snoozes = result.rowCount;
         unpaidSnoozes = result.rows;
         return req.aQuery.selectUnpaidDismisses([user.uuid, false]);
     })
-        .then((result) => {
+        .then(function (result) {
         console.log('dismisses', result.rowCount);
         dismisses = result.rowCount;
         unpaidDismisses = result.rows;
         return req.aQuery.selectUnpaidWakes([user.uuid, false]);
     })
-        .then((result) => {
+        .then(function (result) {
         console.log('wakes', result.rowCount);
         wakes = result.rowCount;
         unpaidWakes = result.rows;
         return req.aQuery.selectUserOrgs([user.uuid]);
     })
-        .then((result) => {
-        for (let i = 0; i < result.rows.length; i++) {
-            let org = r.UserOrgsDB.fromJSON(result.rows[i]);
+        .then(function (result) {
+        for (var i = 0; i < result.rows.length; i++) {
+            var org = r.UserOrgsDB.fromJSON(result.rows[i]);
             if (org.active) {
                 recipient = org.org_uuid;
             }
         }
         return req.aQuery.selectUserSettings([user.uuid]);
     })
-        .then((result) => {
-        let settings = r.UserSettings.fromJSON(result.rows[0]);
+        .then(function (result) {
+        var settings = r.UserSettings.fromJSON(result.rows[0]);
         snoozePrice = parseFloat(settings.snooze_price);
         dismissPrice = parseFloat(settings.dismiss_price);
         wakePrice = parseFloat(settings.wake_price);
@@ -64,9 +62,9 @@ router.route('/transact')
         dismissTot = (dismissPrice * dismisses);
         wakeTot = (wakePrice * wakes);
         total = (snoozeTot + dismissTot + wakeTot);
-        org_trans_total = transaction_calc_1.stripe.orgCut(total);
-        revenue = transaction_calc_1.stripe.revenue(total);
-        let inputs = [
+        org_trans_total = stripe.orgCut(total);
+        revenue = stripe.revenue(total);
+        var inputs = [
             user.uuid,
             recipient,
             settings.active_payment,
@@ -77,34 +75,34 @@ router.route('/transact')
         ];
         return req.aQuery.insertTransaction(inputs);
     })
-        .then((result) => {
+        .then(function (result) {
         trans_uuid = result.rows[0].trans_uuid;
-        let payArr = [];
-        for (let i = 0; i < unpaidSnoozes.length; i++) {
-            let input = [true, unpaidSnoozes[i].snooze_uuid];
-            let promise = req.aQuery.snoozesToPaid(input);
+        var payArr = [];
+        for (var i = 0; i < unpaidSnoozes.length; i++) {
+            var input = [true, unpaidSnoozes[i].snooze_uuid];
+            var promise = req.aQuery.snoozesToPaid(input);
             payArr.push(promise);
         }
-        for (let i = 0; i < unpaidDismisses.length; i++) {
-            let input = [true, unpaidDismisses[i].dismiss_uuid];
-            let promise = req.aQuery.dismissesToPaid(input);
+        for (var i = 0; i < unpaidDismisses.length; i++) {
+            var input = [true, unpaidDismisses[i].dismiss_uuid];
+            var promise = req.aQuery.dismissesToPaid(input);
             payArr.push(promise);
         }
-        for (let i = 0; i < unpaidWakes.length; i++) {
-            let input = [true, unpaidWakes[i].wakes_uuid];
-            let promise = req.aQuery.wakesToPaid(input);
+        for (var i = 0; i < unpaidWakes.length; i++) {
+            var input = [true, unpaidWakes[i].wakes_uuid];
+            var promise = req.aQuery.wakesToPaid(input);
             payArr.push(promise);
         }
         return Promise.all(payArr);
     })
-        .then((info) => {
+        .then(function (info) {
         return req.aQuery.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false]);
     })
-        .then((result) => {
+        .then(function (result) {
         return req.aQuery.insertRevenue([trans_uuid, user.uuid, revenue]);
     })
-        .then((result) => {
-        let mail = {
+        .then(function (result) {
+        var mail = {
             from: 'juliantheberge@gmail.com',
             to: 'fffff@mailinator.com',
             subject: 'Test',
@@ -122,33 +120,33 @@ router.route('/transact')
         };
         return req.transporter.sendMail(mail);
     })
-        .then((info) => {
+        .then(function (info) {
         console.log(info);
         res.redirect('/accounts/' + req.session.user.email + '/alarms');
     })
-        .catch((error) => {
+        .catch(function (error) {
         console.log(error);
         throw new Error('there was an error: ' + error);
     });
 });
 router.route('/pay-org')
-    .post((req, res) => {
-    let user = r.UserSession.fromJSON(req.session.user);
-    let recipient;
+    .post(function (req, res) {
+    var user = r.UserSession.fromJSON(req.session.user);
+    var recipient;
     req.aQuery.selectUserOrgs([user.uuid])
-        .then((result) => {
-        for (let i = 0; i < result.rows.length; i++) {
-            let org = r.UserOrgsDB.fromJSON(result.rows[i]);
+        .then(function (result) {
+        for (var i = 0; i < result.rows.length; i++) {
+            var org = r.UserOrgsDB.fromJSON(result.rows[i]);
             if (org.active) {
                 recipient = org.org_uuid;
             }
         }
         return req.aQuery.selectPendingPayments([recipient, false]);
     })
-        .then((result) => {
-        let total;
-        let unPaidTransactions;
-        for (let i = 0; i < result.rows.length; i++) {
+        .then(function (result) {
+        var total;
+        var unPaidTransactions;
+        for (var i = 0; i < result.rows.length; i++) {
             unPaidTransactions.push(req.aQuery.orgToPaid([true, result.rows[i].recipient]));
             total = total + result.rows[i].org_trans_total;
         }
@@ -157,10 +155,10 @@ router.route('/pay-org')
             return Promise.all(unPaidTransactions);
         }
     })
-        .then((result) => {
+        .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/alarms');
     })
-        .catch((error) => {
+        .catch(function (error) {
         console.log(error);
         res.redirect('/accounts/' + req.session.user.email + '/alarms');
     });

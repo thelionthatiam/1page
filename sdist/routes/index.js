@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const router = express.Router();
-const test = require("./test");
+import * as express from 'express';
+var router = express.Router();
+import * as test from './test';
 router.use('/', require('./authorization'));
 router.use('/', require('./email'));
 router.use('/', require('./accounts'));
@@ -22,7 +20,7 @@ router.use('/accounts/:email', require('./account/orders'));
 router.use('/accounts/:email', require('./account/settings'));
 router.use('/accounts/:email', require('./account/transactions'));
 router.get('/', function (req, res, next) {
-    res.render('login');
+    res.render('test');
 });
 // NEEDS GUEST AND USER BEHAVIOR
 router.get('/contact', function (req, res, next) {
@@ -31,7 +29,7 @@ router.get('/contact', function (req, res, next) {
 router.get('/splash', function (req, res, next) {
     res.render('splash');
 });
-router.get('/home', (req, res) => {
+router.get('/home', function (req, res) {
     console.log("home page", req.session);
     res.render('home', {
         email: req.session.user.email,

@@ -15,7 +15,7 @@ var AtoZ = atoz.toUpperCase();
 var symboles = "!@#$%^&*()_+-=`~[]{}|?/><";
 var numbers = "0123456789";
 var whiteSpace = " ";
-let states = [
+var states = [
     "AK",
     "AL",
     "AR",
@@ -151,7 +151,7 @@ $('#cardNumber').on('keypress change', function () {
     }
 });
 function nameChecker(val) {
-    let name = /^([a-zA-Z]{1,15})( [a-zA-Z]{1,15})?([ -]?[a-zA-Z]{1,15})?$/;
+    var name = /^([a-zA-Z]{1,15})( [a-zA-Z]{1,15})?([ -]?[a-zA-Z]{1,15})?$/;
     if (name.test(val)) {
         return "OK";
     }
@@ -205,7 +205,7 @@ function expirationDayChecker(val) {
     }
 }
 function addressChecker(val) {
-    let addressChecker = /^[\dA-Za-z ]{1,40}$/;
+    var addressChecker = /^[\dA-Za-z ]{1,40}$/;
     if (addressChecker.test(val)) {
         return "OK";
     }

@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const words = require("an-array-of-english-words");
+import * as words from 'an-array-of-english-words';
 // cardinality
 function cardinalityGuess(password) {
-    let cardinality = 0;
-    let lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
+    var cardinality = 0;
+    var lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
     if (password.match(lowerCase)) {
         cardinality = cardinality + 26;
         console.log('positive lowercase search', 'cardinality', cardinality);
@@ -25,18 +23,18 @@ function cardinalityGuess(password) {
 }
 // entropy
 function entropy(password) {
-    let length = password.length;
+    var length = password.length;
     console.log(length);
-    let cardinality = cardinalityGuess(password);
+    var cardinality = cardinalityGuess(password);
     console.log(cardinality);
     return length * (Math.log2(cardinality));
 }
 ;
 function wordsInPass(password) {
-    let ans = {};
-    let count = 0;
-    let numberOfWords;
-    for (let i = 0; i < words.length; i++) {
+    var ans = {};
+    var count = 0;
+    var numberOfWords;
+    for (var i = 0; i < words.length; i++) {
         var re = new RegExp("(" + words[i] + ")", 'g');
         if (password.match(re)) {
             count++;
@@ -44,47 +42,47 @@ function wordsInPass(password) {
             ans[numberOfWords] = words[i];
         }
     }
-    for (let k in ans) {
+    for (var k in ans) {
         var re = new RegExp("(" + ans[k] + ")", 'g');
-        for (let key in ans) {
+        for (var key in ans) {
             if (ans[key].match(re) && ans[key] !== ans[k]) {
                 delete ans[k];
             }
         }
     }
-    let finalArr = [];
-    for (let j in ans) {
+    var finalArr = [];
+    for (var j in ans) {
         finalArr.push(ans[j]);
     }
     return finalArr;
 }
 function totalSubtractedLength(arr) {
-    let count = 0;
-    for (let i = 0; i < arr.length; i++) {
+    var count = 0;
+    for (var i = 0; i < arr.length; i++) {
         count = count + arr[i].length;
     }
     return count;
 }
 // was trying to account for easy guessing of words, but that only works if there are only words
 function mixPassScorer(password) {
-    let relevantWords = wordsInPass(password);
-    let wordsLength = totalSubtractedLength(relevantWords);
-    let trueLength = password.length - wordsLength;
-    let cardinality = cardinalityGuess(password);
-    let symbolOptions = Math.pow(cardinality, trueLength);
-    let wordOptions = relevantWords.length * 230000;
-    let totalOptions = symbolOptions + wordOptions;
+    var relevantWords = wordsInPass(password);
+    var wordsLength = totalSubtractedLength(relevantWords);
+    var trueLength = password.length - wordsLength;
+    var cardinality = cardinalityGuess(password);
+    var symbolOptions = Math.pow(cardinality, trueLength);
+    var wordOptions = relevantWords.length * 230000;
+    var totalOptions = symbolOptions + wordOptions;
     return totalOptions;
 }
 // this is probably more realistic, could make a sentence case dictionary, l33t dictionary
 function scorer(password) {
-    let cardinality = cardinalityGuess(password);
-    let relevantWords = wordsInPass(password);
-    let wordsLength = totalSubtractedLength(relevantWords);
-    let wordOptions = Math.pow(230000, relevantWords.length);
-    let trueLength = password.length - wordsLength;
-    let symbolOptions = Math.pow(cardinality, password.length);
-    let totalOptions = symbolOptions + wordOptions;
+    var cardinality = cardinalityGuess(password);
+    var relevantWords = wordsInPass(password);
+    var wordsLength = totalSubtractedLength(relevantWords);
+    var wordOptions = Math.pow(230000, relevantWords.length);
+    var trueLength = password.length - wordsLength;
+    var symbolOptions = Math.pow(cardinality, password.length);
+    var totalOptions = symbolOptions + wordOptions;
     if (cardinality < 27 && words.length === password.length) {
         if (words.length === password.length) {
             console.log('all word pass');
@@ -94,10 +92,10 @@ function scorer(password) {
     }
     else {
         console.log('all symbol pass');
-        let symbolOptions = Math.pow(cardinality, password.length);
-        let entropy = password.length * (Math.log2(cardinality));
+        var symbolOptions_1 = Math.pow(cardinality, password.length);
+        var entropy_1 = password.length * (Math.log2(cardinality));
         ;
-        return entropy;
+        return entropy_1;
     }
 }
 function round(value, precision) {
@@ -105,13 +103,12 @@ function round(value, precision) {
     return Math.round(value * multiplier) / multiplier;
 }
 function simpleScorer(password) {
-    let cardinality = cardinalityGuess(password);
-    let symbolOptions = Math.pow(cardinality, password.length);
-    let entropy = password.length * (Math.log2(cardinality));
+    var cardinality = cardinalityGuess(password);
+    var symbolOptions = Math.pow(cardinality, password.length);
+    var entropy = password.length * (Math.log2(cardinality));
     ;
     return round(entropy, 2);
 }
-exports.simpleScorer = simpleScorer;
 // https://www.bennish.net/password-strength-checker/
 // < 28 bits = Very Weak; might keep out family members
 // 28 - 35 bits = Weak; should keep out most people, often good for desktop login passwords
@@ -119,4 +116,5 @@ exports.simpleScorer = simpleScorer;
 // 60 - 127 bits = Strong; can be good for guarding financial information
 // 128+ bits = Very Strong; often overkill
 module.exports = scorer;
+export { simpleScorer };
 //# sourceMappingURL=password-strength.js.map

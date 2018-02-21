@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const isUUID = require("is-uuid");
+import * as isUUID from 'is-uuid';
 // CONCEPTS TO APPLY IN-MEETING
 // classes map to value items
 // static methods
@@ -8,7 +6,7 @@ const isUUID = require("is-uuid");
 // not using raw values for constructor
 // validating that the correct properties are present in constructor classes
 function emailValid(email) {
-    let re = /^[A-Za-z0-9\._\$%\-]+@[A-Za-z0-9\-]+.[A-Za-z0-9]{2,6}$/;
+    var re = /^[A-Za-z0-9\._\$%\-]+@[A-Za-z0-9\-]+.[A-Za-z0-9]{2,6}$/;
     if (re.test(email)) {
         return email;
     }
@@ -25,7 +23,7 @@ function uuidValid(uuid) {
     }
 }
 function permissionValid(permission) {
-    let re = /(guest)|(user)|(admin)/;
+    var re = /(guest)|(user)|(admin)/;
     if (re.test(permission)) {
         return permission;
     }
@@ -33,12 +31,13 @@ function permissionValid(permission) {
         throw new Error('Not a real permission');
     }
 }
-class UserSession {
-    constructor(userSession) {
+var UserSession = /** @class */ (function () {
+    function UserSession(userSession) {
         this.email = emailValid(userSession.email);
         this.uuid = uuidValid(userSession.uuid);
         this.cart_uuid = uuidValid(userSession.cart_uuid);
         this.permission = permissionValid(userSession.permission);
     }
-}
+    return UserSession;
+}());
 //# sourceMappingURL=prelim-value-obj.js.map

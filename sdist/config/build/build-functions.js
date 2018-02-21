@@ -1,12 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const child_process_1 = require("child_process");
-const prompt = require("prompt");
-const fs = require("fs");
-let tableDrop = psqlCommand(["DROP TABLE nonce", "DROP TABLE users"]);
-exports.tableDrop = tableDrop;
+import { exec } from 'child_process';
+import * as prompt from 'prompt';
+import * as fs from 'fs';
+var tableDrop = psqlCommand(["DROP TABLE nonce", "DROP TABLE users"]);
 function applyDefaults(obj) {
-    for (let k in obj) {
+    for (var k in obj) {
         if (k === 'database' && obj[k] === '') {
             obj.database = 'formapp';
             console.log(obj[k], "is the database");
@@ -26,27 +23,24 @@ function applyDefaults(obj) {
     }
     return obj;
 }
-exports.applyDefaults = applyDefaults;
 function psqlCommand(array) {
-    const command = " --command=";
-    let finarr = [];
-    for (let i = 0; i < array.length; i++) {
+    var command = " --command=";
+    var finarr = [];
+    for (var i = 0; i < array.length; i++) {
         finarr.push(command);
         array[i] = '"' + array[i] + '"';
         finarr.push(array[i]);
     }
     return finarr.join('');
 }
-exports.psqlCommand = psqlCommand;
 function connectCommand(user, host, database, password) {
-    let connectCommand = "PGPASSWORD=" + password +
+    var connectCommand = "PGPASSWORD=" + password +
         " psql" +
         " -U " + user +
         " -h " + host +
         " -d " + database;
     return connectCommand;
 }
-exports.connectCommand = connectCommand;
 function prompter(promptObj, cb) {
     prompt.start();
     prompt.get(promptObj, function (err, result) {
@@ -59,9 +53,8 @@ function prompter(promptObj, cb) {
         }
     });
 }
-exports.prompter = prompter;
 function childProcess(string, cb) {
-    child_process_1.exec(string, function (error, stdout, stderr) {
+    exec(string, function (error, stdout, stderr) {
         if (error) {
             cb(error);
         }
@@ -70,19 +63,16 @@ function childProcess(string, cb) {
         }
     });
 }
-exports.childProcess = childProcess;
-let tablesExist = psqlCommand(["SELECT * FROM users", "SELECT * FROM nonce"]);
-exports.tablesExist = tablesExist;
+var tablesExist = psqlCommand(["SELECT * FROM users", "SELECT * FROM nonce"]);
 function fileChecker(path) {
     try {
-        let file = require(path);
+        var file = require(path);
         return true;
     }
     catch (e) {
         return false;
     }
 }
-exports.fileChecker = fileChecker;
 function filesInDir(dir, cb) {
     fs.readdir(dir, function (err, files) {
         if (err) {
@@ -93,38 +83,35 @@ function filesInDir(dir, cb) {
         }
     });
 }
-exports.filesInDir = filesInDir;
 function stringOfFiles(dir, array, version, rev) {
-    let finalArr = [];
+    var finalArr = [];
     if (rev) {
-        for (let i = array.length - 1; i >= version; i--) {
+        for (var i = array.length - 1; i >= version; i--) {
             finalArr.push("-f " + dir + '/' + array[i]);
         }
         return " -a " + finalArr.join(' ');
     }
     else {
-        for (let i = 0; i < version; i++) {
+        for (var i = 0; i < version; i++) {
             finalArr.push("-f " + dir + '/' + array[i]);
         }
         return " -a " + finalArr.join(' ');
     }
 }
-exports.stringOfFiles = stringOfFiles;
-let makeJSONfromObj = function (path, obj, cb) {
-    let data = JSON.stringify(obj);
-    fs.writeFile(path, data, (err) => {
+var makeJSONfromObj = function (path, obj, cb) {
+    var data = JSON.stringify(obj);
+    fs.writeFile(path, data, function (err) {
         if (err) {
             cb(err);
         }
     });
 };
-exports.makeJSONfromObj = makeJSONfromObj;
-let removeConfig = function (path, cb) {
-    fs.unlink(path, (err) => {
+var removeConfig = function (path, cb) {
+    fs.unlink(path, function (err) {
         if (err) {
             cb(err);
         }
     });
 };
-exports.removeConfig = removeConfig;
+export { applyDefaults, psqlCommand, fileChecker, makeJSONfromObj, connectCommand, prompter, childProcess, tablesExist, tableDrop, removeConfig, filesInDir, stringOfFiles, };
 //# sourceMappingURL=build-functions.js.map

@@ -1,28 +1,26 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const bodyParser = require("body-parser");
-const hbs = require("express-handlebars");
-const path = require("path");
-const combiner_1 = require("./config/combiner");
-const async_database_1 = require("./middleware/async-database");
-const session = require("express-session");
-const sessionCheck = require("./middleware/session-check");
-const methodOverride = require("method-override");
-const app = express();
+import * as express from "express";
+import * as bodyParser from "body-parser";
+import * as hbs from "express-handlebars";
+import * as path from "path";
+import { dbConfig } from "./config/combiner";
+import { init } from "./middleware/async-database";
+import * as session from "express-session";
+import * as sessionCheck from "./middleware/session-check";
+import * as methodOverride from 'method-override';
+var app = express();
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: false, limit: '50kb' }));
 app.set('view engine', "hbs");
 app.engine('hbs', hbs({
     extname: 'hbs',
-    defaultLayout: __dirname + './../views/layouts/default.hbs',
+    defaultLayout: __dirname + './../views/layouts/react.hbs',
     partialsDir: __dirname + './../views/partials',
     layoutsDir: __dirname + './../views/layouts'
 }));
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-app.use(async_database_1.init(combiner_1.dbConfig));
+app.use(init(dbConfig));
 //session using memory storage (I think this is application memory) for now. Will not be the case in production. see readme session stores
 // app.set('trust proxy', 1) // necessary of server is behind a proxy and using secure:true for cookie
 app.use(session({

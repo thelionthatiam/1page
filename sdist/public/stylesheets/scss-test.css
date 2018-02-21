@@ -1,0 +1,169 @@
+* {
+  margin: 0px;
+  padding: 0px; }
+
+h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
+  font-family: "Roboto", sans-serif; }
+
+.formItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+  .formItem .TextFormWrapper {
+    margin-top: 10px;
+    width: 40vw;
+    max-width: 600px;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column; }
+    .formItem .TextFormWrapper h4 {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-left: 50px;
+      transition: 300ms; }
+    .formItem .TextFormWrapper button {
+      margin-top: 10px;
+      margin-bottom: 10px; }
+    .formItem .TextFormWrapper form div {
+      display: flex;
+      flex-direction: row;
+      width: 100%; }
+      .formItem .TextFormWrapper form div input {
+        flex-grow: 1; }
+    .formItem .TextFormWrapper p {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-left: 50px;
+      transition: 300ms;
+      font-size: 10px; }
+
+.icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 25px;
+  transition: 300ms; }
+
+.fadeIn {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-2px); }
+
+.fadeOut {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(2px); }
+
+.fadeInVert {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-2px); }
+
+.fadeOutVert {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(2px); }
+
+.textSuccess {
+  color: green;
+  border-color: green; }
+
+.buttonSuccess {
+  background-color: green;
+  border-color: green;
+  color: white; }
+
+.formSuccess input[type=text] {
+  color: green; }
+
+.formSuccess input {
+  color: green;
+  border-color: green; }
+
+.textError {
+  color: red;
+  border-color: red; }
+
+.buttonError {
+  background-color: red;
+  border-color: red;
+  color: white; }
+
+.formError input[type=text] {
+  color: red; }
+
+.formError input {
+  color: green;
+  border-color: red; }
+
+.buttonInactive {
+  background-color: white;
+  border-color: grey;
+  color: grey; }
+
+label {
+  font-size: 10px; }
+
+form {
+  display: flex;
+  flex-direction: column; }
+
+input {
+  border: none;
+  border-bottom: 2px solid black;
+  flex-grow: 1;
+  font-size: 14px;
+  padding: 2px; }
+
+input:focus {
+  outline: 0; }
+
+input:placeholder-shown {
+  color: black; }
+
+textarea {
+  margin: 4px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-left: 0px;
+  border-right: 0px;
+  border-radius: 2px; }
+
+textarea:focus {
+  outline: 0; }
+
+button {
+  border: 1px solid black;
+  margin: 4px 0 4px 0;
+  border-radius: 5px;
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1);
+  min-width: 10%;
+  max-width: 40%;
+  min-height: 20px;
+  padding: 3px;
+  align-self: flex-end; }
+
+button:hover {
+  cursor: pointer; }
+
+button:active {
+  transform: translate(1px, 1px); }
+
+button:focus {
+  outline: 0; }
+
+button.yes {
+  background-color: black;
+  color: white; }
+
+button.no {
+  background-color: white; }
+
+button.unavailable {
+  background-color: lightgrey;
+  border-color: grey;
+  color: grey;
+  box-shadow: none; }
+
+button.unavailable:active {
+  transform: translate(0px); }

@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 function addLeadingZeros(number) {
     if (number < 10) {
         return '0' + number.toString();
@@ -7,14 +5,14 @@ function addLeadingZeros(number) {
     return number;
 }
 function theTime() {
-    let clock = new Date();
-    let h = clock.getHours();
-    let m = addLeadingZeros(clock.getMinutes());
-    let s = addLeadingZeros(clock.getSeconds());
+    var clock = new Date();
+    var h = clock.getHours();
+    var m = addLeadingZeros(clock.getMinutes());
+    var s = addLeadingZeros(clock.getSeconds());
     return h + ':' + m;
 }
 function intervalTimer() {
-    setInterval(() => { theTime(); }, 1000);
+    setInterval(function () { theTime(); }, 1000);
 }
-exports.intervalTimer = intervalTimer;
+export { intervalTimer };
 //# sourceMappingURL=clock.js.map

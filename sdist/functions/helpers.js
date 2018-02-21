@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const merge = require("./merge");
+import * as merge from './merge';
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // want to remove req, but session.regenerate doesn't return promise
 function regenerateSession(req) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function (resolve, reject) {
         req.session.regenerate(function (err) {
             if (err)
                 reject(err);
@@ -13,21 +11,18 @@ function regenerateSession(req) {
         });
     });
 }
-exports.regenerateSession = regenerateSession;
 // these error functions will be removed entirely with new structure, no res being passed in
 // could latch on to the error event
 function dbError(res, thisPage, err) {
     res.render(thisPage, { dbError: dbErrTranslator(err) });
 }
-exports.dbError = dbError;
 function genError(res, thisPage, param) {
     res.render(thisPage, { dbError: param });
 }
-exports.genError = genError;
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // BUSINESS LOGIC TIER
 function dbErrTranslator(error) {
-    let emailChecker = /(email)/g, phoneChecker = /(phone)/g, keyChecker = /(key)/g, checkChecker = /(check)/g, passChecker = /(password)/g, lengthChecker = /(value too long)/g, alarms = /(alarms)/g, awake = /(awake)/g, title = /(title)/g;
+    var emailChecker = /(email)/g, phoneChecker = /(phone)/g, keyChecker = /(key)/g, checkChecker = /(check)/g, passChecker = /(password)/g, lengthChecker = /(value too long)/g, alarms = /(alarms)/g, awake = /(awake)/g, title = /(title)/g;
     if (emailChecker.test(error)) {
         if (keyChecker.test(error)) {
             return "The email you put in has already been used. Try again.";
@@ -63,11 +58,10 @@ function dbErrTranslator(error) {
         return "There was an error. Try again.";
     }
 }
-exports.dbErrTranslator = dbErrTranslator;
 function compare(a, b) {
-    const awakeA = parseInt(a.awake);
-    const awakeB = parseInt(b.awake);
-    let comp = 0;
+    var awakeA = parseInt(a.awake);
+    var awakeB = parseInt(b.awake);
+    var comp = 0;
     if (awakeA > awakeB) {
         comp = 1;
     }
@@ -76,11 +70,10 @@ function compare(a, b) {
     }
     return comp;
 }
-exports.compare = compare;
-let randomString = new Promise((resolve, reject) => {
-    let string = "";
-    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-=`,.<>/?;:'{}[]|";
-    for (let i = 0; i <= 40; i++) {
+var randomString = new Promise(function (resolve, reject) {
+    var string = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-=`,.<>/?;:'{}[]|";
+    for (var i = 0; i <= 40; i++) {
         string += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     if (typeof string === "undefined") {
@@ -88,25 +81,23 @@ let randomString = new Promise((resolve, reject) => {
     }
     resolve(string);
 });
-exports.randomString = randomString;
-let isSessionValid = (token, outputs) => {
-    return new Promise((resolve, reject) => {
-        let nonce = outputs.nonce, oldDate = new Date(outputs.thetime), oldTime = oldDate.getTime(), currentDate = new Date(), currentTime = currentDate.getTime();
+var isSessionValid = function (token, outputs) {
+    return new Promise(function (resolve, reject) {
+        var nonce = outputs.nonce, oldDate = new Date(outputs.thetime), oldTime = oldDate.getTime(), currentDate = new Date(), currentTime = currentDate.getTime();
         if (token === nonce && currentTime < oldTime + 120000) {
             resolve(true);
         }
         else {
-            let failure = new Error('Token has expired, please try again.');
+            var failure = new Error('Token has expired, please try again.');
             reject(failure);
         }
     });
 };
-exports.isSessionValid = isSessionValid;
-let merger = (objectOne, objectTwo) => {
-    return new Promise((resolve, reject) => {
-        let ans = merge.deepMerge(objectOne, objectTwo);
+var merger = function (objectOne, objectTwo) {
+    return new Promise(function (resolve, reject) {
+        var ans = merge.deepMerge(objectOne, objectTwo);
         if (ans === 'circular object') {
-            let failure = new Error('Circular object');
+            var failure = new Error('Circular object');
             reject(failure);
         }
         else {
@@ -114,39 +105,36 @@ let merger = (objectOne, objectTwo) => {
         }
     });
 };
-exports.merger = merger;
 function lastFourOnly(cardNumber) {
-    let arr = [];
+    var arr = [];
     cardNumber = cardNumber.split('');
-    for (let i = cardNumber.length; arr.length < 5; i--) {
+    for (var i = cardNumber.length; arr.length < 5; i--) {
         arr.push(cardNumber[i]);
     }
     arr.reverse();
     return arr.join('');
 }
-exports.lastFourOnly = lastFourOnly;
 // COULD GENERALIZE THIS FUNCTION: ADD KEY/VALUE(S) PAIR TO OBJCT
 function addOrderUUIDItemNumber(queryResult, order_uuid) {
-    for (let i = 0; i < queryResult.length; i++) {
+    for (var i = 0; i < queryResult.length; i++) {
         queryResult[i].order_uuid = order_uuid;
         queryResult[i].item_number = i + 1;
     }
     return queryResult;
 }
-exports.addOrderUUIDItemNumber = addOrderUUIDItemNumber;
-let orgName = 'United Nations Childrens Fund';
+var orgName = 'United Nations Childrens Fund';
 function idMaker(name) {
     name = name.toLowerCase();
-    let arrName = name.split('');
-    for (let i = 0; i < arrName.length; i++) {
+    var arrName = name.split('');
+    for (var i = 0; i < arrName.length; i++) {
         if (arrName[i] === ' ') {
             arrName[i] = '-';
         }
     }
     return arrName.join('');
 }
-exports.idMaker = idMaker;
 console.log(idMaker(orgName));
 function convertToSeconds(time) {
 }
+export { dbErrTranslator, dbError, genError, compare, randomString, isSessionValid, regenerateSession, lastFourOnly, addOrderUUIDItemNumber, merger, idMaker };
 //# sourceMappingURL=helpers.js.map

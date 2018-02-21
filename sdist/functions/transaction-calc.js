@@ -1,37 +1,35 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const payPalInfo = {
+var payPalInfo = {
     name: 'payPal',
     percent: .029,
     fixed: .30,
     max: null
 };
-const achInfo = {
+var achInfo = {
     name: 'ach',
     percent: .008,
     fixed: 0,
     max: 5
 };
-const aliPayInfo = {
+var aliPayInfo = {
     name: 'aliPay',
     percent: .029,
     fixed: .30,
     max: null
 };
-const googlePlayInfo = {
+var googlePlayInfo = {
     name: 'googlePlay',
     percent: 0.30,
     fixed: 0,
     max: null
 };
-const stripeInfo = {
+var stripeInfo = {
     name: 'payPal',
     percent: .029,
     fixed: .30,
     max: null
 };
-class Cut {
-    constructor(obj) {
+var Cut = /** @class */ (function () {
+    function Cut(obj) {
         this.name = obj.name;
         this.percent = obj.percent;
         this.fixed = obj.fixed;
@@ -39,12 +37,12 @@ class Cut {
         this.sylPercent = .30,
             this.sylStatic = 0;
     }
-    orgCut(total) {
-        let transCut = this.transactionCut(total);
-        let revenue = this.revenue(total);
-        let withTransCut = total - transCut;
-        let orgTotal = total - (transCut + revenue);
-        let obj = {
+    Cut.prototype.orgCut = function (total) {
+        var transCut = this.transactionCut(total);
+        var revenue = this.revenue(total);
+        var withTransCut = total - transCut;
+        var orgTotal = total - (transCut + revenue);
+        var obj = {
             total: total,
             transPercent: this.percent * total,
             transCut: transCut,
@@ -63,24 +61,21 @@ class Cut {
         else {
             return Number((orgTotal).toFixed(3));
         }
-    }
-    revenue(total) {
-        let sylSubTotal = (this.sylPercent * total) + this.sylStatic;
+    };
+    Cut.prototype.revenue = function (total) {
+        var sylSubTotal = (this.sylPercent * total) + this.sylStatic;
         return sylSubTotal;
-    }
-    transactionCut(total) {
-        let transCut = (this.percent * total) + this.fixed;
+    };
+    Cut.prototype.transactionCut = function (total) {
+        var transCut = (this.percent * total) + this.fixed;
         return transCut;
-    }
-}
-let payPal = new Cut(payPalInfo);
-exports.payPal = payPal;
-let ach = new Cut(achInfo);
-exports.ach = ach;
-let aliPay = new Cut(aliPayInfo);
-exports.aliPay = aliPay;
-let googlePlay = new Cut(googlePlayInfo);
-exports.googlePlay = googlePlay;
-let stripe = new Cut(stripeInfo);
-exports.stripe = stripe;
+    };
+    return Cut;
+}());
+var payPal = new Cut(payPalInfo);
+var ach = new Cut(achInfo);
+var aliPay = new Cut(aliPayInfo);
+var googlePlay = new Cut(googlePlayInfo);
+var stripe = new Cut(stripeInfo);
+export { payPal, ach, aliPay, googlePlay, stripe };
 //# sourceMappingURL=transaction-calc.js.map

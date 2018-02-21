@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false,limit:'50kb'}));
 app.set('view engine', "hbs");
 app.engine('hbs', hbs({
   extname: 'hbs',
-  defaultLayout:__dirname + './../views/layouts/default.hbs',
+  defaultLayout:__dirname + './../views/layouts/react.hbs',
   partialsDir:__dirname + './../views/partials',
   layoutsDir:__dirname + './../views/layouts'
 }));

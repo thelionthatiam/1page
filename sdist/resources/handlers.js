@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express = require("express");
-const r = require("../resources/value-objects");
-const router = express.Router();
-exports.router = router;
-class BaseRequestHandler {
-    constructor(req, res, nextPage, errPage) {
+import * as express from 'express';
+import * as r from '../resources/value-objects';
+var router = express.Router();
+var BaseRequestHandler = /** @class */ (function () {
+    function BaseRequestHandler(req, res, nextPage, errPage) {
         this.req = req;
         this.res = res;
         this.inputs = req.query;
@@ -13,24 +10,26 @@ class BaseRequestHandler {
         this.nextPage = nextPage;
         this.errPage = errPage;
     }
-    handler() {
+    BaseRequestHandler.prototype.handler = function () {
+        var _this = this;
         this.aQuery.selectUser([this.inputs.email])
-            .then((result) => {
+            .then(function (result) {
             return r.UserDB.fromJSON(result.rows[0]);
         })
-            .then((result) => {
-            this.onSuccess(result);
+            .then(function (result) {
+            _this.onSuccess(result);
         })
-            .catch((error) => {
-            this.onFailure(error);
+            .catch(function (error) {
+            _this.onFailure(error);
         });
-    }
-    onSuccess(renderObj) {
+    };
+    BaseRequestHandler.prototype.onSuccess = function (renderObj) {
         return this.res.render(this.nextPage, renderObj);
-    }
-    onFailure(error) {
+    };
+    BaseRequestHandler.prototype.onFailure = function (error) {
         return this.res.render(this.errPage, { dbError: error });
-    }
-}
-exports.BaseRequestHandler = BaseRequestHandler;
+    };
+    return BaseRequestHandler;
+}());
+export { router, BaseRequestHandler };
 //# sourceMappingURL=handlers.js.map

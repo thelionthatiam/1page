@@ -26,7 +26,7 @@ router.use('/accounts/:email', require('./account/transactions'));
 
 
 router.get('/', function (req, res, next) {
-  res.render('login');
+  res.render('test');
 })
 
 // NEEDS GUEST AND USER BEHAVIOR

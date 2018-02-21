@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const connectPrompt = {
+var connectPrompt = {
     properties: {
         database: {
             description: "database name",
@@ -24,8 +22,7 @@ const connectPrompt = {
         }
     }
 };
-exports.connectPrompt = connectPrompt;
-const prevConn = {
+var prevConn = {
     properties: {
         prevConn: {
             description: "Would you like to use true for previous connect information or false to delete previous?(boolean)",
@@ -36,8 +33,7 @@ const prevConn = {
         }
     }
 };
-exports.prevConn = prevConn;
-let whatVersion = {
+var whatVersion = {
     properties: {
         version: {
             description: "What version of the database would you like to install? Enter for default up-to-date. (number)",
@@ -48,8 +44,7 @@ let whatVersion = {
         }
     }
 };
-exports.whatVersion = whatVersion;
-const deleteTables = {
+var deleteTables = {
     properties: {
         versionDown: {
             description: "Which version would you like to go down to? 0 removes all. Enter for full delete. (number)",
@@ -60,5 +55,5 @@ const deleteTables = {
         }
     }
 };
-exports.deleteTables = deleteTables;
+export { connectPrompt, deleteTables, prevConn, whatVersion };
 //# sourceMappingURL=build-objects.js.map

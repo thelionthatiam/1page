@@ -1,23 +1,21 @@
-"use strict";
 // import * as fs from "fs";
 // import * as help from '../functions/promise-helpers';
 // import * as bcrypt from 'bcrypt';
 // import { Inputs, PGOutput } from '../../typings/typings';
 // import { transporter, mailOptions } from "../config/mail-config.js";
-Object.defineProperty(exports, "__esModule", { value: true });
-const coupons = require("../functions/coupon-helpers");
-const promise_helpers_1 = require("../functions/promise-helpers");
-const express = require("express");
-const async_database_1 = require("../middleware/async-database");
-const mailer = require("../middleware/emailer");
-const router = express.Router();
+import * as coupons from '../functions/coupon-helpers';
+import { lastFourOnly } from '../functions/promise-helpers';
+import * as express from 'express';
+import { db } from '../middleware/async-database';
+import * as mailer from '../middleware/emailer';
+var router = express.Router();
 router.use('/test-route', mailer.mailer()); // middleware to load email junk
-router.get('/test-route', (req, res) => {
-    let uuid = '3e792f4c-1f49-4fcd-808c-fee4203ca056', cartContent = [], totalCost = 0, totalItems = 0, price, quantity, card_number, lastFour, discounted = 1, cart_uuid = '530e03ed-28be-47c1-a774-cff6486f0606', email = 'b@b.bb';
-    async_database_1.db.query('SELECT p.product_id, name, price, size, description, discount FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [cart_uuid])
-        .then((result) => {
+router.get('/test-route', function (req, res) {
+    var uuid = '3e792f4c-1f49-4fcd-808c-fee4203ca056', cartContent = [], totalCost = 0, totalItems = 0, price, quantity, card_number, lastFour, discounted = 1, cart_uuid = '530e03ed-28be-47c1-a774-cff6486f0606', email = 'b@b.bb';
+    db.query('SELECT p.product_id, name, price, size, description, discount FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [cart_uuid])
+        .then(function (result) {
         cartContent = result.rows;
-        for (let i = 0; i < cartContent.length; i++) {
+        for (var i = 0; i < cartContent.length; i++) {
             if (cartContent[i].discount === 0) {
                 cartContent[i].isDiscount = false;
             }
@@ -29,32 +27,32 @@ router.get('/test-route', (req, res) => {
             }
             cartContent[i].email = email;
         }
-        return async_database_1.db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [cart_uuid]);
+        return db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [cart_uuid]);
     })
-        .then((result) => {
-        for (let i = 0; i < cartContent.length; i++) {
-            for (let j = 0; j < result.rows.length; j++) {
+        .then(function (result) {
+        for (var i = 0; i < cartContent.length; i++) {
+            for (var j = 0; j < result.rows.length; j++) {
                 if (cartContent[i].product_id === result.rows[j].product_id) {
                     cartContent[i].quantity = result.rows[j].quantity;
                 }
             }
-            let discounted = coupons.percentOff(result.rows[i].discount, cartContent[i].price);
-            console.log(discounted);
-            price = discounted;
+            var discounted_1 = coupons.percentOff(result.rows[i].discount, cartContent[i].price);
+            console.log(discounted_1);
+            price = discounted_1;
             quantity = parseInt(cartContent[i].quantity);
             totalCost = totalCost + (price * quantity);
             totalItems = totalItems + quantity;
             console.log(price, quantity, totalCost, totalItems);
         }
-        return async_database_1.db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [uuid]);
+        return db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [uuid]);
     })
-        .then((result) => {
-        lastFour = promise_helpers_1.lastFourOnly(result.rows[0].card_number);
+        .then(function (result) {
+        lastFour = lastFourOnly(result.rows[0].card_number);
         card_number = result.rows[0].card_number;
-        return async_database_1.db.query('SELECT * FROM users', []);
+        return db.query('SELECT * FROM users', []);
     })
-        .then((result) => {
-        let mail = {
+        .then(function (result) {
+        var mail = {
             from: 'juliantheberge@gmail.com',
             to: 'fffff@mailinator.com',
             subject: 'Test',
@@ -69,12 +67,12 @@ router.get('/test-route', (req, res) => {
             }
         };
         return req.transporter.sendMail(mail)
-            .then((info) => {
+            .then(function (info) {
             console.log(info);
             res.render('login', { dbError: 'mail sent, this is not an error' });
         });
     })
-        .catch((err) => {
+        .catch(function (err) {
         console.log('test error', err);
         res.render('login', { dbError: err });
     });

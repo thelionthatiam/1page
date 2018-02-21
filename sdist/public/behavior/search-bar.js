@@ -78,8 +78,8 @@ $('.dropdownWrapper, .dropdownSearch').click(function (e) {
 //go to a searched org
 function idMaker(name) {
     name = name.toLowerCase();
-    let arrName = name.split('');
-    for (let i = 0; i < arrName.length; i++) {
+    var arrName = name.split('');
+    for (var i = 0; i < arrName.length; i++) {
         if (arrName[i] === ' ') {
             arrName[i] = '-';
         }
@@ -87,8 +87,8 @@ function idMaker(name) {
     return arrName.join('');
 }
 $('#org-search').click(function () {
-    let itemID = '#top';
-    let searchItem = $('.dropdownSearch').val();
+    var itemID = '#top';
+    var searchItem = $('.dropdownSearch').val();
     if (searchItem === '') {
         window.scrollBy({
             top: 0,

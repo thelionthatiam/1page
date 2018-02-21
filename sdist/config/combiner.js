@@ -1,15 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const merge_js_1 = require("../functions/merge.js");
-const dbConfigDefault = require("./db-default.json");
-const connectCredentials = require("./connect-config.json");
-let dbConnect = merge_js_1.deepMerge(dbConfigDefault, connectCredentials);
+import { deepMerge } from '../functions/merge.js';
+import * as dbConfigDefault from './db-default.json';
+import * as connectCredentials from './connect-config.json';
+var dbConnect = deepMerge(dbConfigDefault, connectCredentials);
 function combine() {
-    let dbInfo = {};
+    var dbInfo = {};
     try {
-        let dbCustom = require('./db-custom.json');
+        var dbCustom = require('./db-custom.json');
         console.log('using custom');
-        dbInfo = merge_js_1.deepMerge(dbConnect, dbCustom);
+        dbInfo = deepMerge(dbConnect, dbCustom);
         return dbInfo;
     }
     catch (e) {
@@ -23,6 +21,6 @@ function combine() {
         }
     }
 }
-let dbConfig = combine();
-exports.dbConfig = dbConfig;
+var dbConfig = combine();
+export { dbConfig };
 //# sourceMappingURL=combiner.js.map

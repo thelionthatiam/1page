@@ -1,4 +1,4 @@
-let causes = [
+var causes = [
     'african American',
     'aids',
     'american indian',
