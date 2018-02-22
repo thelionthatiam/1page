@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var test = [];
 function invoiceItems(result) {
     var invoiceItems = [];
@@ -15,6 +17,7 @@ function invoiceItems(result) {
     }
     return invoiceItems;
 }
+exports.invoiceItems = invoiceItems;
 function total(invoiceItems) {
     var total = 0;
     for (var i = 0; i < invoiceItems.length; i++) {
@@ -22,6 +25,7 @@ function total(invoiceItems) {
     }
     return total;
 }
+exports.total = total;
 function addDiscount(recieptContent) {
     for (var i = 0; i < recieptContent.length; i++) {
         if (recieptContent[i].discount === 0) {
@@ -34,12 +38,14 @@ function addDiscount(recieptContent) {
     }
     return recieptContent;
 }
+exports.addDiscount = addDiscount;
 function addEmail(recieptContent, email) {
     for (var i = 0; i < recieptContent.length; i++) {
         recieptContent[i].email = email;
     }
     return recieptContent;
 }
+exports.addEmail = addEmail;
 function totalItems(recieptContent) {
     var totalQuantity = 0;
     for (var i = 0; i < recieptContent.length; i++) {
@@ -47,25 +53,5 @@ function totalItems(recieptContent) {
     }
     return totalQuantity;
 }
-// DUMMY DATA
-// let flan = [ {
-//     product_id: 'NRA0-S-GUNS-4233',
-//     name: 'National Rifle Association',
-//     price: '2.00',
-//     size: 's',
-//     description: 'Advocates for gun-owners rights in America.',
-//     quantity: '1',
-//     discount: 0,
-//     email: 'b@b.bb'
-//   },
-//    {
-//       product_id: 'PPH0-S-FEM0-5783',
-//       name: 'Planned Parenthood',
-//       price: '2.00',
-//       size: 's',
-//       description: 'Advocates for womens rights in America.',
-//       quantity: '25',
-//       discount: 0,
-//       email: 'b@b.bb' } ]
-export { invoiceItems, total, addDiscount, addEmail, totalItems };
+exports.totalItems = totalItems;
 //# sourceMappingURL=invoice.js.map

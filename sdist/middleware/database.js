@@ -1,12 +1,15 @@
-import { Pool } from 'pg';
-import { dbConfig } from "../config/combiner";
-import { Query } from '../functions/queries';
-var pool = new Pool(dbConfig);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var pg_1 = require("pg");
+var combiner_1 = require("../config/combiner");
+var queries_1 = require("../functions/queries");
+var pool = new pg_1.Pool(combiner_1.dbConfig);
 var db = {
     query: function (text, params) { return pool.query(text, params); }
 };
+exports.db = db;
 function init(databaseInformation) {
-    var pool = new Pool(databaseInformation);
+    var pool = new pg_1.Pool(databaseInformation);
     return function (req, res, next) {
         var client;
         pool.connect()
@@ -28,7 +31,7 @@ function init(databaseInformation) {
                 req.aQuery = null;
             });
             console.log('database running');
-            req.aQuery = new Query(client);
+            req.aQuery = new queries_1.Query(client);
             next();
         })
             .catch(function (err) {
@@ -37,5 +40,4 @@ function init(databaseInformation) {
         });
     };
 }
-export { db };
 //# sourceMappingURL=database.js.map

@@ -1,6 +1,8 @@
-import * as express from 'express';
-import * as r from '../resources/value-objects';
-import { dbErrTranslator, idMaker } from '../functions/helpers';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var r = require("../resources/value-objects");
+var helpers_1 = require("../functions/helpers");
 var router = express.Router();
 router.route('/organizations')
     .post(function (req, res) {
@@ -14,7 +16,7 @@ router.route('/organizations')
         for (var i = 0; i < organizationContent.length; i++) {
             var org = r.OrgsDB.fromJSON(organizationContent[i]); // at least it catches problems
             organizationContent[i].email = user.email;
-            organizationContent[i].frontEndID = idMaker(organizationContent[i].name);
+            organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
         }
         res.render('shopping/organizations', {
             organizationContent: organizationContent,
@@ -23,7 +25,7 @@ router.route('/organizations')
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render('shopping/organizations', { dbError: userError });
     });
 });

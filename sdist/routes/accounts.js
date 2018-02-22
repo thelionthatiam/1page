@@ -1,7 +1,9 @@
-import * as express from 'express';
-import * as helper from '../functions/helpers';
-import * as bcrypt from 'bcrypt';
-import { db } from '../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var helper = require("../functions/helpers");
+var bcrypt = require("bcrypt");
+var database_1 = require("../middleware/database");
 var router = express.Router();
 //to sign up page
 router.get('/new-account', function (req, res, next) {
@@ -27,7 +29,7 @@ router.route('/accounts')
         inputs.password = hash;
         var query = 'INSERT INTO users(email, phone, password, name) VALUES($1, $2, $3, $4) RETURNING *';
         var input = [inputs.email, inputs.phone, inputs.password, inputs.name];
-        return db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
         inputs.uuid = result.rows[0].user_uuid;
@@ -38,21 +40,21 @@ router.route('/accounts')
     })
         .then(function (hash) {
         inputs.nonce = hash;
-        return db.query('INSERT INTO nonce(user_uuid, nonce) VALUES ($1, $2) RETURNING *', [inputs.uuid, inputs.nonce]);
+        return database_1.db.query('INSERT INTO nonce(user_uuid, nonce) VALUES ($1, $2) RETURNING *', [inputs.uuid, inputs.nonce]);
     })
         .then(function (result) {
         var query = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
         var input = [inputs.uuid, req.sessionID];
-        return db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
-        return db.query('INSERT INTO cart (user_uuid, card_number) VALUES ($1, $2)', [inputs.uuid, '42424242424242']);
+        return database_1.db.query('INSERT INTO cart (user_uuid, card_number) VALUES ($1, $2)', [inputs.uuid, '42424242424242']);
     })
         .then(function (result) {
-        return db.query('INSERT INTO user_settings(user_uuid) VALUES ($1)', [inputs.uuid]);
+        return database_1.db.query('INSERT INTO user_settings(user_uuid) VALUES ($1)', [inputs.uuid]);
     })
         .then(function (result) {
-        return db.query('UPDATE users SET permission = $1 WHERE user_uuid = $2', ['user', inputs.uuid]);
+        return database_1.db.query('UPDATE users SET permission = $1 WHERE user_uuid = $2', ['user', inputs.uuid]);
     })
         .then(function (result) {
         console.log(result.rows);
@@ -64,18 +66,18 @@ router.route('/accounts')
     })
         .catch(function (err) {
         console.log(err);
-        db.query('DELETE FROM users WHERE user_uuid = $1', [inputs.uuid])
+        database_1.db.query('DELETE FROM users WHERE user_uuid = $1', [inputs.uuid])
             .then(function (result) {
-            return db.query('DELETE FROM nonce WHERE user_uuid = $1', [inputs.uuid]);
+            return database_1.db.query('DELETE FROM nonce WHERE user_uuid = $1', [inputs.uuid]);
         })
             .then(function (result) {
-            return db.query('DELETE FROM cart WHERE user_uuid = $1', [inputs.uuid]);
+            return database_1.db.query('DELETE FROM cart WHERE user_uuid = $1', [inputs.uuid]);
         })
             .then(function (result) {
-            return db.query('DELETE FROM session WHERE user_uuid = $1', [inputs.uuid]);
+            return database_1.db.query('DELETE FROM session WHERE user_uuid = $1', [inputs.uuid]);
         })
             .then(function (result) {
-            return db.query('DELETE FROM user_settings WHERE user_uuid = $1', [inputs.uuid]);
+            return database_1.db.query('DELETE FROM user_settings WHERE user_uuid = $1', [inputs.uuid]);
         })
             .then(function (result) {
             res.render('new-account', {

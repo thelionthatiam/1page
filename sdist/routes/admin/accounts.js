@@ -1,5 +1,7 @@
-import * as express from 'express';
-import { db } from '../../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var database_1 = require("../../middleware/database");
 var router = express.Router();
 //////////////
 ////////////// SHOW/CREATE USERS
@@ -18,11 +20,11 @@ router.route('/accounts')
     else {
         permission = false;
     }
-    db.query("SELECT * FROM users", [])
+    database_1.db.query("SELECT * FROM users", [])
         .then(function (result) {
         accountContent = result.rows;
         for (var i = 0; i < accountContent.length; i++) {
-            alarmArray.push(db.query('SELECT * FROM alarms WHERE user_uuid = $1', [accountContent[i].user_uuid]));
+            alarmArray.push(database_1.db.query('SELECT * FROM alarms WHERE user_uuid = $1', [accountContent[i].user_uuid]));
         }
         return Promise.all(alarmArray);
     })
@@ -34,7 +36,7 @@ router.route('/accounts')
             }
         }
         for (var i = 0; i < accountContent.length; i++) {
-            paymentArray.push(db.query('SELECT * FROM payment_credit WHERE user_uuid = $1', [accountContent[i].user_uuid]));
+            paymentArray.push(database_1.db.query('SELECT * FROM payment_credit WHERE user_uuid = $1', [accountContent[i].user_uuid]));
         }
         return Promise.all(paymentArray);
     })
@@ -63,7 +65,7 @@ router.route('/accounts/:user_uuid')
     var user_uuid = req.body.user_uuid;
     var query = 'DELETE FROM users WHERE user_uuid = $1';
     var input = [user_uuid];
-    db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         res;
     })
@@ -79,7 +81,7 @@ router.route('/accounts/:user_uuid/contact')
     .get(function (req, res) {
     var user_uuid = req.query.user_uuid;
     var permission = false;
-    db.query("SELECT * FROM users WHERE user_uuid = $1", [user_uuid])
+    database_1.db.query("SELECT * FROM users WHERE user_uuid = $1", [user_uuid])
         .then(function (result) {
         var user = result.rows[0];
         if (req.session.user.permission === 'admin') {
@@ -104,7 +106,7 @@ router.route('/accounts/:user_uuid/contact')
     var email = req.body.a, phone = req.body.phone, user_uuid = req.body.user_uuid;
     var query = 'UPDATE users SET (email, phone) = ($1, $2) WHERE user_uuid = $3';
     var input = [email, phone, user_uuid];
-    db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/accounts');
     })
@@ -115,7 +117,7 @@ router.route('/accounts/:user_uuid/contact')
 })
     .delete(function (req, res) {
     var user_uuid = req.body.user_uuid;
-    db.query('DELETE FROM users WHERE user_uuid = $1', [user_uuid])
+    database_1.db.query('DELETE FROM users WHERE user_uuid = $1', [user_uuid])
         .then(function (result) {
         res.redirect('/admin/accounts');
     })
@@ -135,7 +137,7 @@ router.route('/accounts/:user_uuid/alarms/:alarm_uuid')
     var permission = false;
     var alarm;
     console.log(user_uuid, alarm_uuid, permission);
-    db.query("SELECT * FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2", [user_uuid, alarm_uuid])
+    database_1.db.query("SELECT * FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2", [user_uuid, alarm_uuid])
         .then(function (result) {
         alarm = result.rows[0];
         console.log(alarm);
@@ -167,7 +169,7 @@ router.route('/accounts/:user_uuid/alarms/:alarm_uuid')
     var active = req.body.active;
     var query = 'UPDATE alarms SET (title, awake, active) = ($1, $2, $3) WHERE user_uuid = $4 AND alarm_uuid = $5';
     var input = [title, awake, active, user_uuid, alarm_uuid];
-    db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/accounts');
     })
@@ -179,7 +181,7 @@ router.route('/accounts/:user_uuid/alarms/:alarm_uuid')
     .delete(function (req, res) {
     var user_uuid = req.body.user_uuid;
     var alarm_uuid = req.body.alarm_uuid;
-    db.query('DELETE FROM alarms WHERE user_uuid = $1 AND alarm_uuid =$2', [user_uuid, alarm_uuid])
+    database_1.db.query('DELETE FROM alarms WHERE user_uuid = $1 AND alarm_uuid =$2', [user_uuid, alarm_uuid])
         .then(function (result) {
         res.redirect('/admin/accounts');
     })
@@ -198,7 +200,7 @@ router.route('/accounts/:user_uuid/payment/:card_number')
     var permission = false;
     var payment;
     console.log(user_uuid, card_number, permission);
-    db.query("SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2", [user_uuid, card_number])
+    database_1.db.query("SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2", [user_uuid, card_number])
         .then(function (result) {
         payment = result.rows[0];
         console.log(payment);
@@ -243,7 +245,7 @@ router.route('/accounts/:user_uuid/payment/:card_number')
     var user_uuid = req.body.user_uuid;
     var query = 'UPDATE payment_credit SET (card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) = ($1, $2, $3, $4, $5, $6, $7, $8, $9) WHERE user_uuid = $10 AND card_number = $11';
     var input = [inputs.cardNumber, inputs.name, inputs.expMonth, inputs.expDay, inputs.cvv, inputs.address, inputs.city, inputs.state, inputs.zip, user_uuid, oldCard];
-    db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/accounts');
     })
@@ -257,7 +259,7 @@ router.route('/accounts/:user_uuid/payment/:card_number')
     var card_number = req.body.card_number;
     var query = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number =$2';
     var input = [req.session.user.uuid, card_number];
-    db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/accounts');
     })

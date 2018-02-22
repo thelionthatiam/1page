@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var payPalInfo = {
     name: 'payPal',
     percent: .029,
@@ -73,9 +75,13 @@ var Cut = /** @class */ (function () {
     return Cut;
 }());
 var payPal = new Cut(payPalInfo);
+exports.payPal = payPal;
 var ach = new Cut(achInfo);
+exports.ach = ach;
 var aliPay = new Cut(aliPayInfo);
+exports.aliPay = aliPay;
 var googlePlay = new Cut(googlePlayInfo);
+exports.googlePlay = googlePlay;
 var stripe = new Cut(stripeInfo);
-export { payPal, ach, aliPay, googlePlay, stripe };
+exports.stripe = stripe;
 //# sourceMappingURL=transaction-calc.js.map

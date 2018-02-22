@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var connectPrompt = {
     properties: {
         database: {
@@ -22,6 +24,7 @@ var connectPrompt = {
         }
     }
 };
+exports.connectPrompt = connectPrompt;
 var prevConn = {
     properties: {
         prevConn: {
@@ -33,6 +36,7 @@ var prevConn = {
         }
     }
 };
+exports.prevConn = prevConn;
 var whatVersion = {
     properties: {
         version: {
@@ -44,6 +48,7 @@ var whatVersion = {
         }
     }
 };
+exports.whatVersion = whatVersion;
 var deleteTables = {
     properties: {
         versionDown: {
@@ -55,5 +60,5 @@ var deleteTables = {
         }
     }
 };
-export { connectPrompt, deleteTables, prevConn, whatVersion };
+exports.deleteTables = deleteTables;
 //# sourceMappingURL=build-objects.js.map

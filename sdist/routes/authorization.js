@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,14 +9,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import * as express from 'express';
-import * as help from '../functions/helpers';
-import * as bcrypt from 'bcrypt';
-import * as uuidv4 from 'uuid/v4';
-import * as r from '../resources/value-objects';
-import { watchAlarms } from '../functions/alarm';
-import { BaseRequestHandler } from '../resources/handlers';
-import { db } from '../middleware/database';
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var help = require("../functions/helpers");
+var bcrypt = require("bcrypt");
+var uuidv4 = require("uuid/v4");
+var r = require("../resources/value-objects");
+var alarm_1 = require("../functions/alarm");
+var handlers_1 = require("../resources/handlers");
+var database_1 = require("../middleware/database");
 var router = express.Router();
 var AuthHandler = /** @class */ (function (_super) {
     __extends(AuthHandler, _super);
@@ -59,7 +61,7 @@ var AuthHandler = /** @class */ (function (_super) {
                 name: user.name
             });
             _this.req.session.user = userSession;
-            watchAlarms(userSession);
+            alarm_1.watchAlarms(userSession);
             renderObj = {
                 email: user.email,
                 name: user.name
@@ -77,14 +79,14 @@ var AuthHandler = /** @class */ (function (_super) {
         });
     };
     return AuthHandler;
-}(BaseRequestHandler));
+}(handlers_1.BaseRequestHandler));
 router.post('/authorized', function (req, res) {
     var auth = new AuthHandler(req, res, 'home', 'login');
     auth.handler();
 });
 router.post('/log-out', function (req, res, next) {
     var inactive = uuidv4(); //if its uuidv4 its inactive
-    db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
+    database_1.db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
         .then(function (result) {
         req.session.destroy(function (err) {
             if (err) {

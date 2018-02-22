@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function emailTest(val) {
     var emailCheck = /^[a-zA-Z0-9\._\$%\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9]{2,6}/;
     if (emailCheck.test(val) === true) {
@@ -39,5 +41,5 @@ function textFormValidation(type, val) {
         return 'this code is broken';
     }
 }
-export { textFormValidation };
+exports.textFormValidation = textFormValidation;
 //# sourceMappingURL=validation-test.js.map

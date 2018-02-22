@@ -1,7 +1,9 @@
-import * as express from 'express';
-import { stripe } from '../../functions/transaction-calc';
-import * as r from '../../resources/value-objects';
-import * as mailer from '../../middleware/emailer';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var transaction_calc_1 = require("../../functions/transaction-calc");
+var r = require("../../resources/value-objects");
+var mailer = require("../../middleware/emailer");
 var router = express.Router();
 router.use('/transact', mailer.mailer());
 router.route('/transact')
@@ -62,8 +64,8 @@ router.route('/transact')
         dismissTot = (dismissPrice * dismisses);
         wakeTot = (wakePrice * wakes);
         total = (snoozeTot + dismissTot + wakeTot);
-        org_trans_total = stripe.orgCut(total);
-        revenue = stripe.revenue(total);
+        org_trans_total = transaction_calc_1.stripe.orgCut(total);
+        revenue = transaction_calc_1.stripe.revenue(total);
         var inputs = [
             user.uuid,
             recipient,

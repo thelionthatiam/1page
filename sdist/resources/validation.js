@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -8,7 +9,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import * as isUUID from 'is-uuid';
+Object.defineProperty(exports, "__esModule", { value: true });
+var isUUID = require("is-uuid");
 var UserException = /** @class */ (function () {
     function UserException(name, message) {
         this.message = message;
@@ -16,6 +18,7 @@ var UserException = /** @class */ (function () {
     }
     return UserException;
 }());
+exports.UserException = UserException;
 var ValidationError = /** @class */ (function (_super) {
     __extends(ValidationError, _super);
     function ValidationError(name, message) {
@@ -36,6 +39,7 @@ var ValidationError = /** @class */ (function (_super) {
     };
     return ValidationError;
 }(Error));
+exports.ValidationError = ValidationError;
 var ValueScalar = /** @class */ (function () {
     function ValueScalar(value) {
         this._value = value;
@@ -51,6 +55,7 @@ var ValueScalar = /** @class */ (function () {
     };
     return ValueScalar;
 }());
+exports.ValueScalar = ValueScalar;
 var Email = /** @class */ (function (_super) {
     __extends(Email, _super);
     function Email() {
@@ -76,6 +81,7 @@ var Email = /** @class */ (function (_super) {
     };
     return Email;
 }(ValueScalar));
+exports.Email = Email;
 var Permission = /** @class */ (function (_super) {
     __extends(Permission, _super);
     function Permission() {
@@ -101,6 +107,7 @@ var Permission = /** @class */ (function (_super) {
     };
     return Permission;
 }(ValueScalar));
+exports.Permission = Permission;
 var CharOnly = /** @class */ (function (_super) {
     __extends(CharOnly, _super);
     function CharOnly() {
@@ -126,6 +133,7 @@ var CharOnly = /** @class */ (function (_super) {
     };
     return CharOnly;
 }(ValueScalar));
+exports.CharOnly = CharOnly;
 var NumOnly = /** @class */ (function (_super) {
     __extends(NumOnly, _super);
     function NumOnly() {
@@ -151,6 +159,7 @@ var NumOnly = /** @class */ (function (_super) {
     };
     return NumOnly;
 }(ValueScalar));
+exports.NumOnly = NumOnly;
 var UUID = /** @class */ (function (_super) {
     __extends(UUID, _super);
     function UUID() {
@@ -175,6 +184,7 @@ var UUID = /** @class */ (function (_super) {
     };
     return UUID;
 }(ValueScalar));
+exports.UUID = UUID;
 var Bool = /** @class */ (function (_super) {
     __extends(Bool, _super);
     function Bool() {
@@ -199,6 +209,7 @@ var Bool = /** @class */ (function (_super) {
     };
     return Bool;
 }(ValueScalar));
+exports.Bool = Bool;
 var String = /** @class */ (function (_super) {
     __extends(String, _super);
     function String() {
@@ -224,5 +235,5 @@ var String = /** @class */ (function (_super) {
     };
     return String;
 }(ValueScalar));
-export { UserException, ValidationError, ValueScalar, Email, Permission, CharOnly, NumOnly, UUID, Bool, String, };
+exports.String = String;
 //# sourceMappingURL=validation.js.map

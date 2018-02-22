@@ -1,6 +1,8 @@
-import { dbErrTranslator } from '../functions/helpers';
-import * as express from 'express';
-import { db } from '../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var helpers_1 = require("../functions/helpers");
+var express = require("express");
+var database_1 = require("../middleware/database");
 var router = express.Router();
 var viewPrefix = 'shopping/';
 router.route('/products')
@@ -9,7 +11,7 @@ router.route('/products')
 })
     .get(function (req, res) {
     var email = req.session.user.email;
-    db.query('SELECT * FROM products', [])
+    database_1.db.query('SELECT * FROM products', [])
         .then(function (result) {
         var productContent = result.rows;
         for (var i = 0; i < productContent.length; i++) {
@@ -22,7 +24,7 @@ router.route('/products')
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render(viewPrefix + 'products', { dbError: userError });
     });
 });

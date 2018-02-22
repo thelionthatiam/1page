@@ -1,6 +1,8 @@
-import { dbErrTranslator } from '../../functions/helpers';
-import * as express from 'express';
-import { db } from '../../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var helpers_1 = require("../../functions/helpers");
+var express = require("express");
+var database_1 = require("../../middleware/database");
 var router = express.Router();
 // MY ORGS
 // MY ORGS
@@ -10,7 +12,7 @@ router.route('/organizations')
     var org = req.body.org_uuid;
     var userOrgs;
     console.log(req.session.user);
-    db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
+    database_1.db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
         .then(function (result) {
         userOrgs = result.rows;
         for (var i = 0; i < userOrgs.length; i++) {
@@ -23,7 +25,7 @@ router.route('/organizations')
         }
         else {
             console.log(req.session.user.uuid, org);
-            db.query('INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)', [req.session.user.uuid, org]);
+            database_1.db.query('INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)', [req.session.user.uuid, org]);
         }
     })
         .then(function (result) {
@@ -38,7 +40,7 @@ router.route('/organizations')
     .get(function (req, res) {
     var name, description, cause, link, defaultSet = false;
     var email = req.session.user.email;
-    db.query('SELECT x.org_uuid, name, description, link, cause, active FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)', [req.session.user.uuid])
+    database_1.db.query('SELECT x.org_uuid, name, description, link, cause, active FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)', [req.session.user.uuid])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {
@@ -64,7 +66,7 @@ router.route('/organizations')
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render('account/my-organizations', { dbError: userError });
     });
 });
@@ -73,9 +75,9 @@ router.route('/organizations/:sku')
     .put(function (req, res) {
     var userOrgs;
     var addingOrg = req.body.org_uuid;
-    db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
+    database_1.db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
         .then(function (result) {
-        return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [true, req.session.user.uuid, addingOrg]);
+        return database_1.db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [true, req.session.user.uuid, addingOrg]);
     })
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.uuid + '/organizations');
@@ -87,7 +89,7 @@ router.route('/organizations/:sku')
 })
     .delete(function (req, res) {
     var org_uuid = req.body.org_uuid;
-    db.query('DELETE FROM user_orgs WHERE user_uuid = $1 AND org_uuid = $2', [req.session.user.uuid, org_uuid])
+    database_1.db.query('DELETE FROM user_orgs WHERE user_uuid = $1 AND org_uuid = $2', [req.session.user.uuid, org_uuid])
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.uuid + '/organizations');
     })

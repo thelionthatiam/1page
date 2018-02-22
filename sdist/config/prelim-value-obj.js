@@ -1,4 +1,6 @@
-import * as isUUID from 'is-uuid';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var isUUID = require("is-uuid");
 // CONCEPTS TO APPLY IN-MEETING
 // classes map to value items
 // static methods

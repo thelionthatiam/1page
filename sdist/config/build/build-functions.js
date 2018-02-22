@@ -1,7 +1,10 @@
-import { exec } from 'child_process';
-import * as prompt from 'prompt';
-import * as fs from 'fs';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var child_process_1 = require("child_process");
+var prompt = require("prompt");
+var fs = require("fs");
 var tableDrop = psqlCommand(["DROP TABLE nonce", "DROP TABLE users"]);
+exports.tableDrop = tableDrop;
 function applyDefaults(obj) {
     for (var k in obj) {
         if (k === 'database' && obj[k] === '') {
@@ -23,6 +26,7 @@ function applyDefaults(obj) {
     }
     return obj;
 }
+exports.applyDefaults = applyDefaults;
 function psqlCommand(array) {
     var command = " --command=";
     var finarr = [];
@@ -33,6 +37,7 @@ function psqlCommand(array) {
     }
     return finarr.join('');
 }
+exports.psqlCommand = psqlCommand;
 function connectCommand(user, host, database, password) {
     var connectCommand = "PGPASSWORD=" + password +
         " psql" +
@@ -41,6 +46,7 @@ function connectCommand(user, host, database, password) {
         " -d " + database;
     return connectCommand;
 }
+exports.connectCommand = connectCommand;
 function prompter(promptObj, cb) {
     prompt.start();
     prompt.get(promptObj, function (err, result) {
@@ -53,8 +59,9 @@ function prompter(promptObj, cb) {
         }
     });
 }
+exports.prompter = prompter;
 function childProcess(string, cb) {
-    exec(string, function (error, stdout, stderr) {
+    child_process_1.exec(string, function (error, stdout, stderr) {
         if (error) {
             cb(error);
         }
@@ -63,7 +70,9 @@ function childProcess(string, cb) {
         }
     });
 }
+exports.childProcess = childProcess;
 var tablesExist = psqlCommand(["SELECT * FROM users", "SELECT * FROM nonce"]);
+exports.tablesExist = tablesExist;
 function fileChecker(path) {
     try {
         var file = require(path);
@@ -73,6 +82,7 @@ function fileChecker(path) {
         return false;
     }
 }
+exports.fileChecker = fileChecker;
 function filesInDir(dir, cb) {
     fs.readdir(dir, function (err, files) {
         if (err) {
@@ -83,6 +93,7 @@ function filesInDir(dir, cb) {
         }
     });
 }
+exports.filesInDir = filesInDir;
 function stringOfFiles(dir, array, version, rev) {
     var finalArr = [];
     if (rev) {
@@ -98,6 +109,7 @@ function stringOfFiles(dir, array, version, rev) {
         return " -a " + finalArr.join(' ');
     }
 }
+exports.stringOfFiles = stringOfFiles;
 var makeJSONfromObj = function (path, obj, cb) {
     var data = JSON.stringify(obj);
     fs.writeFile(path, data, function (err) {
@@ -106,6 +118,7 @@ var makeJSONfromObj = function (path, obj, cb) {
         }
     });
 };
+exports.makeJSONfromObj = makeJSONfromObj;
 var removeConfig = function (path, cb) {
     fs.unlink(path, function (err) {
         if (err) {
@@ -113,5 +126,5 @@ var removeConfig = function (path, cb) {
         }
     });
 };
-export { applyDefaults, psqlCommand, fileChecker, makeJSONfromObj, connectCommand, prompter, childProcess, tablesExist, tableDrop, removeConfig, filesInDir, stringOfFiles, };
+exports.removeConfig = removeConfig;
 //# sourceMappingURL=build-functions.js.map

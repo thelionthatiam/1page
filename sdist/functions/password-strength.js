@@ -1,4 +1,6 @@
-import * as words from 'an-array-of-english-words';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var words = require("an-array-of-english-words");
 // cardinality
 function cardinalityGuess(password) {
     var cardinality = 0;
@@ -109,6 +111,7 @@ function simpleScorer(password) {
     ;
     return round(entropy, 2);
 }
+exports.simpleScorer = simpleScorer;
 // https://www.bennish.net/password-strength-checker/
 // < 28 bits = Very Weak; might keep out family members
 // 28 - 35 bits = Weak; should keep out most people, often good for desktop login passwords
@@ -116,5 +119,4 @@ function simpleScorer(password) {
 // 60 - 127 bits = Strong; can be good for guarding financial information
 // 128+ bits = Very Strong; often overkill
 module.exports = scorer;
-export { simpleScorer };
 //# sourceMappingURL=password-strength.js.map

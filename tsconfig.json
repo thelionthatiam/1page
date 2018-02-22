@@ -1,12 +1,12 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "module": "es6",
+    "module": "commonjs",
     "target":"es5",
     "allowJs": true,
     "outDir": "sdist",
     "sourceMap":true,
-    "noImplicitAny":true,
+    "noImplicitAny":false,
     "jsx":"react"
   },
   "exclude": [

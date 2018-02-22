@@ -1,6 +1,8 @@
-import * as express from 'express';
-import * as r from '../resources/value-objects';
-import { db } from '../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var r = require("../resources/value-objects");
+var database_1 = require("../middleware/database");
 var EventEmitter = require('events').EventEmitter;
 var router = express.Router();
 var mockUser = {
@@ -25,9 +27,9 @@ var Alarm = /** @class */ (function () {
         console.log('------YOU SNOOZED! Now you have a snooze, but dont snooze to much!------');
         var query = 'UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3';
         var input = ['snoozing', this.user_uuid, this.alarm_uuid];
-        db.query(query, input)
+        database_1.db.query(query, input)
             .then(function (result) {
-            return db.query('INSERT INTO snoozes(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
+            return database_1.db.query('INSERT INTO snoozes(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
         })
             .catch(function (error) {
             console.log(error);
@@ -38,9 +40,9 @@ var Alarm = /** @class */ (function () {
         console.log('------YOU SLEPT IN! Now you have a dismiss under your belt.------');
         var query = 'UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3';
         var input = ['dismissed', this.user_uuid, this.alarm_uuid];
-        db.query(query, input)
+        database_1.db.query(query, input)
             .then(function (result) {
-            return db.query('INSERT INTO dismisses(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
+            return database_1.db.query('INSERT INTO dismisses(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
         })
             .catch(function (error) {
             console.log(error);
@@ -51,9 +53,9 @@ var Alarm = /** @class */ (function () {
         console.log('------NICE JOB, YOU WOKE UP! CARPE DIEM!------');
         var query = 'UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3';
         var input = ['woke', this.user_uuid, this.alarm_uuid];
-        db.query(query, input)
+        database_1.db.query(query, input)
             .then(function (result) {
-            return db.query('INSERT INTO wakes(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
+            return database_1.db.query('INSERT INTO wakes(user_uuid, alarm_uuid) VALUES ($1, $2)', [_this.user_uuid, _this.alarm_uuid]);
         })
             .catch(function (error) {
             console.log(error);
@@ -63,7 +65,7 @@ var Alarm = /** @class */ (function () {
         console.log('------ALARM TRIGGERED------');
         var query = 'UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3';
         var input = ['ringing', this.user_uuid, this.alarm_uuid];
-        db.query(query, input)
+        database_1.db.query(query, input)
             .then(function (result) {
             console.log(result);
         })
@@ -74,7 +76,7 @@ var Alarm = /** @class */ (function () {
     Alarm.prototype.alarmReset = function () {
         var query = 'UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3';
         var input = ['pending', this.user_uuid, this.alarm_uuid];
-        db.query(query, input)
+        database_1.db.query(query, input)
             .then(function (result) {
             console.log(result);
         })
@@ -90,7 +92,7 @@ var Alarm = /** @class */ (function () {
         var thing = setInterval(function () {
             var timeLeft = endTime - Date.now();
             console.log('timeleft', timeLeft);
-            db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [_this.user_uuid, _this.alarm_uuid])
+            database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [_this.user_uuid, _this.alarm_uuid])
                 .then(function (result) {
                 var state = result.rows[0].state;
                 console.log(state);
@@ -119,7 +121,7 @@ var Alarm = /** @class */ (function () {
         var thing = setInterval(function () {
             var timeLeft = endTime - Date.now();
             console.log('timeleft', timeLeft);
-            db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [_this.user_uuid, _this.alarm_uuid])
+            database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [_this.user_uuid, _this.alarm_uuid])
                 .then(function (result) {
                 var state = result.rows[0].state;
                 console.log(state);

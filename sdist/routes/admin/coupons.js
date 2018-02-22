@@ -1,6 +1,8 @@
-import { dbErrTranslator } from '../../functions/helpers';
-import * as express from 'express';
-import { db } from '../../middleware/async-database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var helpers_1 = require("../../functions/helpers");
+var express = require("express");
+var async_database_1 = require("../../middleware/async-database");
 var router = express.Router();
 var cpn = {
     name: '',
@@ -19,18 +21,18 @@ router.route('/coupons')
     cpn.applies_to = req.body.applies_to;
     var query = 'INSERT INTO coupons(name, description, discount, expires_on, applies_to) VALUES ($1, $2, $3, $4, $5) RETURNING *';
     var input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to];
-    db.query(query, input)
+    async_database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/coupons');
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render('error', { dbError: userError });
     });
 })
     .get(function (req, res) {
-    db.query("SELECT * FROM coupons", [])
+    async_database_1.db.query("SELECT * FROM coupons", [])
         .then(function (result) {
         var couponContent = result.rows;
         res.render('admin/coupons/coupons', {
@@ -51,7 +53,7 @@ router.get('/new-coupon', function (req, res, next) {
 router.route('/coupons/:uuid')
     .get(function (req, res) {
     var uuid = req.query.uuid;
-    db.query("SELECT * FROM coupons WHERE coupon_uuid = $1", [uuid])
+    async_database_1.db.query("SELECT * FROM coupons WHERE coupon_uuid = $1", [uuid])
         .then(function (result) {
         var coupon = result.rows[0];
         cpn.uuid = uuid;
@@ -76,7 +78,7 @@ router.route('/coupons/:uuid')
     cpn.uuid = req.body.uuid;
     var query = 'UPDATE coupons SET (name, description, discount, expires_on, applies_to) = ($1, $2, $3, $4, $5, $6, $7) WHERE coupon_uuidname = $8';
     var input = [cpn.name, cpn.description, cpn.discount, cpn.expires_on, cpn.applies_to, cpn.uuid];
-    db.query(query, input)
+    async_database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/admin/coupons');
     })
@@ -87,7 +89,7 @@ router.route('/coupons/:uuid')
 })
     .delete(function (req, res) {
     cpn.uuid = req.body.uuid;
-    db.query('DELETE FROM coupons WHERE coupon_uuid = $1', [cpn.uuid])
+    async_database_1.db.query('DELETE FROM coupons WHERE coupon_uuid = $1', [cpn.uuid])
         .then(function (result) {
         res.redirect('/admin/coupons');
     })
@@ -98,12 +100,12 @@ router.route('/coupons/:uuid')
 });
 router.post('/coupons/issue-coupon', function (req, res) {
     var coupon_uuid = req.body.uuid;
-    db.query('SELECT cart_uuid FROM cart', [])
+    async_database_1.db.query('SELECT cart_uuid FROM cart', [])
         .then(function (result) {
         var cart_uuids = result.rows;
         var promiseArray = [];
         for (var i = 0; i < cart_uuids.length; i++) {
-            promiseArray.push(db.query('INSERT INTO cart_coupons(coupon_uuid, cart_uuid) VALUES ($1, $2)', [coupon_uuid, cart_uuids[i].cart_uuid]));
+            promiseArray.push(async_database_1.db.query('INSERT INTO cart_coupons(coupon_uuid, cart_uuid) VALUES ($1, $2)', [coupon_uuid, cart_uuids[i].cart_uuid]));
         }
         return Promise.all(promiseArray);
     })

@@ -2,7 +2,7 @@
 * {
   margin: 0px;
   padding: 0px;
-  // border:1px solid red;
+  // border:1px solid $darkRed;
 }
 
 h1,h2,h3,h4,h5,h6,p,li,a,button,input,label {
@@ -11,7 +11,8 @@ h1,h2,h3,h4,h5,h6,p,li,a,button,input,label {
 // FONTS
 $miniFont: 10px;
 //  COLORS
-$lightGreen: #e1f4d4;
+$darkGreen: #00420e;
+$darkRed:#9f2121;
 
 @mixin centerColumn {
   display:flex;
@@ -88,69 +89,74 @@ $lightGreen: #e1f4d4;
   opacity: 1;
   visibility: visible;
   transform:translateX(-2px);
+  transition:300ms;
 }
 
 .fadeOut {
   opacity: 0;
   visibility: hidden;
   transform:translateX(2px);
+  transition:300ms;
 }
 
 .fadeInVert {
   opacity: 1;
   visibility: visible;
   transform:translateY(-2px);
+  transition:300ms;
 }
 
 .fadeOutVert {
   opacity: 0;
   visibility: hidden;
   transform:translateY(2px);
+  transition:300ms;
 }
 
 //SUCCESS TYPES
 .textSuccess {
-  color:green;
-  border-color:green;
+  color:$darkGreen;
+  border-color:$darkGreen;
 }
 
 
 .buttonSuccess {
-  background-color:green;
-  border-color:green;
+  background-color:$darkGreen;
+  border-color:$darkGreen;
   color:white;
 }
 
 .formSuccess {
   input[type=text] {
-    color:green;
+    color:$darkGreen;
   }
   input {
-    color:green;
-    border-color:green;
+    color:$darkGreen;
+    border-color:$darkGreen;
   }
 }
 
 // ERROR TYPES
 
 .textError {
-  color:red;
-  border-color:red;
+  color:$darkRed;
+  border-color:$darkRed;
+  font-weight:600;
+  transition:300ms;
 }
 
 .buttonError {
-  background-color:red;
-  border-color:red;
+  background-color:$darkRed;
+  border-color:$darkRed;
   color:white;
 }
 
 .formError {
   input[type=text] {
-    color:red;
+    color:$darkRed;
   }
   input {
-    color:green;
-    border-color:red;
+    border-color:$darkRed;
   }
 }
 

@@ -1,4 +1,6 @@
-import * as merge from './merge';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var merge = require("./merge");
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // want to remove req, but session.regenerate doesn't return promise
 function regenerateSession(req) {
@@ -11,14 +13,17 @@ function regenerateSession(req) {
         });
     });
 }
+exports.regenerateSession = regenerateSession;
 // these error functions will be removed entirely with new structure, no res being passed in
 // could latch on to the error event
 function dbError(res, thisPage, err) {
     res.render(thisPage, { dbError: dbErrTranslator(err) });
 }
+exports.dbError = dbError;
 function genError(res, thisPage, param) {
     res.render(thisPage, { dbError: param });
 }
+exports.genError = genError;
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // BUSINESS LOGIC TIER
 function dbErrTranslator(error) {
@@ -58,6 +63,7 @@ function dbErrTranslator(error) {
         return "There was an error. Try again.";
     }
 }
+exports.dbErrTranslator = dbErrTranslator;
 function compare(a, b) {
     var awakeA = parseInt(a.awake);
     var awakeB = parseInt(b.awake);
@@ -70,6 +76,7 @@ function compare(a, b) {
     }
     return comp;
 }
+exports.compare = compare;
 var randomString = new Promise(function (resolve, reject) {
     var string = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-=`,.<>/?;:'{}[]|";
@@ -81,6 +88,7 @@ var randomString = new Promise(function (resolve, reject) {
     }
     resolve(string);
 });
+exports.randomString = randomString;
 var isSessionValid = function (token, outputs) {
     return new Promise(function (resolve, reject) {
         var nonce = outputs.nonce, oldDate = new Date(outputs.thetime), oldTime = oldDate.getTime(), currentDate = new Date(), currentTime = currentDate.getTime();
@@ -93,6 +101,7 @@ var isSessionValid = function (token, outputs) {
         }
     });
 };
+exports.isSessionValid = isSessionValid;
 var merger = function (objectOne, objectTwo) {
     return new Promise(function (resolve, reject) {
         var ans = merge.deepMerge(objectOne, objectTwo);
@@ -105,6 +114,7 @@ var merger = function (objectOne, objectTwo) {
         }
     });
 };
+exports.merger = merger;
 function lastFourOnly(cardNumber) {
     var arr = [];
     cardNumber = cardNumber.split('');
@@ -114,6 +124,7 @@ function lastFourOnly(cardNumber) {
     arr.reverse();
     return arr.join('');
 }
+exports.lastFourOnly = lastFourOnly;
 // COULD GENERALIZE THIS FUNCTION: ADD KEY/VALUE(S) PAIR TO OBJCT
 function addOrderUUIDItemNumber(queryResult, order_uuid) {
     for (var i = 0; i < queryResult.length; i++) {
@@ -122,6 +133,7 @@ function addOrderUUIDItemNumber(queryResult, order_uuid) {
     }
     return queryResult;
 }
+exports.addOrderUUIDItemNumber = addOrderUUIDItemNumber;
 var orgName = 'United Nations Childrens Fund';
 function idMaker(name) {
     name = name.toLowerCase();
@@ -133,8 +145,8 @@ function idMaker(name) {
     }
     return arrName.join('');
 }
+exports.idMaker = idMaker;
 console.log(idMaker(orgName));
 function convertToSeconds(time) {
 }
-export { dbErrTranslator, dbError, genError, compare, randomString, isSessionValid, regenerateSession, lastFourOnly, addOrderUUIDItemNumber, merger, idMaker };
 //# sourceMappingURL=helpers.js.map

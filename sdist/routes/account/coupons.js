@@ -1,5 +1,7 @@
-import * as express from 'express';
-import { db } from '../../middleware/async-database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var async_database_1 = require("../../middleware/async-database");
 var router = express.Router();
 router.route('/coupons')
     .post(function (req, res) {
@@ -7,7 +9,7 @@ router.route('/coupons')
 })
     .get(function (req, res) {
     var couponContent = [];
-    db.query('SELECT c.coupon_uuid, name, expires_on, description, discount, applied, used FROM coupons c inner JOIN cart_coupons cc ON c.coupon_uuid = cc.coupon_uuid AND (cart_uuid = $1) AND (used = $2)', [req.session.user.cart_uuid, false])
+    async_database_1.db.query('SELECT c.coupon_uuid, name, expires_on, description, discount, applied, used FROM coupons c inner JOIN cart_coupons cc ON c.coupon_uuid = cc.coupon_uuid AND (cart_uuid = $1) AND (used = $2)', [req.session.user.cart_uuid, false])
         .then(function (result) {
         couponContent = result.rows;
         var _loop_1 = function (i) {
@@ -35,21 +37,21 @@ router.route('/coupons/:coupon_uuid')
     var discount = 0;
     var applies_to;
     console.log(true, req.session.user.cart_uuid, couponID);
-    db.query('SELECT applied FROM cart_coupons WHERE cart_uuid = $1 AND coupon_uuid = $2', [req.session.user.cart_uuid, couponID])
+    async_database_1.db.query('SELECT applied FROM cart_coupons WHERE cart_uuid = $1 AND coupon_uuid = $2', [req.session.user.cart_uuid, couponID])
         .then(function (result) {
         if (result.rows[0].applied) {
-            db.query('UPDATE cart_coupons SET applied = $1 WHERE cart_uuid = $2 AND coupon_uuid = $3', [false, req.session.user.cart_uuid, couponID])
+            async_database_1.db.query('UPDATE cart_coupons SET applied = $1 WHERE cart_uuid = $2 AND coupon_uuid = $3', [false, req.session.user.cart_uuid, couponID])
                 .then(function (result) {
-                return db.query('SELECT discount, applies_to FROM coupons WHERE coupon_uuid = $1', [couponID]);
+                return async_database_1.db.query('SELECT discount, applies_to FROM coupons WHERE coupon_uuid = $1', [couponID]);
             })
                 .then(function (result) {
                 discount = 0;
                 applies_to = result.rows[0].applies_to;
                 if (applies_to === 'order') {
-                    return db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2', [discount, req.session.user.cart_uuid]);
+                    return async_database_1.db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2', [discount, req.session.user.cart_uuid]);
                 }
                 else {
-                    return db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2 AND product_id = $3', [discount, req.session.user.cart_uuid, applies_to]);
+                    return async_database_1.db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2 AND product_id = $3', [discount, req.session.user.cart_uuid, applies_to]);
                 }
             })
                 .then(function (result) {
@@ -62,18 +64,18 @@ router.route('/coupons/:coupon_uuid')
             });
         }
         else {
-            db.query('UPDATE cart_coupons SET applied = $1 WHERE cart_uuid = $2 AND coupon_uuid = $3', [true, req.session.user.cart_uuid, couponID])
+            async_database_1.db.query('UPDATE cart_coupons SET applied = $1 WHERE cart_uuid = $2 AND coupon_uuid = $3', [true, req.session.user.cart_uuid, couponID])
                 .then(function (result) {
-                return db.query('SELECT discount, applies_to FROM coupons WHERE coupon_uuid = $1', [couponID]);
+                return async_database_1.db.query('SELECT discount, applies_to FROM coupons WHERE coupon_uuid = $1', [couponID]);
             })
                 .then(function (result) {
                 discount = result.rows[0].discount;
                 applies_to = result.rows[0].applies_to;
                 if (applies_to === 'order') {
-                    return db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2', [discount, req.session.user.cart_uuid]);
+                    return async_database_1.db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2', [discount, req.session.user.cart_uuid]);
                 }
                 else {
-                    return db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2 AND product_id = $3', [discount, req.session.user.cart_uuid, applies_to]);
+                    return async_database_1.db.query('UPDATE cart_items SET discount = $1 WHERE cart_uuid = $2 AND product_id = $3', [discount, req.session.user.cart_uuid, applies_to]);
                 }
             })
                 .then(function (result) {

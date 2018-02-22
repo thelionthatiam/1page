@@ -1,13 +1,15 @@
-import * as helper from '../functions/helpers';
-import { db } from '../middleware/async-database';
-import * as express from "express";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var helper = require("../functions/helpers");
+var async_database_1 = require("../middleware/async-database");
+var express = require("express");
 var router = express.Router();
 function check(req, res, next) {
     if (req.session.user && req.sessionID) {
-        db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
+        async_database_1.db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
             .then(function (result) {
             if (result.rows[0].sessionid === req.sessionID) {
-                return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
+                return async_database_1.db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
             }
             else {
                 helper.genError(res, 'login', "you were no longer logged in, try to log in again");
@@ -33,12 +35,13 @@ function check(req, res, next) {
         helper.genError(res, 'login', "you were no longer logged in, try to log in again");
     }
 }
+exports.check = check;
 function adminCheck(req, res, next) {
     if (req.session.user && req.sessionID && req.session.user.permission === 'admin') {
-        db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
+        async_database_1.db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
             .then(function (result) {
             if (result.rows[0].sessionid === req.sessionID) {
-                return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
+                return async_database_1.db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid]);
             }
             else {
                 helper.genError(res, 'login', "you were no longer logged in, try to log in again");
@@ -66,5 +69,5 @@ function adminCheck(req, res, next) {
         helper.genError(res, 'login', "you were no longer logged in or you do not have permission to access this page");
     }
 }
-export { check, adminCheck };
+exports.adminCheck = adminCheck;
 //# sourceMappingURL=session-check.js.map

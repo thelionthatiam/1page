@@ -1,4 +1,6 @@
-import { ValidationError, Email, Permission, CharOnly, NumOnly, UUID, Bool, String } from './validation';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var validation_1 = require("./validation");
 // THIS COULD LIVE SOMEWHERE ELSE
 var ValidationResult = /** @class */ (function () {
     function ValidationResult() {
@@ -12,7 +14,7 @@ var ValidationResult = /** @class */ (function () {
             }
             else {
                 var message = 'MISSING PROPERTY: ' + k;
-                throw new ValidationError(null, message);
+                throw new validation_1.ValidationError(null, message);
             }
         }
     };
@@ -35,10 +37,10 @@ var UserSession = /** @class */ (function () {
         var res = UserSession.validate(args);
         if (res.isOkay) {
             var res_1 = new UserSession({
-                email: Email.create(args.email),
-                uuid: UUID.create(args.uuid),
-                permission: Permission.create(args.permission),
-                name: CharOnly.create(args.name),
+                email: validation_1.Email.create(args.email),
+                uuid: validation_1.UUID.create(args.uuid),
+                permission: validation_1.Permission.create(args.permission),
+                name: validation_1.CharOnly.create(args.name),
             });
             return res_1.toJSON();
         }
@@ -48,10 +50,10 @@ var UserSession = /** @class */ (function () {
     };
     UserSession.validate = function (args) {
         var propValidation = {
-            email: Email.validate(args.email),
-            uuid: UUID.validate(args.uuid),
-            permission: Permission.validate(args.permission),
-            name: CharOnly.validate(args.name),
+            email: validation_1.Email.validate(args.email),
+            uuid: validation_1.UUID.validate(args.uuid),
+            permission: validation_1.Permission.validate(args.permission),
+            name: validation_1.CharOnly.validate(args.name),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -66,6 +68,7 @@ var UserSession = /** @class */ (function () {
     };
     return UserSession;
 }());
+exports.UserSession = UserSession;
 var UserDB = /** @class */ (function () {
     function UserDB(args) {
         if (args === void 0) { args = {}; }
@@ -80,12 +83,12 @@ var UserDB = /** @class */ (function () {
         var res = UserDB.validate(args);
         if (res.isOkay) {
             var res_2 = new UserDB({
-                email: Email.create(args.email),
-                user_uuid: UUID.create(args.user_uuid),
-                permission: Permission.create(args.permission),
-                phone: NumOnly.create(args.phone),
-                name: CharOnly.create(args.name),
-                password: String.create(args.password)
+                email: validation_1.Email.create(args.email),
+                user_uuid: validation_1.UUID.create(args.user_uuid),
+                permission: validation_1.Permission.create(args.permission),
+                phone: validation_1.NumOnly.create(args.phone),
+                name: validation_1.CharOnly.create(args.name),
+                password: validation_1.String.create(args.password)
             });
             return res_2.toJSON();
         }
@@ -95,12 +98,12 @@ var UserDB = /** @class */ (function () {
     };
     UserDB.validate = function (args) {
         var propValidation = {
-            email: Email.validate(args.email),
-            user_uuid: UUID.validate(args.user_uuid),
-            permission: Permission.validate(args.permission),
-            phone: NumOnly.validate(args.phone),
-            name: CharOnly.validate(args.name),
-            password: String.validate(args.password)
+            email: validation_1.Email.validate(args.email),
+            user_uuid: validation_1.UUID.validate(args.user_uuid),
+            permission: validation_1.Permission.validate(args.permission),
+            phone: validation_1.NumOnly.validate(args.phone),
+            name: validation_1.CharOnly.validate(args.name),
+            password: validation_1.String.validate(args.password)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -117,6 +120,7 @@ var UserDB = /** @class */ (function () {
     };
     return UserDB;
 }());
+exports.UserDB = UserDB;
 // user_uuid
 // org_uuid
 // active
@@ -131,9 +135,9 @@ var UserOrgsDB = /** @class */ (function () {
         var res = UserOrgsDB.validate(args);
         if (res.isOkay) {
             var res_3 = new UserOrgsDB({
-                user_uuid: UUID.create(args.user_uuid),
-                org_uuid: UUID.create(args.org_uuid),
-                active: Bool.create(args.active),
+                user_uuid: validation_1.UUID.create(args.user_uuid),
+                org_uuid: validation_1.UUID.create(args.org_uuid),
+                active: validation_1.Bool.create(args.active),
             });
             return res_3.toJSON();
         }
@@ -143,9 +147,9 @@ var UserOrgsDB = /** @class */ (function () {
     };
     UserOrgsDB.validate = function (args) {
         var propValidation = {
-            user_uuid: UUID.validate(args.user_uuid),
-            org_uuid: UUID.validate(args.org_uuid),
-            active: Bool.validate(args.active),
+            user_uuid: validation_1.UUID.validate(args.user_uuid),
+            org_uuid: validation_1.UUID.validate(args.org_uuid),
+            active: validation_1.Bool.validate(args.active),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -159,6 +163,7 @@ var UserOrgsDB = /** @class */ (function () {
     };
     return UserOrgsDB;
 }());
+exports.UserOrgsDB = UserOrgsDB;
 var CartDB = /** @class */ (function () {
     function CartDB(args) {
         if (args === void 0) { args = {}; }
@@ -170,9 +175,9 @@ var CartDB = /** @class */ (function () {
         var res = CartDB.validate(args);
         if (res.isOkay) {
             var res_4 = new CartDB({
-                user_uuid: UUID.create(args.user_uuid),
-                cart_uuid: UUID.create(args.cart_uuid),
-                card_number: NumOnly.create(args.card_number),
+                user_uuid: validation_1.UUID.create(args.user_uuid),
+                cart_uuid: validation_1.UUID.create(args.cart_uuid),
+                card_number: validation_1.NumOnly.create(args.card_number),
             });
             return res_4.toJSON();
         }
@@ -182,9 +187,9 @@ var CartDB = /** @class */ (function () {
     };
     CartDB.validate = function (args) {
         var propValidation = {
-            user_uuid: UUID.validate(args.user_uuid),
-            cart_uuid: UUID.validate(args.cart_uuid),
-            card_number: NumOnly.validate(args.card_number),
+            user_uuid: validation_1.UUID.validate(args.user_uuid),
+            cart_uuid: validation_1.UUID.validate(args.cart_uuid),
+            card_number: validation_1.NumOnly.validate(args.card_number),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -198,6 +203,7 @@ var CartDB = /** @class */ (function () {
     };
     return CartDB;
 }());
+exports.CartDB = CartDB;
 var OrgsDB = /** @class */ (function () {
     function OrgsDB(args) {
         if (args === void 0) { args = {}; }
@@ -212,12 +218,12 @@ var OrgsDB = /** @class */ (function () {
         var res = OrgsDB.validate(args);
         if (res.isOkay) {
             var res_5 = new OrgsDB({
-                org_uuid: UUID.create(args.org_uuid),
-                org_sku: String.create(args.org_sku),
-                name: CharOnly.create(args.name),
-                description: String.create(args.description),
-                cause: CharOnly.create(args.cause),
-                link: String.create(args.link),
+                org_uuid: validation_1.UUID.create(args.org_uuid),
+                org_sku: validation_1.String.create(args.org_sku),
+                name: validation_1.CharOnly.create(args.name),
+                description: validation_1.String.create(args.description),
+                cause: validation_1.CharOnly.create(args.cause),
+                link: validation_1.String.create(args.link),
             });
             return res_5.toJSON();
         }
@@ -227,12 +233,12 @@ var OrgsDB = /** @class */ (function () {
     };
     OrgsDB.validate = function (args) {
         var propValidation = {
-            org_uuid: UUID.validate(args.org_uuid),
-            org_sku: String.validate(args.org_sku),
-            name: CharOnly.validate(args.name),
-            description: String.validate(args.description),
-            cause: CharOnly.validate(args.cause),
-            link: String.validate(args.link),
+            org_uuid: validation_1.UUID.validate(args.org_uuid),
+            org_sku: validation_1.String.validate(args.org_sku),
+            name: validation_1.CharOnly.validate(args.name),
+            description: validation_1.String.validate(args.description),
+            cause: validation_1.CharOnly.validate(args.cause),
+            link: validation_1.String.validate(args.link),
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -249,6 +255,7 @@ var OrgsDB = /** @class */ (function () {
     };
     return OrgsDB;
 }());
+exports.OrgsDB = OrgsDB;
 var UserSettings = /** @class */ (function () {
     function UserSettings(args) {
         if (args === void 0) { args = {}; }
@@ -265,14 +272,14 @@ var UserSettings = /** @class */ (function () {
         var res = UserSettings.validate(args);
         if (res.isOkay) {
             var res_6 = new UserSettings({
-                user_uuid: UUID.create(args.user_uuid),
-                payment_scheme: String.create(args.payment_scheme),
-                snooze_price: NumOnly.create(args.snooze_price),
-                dismiss_price: NumOnly.create(args.dismiss_price),
-                wake_price: NumOnly.create(args.wake_price),
-                month_max: NumOnly.create(args.month_max),
-                snooze_max: NumOnly.create(args.snooze_max),
-                active_payment: UUID.create(args.active_payment)
+                user_uuid: validation_1.UUID.create(args.user_uuid),
+                payment_scheme: validation_1.String.create(args.payment_scheme),
+                snooze_price: validation_1.NumOnly.create(args.snooze_price),
+                dismiss_price: validation_1.NumOnly.create(args.dismiss_price),
+                wake_price: validation_1.NumOnly.create(args.wake_price),
+                month_max: validation_1.NumOnly.create(args.month_max),
+                snooze_max: validation_1.NumOnly.create(args.snooze_max),
+                active_payment: validation_1.UUID.create(args.active_payment)
             });
             return res_6.toJSON();
         }
@@ -282,14 +289,14 @@ var UserSettings = /** @class */ (function () {
     };
     UserSettings.validate = function (args) {
         var propValidation = {
-            user_uuid: UUID.validate(args.user_uuid),
-            payment_scheme: String.validate(args.payment_scheme),
-            snooze_price: NumOnly.validate(args.snooze_price),
-            dismiss_price: NumOnly.validate(args.dismiss_price),
-            wake_price: NumOnly.validate(args.wake_price),
-            month_max: NumOnly.validate(args.month_max),
-            snooze_max: NumOnly.validate(args.snooze_max),
-            active_payment: UUID.validate(args.active_payment)
+            user_uuid: validation_1.UUID.validate(args.user_uuid),
+            payment_scheme: validation_1.String.validate(args.payment_scheme),
+            snooze_price: validation_1.NumOnly.validate(args.snooze_price),
+            dismiss_price: validation_1.NumOnly.validate(args.dismiss_price),
+            wake_price: validation_1.NumOnly.validate(args.wake_price),
+            month_max: validation_1.NumOnly.validate(args.month_max),
+            snooze_max: validation_1.NumOnly.validate(args.snooze_max),
+            active_payment: validation_1.UUID.validate(args.active_payment)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -308,94 +315,5 @@ var UserSettings = /** @class */ (function () {
     };
     return UserSettings;
 }());
-// NOT COMPLETED
-// class Transactions {
-//   readonly user_uuid?: UUID;
-//   recipient?: CharOnly;
-//   payment_uuid?: UUID;
-//   snoozes?: NumOnly;
-//   dismisses?: NumOnly;
-//   wakes?: NumOnly;
-//   total?: NumOnly;
-//
-//
-//   private constructor(args:{
-//     user_uuid?: UUID;
-//     org_uuid?: UUID;
-//     active?: Bool;
-//   } = {}) {
-//     this.user_uuid   = args.user_uuid;
-//     this.org_uuid  = args.org_uuid;
-//     this.active = args.active;
-//   }
-//
-//   static fromJSON(args: {[key: string]: any}) : Transactions {
-//     let res = Transactions.validate(args);
-//     if (res.isOkay) {
-//       let res = new Transactions({
-//         email: Email.create(args.email),
-//       })
-//       return res.toJSON();
-//     } else {
-//       throw new Error ('error happens at fromJSON');
-//     }
-//   }
-//
-//   static validate(args: {[key: string] : any}) : ValidationResult {
-//     let propValidation = {
-//       email: Email.validate(args.email),
-//     }
-//     ValidationResult.isValid(args, propValidation)
-//     return { isOkay: true };
-//   }
-//
-//   toJSON() : any {
-//     return {
-//       email: this.email.toString(),
-//     };
-//   }
-// }
-// DUMMY COPY
-// class User {
-//   readonly user_uuid?: UUID;
-//   readonly org_uuid?: UUID;
-//   readonly active?: Bool;
-//
-//   private constructor(args:{
-//     user_uuid?: UUID;
-//     org_uuid?: UUID;
-//     active?: Bool;
-//   } = {}) {
-//     this.user_uuid   = args.user_uuid;
-//     this.org_uuid  = args.org_uuid;
-//     this.active = args.active;
-//   }
-//
-//   static fromJSON(args: {[key: string]: any}) : User {
-//     let res = User.validate(args);
-//     if (res.isOkay) {
-//       let res = new User({
-//         email: Email.create(args.email),
-//       })
-//       return res.toJSON();
-//     } else {
-//       throw new Error ('error happens at fromJSON');
-//     }
-//   }
-//
-//   static validate(args: {[key: string] : any}) : ValidationResult {
-//     let propValidation = {
-//       email: Email.validate(args.email),
-//     }
-//     ValidationResult.isValid(args, propValidation)
-//     return { isOkay: true };
-//   }
-//
-//   toJSON() : any {
-//     return {
-//       email: this.email.toString(),
-//     };
-//   }
-// }
-export { UserSession, UserDB, UserOrgsDB, CartDB, OrgsDB, UserSettings };
+exports.UserSettings = UserSettings;
 //# sourceMappingURL=value-objects.js.map

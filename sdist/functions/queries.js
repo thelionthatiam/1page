@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // DATA ACCESS TIER
 var Query = /** @class */ (function () {
     function Query(conn) {
@@ -88,6 +90,6 @@ var Query = /** @class */ (function () {
     };
     return Query;
 }());
+exports.Query = Query;
 ;
-export { Query };
 //# sourceMappingURL=queries.js.map

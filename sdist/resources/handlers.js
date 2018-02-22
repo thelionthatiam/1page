@@ -1,6 +1,9 @@
-import * as express from 'express';
-import * as r from '../resources/value-objects';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var r = require("../resources/value-objects");
 var router = express.Router();
+exports.router = router;
 var BaseRequestHandler = /** @class */ (function () {
     function BaseRequestHandler(req, res, nextPage, errPage) {
         this.req = req;
@@ -31,5 +34,5 @@ var BaseRequestHandler = /** @class */ (function () {
     };
     return BaseRequestHandler;
 }());
-export { router, BaseRequestHandler };
+exports.BaseRequestHandler = BaseRequestHandler;
 //# sourceMappingURL=handlers.js.map

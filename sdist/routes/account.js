@@ -1,6 +1,8 @@
-import * as express from 'express';
-import * as bcrypt from 'bcrypt';
-import { db } from '../middleware/async-database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var bcrypt = require("bcrypt");
+var async_database_1 = require("../middleware/async-database");
 var router = express.Router();
 var viewPrefix = 'account/';
 router.route('/:email')
@@ -10,7 +12,7 @@ router.route('/:email')
     });
 })
     .delete(function (req, res) {
-    db.query('DELETE FROM users WHERE user_uuid = $1', [req.session.user.uuid])
+    async_database_1.db.query('DELETE FROM users WHERE user_uuid = $1', [req.session.user.uuid])
         .then(function (result) {
         res.render('login', {
             message: "account was deleted, please make a new one to enter"
@@ -33,7 +35,7 @@ router.route('/:email/contact')
     var phone = req.body.phone;
     var query = 'UPDATE users SET (email, phone) = ($1, $2) WHERE user_uuid = $3';
     var input = [email, phone, req.session.user.uuid];
-    db.query(query, input)
+    async_database_1.db.query(query, input)
         .then(function (result) {
         req.session.user.email = email;
         req.session.user.phone = phone;
@@ -58,7 +60,7 @@ router.route('/:email/password')
         password: req.body.password,
         oldPassword: req.body.oldPassword
     };
-    db.query("SELECT * FROM users WHERE user_uuid = $1", [req.session.user.uuid])
+    async_database_1.db.query("SELECT * FROM users WHERE user_uuid = $1", [req.session.user.uuid])
         .then(function (result) {
         console.log(result);
         return bcrypt.compare(req.body.oldPassword, result.rows[0].password);
@@ -75,7 +77,7 @@ router.route('/:email/password')
         inputs.password = hash;
         var query = 'UPDATE users SET password = $1 WHERE user_uuid = $2';
         var input = [inputs.password, req.session.user.uuid];
-        return db.query(query, input);
+        return async_database_1.db.query(query, input);
     })
         .then(function (result) {
         res.render(viewPrefix + 'new-password', {

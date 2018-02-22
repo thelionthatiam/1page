@@ -1,9 +1,11 @@
-import { addOrderUUIDItemNumber } from '../../functions/helpers';
-import * as coupons from '../../functions/coupon';
-import * as inv from '../../functions/invoice';
-import * as express from 'express';
-import { db } from '../../middleware/database';
-import * as mailer from '../../middleware/emailer';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var helpers_1 = require("../../functions/helpers");
+var coupons = require("../../functions/coupon");
+var inv = require("../../functions/invoice");
+var express = require("express");
+var database_1 = require("../../middleware/database");
+var mailer = require("../../middleware/emailer");
 var router = express.Router();
 router.use('/orders', mailer.mailer()); // middleware to load email junk
 router.route('/orders')
@@ -13,13 +15,13 @@ router.route('/orders')
     var numberOfOrders = 0;
     var discount;
     var recieptContent;
-    db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid])
+    database_1.db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid])
         .then(function (result) {
         if (result.rowCount === 0) {
             res.redirect('/accounts/' + req.session.user.email + '/cart');
         }
         else {
-            return db.query('SELECT * FROM orders WHERE user_uuid = $1', [req.session.user.uuid]);
+            return database_1.db.query('SELECT * FROM orders WHERE user_uuid = $1', [req.session.user.uuid]);
         }
     })
         .then(function (result) {
@@ -27,20 +29,20 @@ router.route('/orders')
         numberOfOrders = number + 1;
         var query = 'INSERT INTO orders (user_uuid, card_number, order_number) VALUES ($1, $2, $3)';
         var input = [req.session.user.uuid, card_number, numberOfOrders];
-        return db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
         var query = 'SELECT order_uuid FROM orders WHERE user_uuid = $1 AND order_number = $2';
         var input = [req.session.user.uuid, numberOfOrders];
-        return db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
         order_uuid = result.rows[0].order_uuid;
-        return db.query('SELECT product_id, quantity, product_history_id, discount FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
+        return database_1.db.query('SELECT product_id, quantity, product_history_id, discount FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
     })
         .then(function (result) {
         discount = result.rows[0].discount;
-        var cart_items = addOrderUUIDItemNumber(result.rows, order_uuid);
+        var cart_items = helpers_1.addOrderUUIDItemNumber(result.rows, order_uuid);
         var query = 'INSERT INTO order_items (product_id, quantity, product_history_id, discount, order_uuid, item_number) VALUES ($1, $2, $3, $4, $5, $6)';
         var itemArray = [];
         for (var i = 0; i < cart_items.length; i++) {
@@ -52,17 +54,17 @@ router.route('/orders')
                 cart_items[i].order_uuid,
                 cart_items[i].item_number
             ];
-            itemArray.push(db.query(query, itemProperties));
+            itemArray.push(database_1.db.query(query, itemProperties));
         }
         return Promise.all(itemArray);
     })
         .then(function (result) {
-        return db.query('DELETE FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
+        return database_1.db.query('DELETE FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
     })
         .then(function (result) {
         var query = 'SELECT p.product_id, name, price, size, description, quantity, discount FROM products p INNER JOIN order_items o ON p.product_id = o.product_id AND (o.order_uuid = $1)';
         var input = [order_uuid];
-        return db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
         recieptContent = result.rows;
@@ -86,7 +88,7 @@ router.route('/orders')
         return req.transporter.sendMail(mail);
     })
         .then(function (info) {
-        return db.query('UPDATE cart_coupons SET used = $1', [true]);
+        return database_1.db.query('UPDATE cart_coupons SET used = $1', [true]);
     })
         .then(function (result) {
         res.render('orders/order-sent', {

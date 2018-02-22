@@ -1,5 +1,7 @@
+import typescript from 'rollup-plugin-typescript';
+
 export default {
-  input: 'sdist/public/app/index.js',
+  input: 'src/public/app/index.tsx',
   output: {
     file: 'sdist/public/rollup/bundle.js',
     format: 'iife',
@@ -7,7 +9,10 @@ export default {
     sourcemap: true
   },
   watch: {
-    include: 'sdist/public/app/**'
+    include: 'src/public/app/**'
   },
+  plugins: [
+    typescript()
+  ],
   external: ['react', 'react-dom'],
 };

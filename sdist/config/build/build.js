@@ -1,7 +1,9 @@
-import * as obj from "./build-objects";
-import * as func from "./build-functions";
-import * as fs from 'fs';
-import { noTable } from './build-strings';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var obj = require("./build-objects");
+var func = require("./build-functions");
+var fs = require("fs");
+var build_strings_1 = require("./build-strings");
 var command = " --command=";
 var informationSchema = '"SELECT * FROM information_schema.tables WHERE table_schema = \'public\'"';
 var tablesExists = command + informationSchema;
@@ -13,7 +15,7 @@ function build(dbConnect, result, cb) {
         }
         else {
             console.log("stdout: " + stdout);
-            if (noTable.test(stdout)) {
+            if (build_strings_1.noTable.test(stdout)) {
                 fs.readdir('./database-builds/up', function (err, files) {
                     if (err) {
                         return err;

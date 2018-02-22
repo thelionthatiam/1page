@@ -1,4 +1,6 @@
-import { db } from '../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var database_1 = require("../middleware/database");
 var EventEmitter = require('events').EventEmitter;
 function addLeadingZeros(number) {
     if (number < 10) {
@@ -21,7 +23,7 @@ eventEmitter.on('ringingCountdown', function () {
     console.log('ringing countdown');
 });
 function triggerAlarm(alarm, user) {
-    db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['ringing', user.uuid, alarm]);
+    database_1.db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['ringing', user.uuid, alarm]);
     then(function (result) {
         console.log(result);
     })
@@ -31,9 +33,9 @@ function triggerAlarm(alarm, user) {
 }
 function addSnooze(alarm, user) {
     console.log('------YOU SNOOZED! Now you have a snooze, but dont snooze to much!------');
-    db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['snoozing', user.uuid, alarm]);
+    database_1.db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['snoozing', user.uuid, alarm]);
     then(function (result) {
-        return db.query('INSERT INTO snoozes(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
+        return database_1.db.query('INSERT INTO snoozes(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
     })
         .catch(function (error) {
         console.log(error);
@@ -41,9 +43,9 @@ function addSnooze(alarm, user) {
 }
 function addDismiss(alarm, user) {
     console.log('------YOU SLEPT IN! Now you have a dismiss under your belt.------');
-    db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['dismissed', user.uuid, alarm])
+    database_1.db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['dismissed', user.uuid, alarm])
         .then(function (result) {
-        return db.query('INSERT INTO dismisses(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
+        return database_1.db.query('INSERT INTO dismisses(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
     })
         .catch(function (error) {
         console.log(error);
@@ -51,16 +53,16 @@ function addDismiss(alarm, user) {
 }
 function addWake(alarm, user) {
     console.log('------NICE JOB, YOU WORK UP! CARPE DIEM!------');
-    db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['woke', user.uuid, alarm])
+    database_1.db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['woke', user.uuid, alarm])
         .then(function (result) {
-        return db.query('INSERT INTO wakes(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
+        return database_1.db.query('INSERT INTO wakes(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
     })
         .catch(function (error) {
         console.log(error);
     });
 }
 function alarmReset(alarm, user) {
-    db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['pending', user.uuid, alarm])
+    database_1.db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['pending', user.uuid, alarm])
         .then(function (result) {
         console.log(result);
     })
@@ -75,7 +77,7 @@ function snoozing(alarm, user) {
     var thing = setInterval(function () {
         var timeLeft = endTime - Date.now();
         console.log('timeleft', timeLeft);
-        db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+        database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
             .then(function (result) {
             var state = result.rows[0].state;
             console.log(state);
@@ -103,7 +105,7 @@ function ringing(alarm, user) {
     var thing = setInterval(function () {
         var timeLeft = endTime - Date.now();
         console.log('timeleft', timeLeft);
-        db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+        database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
             .then(function (result) {
             var state = result.rows[0].state;
             console.log(state);
@@ -129,7 +131,7 @@ function ringing(alarm, user) {
     }, 1000);
 }
 function watchUserAlarms(user) {
-    db.query('SELECT * FROM alarms WHERE user_uuid = $1 AND active = $2', [user.uuid, true]) // and active = true
+    database_1.db.query('SELECT * FROM alarms WHERE user_uuid = $1 AND active = $2', [user.uuid, true]) // and active = true
         .then(function (result) {
         var alarms = result.rows;
         for (var i = 0; i < alarms.length; i++) {
@@ -181,5 +183,5 @@ function watchUserAlarms(user) {
 function watchAlarms(user) {
     setInterval(function () { watchUserAlarms(user); }, 1000);
 }
-export { watchAlarms };
+exports.watchAlarms = watchAlarms;
 //# sourceMappingURL=alarm.js.map

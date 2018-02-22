@@ -6,7 +6,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/public/stylesheets -o sdist/public/stylesheets",
     "watch-css": "npm run build-css && node-sass-chokidar src/public/stylesheets -o sdist/public/stylesheets --watch --recursive",
-    "watch-webpack": "webpack --watch",
+    "watch-react": "./node-modules/.bin/rollup -cw",
     "build": "node ./sdist/config/build/build.js",
     "start": "node ./sdist/app.js",
     "test": "nyc mocha ./test/*",

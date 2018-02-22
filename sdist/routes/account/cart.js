@@ -1,7 +1,9 @@
-import * as express from 'express';
-import { lastFourOnly, dbErrTranslator } from '../../functions/helpers';
-import * as coupons from '../../functions/coupon';
-import { db } from '../../middleware/database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var helpers_1 = require("../../functions/helpers");
+var coupons = require("../../functions/coupon");
+var database_1 = require("../../middleware/database");
 var router = express.Router();
 var viewPrefix = 'cart/';
 router.route('/cart')
@@ -19,39 +21,39 @@ router.route('/cart')
         product_history_id: ''
     };
     console.log('post to cart');
-    db.query('SELECT card_number FROM payment_credit WHERE (user_uuid, active) = ($1, $2)', [inputs.uuid, true])
+    database_1.db.query('SELECT card_number FROM payment_credit WHERE (user_uuid, active) = ($1, $2)', [inputs.uuid, true])
         .then(function (result) {
         inputs.card_number = result.rows[0].card_number;
-        return db.query('SELECT cart_uuid FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
+        return database_1.db.query('SELECT cart_uuid FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
     })
         .then(function (result) {
         inputs.cart_uuid = result.rows[0].cart_uuid;
-        return db.query('SELECT product_history_id FROM product_history p WHERE updated_timestamp = (SELECT MAX(updated_timestamp) FROM product_history WHERE product_id = $1)', [inputs.product_id]);
+        return database_1.db.query('SELECT product_history_id FROM product_history p WHERE updated_timestamp = (SELECT MAX(updated_timestamp) FROM product_history WHERE product_id = $1)', [inputs.product_id]);
     })
         .then(function (result) {
         inputs.product_history_id = result.rows[0].product_history_id;
-        return db.query('SELECT product_id FROM cart_items WHERE cart_uuid = $1 and product_id = $2', [inputs.cart_uuid, inputs.product_id]);
+        return database_1.db.query('SELECT product_id FROM cart_items WHERE cart_uuid = $1 and product_id = $2', [inputs.cart_uuid, inputs.product_id]);
     })
         .then(function (result) {
         if (result.rows.length === 0) {
-            db.query('SELECT cc.coupon_uuid, discount, applies_to, applied FROM cart_coupons cc INNER JOIN coupons c ON c.coupon_uuid = cc.coupon_uuid AND (cc.cart_uuid = $1)', [req.session.user.cart_uuid])
+            database_1.db.query('SELECT cc.coupon_uuid, discount, applies_to, applied FROM cart_coupons cc INNER JOIN coupons c ON c.coupon_uuid = cc.coupon_uuid AND (cc.cart_uuid = $1)', [req.session.user.cart_uuid])
                 .then(function (result) {
                 if (result.rows[0].applied === true && (result.rows[0].applies_to === inputs.product_id || result.rows[0].applies_to === 'order')) {
                     var query = 'INSERT INTO cart_items(product_id, cart_uuid, quantity, product_history_id, discount) VALUES ($1, $2, $3, $4, $5)';
                     var input = [inputs.product_id, inputs.cart_uuid, inputs.quantity, inputs.product_history_id, result.rows[0].discount];
-                    return db.query(query, input);
+                    return database_1.db.query(query, input);
                 }
                 else {
                     var query = 'INSERT INTO cart_items(product_id, cart_uuid, quantity, product_history_id) VALUES ($1, $2, $3, $4)';
                     var input = [inputs.product_id, inputs.cart_uuid, inputs.quantity, inputs.product_history_id];
-                    return db.query(query, input);
+                    return database_1.db.query(query, input);
                 }
             });
         }
         else {
             var query = 'UPDATE cart_items SET quantity = quantity+$1 WHERE cart_uuid = $2 AND product_id = $3';
             var input = [inputs.quantity, inputs.cart_uuid, inputs.product_id];
-            return db.query(query, input);
+            return database_1.db.query(query, input);
         }
     })
         .then(function (result) {
@@ -59,19 +61,19 @@ router.route('/cart')
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render('shopping/products', { dbError: userError });
     });
 })
     .get(function (req, res) {
     var uuid = req.session.user.uuid, cartContent = [], totalCost = 0, totalItems = 0, price, quantity, card_number, lastFour, discounted = 1;
-    db.query('SELECT p.product_id, name, price, size, description FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [req.session.user.cart_uuid])
+    database_1.db.query('SELECT p.product_id, name, price, size, description FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [req.session.user.cart_uuid])
         .then(function (result) {
         cartContent = result.rows;
         for (var i = 0; i < cartContent.length; i++) {
             cartContent[i].email = req.session.user.email;
         }
-        return db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
+        return database_1.db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [req.session.user.cart_uuid]);
     })
         .then(function (result) {
         for (var i = 0; i < cartContent.length; i++) {
@@ -88,12 +90,12 @@ router.route('/cart')
             totalItems = totalItems + quantity;
             console.log(price, quantity, totalCost, totalItems);
         }
-        return db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
+        return database_1.db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
     })
         .then(function (result) {
-        lastFour = lastFourOnly(result.rows[0].card_number);
+        lastFour = helpers_1.lastFourOnly(result.rows[0].card_number);
         card_number = result.rows[0].card_number;
-        return db.query('SELECT * FROM users', []);
+        return database_1.db.query('SELECT * FROM users', []);
     })
         .then(function (result) {
         res.render(viewPrefix + 'cart', {
@@ -107,14 +109,14 @@ router.route('/cart')
     })
         .catch(function (err) {
         console.log('get cart error', err);
-        var userError = dbErrTranslator(err.message);
+        var userError = helpers_1.dbErrTranslator(err.message);
         res.render(viewPrefix + 'cart', { dbError: userError });
     });
 });
 router.route('/cart/:product_id')
     .get(function (req, res) {
     var cart_uuid = req.session.user.cart_uuid;
-    db.query('SELECT * FROM cart_items WHERE cart_uuid = $1 AND product_id = $2', [cart_uuid, req.query.product_id])
+    database_1.db.query('SELECT * FROM cart_items WHERE cart_uuid = $1 AND product_id = $2', [cart_uuid, req.query.product_id])
         .then(function (result) {
         res.render(viewPrefix + 'edit-cart-item', {
             name: result.rows[0].name,
@@ -134,7 +136,7 @@ router.route('/cart/:product_id')
     var product_id = req.body.product_id;
     var cart_uuid = req.session.user.cart_uuid;
     if (req.body.quantity === 0) {
-        db.query('DELETE FROM cart_items WHERE product_id = $1 AND cart_uuid = $2', [req.query.product_id, cart_uuid])
+        database_1.db.query('DELETE FROM cart_items WHERE product_id = $1 AND cart_uuid = $2', [req.query.product_id, cart_uuid])
             .then(function (result) {
             res.redirect('/acccounts/:email/cart');
         })
@@ -143,7 +145,7 @@ router.route('/cart/:product_id')
             res.render(viewPrefix + 'cart', { dbError: err.stack });
         });
     }
-    db.query('UPDATE cart_items SET quantity = $1 WHERE cart_uuid = $2 AND product_id = $3', [quantity, cart_uuid, product_id])
+    database_1.db.query('UPDATE cart_items SET quantity = $1 WHERE cart_uuid = $2 AND product_id = $3', [quantity, cart_uuid, product_id])
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/cart');
     })
@@ -154,7 +156,7 @@ router.route('/cart/:product_id')
 })
     .delete(function (req, res) {
     var cart_uuid = req.session.user.cart_uuid;
-    db.query('DELETE FROM cart_items WHERE product_id = $1 AND cart_uuid = $2', [req.body.product_id, cart_uuid])
+    database_1.db.query('DELETE FROM cart_items WHERE product_id = $1 AND cart_uuid = $2', [req.body.product_id, cart_uuid])
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/cart');
     })
@@ -167,13 +169,13 @@ router.route('/payment-select')
     .get(function (req, res) {
     var uuid = req.session.user.uuid;
     var paymentContent;
-    db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [uuid])
+    database_1.db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [uuid])
         .then(function (result) {
         paymentContent = result.rows;
-        return db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
+        return database_1.db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [req.session.user.uuid]);
     })
         .then(function (result) {
-        var lastFour = lastFourOnly(result.rows[0].card_number);
+        var lastFour = helpers_1.lastFourOnly(result.rows[0].card_number);
         res.render(viewPrefix + 'payments-cart-select', {
             paymentContent: paymentContent,
             activeCard: lastFour,
@@ -187,7 +189,7 @@ router.route('/payment-select')
 })
     .post(function (req, res) {
     var card_number = req.body.card_number;
-    db.query('UPDATE cart SET card_number = $1 WHERE user_uuid = $2', [card_number, req.session.user.uuid])
+    database_1.db.query('UPDATE cart SET card_number = $1 WHERE user_uuid = $2', [card_number, req.session.user.uuid])
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/cart');
     })

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function isCyclic(obj) {
     var seenObjects = [];
     function detect(obj) {
@@ -64,6 +66,7 @@ function deepMerge(one, two) {
     }
     return one;
 }
+exports.deepMerge = deepMerge;
 function MergeArray(array) {
     if (array.length === 0) {
         return 'error, no object in array';
@@ -78,5 +81,4 @@ function MergeArray(array) {
         }
     }
 }
-export { deepMerge };
 //# sourceMappingURL=merge.js.map

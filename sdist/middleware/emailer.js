@@ -1,8 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var nodemailerExpressHandlebars = require('nodemailer-express-handlebars');
 var nodemailer = require('nodemailer');
 var handlebars = require('express-handlebars');
 var path = require('path');
-import * as express from "express";
+var express = require("express");
 var router = express.Router();
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -28,5 +30,5 @@ function mailer() {
         next();
     };
 }
-export { mailer };
+exports.mailer = mailer;
 //# sourceMappingURL=emailer.js.map

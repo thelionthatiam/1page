@@ -1,5 +1,7 @@
-import * as express from 'express';
-import { db } from '../../middleware/async-database';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = require("express");
+var async_database_1 = require("../../middleware/async-database");
 var router = express.Router();
 var viewPefix = 'payment/';
 router.get('/new-payment', function (req, res) {
@@ -10,7 +12,7 @@ router.get('/new-payment', function (req, res) {
 });
 router.route('/payment')
     .get(function (req, res) {
-    db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [req.session.user.uuid])
+    async_database_1.db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [req.session.user.uuid])
         .then(function (result) {
         var paymentContent = result.rows;
         res.render(viewPefix + 'payments', {
@@ -40,21 +42,21 @@ router.route('/payment')
         state: req.body.state,
         zip: req.body.zip,
     };
-    db.query('SELECT * FROM payment_credit WHERE user_uuid = $1', [uuid])
+    async_database_1.db.query('SELECT * FROM payment_credit WHERE user_uuid = $1', [uuid])
         .then(function (result) {
         if (result.rows.length > 0) {
-            return db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, uuid]);
+            return async_database_1.db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, uuid]);
         }
     })
         .then(function (result) {
         var query = 'INSERT INTO payment_credit (user_uuid, card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
         var input = [uuid, inputs.cardNumber, inputs.name, inputs.expMonth, inputs.expDay, inputs.cvv, inputs.address, inputs.city, inputs.state, inputs.zip];
-        return db.query(query, input);
+        return async_database_1.db.query(query, input);
     })
         .then(function (result) {
         var query = 'INSERT INTO cart (card_number, user_uuid) VALUES ($1, $2)';
         var input = [inputs.cardNumber, req.session.user.uuid];
-        return db.query(query, input);
+        return async_database_1.db.query(query, input);
     })
         .then(function (result) {
         res.render(viewPefix + 'new-payment', {
@@ -79,11 +81,11 @@ router.route('/payment/active-payment')
     .put(function (req, res) {
     var card_number = req.body.card_number;
     console.log(card_number);
-    db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
+    async_database_1.db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
         .then(function (result) {
         var query = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
         var input = [true, card_number, req.session.user.uuid];
-        return db.query(query, input);
+        return async_database_1.db.query(query, input);
     })
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/payment');
@@ -101,7 +103,7 @@ router.route('/payment/:card_number')
     var card_number = req.query.card_number;
     var payment;
     console.log('payment get');
-    db.query('SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2', [req.session.user.uuid, card_number])
+    async_database_1.db.query('SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2', [req.session.user.uuid, card_number])
         .then(function (result) {
         payment = result.rows[0];
         console.log(payment);
@@ -141,7 +143,7 @@ router.route('/payment/:card_number')
     };
     var query = 'UPDATE payment_credit SET (card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) = ($1, $2, $3, $4, $5, $6, $7, $8, $9) WHERE user_uuid = $10 AND card_number = $11';
     var input = [inputs.cardNumber, inputs.name, inputs.expMonth, inputs.expDay, inputs.cvv, inputs.address, inputs.city, inputs.state, inputs.zip, req.session.user.uuid, oldCard];
-    db.query(query, input)
+    async_database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/payment');
     })
@@ -157,7 +159,7 @@ router.route('/payment/:card_number')
     var card_number = req.body.card_number;
     var query = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number =$2';
     var input = [req.session.user.uuid, card_number];
-    db.query(query, input)
+    async_database_1.db.query(query, input)
         .then(function (result) {
         res.redirect('/accounts/' + req.session.user.email + '/payment');
     })
