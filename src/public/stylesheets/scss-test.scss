@@ -2,23 +2,31 @@
 * {
   margin: 0px;
   padding: 0px;
-  // border:1px solid $darkRed;
+  // border:1px solid lightgrey;
 }
 
 h1,h2,h3,h4,h5,h6,p,li,a,button,input,label {
   font-family:"Roboto", sans-serif;
 }
+
 // FONTS
 $miniFont: 10px;
-//  COLORS
-$darkGreen: #00420e;
+// COLORS
+$darkGreen: #068721;
 $darkRed:#9f2121;
+$white: #fff;
 
 @mixin centerColumn {
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
+}
+
+@mixin fullWidthColumn {
+  display:flex;
+  flex-direction:column;
+  justify-content:stretch;
 }
 
 @mixin flatRow {
@@ -37,45 +45,47 @@ $darkRed:#9f2121;
 @mixin colMargin {
   margin-top: 10px;
   margin-bottom:10px;
-
 }
 
 
-.formItem {
+
+
+.formWrapper {
   @include centerColumn;
+  display:flex;
+  flex-direction:column;
 
-  .TextFormWrapper {
-    @include wrapper;
-    display:flex;
-    flex-direction:column;
-
-    h4 {
-      @include colMargin;
-      margin-left:50px;
-      transition:300ms;
-    }
-
-    button {
-      @include colMargin;
-    }
     form {
-      div {
-        display:flex;
-        flex-direction:row;
-        width:100%;
+      @include wrapper;
+      .textFormWrapper {
+        h5 {
+          @include colMargin;
+          margin-left:50px;
+          transition:300ms;
+          font-weight:400;
+        }
 
-        input {
-          flex-grow:1;
+        div {
+          display:flex;
+          width:100%;
+
+          input {
+            flex-grow:1;
+          }
+        }
+
+        p {
+          @include colMargin;
+          margin-left:50px;
+          transition:300ms;
+          font-size:$miniFont;
         }
       }
+
+      button {
+        @include colMargin;
+      }
     }
-    p {
-      @include colMargin;
-      margin-left:50px;
-      transition:300ms;
-      font-size:$miniFont;
-    }
-  }
 }
 
 .icon {
@@ -119,6 +129,9 @@ $darkRed:#9f2121;
   border-color:$darkGreen;
 }
 
+.titleSuccess {
+  color:$darkGreen;
+}
 
 .buttonSuccess {
   background-color:$darkGreen;
@@ -168,7 +181,116 @@ $darkRed:#9f2121;
   color:grey;
 }
 
-// boilerplate
+.formInactive {
+  input[type=text] {
+    color:grey;
+  }
+  input {
+    color:grey;
+    border-color:grey;
+  }
+}
+
+
+// INFORMATION TYPES
+.passwordQualityWrapper {
+  @include fullWidthColumn
+}
+
+// USER Graph
+$graph-height:50vh;
+$graph-width:40vw;
+$y-axis-width:3vw;
+$bar-width:3vw;
+
+.paymentInfoWrapper {
+  display:flex;
+}
+.titleButton {
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+}
+
+.vert-text { transform: rotate(-90deg); }
+
+div {
+  .graphWrapper {
+    display:flex;
+    .y-axis {
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:flex-end;
+      height:$graph-height;
+      width:$y-axis-width;
+      p {
+        color:grey;
+        margin-right:10px;
+      }
+    }
+    .y-title {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      height:$graph-height;
+      width:$y-axis-width;
+      p {
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        font-weight:500;
+      }
+    }
+
+    .graph {
+      display:flex;
+      justify-content:space-around;
+      align-items:flex-end;
+
+      width:$graph-width;
+      height:$graph-height;
+      border-left:1px dotted gray;
+      border-bottom:1px dotted gray;
+
+      div {
+        background-color:black;
+        height:0px;
+        width:$bar-width;
+      }
+    }
+  }
+
+  .x-axis {
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    align-content:center;
+    width:$graph-width;
+    margin-left:($y-axis-width*2);
+    height:90px;
+    div {
+      height:100%;
+      width:$bar-width;
+      display:flex;
+      justify-content:space-around;
+      align-items:center;
+      p {
+        transform: rotate(-90deg);
+        color:grey;
+      }
+
+      .dates {
+        font-size:8px;
+        transform:none;
+      }
+    }
+  }
+}
+
+
+
+// BOILER PLATE
 
 label {
   font-size:10px;

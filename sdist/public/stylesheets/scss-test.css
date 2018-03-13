@@ -5,38 +5,38 @@
 h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
   font-family: "Roboto", sans-serif; }
 
-.formItem {
+.formWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; }
-  .formItem .TextFormWrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column; }
+  .formWrapper form {
     margin-top: 10px;
     width: 40vw;
     max-width: 600px;
-    min-width: 400px;
-    display: flex;
-    flex-direction: column; }
-    .formItem .TextFormWrapper h4 {
+    min-width: 400px; }
+    .formWrapper form .textFormWrapper h5 {
       margin-top: 10px;
       margin-bottom: 10px;
       margin-left: 50px;
-      transition: 300ms; }
-    .formItem .TextFormWrapper button {
-      margin-top: 10px;
-      margin-bottom: 10px; }
-    .formItem .TextFormWrapper form div {
+      transition: 300ms;
+      font-weight: 400; }
+    .formWrapper form .textFormWrapper div {
       display: flex;
-      flex-direction: row;
       width: 100%; }
-      .formItem .TextFormWrapper form div input {
+      .formWrapper form .textFormWrapper div input {
         flex-grow: 1; }
-    .formItem .TextFormWrapper p {
+    .formWrapper form .textFormWrapper p {
       margin-top: 10px;
       margin-bottom: 10px;
       margin-left: 50px;
       transition: 300ms;
       font-size: 10px; }
+    .formWrapper form button {
+      margin-top: 10px;
+      margin-bottom: 10px; }
 
 .icon {
   width: 25px;
@@ -69,20 +69,23 @@ h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
   transition: 300ms; }
 
 .textSuccess {
-  color: #00420e;
-  border-color: #00420e; }
+  color: #068721;
+  border-color: #068721; }
+
+.titleSuccess {
+  color: #068721; }
 
 .buttonSuccess {
-  background-color: #00420e;
-  border-color: #00420e;
+  background-color: #068721;
+  border-color: #068721;
   color: white; }
 
 .formSuccess input[type=text] {
-  color: #00420e; }
+  color: #068721; }
 
 .formSuccess input {
-  color: #00420e;
-  border-color: #00420e; }
+  color: #068721;
+  border-color: #068721; }
 
 .textError {
   color: #9f2121;
@@ -105,6 +108,86 @@ h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
   background-color: white;
   border-color: grey;
   color: grey; }
+
+.formInactive input[type=text] {
+  color: grey; }
+
+.formInactive input {
+  color: grey;
+  border-color: grey; }
+
+.passwordQualityWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch; }
+
+.paymentInfoWrapper {
+  display: flex; }
+
+.titleButton {
+  display: flex;
+  justify-content: space-between;
+  width: 100%; }
+
+.vert-text {
+  transform: rotate(-90deg); }
+
+div .graphWrapper {
+  display: flex; }
+  div .graphWrapper .y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 50vh;
+    width: 3vw; }
+    div .graphWrapper .y-axis p {
+      color: grey;
+      margin-right: 10px; }
+  div .graphWrapper .y-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
+    width: 3vw; }
+    div .graphWrapper .y-title p {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-weight: 500; }
+  div .graphWrapper .graph {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    width: 40vw;
+    height: 50vh;
+    border-left: 1px dotted gray;
+    border-bottom: 1px dotted gray; }
+    div .graphWrapper .graph div {
+      background-color: black;
+      height: 0px;
+      width: 3vw; }
+
+div .x-axis {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  width: 40vw;
+  margin-left: 6vw;
+  height: 90px; }
+  div .x-axis div {
+    height: 100%;
+    width: 3vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center; }
+    div .x-axis div p {
+      transform: rotate(-90deg);
+      color: grey; }
+    div .x-axis div .dates {
+      font-size: 8px;
+      transform: none; }
 
 label {
   font-size: 10px; }

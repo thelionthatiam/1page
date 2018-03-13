@@ -47,18 +47,22 @@ function round(value:number, precision:number) {
 
 //simple brute-force scorer
 function scorer(password) {
+  if (password.length === 0) {return 0}
   let cardinality = cardinalityGuess(password);
   let symbolOptions = Math.pow(cardinality, password.length);
-  let entropy = password.length * (Math.log2(cardinality));;
+  let entropy = password.length * (Math.log2(cardinality));
   return round(entropy, 2)
 }
 
 
 // password strength checker
 
+// CHANGE TO JUST VAR
 let form = $('#password');
 let passIndicator = $('#passIndicator');
 let passScorer = $('#passScorer > p');
+
+
 form.keyup(function() {
   console.log('running')
   let entropy = scorer($(this).val());
@@ -104,3 +108,5 @@ form.keyup(function() {
 // 36 - 59 bits = Reasonable; fairly secure passwords for network and company passwords
 // 60 - 127 bits = Strong; can be good for guarding financial information
 // 128+ bits = Very Strong; often overkill
+
+export default scorer;

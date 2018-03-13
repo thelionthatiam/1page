@@ -18,12 +18,12 @@ class FormWrapper extends React.Component {
       submitted: false,
       submitable: false
     }
-    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.getValidation = this.getValidation.bind(this);
     this.testObj = {}
   }
 
-  getValidation(arr:any) {
+  getValidation(arr) {
     for (let k in this.testObj) {
       if (k === arr[0]) {
         console.log(arr[0], 'is already in array')
@@ -31,14 +31,15 @@ class FormWrapper extends React.Component {
     }
     let obj = this.testObj;
     obj[arr[0]] = arr[1]
-    // console.log(arr, obj)
-    // let bool = this.submitCheck()
-    // this.setState({
-    //   submitable:bool
-    // })
+    let bool = this.submitCheck()
+    this.setState({
+      submitable:bool
+    })
   }
 
-
+  getData = (dataFromChild) => {
+    this.getValidation(dataFromChild)
+  }
 
   submitCheck() {
     for (let k in this.testObj) {
@@ -49,39 +50,37 @@ class FormWrapper extends React.Component {
     return true
   }
 
-  // handleSubmit(event) {
-  //   if (this.state.submitable && !this.state.error) {
-  //     this.setState({
-  //       clicked:false,
-  //       submitted:true
-  //     })
-  //   }
-  //   event.preventDefault();
-  // }
+  handleSubmit(event) {
+    if (this.state.submitable) {
+      this.setState({
+        submitted:true
+      })
+    }
+    event.preventDefault();
+  }
 
   render() {
-    console.log('THIS IS THE FINAL CUT: ',this.state.submitable)
+    const childWithProp = React.Children.map(this.props.children, (child) => {
+      return React.cloneElement(child, {
+          sendData: this.getData,
+          submitted: this.state.submitted
+        });
+    });
+
     return (
-      <form onSubmit = {this.handleSubmit}>
-        <TextForm
-          title = 'email'
-          placeholder = 'type in your email address'
-          sendData = {this.getValidation}
-          // submitted = {this.state.submitted}
-          />
-        <TextForm
-          title = 'phone'
-          placeholder = 'type in your phone address'
-          sendData = {this.getValidation}
-          // submitted = {this.state.submitted}
-          />
-        <SubmitButton
-          // submitable = {this.state.submitable}
-          // submitted = {this.state.submitted}
-          // error = {this.state.error}
-          buttonText = 'create account'
-          />
-      </form>
+
+        <div className ='formWrapper'>
+          <form onSubmit = {this.handleSubmit}>
+            {childWithProp}
+            <SubmitButton
+              submitable = {this.state.submitable}
+              submitted = {this.state.submitted}
+              onClick = {this.handleSubmit}
+              buttonText = 'create account'
+              />
+          </form>
+        </div>
+
     )
   }
 }
@@ -90,9 +89,6 @@ function SubmitButton(props) {
   let currentClass = 'yes'
   if (!props.submitable) {
     currentClass = 'buttonInactive'
-  }
-  if (props.error) {
-     currentClass = 'buttonError'
   }
   if (props.submitted) {
       currentClass = 'buttonSuccess'

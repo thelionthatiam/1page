@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function cardinalityGuess(password) {
     var cardinality = 0;
     var lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
@@ -34,13 +36,16 @@ function round(value, precision) {
 }
 //simple brute-force scorer
 function scorer(password) {
+    if (password.length === 0) {
+        return 0;
+    }
     var cardinality = cardinalityGuess(password);
     var symbolOptions = Math.pow(cardinality, password.length);
     var entropy = password.length * (Math.log2(cardinality));
-    ;
     return round(entropy, 2);
 }
 // password strength checker
+// CHANGE TO JUST VAR
 var form = $('#password');
 var passIndicator = $('#passIndicator');
 var passScorer = $('#passScorer > p');
@@ -92,4 +97,5 @@ form.keyup(function () {
 // 36 - 59 bits = Reasonable; fairly secure passwords for network and company passwords
 // 60 - 127 bits = Strong; can be good for guarding financial information
 // 128+ bits = Very Strong; often overkill
+exports.default = scorer;
 //# sourceMappingURL=password-strength.js.map

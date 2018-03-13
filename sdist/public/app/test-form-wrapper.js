@@ -10,17 +10,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var text_form_item_1 = require("./text-form-item");
 var React = require("react");
 var FormWrapper = /** @class */ (function (_super) {
     __extends(FormWrapper, _super);
     function FormWrapper(props) {
         var _this = _super.call(this, props) || this;
+        _this.getData = function (dataFromChild) {
+            _this.getValidation(dataFromChild);
+        };
         _this.state = {
             submitted: false,
             submitable: false
         };
-        // this.handleSubmit = this.handleSubmit.bind(this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         _this.getValidation = _this.getValidation.bind(_this);
         _this.testObj = {};
         return _this;
@@ -33,11 +35,10 @@ var FormWrapper = /** @class */ (function (_super) {
         }
         var obj = this.testObj;
         obj[arr[0]] = arr[1];
-        // console.log(arr, obj)
-        // let bool = this.submitCheck()
-        // this.setState({
-        //   submitable:bool
-        // })
+        var bool = this.submitCheck();
+        this.setState({
+            submitable: bool
+        });
     };
     FormWrapper.prototype.submitCheck = function () {
         for (var k in this.testObj) {
@@ -47,29 +48,26 @@ var FormWrapper = /** @class */ (function (_super) {
         }
         return true;
     };
-    // handleSubmit(event) {
-    //   if (this.state.submitable && !this.state.error) {
-    //     this.setState({
-    //       clicked:false,
-    //       submitted:true
-    //     })
-    //   }
-    //   event.preventDefault();
-    // }
+    FormWrapper.prototype.handleSubmit = function (event) {
+        if (this.state.submitable) {
+            this.setState({
+                submitted: true
+            });
+        }
+        event.preventDefault();
+    };
     FormWrapper.prototype.render = function () {
-        console.log('THIS IS THE FINAL CUT: ', this.state.submitable);
-        return (React.createElement("form", { onSubmit: this.handleSubmit },
-            React.createElement(text_form_item_1.default, { title: 'email', placeholder: 'type in your email address', sendData: this.getValidation }),
-            React.createElement(text_form_item_1.default, { title: 'phone', placeholder: 'type in your phone address', sendData: this.getValidation }),
-            React.createElement(SubmitButton
-            // submitable = {this.state.submitable}
-            // submitted = {this.state.submitted}
-            // error = {this.state.error}
-            , { 
-                // submitable = {this.state.submitable}
-                // submitted = {this.state.submitted}
-                // error = {this.state.error}
-                buttonText: 'create account' })));
+        var _this = this;
+        var childWithProp = React.Children.map(this.props.children, function (child) {
+            return React.cloneElement(child, {
+                sendData: _this.getData,
+                submitted: _this.state.submitted
+            });
+        });
+        return (React.createElement("div", { className: 'formWrapper' },
+            React.createElement("form", { onSubmit: this.handleSubmit },
+                childWithProp,
+                React.createElement(SubmitButton, { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: 'create account' }))));
     };
     return FormWrapper;
 }(React.Component));
@@ -77,9 +75,6 @@ function SubmitButton(props) {
     var currentClass = 'yes';
     if (!props.submitable) {
         currentClass = 'buttonInactive';
-    }
-    if (props.error) {
-        currentClass = 'buttonError';
     }
     if (props.submitted) {
         currentClass = 'buttonSuccess';

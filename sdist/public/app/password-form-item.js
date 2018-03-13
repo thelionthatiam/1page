@@ -11,19 +11,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var validation_helperssreplehnterface_TextFormStates__1 = require("../behavior/validation-helperssreplehnterface TextFormStates {");
-firstClick: boolean;
-clicked: boolean;
-submitable: boolean;
-focused: boolean;
-error: boolean;
-submitted: boolean;
-errorMessage: string;
-input: string;
-value: string;
-var TextForm = /** @class */ (function (_super) {
-    __extends(TextForm, _super);
-    function TextForm(props) {
+var password_strength_1 = require("../behavior/password-strength");
+var validation_helpers_1 = require("../behavior/validation-helpers");
+var PasswordForm = /** @class */ (function (_super) {
+    __extends(PasswordForm, _super);
+    function PasswordForm(props) {
         var _this = _super.call(this, props) || this;
         _this.submitable = function (bool) {
             var arr = [_this.title, bool];
@@ -39,6 +31,7 @@ var TextForm = /** @class */ (function (_super) {
             value: '',
             errorMessage: '',
             submitted: props.submitted,
+            entropy: 0
         };
         _this.title = props.title;
         _this.buttonText = props.buttonText;
@@ -49,43 +42,46 @@ var TextForm = /** @class */ (function (_super) {
         _this.submitable = _this.submitable.bind(_this);
         return _this;
     }
-    TextForm.prototype.render = function () {
+    PasswordForm.prototype.render = function () {
         return (React.createElement("div", { className: 'textFormWrapper' },
             React.createElement(FormTitle, { title: this.title, firstClick: this.state.firstClick, clicked: this.state.clicked, submitted: this.props.submitted }),
             React.createElement("div", null,
                 React.createElement(Icon, { clicked: this.state.clicked }),
                 React.createElement(TextInput, { firstClick: this.state.firstClick, clicked: this.state.clicked, onClick: this.handleClick, onFocus: this.handleFocus, onChange: this.handleChange, blurred: this.handleBlur, placeholder: this.props.placeholder, submitted: this.props.submitted, error: this.state.error, value: this.state.value })),
-            React.createElement(FormError, { erro: true, errorMessage: this.state.errorMessage })));
+            React.createElement(PasswordQuality, { entropy: this.state.entropy }),
+            React.createElement(FormError, { error: this.state.error, errorMessage: this.state.errorMessage })));
     };
-    TextForm.prototype.handleChange = function (event) {
+    PasswordForm.prototype.handleChange = function (event) {
         this.setState({
             value: event.target.value
         }, function () {
             console.log(this.state.value);
         });
-        var validationAns = validation_helperssreplehnterface_TextFormStates__1.textFormValidation(this.title, event.target.value);
+        var entropy = password_strength_1.default(event.target.value);
+        var validationAns = validation_helpers_1.textFormValidation(this.title, entropy.toString());
         if (!(validationAns === 'OK')) {
             this.setState({
+                entropy: entropy,
                 submitable: false
             });
         }
         this.setState({
+            entropy: entropy,
             input: event.target.value,
             clicked: true
         });
     };
-    TextForm.prototype.handleFocus = function () {
-        console.log('sup');
+    PasswordForm.prototype.handleFocus = function () {
         if (!this.state.firstClick) {
             this.setState({
                 firstClick: true,
             });
         }
     };
-    TextForm.prototype.handleBlur = function (event) {
+    PasswordForm.prototype.handleBlur = function (event) {
+        console.log(this.title, event.target.value);
         this.setState({ clicked: false });
-        var validationAns;
-        console.log(this.title, event.target.valuee = validation_helperssreplehnterface_TextFormStates__1.textFormValidation(this.title, event.target.value));
+        var validationAns = validation_helpers_1.textFormValidation(this.title, this.state.entropy.toString());
         if (validationAns === 'OK') {
             this.setState({
                 error: false,
@@ -111,7 +107,7 @@ var TextForm = /** @class */ (function (_super) {
             });
         }
     };
-    TextForm.prototype.handleClick = function (event) {
+    PasswordForm.prototype.handleClick = function (event) {
         this.setState({
             firstClick: true,
             clicked: true,
@@ -120,10 +116,10 @@ var TextForm = /** @class */ (function (_super) {
             placeholder: ''
         });
     };
-    TextForm.prototype.componentDidMount = function () {
+    PasswordForm.prototype.componentDidMount = function () {
         this.submitable(false);
     };
-    return TextForm;
+    return PasswordForm;
 }(React.Component));
 var TextInput = /** @class */ (function (_super) {
     __extends(TextInput, _super);
@@ -146,10 +142,33 @@ var TextInput = /** @class */ (function (_super) {
             currentClass = 'formSuccess';
         }
         return (React.createElement("div", { className: currentClass },
-            React.createElement("input", { type: 'text', placeholder: this.state.placeholder, value: this.props.value, onFocus: this.props.test, onChange: this.props.onChange, onClick: this.props.onClick, onBlur: this.props.blurred, onFocus: this.props.onFocus })));
+            React.createElement("input", { type: 'password', placeholder: this.state.placeholder, value: this.props.value, onFocus: this.props.test, onChange: this.props.onChange, onClick: this.props.onClick, onBlur: this.props.blurred, onFocus: this.props.onFocus })));
     };
     return TextInput;
 }(React.Component));
+function PasswordQuality(props) {
+    var proportion = convertToProportion(props.entropy, 128);
+    var entropyReport = 'fadeOutVert';
+    var passIndicator = {
+        margin: '0px 0px 0px 50px',
+        width: proportion + '%',
+        height: '4px',
+        background: '#9f2121'
+    };
+    if (props.entropy > 0) {
+        entropyReport = 'fadeInVert';
+    }
+    if (props.entropy > 59) {
+        passIndicator.background = '#068721';
+    }
+    return (React.createElement("div", { className: 'passwordQualityWrapper' },
+        React.createElement("div", null,
+            React.createElement("div", { style: passIndicator })),
+        React.createElement("div", null,
+            React.createElement("p", { className: entropyReport },
+                " entropy: ",
+                props.entropy))));
+}
 function FormError(props) {
     return (React.createElement("div", null,
         React.createElement("p", { className: props.error ? "textError fadeIn" : 'fadeOut' }, props.errorMessage)));
@@ -168,7 +187,16 @@ function FormTitle(props) {
     return (React.createElement("h5", { className: currentStyle }, props.title));
 }
 function Icon(props) {
-    return (React.createElement("img", { className: props.clicked ? 'icon fadeIn' : 'icon fadeIn', src: 'https://image.flaticon.com/icons/svg/29/29076.svg' }));
+    return (React.createElement("img", { className: props.clicked ? 'icon fadeIn' : 'icon fadeIn', src: 'https://image.flaticon.com/icons/svg/26/26053.svg' }));
 }
-exports.default = TextForm;
-//# sourceMappingURL=text-form-item.js.map
+// HELPER
+function convertToProportion(number, max) {
+    if (number !== 0) {
+        return ((number / max) * 100);
+    }
+    else {
+        return 0;
+    }
+}
+exports.default = PasswordForm;
+//# sourceMappingURL=password-form-item.js.map
