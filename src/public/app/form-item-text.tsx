@@ -1,5 +1,4 @@
 import * as React from 'react';
-import scorer from '../behavior/password-strength';
 import { textFormValidation } from '../behavior/validation-helpers'
 
 interface TextFormStates {
@@ -12,10 +11,9 @@ interface TextFormStates {
   errorMessage:string;
   input:string;
   value:string;
-  entropy:number;
 }
 
-class PasswordForm extends React.Component {
+class TextForm extends React.Component {
   state:TextFormStates;
   title:string;
   buttonText:string;
@@ -23,7 +21,7 @@ class PasswordForm extends React.Component {
   submitted:boolean;
   sendData:Function;
 
-  constructor(props:PasswordForm) {
+  constructor(props:TextForm) {
     super(props)
     this.state = {
       firstClick:false,
@@ -35,7 +33,6 @@ class PasswordForm extends React.Component {
       value:'',
       errorMessage:'',
       submitted:props.submitted,
-      entropy:0
     };
 
     this.title =  props.title;
@@ -71,9 +68,6 @@ class PasswordForm extends React.Component {
             value = {this.state.value}
             />
         </div>
-        <PasswordQuality
-          entropy = {this.state.entropy}
-          />
         <FormError
           error = {this.state.error}
           errorMessage = {this.state.errorMessage}
@@ -88,22 +82,21 @@ class PasswordForm extends React.Component {
     }, function () {
       console.log(this.state.value)
     })
-    let entropy = scorer(event.target.value)
-    let validationAns = textFormValidation(this.title, entropy.toString());
+
+    let validationAns = textFormValidation(this.title, event.target.value);
     if (!(validationAns === 'OK')) {
       this.setState({
-        entropy:entropy,
         submitable:false
       })
     }
     this.setState({
-      entropy:entropy,
       input:event.target.value,
       clicked:true
     })
   }
 
   handleFocus() {
+    console.log('sup')
     if (!this.state.firstClick) {
       this.setState({
         firstClick: true,
@@ -113,10 +106,8 @@ class PasswordForm extends React.Component {
 
   handleBlur(event) {
     console.log(this.title, event.target.value)
-
     this.setState({clicked:false})
-    let validationAns = textFormValidation(this.title, this.state.entropy.toString())
-
+    let validationAns = textFormValidation(this.title, event.target.value)
     if (validationAns === 'OK') {
       this.setState({
         error:false,
@@ -153,7 +144,7 @@ class PasswordForm extends React.Component {
   }
 
   submitable = (bool:boolean) => {
-    let arr = [this.title, bool]
+    let arr = [this.title, bool, this.state.value]
     this.props.sendData(arr)
   }
 
@@ -184,7 +175,7 @@ class TextInput extends React.Component {
     return (
       <div className = {currentClass}>
         <input
-          type = 'password'
+          type = 'text'
           placeholder = {this.state.placeholder}
           value = {this.props.value}
           onFocus = {this.props.test}
@@ -197,31 +188,6 @@ class TextInput extends React.Component {
     )
   }
 
-}
-
-function PasswordQuality(props) {
-  let proportion = convertToProportion(props.entropy, 128)
-  let entropyReport = 'fadeOutVert';
-
-  let passIndicator = {
-    margin: '0px 0px 0px 50px',
-    width: proportion + '%',
-    height: '4px',
-    background: '#9f2121'
-  }
-  if (props.entropy > 0 ) {entropyReport = 'fadeInVert'}
-  if (props.entropy > 59) {passIndicator.background = '#068721'}
-
-  return (
-    <div className = 'passwordQualityWrapper'>
-      <div>
-        <div style = {passIndicator}></div>
-      </div>
-      <div>
-        <p className = {entropyReport}> entropy: {props.entropy}</p>
-      </div>
-    </div>
-  )
 }
 
 function FormError(props) {
@@ -254,19 +220,9 @@ function Icon(props) {
   return (
     <img
       className = {props.clicked ? 'icon fadeIn' : 'icon fadeIn'}
-      src = 'https://image.flaticon.com/icons/svg/26/26053.svg'
+      src = 'https://image.flaticon.com/icons/svg/29/29076.svg'
       />
   )
 }
 
-
-// HELPER
-function convertToProportion(number, max) {
-  if (number !== 0) {
-    return ((number/max)*100);
-  } else {
-    return 0;
-  }
-}
-
-export default PasswordForm;
+export default TextForm;

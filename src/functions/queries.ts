@@ -68,7 +68,14 @@ class Query {
     return this.conn.query(query, values)
   }
 
+
+
   // insert
+
+  insertUser(values:string[]) {
+    const query = 'INSERT INTO users(email, phone, password, name) VALUES($1, $2, $3, $4) RETURNING *'
+    return this.conn.query(query, values)
+  }
   insertSnooze(values:string[]) {
     const query = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
     return this.conn.query(query, values);

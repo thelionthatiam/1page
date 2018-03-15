@@ -93,7 +93,7 @@ function passwordChecker(val) {
         return passwordMatcher(val);
     }
     else {
-        return "Password must be at least 'strong', your credit card may be used in this application!";
+        return "Password must be at least 'strong', you credit card may be used in this application!";
     }
 }
 function passwordMatcher(val) {

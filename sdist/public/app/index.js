@@ -1,16 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var test_form_wrapper_1 = require("./test-form-wrapper");
-var text_form_item_1 = require("./text-form-item");
-var password_form_item_1 = require("./password-form-item");
-var React = require("react");
-var ReactDOM = require("react-dom");
-ReactDOM.render(React.createElement(test_form_wrapper_1.default, null,
-    React.createElement(text_form_item_1.default, { title: 'username', placeholder: 'type in your username' }),
-    React.createElement(text_form_item_1.default, { title: 'email', placeholder: 'type in your email' }),
-    React.createElement(password_form_item_1.default, { title: 'password', placeholder: 'type in your password' })), document.getElementById('root'));
-// ReactDOM.render(
-//   <PersonList />,
-//   document.getElementById('branch')
-// );
+var new_account_page_1 = require("./new-account-page");
+var login_page_1 = require("./login-page");
+var allTags = document.body.getElementsByTagName('*');
+var ids = [];
+for (var tg = 0; tg < allTags.length; tg++) {
+    var tag = allTags[tg];
+    if (tag.id) {
+        ids.push(tag.id);
+    }
+}
+console.log(ids);
+for (var i = 0; i < ids.length; i++) {
+    if (ids[i] === 'new-user') {
+        console.log('create account page');
+        new_account_page_1.default();
+    }
+    else if (ids[i] === 'login') {
+        console.log('login page');
+        login_page_1.default();
+    }
+}
 //# sourceMappingURL=index.js.map

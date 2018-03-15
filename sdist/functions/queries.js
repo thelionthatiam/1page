@@ -51,6 +51,10 @@ var Query = /** @class */ (function () {
         return this.conn.query(query, values);
     };
     // insert
+    Query.prototype.insertUser = function (values) {
+        var query = 'INSERT INTO users(email, phone, password, name) VALUES($1, $2, $3, $4) RETURNING *';
+        return this.conn.query(query, values);
+    };
     Query.prototype.insertSnooze = function (values) {
         var query = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
         return this.conn.query(query, values);

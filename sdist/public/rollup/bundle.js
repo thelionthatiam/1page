@@ -7,17 +7,39 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
+function Button(props) {
+    var currentClass = 'yes';
+    if (!props.submitable) {
+        currentClass = 'buttonInactive';
+    }
+    if (props.submitted) {
+        currentClass = 'buttonSuccess';
+    }
+    return (React.createElement("button", {className: currentClass}, props.buttonText));
+}
+
 var FormWrapper = (function (_super) {
     __extends(FormWrapper, _super);
     function FormWrapper(props) {
         var _this = this;
         _super.call(this, props);
+        // CHANGE DATA SENDING TO OBJ RATHER THAN ARRAY
         this.getData = function (dataFromChild) {
+            var data = _this.state.data;
+            var title = dataFromChild[0];
+            var value = dataFromChild[2];
+            data[title] = value;
+            console.log(data);
+            console.log(dataFromChild);
+            _this.setState({
+                data: data
+            });
             _this.getValidation(dataFromChild);
         };
         this.state = {
             submitted: false,
-            submitable: false
+            submitable: false,
+            data: {}
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getValidation = this.getValidation.bind(this);
@@ -45,9 +67,33 @@ var FormWrapper = (function (_super) {
         return true;
     };
     FormWrapper.prototype.handleSubmit = function (event) {
+        console.log(this.props.url);
+        fetch(this.props.url, {
+            body: JSON.stringify(this.state.data),
+            method: 'post',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        });
         if (this.state.submitable) {
-            this.setState({
+            fetch(this.props.url, {
+                body: JSON.stringify(this.state.data),
+                method: 'post',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            })
+                .then(function (res) {
+                return (res.json());
+            })
+                .then(function (body) { return console.log(body); })
+                .then(this.setState({
                 submitted: true
+            }))
+                .catch(function (error) {
+                console.log(error);
             });
         }
         event.preventDefault();
@@ -60,23 +106,13 @@ var FormWrapper = (function (_super) {
                 submitted: _this.state.submitted
             });
         });
-        return (React.createElement("div", {className: 'formWrapper'}, React.createElement("form", {onSubmit: this.handleSubmit}, childWithProp, React.createElement(SubmitButton, {submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: 'create account'}))));
+        return (React.createElement("div", {className: 'formWrapper'}, React.createElement("form", {onSubmit: this.handleSubmit}, childWithProp, React.createElement(Button, {submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: this.props.buttonText}))));
     };
     return FormWrapper;
 }(React.Component));
-function SubmitButton(props) {
-    var currentClass = 'yes';
-    if (!props.submitable) {
-        currentClass = 'buttonInactive';
-    }
-    if (props.submitted) {
-        currentClass = 'buttonSuccess';
-    }
-    return (React.createElement("button", {className: currentClass}, props.buttonText));
-}
 
 function emailTest(val) {
-    var emailCheck = /^[a-zA-Z0-9\._\$%\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9]{2,6}/;
+    var emailCheck = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (emailCheck.test(val) === true) {
         return "OK";
     }
@@ -108,7 +144,7 @@ function usernameTest(val) {
         return "OK";
     }
     else {
-        return "Stick to letters dashes and periods";
+        return "Stick to letters dashes and periods.";
     }
 }
 function passwordTest(val) {
@@ -160,7 +196,7 @@ var TextForm = (function (_super) {
         var _this = this;
         _super.call(this, props);
         this.submitable = function (bool) {
-            var arr = [_this.title, bool];
+            var arr = [_this.title, bool, _this.state.value];
             _this.props.sendData(arr);
         };
         this.state = {
@@ -385,7 +421,7 @@ var PasswordForm = (function (_super) {
         var _this = this;
         _super.call(this, props);
         this.submitable = function (bool) {
-            var arr = [_this.title, bool];
+            var arr = [_this.title, bool, _this.state.value];
             _this.props.sendData(arr);
         };
         this.state = {
@@ -550,7 +586,33 @@ function convertToProportion(number, max) {
     }
 }
 
-ReactDOM.render(React.createElement(FormWrapper, null, React.createElement(TextForm, {title: 'username', placeholder: 'type in your username'}), React.createElement(TextForm, {title: 'email', placeholder: 'type in your email'}), React.createElement(PasswordForm, {title: 'password', placeholder: 'type in your password'})), document.getElementById('root'));
+function newAccount() {
+    return ReactDOM.render(React.createElement(FormWrapper, {buttonText: 'create new account', url: 'http://localhost:8000/accounts'}, React.createElement(TextForm, {title: 'username', placeholder: 'type in your username'}), React.createElement(TextForm, {title: 'email', placeholder: 'type in your email'}), React.createElement(TextForm, {title: 'phone', placeholder: 'type in your phone number'}), React.createElement(PasswordForm, {title: 'password', placeholder: 'type in your password'})), document.getElementById('new-user'));
+}
+
+function login() {
+    return ReactDOM.render(React.createElement("div", null, React.createElement(FormWrapper, {buttonText: 'login', url: 'http://localhost:8000/'}), React.createElement(FormWrapper, {buttonText: 'create new account', url: 'http://localhost:8000/new-account'})), document.getElementById('login'));
+}
+
+var allTags = document.body.getElementsByTagName('*');
+var ids = [];
+for (var tg = 0; tg < allTags.length; tg++) {
+    var tag = allTags[tg];
+    if (tag.id) {
+        ids.push(tag.id);
+    }
+}
+console.log(ids);
+for (var i = 0; i < ids.length; i++) {
+    if (ids[i] === 'new-user') {
+        console.log('create account page');
+        newAccount();
+    }
+    else if (ids[i] === 'login') {
+        console.log('login page');
+        login();
+    }
+}
 
 }(React,ReactDOM));
 //# sourceMappingURL=bundle.js.map

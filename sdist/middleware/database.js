@@ -40,4 +40,5 @@ function init(databaseInformation) {
         });
     };
 }
+exports.init = init;
 //# sourceMappingURL=database.js.map

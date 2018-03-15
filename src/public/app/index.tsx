@@ -1,30 +1,22 @@
-import FormWrapper from './test-form-wrapper'
-import TextForm from './text-form-item'
-import GraphWrapper from './user-graph'
-import PersonList from './ajax-testing'
-import PasswordForm from './password-form-item'
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import newAccount from './new-account-page';
+import login from './login-page'
 
-ReactDOM.render(
-  <FormWrapper>
-    <TextForm
-      title = 'username'
-      placeholder = 'type in your username'
-      />
-    <TextForm
-      title = 'email'
-      placeholder = 'type in your email'
-      />
-    <PasswordForm
-      title = 'password'
-      placeholder = 'type in your password'
-      />
-  </FormWrapper>,
-  document.getElementById('root')
-);
+var allTags = document.body.getElementsByTagName('*');
+var ids = [];
+for (var tg = 0; tg< allTags.length; tg++) {
+    var tag = allTags[tg];
+    if (tag.id) {
+            ids.push(tag.id);
+     }
+}
+console.log(ids)
 
-// ReactDOM.render(
-//   <PersonList />,
-//   document.getElementById('branch')
-// );
+for (let i = 0; i < ids.length; i ++) {
+  if (ids[i] === 'new-user') {
+    console.log('create account page')
+    newAccount();
+  } else if (ids[i] === 'login') {
+    console.log('login page')
+    login();
+  }
+}

@@ -1,4 +1,5 @@
-import TextForm from './text-form-item';
+import TextForm from './form-item-text';
+import Button from './button-generic'
 import * as React from 'react';
 
 interface FormWrapperStates {
@@ -11,12 +12,15 @@ class FormWrapper extends React.Component {
   states:FormWrapperStates;
   formItems:any;
   testObj:any;
+  action:any;
+  buttonText:string;
 
   constructor(props:FormWrapper) {
     super(props)
     this.state = {
       submitted: false,
-      submitable: false
+      submitable: false,
+      data: {}
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getValidation = this.getValidation.bind(this);
@@ -36,8 +40,17 @@ class FormWrapper extends React.Component {
       submitable:bool
     })
   }
-
+  // CHANGE DATA SENDING TO OBJ RATHER THAN ARRAY
   getData = (dataFromChild) => {
+    let data = this.state.data
+    let title = dataFromChild[0]
+    let value = dataFromChild[2]
+    data[title] = value
+    console.log(data)
+    console.log(dataFromChild)
+    this.setState({
+      data:data
+    })
     this.getValidation(dataFromChild)
   }
 
@@ -51,10 +64,38 @@ class FormWrapper extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.submitable) {
-      this.setState({
-        submitted:true
+    console.log(this.props.url)
+    fetch(this.props.url, {
+        body:JSON.stringify(this.state.data),
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        }
       })
+    if (this.state.submitable) {
+      fetch(this.props.url, {
+          body:JSON.stringify(this.state.data),
+          method: 'post',
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          }
+        })
+        .then((res) => {
+          return (res.json())
+        })
+        .then(body => console.log(body))
+        .then(
+          this.setState({
+            submitted:true
+          })
+        )
+        .catch((error) => {
+            console.log(error)
+          })
+
+
     }
     event.preventDefault();
   }
@@ -72,11 +113,11 @@ class FormWrapper extends React.Component {
         <div className ='formWrapper'>
           <form onSubmit = {this.handleSubmit}>
             {childWithProp}
-            <SubmitButton
+            <Button
               submitable = {this.state.submitable}
               submitted = {this.state.submitted}
               onClick = {this.handleSubmit}
-              buttonText = 'create account'
+              buttonText = {this.props.buttonText}
               />
           </form>
         </div>
@@ -85,20 +126,6 @@ class FormWrapper extends React.Component {
   }
 }
 
-function SubmitButton(props) {
-  let currentClass = 'yes'
-  if (!props.submitable) {
-    currentClass = 'buttonInactive'
-  }
-  if (props.submitted) {
-      currentClass = 'buttonSuccess'
-  }
-  return (
-      <button className = {currentClass}>
-        {props.buttonText}
-      </button>
-    )
-}
 
 
 

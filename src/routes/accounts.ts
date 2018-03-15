@@ -21,6 +21,7 @@ router.post('/delete', function (req, res, next) {
 
 router.route('/accounts')
   .post((req,res) => {
+    console.log('BODY', req.body)
     let inputs = {
       email: req.body.email,
       phone: req.body.phone,
@@ -73,6 +74,7 @@ router.route('/accounts')
       })
       .catch((err) => {
         console.log(err);
+
         db.query('DELETE FROM users WHERE user_uuid = $1', [inputs.uuid])
           .then((result) => {
             return db.query('DELETE FROM nonce WHERE user_uuid = $1', [inputs.uuid])
@@ -93,7 +95,7 @@ router.route('/accounts')
           })
           .catch((err) => {
             console.log(err)
-            res.render('error')
+            res.json(err)
           })
       })
   })

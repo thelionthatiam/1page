@@ -16,6 +16,7 @@ router.post('/delete', function (req, res, next) {
 });
 router.route('/accounts')
     .post(function (req, res) {
+    console.log('BODY', req.body);
     var inputs = {
         email: req.body.email,
         phone: req.body.phone,
@@ -86,7 +87,7 @@ router.route('/accounts')
         })
             .catch(function (err) {
             console.log(err);
-            res.render('error');
+            res.json(err);
         });
     });
 });

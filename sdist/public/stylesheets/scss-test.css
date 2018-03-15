@@ -5,6 +5,79 @@
 h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
   font-family: "Roboto", sans-serif; }
 
+.centerColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+label {
+  font-size: 10px; }
+
+form {
+  display: flex;
+  flex-direction: column; }
+
+input {
+  border: none;
+  border-bottom: 2px solid black;
+  flex-grow: 1;
+  font-size: 14px;
+  padding: 2px; }
+
+input:focus {
+  outline: 0; }
+
+input:placeholder-shown {
+  color: black; }
+
+textarea {
+  margin: 4px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  border-left: 0px;
+  border-right: 0px;
+  border-radius: 2px; }
+
+textarea:focus {
+  outline: 0; }
+
+button {
+  border: 1px solid black;
+  margin: 4px 0 4px 0;
+  border-radius: 5px;
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1);
+  min-width: 10%;
+  max-width: 40%;
+  min-height: 20px;
+  padding: 3px;
+  align-self: flex-end; }
+
+button:hover {
+  cursor: pointer; }
+
+button:active {
+  transform: translate(1px, 1px); }
+
+button:focus {
+  outline: 0; }
+
+button.yes {
+  background-color: black;
+  color: white; }
+
+button.no {
+  background-color: white; }
+
+button.unavailable {
+  background-color: lightgrey;
+  border-color: grey;
+  color: grey;
+  box-shadow: none; }
+
+button.unavailable:active {
+  transform: translate(0px); }
+
 .formWrapper {
   display: flex;
   flex-direction: column;
@@ -188,70 +261,3 @@ div .x-axis {
     div .x-axis div .dates {
       font-size: 8px;
       transform: none; }
-
-label {
-  font-size: 10px; }
-
-form {
-  display: flex;
-  flex-direction: column; }
-
-input {
-  border: none;
-  border-bottom: 2px solid black;
-  flex-grow: 1;
-  font-size: 14px;
-  padding: 2px; }
-
-input:focus {
-  outline: 0; }
-
-input:placeholder-shown {
-  color: black; }
-
-textarea {
-  margin: 4px;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  border-left: 0px;
-  border-right: 0px;
-  border-radius: 2px; }
-
-textarea:focus {
-  outline: 0; }
-
-button {
-  border: 1px solid black;
-  margin: 4px 0 4px 0;
-  border-radius: 5px;
-  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1);
-  min-width: 10%;
-  max-width: 40%;
-  min-height: 20px;
-  padding: 3px;
-  align-self: flex-end; }
-
-button:hover {
-  cursor: pointer; }
-
-button:active {
-  transform: translate(1px, 1px); }
-
-button:focus {
-  outline: 0; }
-
-button.yes {
-  background-color: black;
-  color: white; }
-
-button.no {
-  background-color: white; }
-
-button.unavailable {
-  background-color: lightgrey;
-  border-color: grey;
-  color: grey;
-  box-shadow: none; }
-
-button.unavailable:active {
-  transform: translate(0px); }
