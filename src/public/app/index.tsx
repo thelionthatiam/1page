@@ -1,5 +1,5 @@
-import newAccount from './new-account-page';
-import login from './login-page'
+import newAccount from './pages/new-account';
+import login from './pages/login'
 
 var allTags = document.body.getElementsByTagName('*');
 var ids = [];
@@ -9,14 +9,11 @@ for (var tg = 0; tg< allTags.length; tg++) {
             ids.push(tag.id);
      }
 }
-console.log(ids)
 
-for (let i = 0; i < ids.length; i ++) {
+for (let i = 0; i < ids.length; i++) {
   if (ids[i] === 'new-user') {
-    console.log('create account page')
     newAccount();
   } else if (ids[i] === 'login') {
-    console.log('login page')
     login();
   }
 }

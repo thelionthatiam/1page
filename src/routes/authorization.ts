@@ -6,77 +6,91 @@ import * as r from '../resources/value-objects'
 import { watchAlarms } from '../functions/alarm'
 import { BaseRequestHandler } from '../resources/handlers';
 import { db } from '../middleware/database';
-
 const router = express.Router();
 
-class AuthHandler extends BaseRequestHandler {
-  inputs:AuthInputs;
 
-  constructor(req:any, res:any, nextPage:string, errPage:string)  {
-    super(req, res, nextPage, errPage);
-    this.inputs = req.body;
-  }
-
-  handler() {
-    let renderObj:AuthRender;
-    let user:r.UserDB;
-    let cart:r.CartDB;
-    let userSession:r.UserSession;
-
-    this.aQuery.selectUser([this.inputs.email])
-      .then((result) => {
-        if (result.rows.length === 0) {
-          throw new Error("Email not found");
-        } else {
-          user = r.UserDB.fromJSON(result.rows[0]);
-          return bcrypt.compare(this.inputs.password, user.password);
-        }
-      })
-      .then((result : boolean) => {
-        if (result === false) {
-          throw new Error('Password incorrect');
-        } else {
-          return help.regenerateSession(this.req);
-        }
-      })
-      .then(() => {
-        return this.aQuery.updateSessionID([this.req.sessionID, user.user_uuid]);
-      })
-      .then((result ) => {
-
-        userSession = r.UserSession.fromJSON({
-          email:user.email,
-          uuid:user.user_uuid,
-          permission:user.permission,
-          name:user.name
-        })
-
-        this.req.session.user = userSession;
-
-        watchAlarms(userSession);
-
-        renderObj = {
-          email:user.email,
-          name:user.name
-         };
-
-        if (user.permission === 'admin') {
-          this.res.render('admin/home')
-        } else if (user.permission === 'user') {
-          this.onSuccess(renderObj);
-        }
-      })
-      .catch((error:Error) => {
-        console.log(error)
-        this.onFailure(error)
-      })
-
-  }
-}
 
 router.post('/authorized', (req, res) => {
-  let auth = new AuthHandler(req, res, 'home', 'login')
-  auth.handler();
+
+  console.log('start authorized post')
+
+  let inputs = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  console.log(inputs)
+
+  let renderObj:AuthRender;
+  let user:r.UserDB;
+  let cart:r.CartDB;
+  let userSession:r.UserSession;
+
+  req.aQuery.selectUser([inputs.email])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        throw new Error("Email not found");
+      } else {
+        console.log('select user', result.rows[0])
+        user = r.UserDB.fromJSON(result.rows[0]);
+        return bcrypt.compare(inputs.password, user.password);
+      }
+    })
+    .then((result : boolean) => {
+      if (result === false) {
+        throw new Error('Password incorrect');
+      } else {
+        console.log('pass quick', result)
+        return help.regenerateSession(req);
+      }
+    })
+    .then(() => {
+      console.log(req.sessionID)
+      return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+    })
+    .then((result ) => {
+      console.log(req.sessionID)
+      userSession = r.UserSession.fromJSON({
+        email:user.email,
+        uuid:user.user_uuid,
+        permission:user.permission,
+        name:user.name
+      })
+      console.log('user session', userSession)
+      req.session.user = userSession;
+      console.log('session general', req.session)
+      console.log('usersession on session',req.session.user)
+      console.log('id', req.sessionID)
+      watchAlarms(userSession);
+
+      renderObj = {
+        email:user.email,
+        name:user.name
+       };
+
+      if (user.permission === 'admin') {
+        res.render('admin/home')
+      } else if (user.permission === 'user') {
+        console.log(result)
+        res.render('home', renderObj)
+      }
+    })
+    .catch((error:Error) => {
+      console.log(error)
+      res.json(error)
+    })
+})
+
+router.get('/home-redirect', (req, res) => {
+  console.log('session general redirect', req.session)
+  console.log('id redirect', req.sessionID)
+  let userSession = r.UserSession.fromJSON({
+    email: req.session.user.email,
+    uuid:req.session.user.user_uuid,
+    permission:req.session.user.permission,
+    name:req.session.user.name
+  })
+
+  res.render('home', {email:req.session.user.email, name:req.session.user.name})
 })
 
 router.post('/log-out', function(req, res, next) {

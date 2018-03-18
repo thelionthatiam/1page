@@ -16,7 +16,6 @@ router.post('/delete', function (req, res, next) {
 });
 router.route('/accounts')
     .post(function (req, res) {
-    console.log('BODY', req.body);
     var inputs = {
         email: req.body.email,
         phone: req.body.phone,
@@ -49,9 +48,6 @@ router.route('/accounts')
         return database_1.db.query(query, input);
     })
         .then(function (result) {
-        return database_1.db.query('INSERT INTO cart (user_uuid, card_number) VALUES ($1, $2)', [inputs.uuid, '42424242424242']);
-    })
-        .then(function (result) {
         return database_1.db.query('INSERT INTO user_settings(user_uuid) VALUES ($1)', [inputs.uuid]);
     })
         .then(function (result) {
@@ -59,11 +55,13 @@ router.route('/accounts')
     })
         .then(function (result) {
         console.log(result.rows);
-        res.render('new-account', {
-            success: true,
-            email: inputs.email,
-            phone: inputs.phone,
-        });
+        res.json(result);
+        // NOT DOING THIS ANYMORE BECAUSE I'M NOT WORRIED ABOUT USER INTERACTIVITY FROM SERVER2s
+        // res.render('new-account', {
+        //   success: true,
+        //   email: inputs.email,
+        //   phone: inputs.phone,
+        // });
     })
         .catch(function (err) {
         console.log(err);

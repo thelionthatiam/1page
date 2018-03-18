@@ -1,4 +1,3 @@
-
 * {
   margin: 0px;
   padding: 0px;
@@ -39,7 +38,7 @@ $white: #fff;
   margin-top: 10px;
   width:40vw;
   max-width:600px;
-  min-width:400px;
+  min-width:300px;
 }
 
 @mixin colMargin {
@@ -47,10 +46,23 @@ $white: #fff;
   margin-bottom:10px;
 }
 
-// BOILER PLATE
+//COMMON DIMENSIONS
+//  margings
 
+$small-margin-l:25px;
+$small-margin-r:25px;
+
+//  common element sizes
+$icon-width:30px;
+$icon-container-width:$icon-width + $small-margin-l;
+
+// BOILERPLATE
 .centerColumn {@include centerColumn}
 
+.marginPaddingFix {
+  margins:0!important;
+  padding:0!important;
+}
 label {
   font-size:10px;
 }
@@ -147,15 +159,13 @@ button.unavailable:active {
       .textFormWrapper {
         h5 {
           @include colMargin;
-          margin-left:50px;
+          margin-left:$icon-container-width;
           transition:300ms;
           font-weight:400;
         }
-
         div {
           display:flex;
           width:100%;
-
           input {
             flex-grow:1;
           }
@@ -163,9 +173,14 @@ button.unavailable:active {
 
         p {
           @include colMargin;
-          margin-left:50px;
+          margin-left:$icon-container-width;
           transition:300ms;
           font-size:$miniFont;
+        }
+
+        p.marginPaddingFix {
+          margin: 0;
+          padding: 0;
         }
       }
 
@@ -175,10 +190,23 @@ button.unavailable:active {
     }
 }
 
+.formIcon {
+  width:$icon-width;
+  height:$icon-width;
+  margin-right:$small-margin-l;
+  transition:300ms;
+}
+
+#formIcon {
+  width:$icon-width;
+  height:$icon-width;
+  margin-right:$small-margin-l;
+  transition:300ms;
+}
+
 .icon {
-  width:25px;
-  height:25px;
-  margin-right:25px;
+  width:$icon-width;
+  height:$icon-width;
   transition:300ms;
 }
 
@@ -213,7 +241,8 @@ button.unavailable:active {
 //SUCCESS TYPES
 .textSuccess {
   color:$darkGreen;
-  border-color:$darkGreen;
+  font-weight:600;
+  transition:300ms;
 }
 
 .titleSuccess {
@@ -240,7 +269,6 @@ button.unavailable:active {
 
 .textError {
   color:$darkRed;
-  border-color:$darkRed;
   font-weight:600;
   transition:300ms;
 }
@@ -282,6 +310,35 @@ button.unavailable:active {
 // INFORMATION TYPES
 .passwordQualityWrapper {
   @include fullWidthColumn
+  margin-left:$icon-container-width;
+}
+
+.eye-icon {
+  position:relative;
+  left: 90%;
+  top:-30px;
+}
+
+.hidePass {
+  height:30px;
+  border-bottom:2px solid black;
+  width:0;
+  transition: 300ms;
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow:hidden;
+}
+
+.showPass {
+  height:30px;
+  border-bottom:2px solid black;
+  transition: 300ms;
+  width:100px;
+  display:flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow:hidden;
 }
 
 // USER Graph

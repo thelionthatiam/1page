@@ -5,7 +5,7 @@ CREATE TABLE users (
 	email varchar(100) UNIQUE NOT NULL CHECK (email ~ '^[A-Za-z0-9\._\$%\-]+@[A-Za-z0-9\-]+.[A-Za-z0-9]{2,6}$'),
 	phone varchar(20) NOT NULL CHECK (phone ~ '^[0-9]+$'),
 	password varchar(100) NOT NUll,
-	name varchar(100) default 'USER' CHECK(name ~ '^([a-zA-Z]{1,15})( [a-zA-Z]{1,15})?([ -]?[a-zA-Z]{1,15})?$')
+	name varchar(100) default 'USER' CHECK(name ~ '^([a-zA-Z]{1,15})( [a-zA-Z]{1,15})?([ -]?[a-zA-Z]{1,15})?$') NOT NULL
 );
 
 CREATE TABLE nonce (

@@ -32,7 +32,6 @@ router.get('/splash', function (req, res, next) {
     res.render('splash');
 });
 router.get('/home', function (req, res) {
-    console.log("home page", req.session);
     res.render('home', {
         email: req.session.user.email,
         name: req.session.user.name

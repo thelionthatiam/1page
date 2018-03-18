@@ -22,7 +22,7 @@ class ValidationError extends Error implements ValidationResult {
 
   constructor(name: string, message:string) {
     super(message);
-    Error.captureStackTrace(this); // will creae a stack trace.
+    Error.captureStackTrace(this); // will  creae a stack trace.
     this.message = message
     this.name = name;
   }

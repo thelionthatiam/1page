@@ -48,7 +48,7 @@ var PasswordForm = /** @class */ (function (_super) {
             React.createElement("div", null,
                 React.createElement(Icon, { clicked: this.state.clicked }),
                 React.createElement(TextInput, { firstClick: this.state.firstClick, clicked: this.state.clicked, onClick: this.handleClick, onFocus: this.handleFocus, onChange: this.handleChange, blurred: this.handleBlur, placeholder: this.props.placeholder, submitted: this.props.submitted, error: this.state.error, value: this.state.value })),
-            React.createElement(PasswordQuality, { entropy: this.state.entropy }),
+            React.createElement(PasswordQuality, { entropy: this.state.entropy, newPass: this.props.newPass }),
             React.createElement(FormError, { error: this.state.error, errorMessage: this.state.errorMessage })));
     };
     PasswordForm.prototype.handleChange = function (event) {
@@ -146,29 +146,6 @@ var TextInput = /** @class */ (function (_super) {
     };
     return TextInput;
 }(React.Component));
-function PasswordQuality(props) {
-    var proportion = convertToProportion(props.entropy, 128);
-    var entropyReport = 'fadeOutVert';
-    var passIndicator = {
-        margin: '0px 0px 0px 50px',
-        width: proportion + '%',
-        height: '4px',
-        background: '#9f2121'
-    };
-    if (props.entropy > 0) {
-        entropyReport = 'fadeInVert';
-    }
-    if (props.entropy > 59) {
-        passIndicator.background = '#068721';
-    }
-    return (React.createElement("div", { className: 'passwordQualityWrapper' },
-        React.createElement("div", null,
-            React.createElement("div", { style: passIndicator })),
-        React.createElement("div", null,
-            React.createElement("p", { className: entropyReport },
-                " entropy: ",
-                props.entropy))));
-}
 function FormError(props) {
     return (React.createElement("div", null,
         React.createElement("p", { className: props.error ? "textError fadeIn" : 'fadeOut' }, props.errorMessage)));
@@ -188,6 +165,39 @@ function FormTitle(props) {
 }
 function Icon(props) {
     return (React.createElement("img", { className: props.clicked ? 'icon fadeIn' : 'icon fadeIn', src: 'https://image.flaticon.com/icons/svg/26/26053.svg' }));
+}
+function PasswordQuality(props) {
+    var proportion = convertToProportion(props.entropy, 128);
+    var entropyReport;
+    var passIndicator = {
+        width: proportion + '%',
+        height: '4px',
+        background: '#9f2121',
+        transition: '300ms'
+    };
+    if (props.entropy > 0) {
+        entropyReport = React.createElement("p", { className: 'fadeIn textError marginPaddingFix' },
+            " ",
+            "Not strong enough. Entropy: " + props.entropy,
+            " ");
+    }
+    if (props.entropy > 59) {
+        passIndicator.background = '#068721';
+        entropyReport = React.createElement("p", { className: 'fadeIn textSuccess marginPaddingFix' },
+            " ",
+            "This should be strong enough. Entropy: " + props.entropy,
+            " ");
+    }
+    console.log('new pass', props.newPass);
+    if (props.newPass) {
+        return (React.createElement("div", { className: 'passwordQualityWrapper' },
+            React.createElement("div", null,
+                React.createElement("div", { style: passIndicator })),
+            entropyReport));
+    }
+    else {
+        return null;
+    }
 }
 // HELPER
 function convertToProportion(number, max) {

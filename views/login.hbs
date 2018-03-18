@@ -1,63 +1,44 @@
-<div class='flex column pageWrapper center'>
-  <div class="flex column userWrapper">
-
-
-    {{#if forgotPassword }}
-      <h3 class="formTitle">forgot password</h3>
-      <form action="/forgot-password/authorized" method="post">
-        <p>email</p>
-        <input id="email" name="email" class="userFormItem" type="text" placeholder="email" />
-        <p class="formErrorReport" id="emailError"></p>
-        <button id="formSubmitter" class="unavailable submit" type="submit"> send mail </button>
-      </form>
-
-
-    {{ else }}
+<div id='login'>
+  <div class='flex column pageWrapper center'>
+    <div class="flex column userWrapper">
       <h1>Snooze you Lose</h1>
       <p class="noMarginsPadding">or how sleeping in really hurts your bottom line</p>
-   </div>
-
+    </div>
+    <div class = "flex column hero-img-wrapper">
+       <img class='hero-img' src= "/other-imgs/splash-page-hero.jpg" />
+    </div>
     <div class="flex column userWrapper login">
       <form action="/authorized" method="post">
         <p>email</p>
-        <input id="email" name="email" class="userFormItem" type="text" placeholder="email" value="g@g.gg" />
-        <p class="formErrorReport" id="emailError"></p>
+        <input name="email" class="userFormItem" type="text" placeholder="email" value="n@n.nn" />
+        <p class="formErrorReport"></p>
 
         <p>password</p>
-        <input id="password" name="password" class="userFormItem" type="password" value="g" />
-        <p class="formErrorReport" id="passwordError"></p>
+        <input name="password" class="userFormItem" type="password" value="1234!@#$qwer" />
+        <p class="formErrorReport"></p>
 
-        <button id="formSubmitter" class="unavailable submit" type="submit"> log in </button>
+        <button class="unavailable submit" type="submit"> log in </button>
       </form>
-
-
-      {{!-- <form action="/test" method="get">
-        <p>test space</p>
-        <input id="email" name="email" class="userFormItem" type="text" placeholder="email" value="b@b.bb" />
-        <p class="formErrorReport" id="emailError"></p>
-
-        <button id="formSubmitter" class="unavailable submit" type="submit"> test </button>
-      </form> --}}
-
-
-
       <form action="/new-account" method="get">
         <button class="yes" type="submit">create account</button>
       </form>
-      <form action="/forgot-password" method="get">
-        <button class="no" type="submit">forgot password</button>
-      </form>
-      <form method='get' action='/splash' >
-        <button type='submit' class='no'>splash page</button>
-      </form>
-    {{/if }}
-
-    <p class="noMarginsPassing preInputMimic">{{ message }}</p>
-    <p class="formErrorReport">{{ dbError }}</p>
+      <div class="flex column">
+        <form action="/forgot-password" method="get">
+          <button class="no" type="submit">forgot password</button>
+        </form>
+      </div>
+      <div class = 'flex column'>
+        <h3>how it works</h3>
+        <p>
+          You choose an organization and an amount of money, and every time you sleep in, you donate to that organization. You are putting a price on the snooze.
+        </p>
+        <p>
+          You can send the money to a group that you like, or for added incentive, to an organization you hate. Maybe knowing that you money will go to the opposing political party or the flat earth society will finally get you out of bed!
+        </p>
+      </div>
+    </div>
   </div>
-
 </div>
-<div id='login'></div>
-
-
-<script src = './rollup/bundle.js'></script>
+<p class="noMarginsPassing preInputMimic">{{ message }}</p>
+<p class="formErrorReport">{{ dbError }}</p>
+{{!-- <script src='./rollup/bundle.js'></script> --}}

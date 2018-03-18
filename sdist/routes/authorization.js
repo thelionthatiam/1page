@@ -1,14 +1,4 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var help = require("../functions/helpers");
@@ -16,73 +6,84 @@ var bcrypt = require("bcrypt");
 var uuidv4 = require("uuid/v4");
 var r = require("../resources/value-objects");
 var alarm_1 = require("../functions/alarm");
-var handlers_1 = require("../resources/handlers");
 var database_1 = require("../middleware/database");
 var router = express.Router();
-var AuthHandler = /** @class */ (function (_super) {
-    __extends(AuthHandler, _super);
-    function AuthHandler(req, res, nextPage, errPage) {
-        var _this = _super.call(this, req, res, nextPage, errPage) || this;
-        _this.inputs = req.body;
-        return _this;
-    }
-    AuthHandler.prototype.handler = function () {
-        var _this = this;
-        var renderObj;
-        var user;
-        var cart;
-        var userSession;
-        this.aQuery.selectUser([this.inputs.email])
-            .then(function (result) {
-            if (result.rows.length === 0) {
-                throw new Error("Email not found");
-            }
-            else {
-                user = r.UserDB.fromJSON(result.rows[0]);
-                return bcrypt.compare(_this.inputs.password, user.password);
-            }
-        })
-            .then(function (result) {
-            if (result === false) {
-                throw new Error('Password incorrect');
-            }
-            else {
-                return help.regenerateSession(_this.req);
-            }
-        })
-            .then(function () {
-            return _this.aQuery.updateSessionID([_this.req.sessionID, user.user_uuid]);
-        })
-            .then(function (result) {
-            userSession = r.UserSession.fromJSON({
-                email: user.email,
-                uuid: user.user_uuid,
-                permission: user.permission,
-                name: user.name
-            });
-            _this.req.session.user = userSession;
-            alarm_1.watchAlarms(userSession);
-            renderObj = {
-                email: user.email,
-                name: user.name
-            };
-            if (user.permission === 'admin') {
-                _this.res.render('admin/home');
-            }
-            else if (user.permission === 'user') {
-                _this.onSuccess(renderObj);
-            }
-        })
-            .catch(function (error) {
-            console.log(error);
-            _this.onFailure(error);
-        });
-    };
-    return AuthHandler;
-}(handlers_1.BaseRequestHandler));
 router.post('/authorized', function (req, res) {
-    var auth = new AuthHandler(req, res, 'home', 'login');
-    auth.handler();
+    console.log('start authorized post');
+    var inputs = {
+        email: req.body.email,
+        password: req.body.password
+    };
+    console.log(inputs);
+    var renderObj;
+    var user;
+    var cart;
+    var userSession;
+    req.aQuery.selectUser([inputs.email])
+        .then(function (result) {
+        if (result.rows.length === 0) {
+            throw new Error("Email not found");
+        }
+        else {
+            console.log('select user', result.rows[0]);
+            user = r.UserDB.fromJSON(result.rows[0]);
+            return bcrypt.compare(inputs.password, user.password);
+        }
+    })
+        .then(function (result) {
+        if (result === false) {
+            throw new Error('Password incorrect');
+        }
+        else {
+            console.log('pass quick', result);
+            return help.regenerateSession(req);
+        }
+    })
+        .then(function () {
+        console.log(req.sessionID);
+        return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+    })
+        .then(function (result) {
+        console.log(req.sessionID);
+        userSession = r.UserSession.fromJSON({
+            email: user.email,
+            uuid: user.user_uuid,
+            permission: user.permission,
+            name: user.name
+        });
+        console.log('user session', userSession);
+        req.session.user = userSession;
+        console.log('session general', req.session);
+        console.log('usersession on session', req.session.user);
+        console.log('id', req.sessionID);
+        alarm_1.watchAlarms(userSession);
+        renderObj = {
+            email: user.email,
+            name: user.name
+        };
+        if (user.permission === 'admin') {
+            res.render('admin/home');
+        }
+        else if (user.permission === 'user') {
+            console.log(result);
+            res.render('home', renderObj);
+        }
+    })
+        .catch(function (error) {
+        console.log(error);
+        res.json(error);
+    });
+});
+router.get('/home-redirect', function (req, res) {
+    console.log('session general redirect', req.session);
+    console.log('id redirect', req.sessionID);
+    var userSession = r.UserSession.fromJSON({
+        email: req.session.user.email,
+        uuid: req.session.user.user_uuid,
+        permission: req.session.user.permission,
+        name: req.session.user.name
+    });
+    res.render('home', { email: req.session.user.email, name: req.session.user.name });
 });
 router.post('/log-out', function (req, res, next) {
     var inactive = uuidv4(); //if its uuidv4 its inactive

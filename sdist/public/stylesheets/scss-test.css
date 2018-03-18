@@ -11,6 +11,10 @@ h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
   justify-content: center;
   align-items: center; }
 
+.marginPaddingFix {
+  margins: 0 !important;
+  padding: 0 !important; }
+
 label {
   font-size: 10px; }
 
@@ -89,11 +93,11 @@ button.unavailable:active {
     margin-top: 10px;
     width: 40vw;
     max-width: 600px;
-    min-width: 400px; }
+    min-width: 300px; }
     .formWrapper form .textFormWrapper h5 {
       margin-top: 10px;
       margin-bottom: 10px;
-      margin-left: 50px;
+      margin-left: 55px;
       transition: 300ms;
       font-weight: 400; }
     .formWrapper form .textFormWrapper div {
@@ -104,17 +108,31 @@ button.unavailable:active {
     .formWrapper form .textFormWrapper p {
       margin-top: 10px;
       margin-bottom: 10px;
-      margin-left: 50px;
+      margin-left: 55px;
       transition: 300ms;
       font-size: 10px; }
+    .formWrapper form .textFormWrapper p.marginPaddingFix {
+      margin: 0;
+      padding: 0; }
     .formWrapper form button {
       margin-top: 10px;
       margin-bottom: 10px; }
 
-.icon {
-  width: 25px;
-  height: 25px;
+.formIcon {
+  width: 30px;
+  height: 30px;
   margin-right: 25px;
+  transition: 300ms; }
+
+#formIcon {
+  width: 30px;
+  height: 30px;
+  margin-right: 25px;
+  transition: 300ms; }
+
+.icon {
+  width: 30px;
+  height: 30px;
   transition: 300ms; }
 
 .fadeIn {
@@ -143,7 +161,8 @@ button.unavailable:active {
 
 .textSuccess {
   color: #068721;
-  border-color: #068721; }
+  font-weight: 600;
+  transition: 300ms; }
 
 .titleSuccess {
   color: #068721; }
@@ -162,7 +181,6 @@ button.unavailable:active {
 
 .textError {
   color: #9f2121;
-  border-color: #9f2121;
   font-weight: 600;
   transition: 300ms; }
 
@@ -192,7 +210,33 @@ button.unavailable:active {
 .passwordQualityWrapper {
   display: flex;
   flex-direction: column;
-  justify-content: stretch; }
+  justify-content: stretch;
+  margin-left: 55px; }
+
+.eye-icon {
+  position: relative;
+  left: 90%;
+  top: -30px; }
+
+.hidePass {
+  height: 30px;
+  border-bottom: 2px solid black;
+  width: 0;
+  transition: 300ms;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden; }
+
+.showPass {
+  height: 30px;
+  border-bottom: 2px solid black;
+  transition: 300ms;
+  width: 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden; }
 
 .paymentInfoWrapper {
   display: flex; }

@@ -23,7 +23,7 @@ var ValidationError = /** @class */ (function (_super) {
     __extends(ValidationError, _super);
     function ValidationError(name, message) {
         var _this = _super.call(this, message) || this;
-        Error.captureStackTrace(_this); // will creae a stack trace.
+        Error.captureStackTrace(_this); // will  creae a stack trace.
         _this.message = message;
         _this.name = name;
         return _this;

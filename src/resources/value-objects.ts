@@ -36,9 +36,9 @@ class UserSession {
   readonly      email?: Email;
   readonly       uuid?: UUID;
   readonly permission?: Permission;
-  readonly       name?: CharOnly | null;
+  readonly       name?: CharOnly;
 
-  private constructor(args:{ email?: Email; uuid?: UUID; permission?: Permission; cart_uuid?: UUID; name?: CharOnly | null; } = {}) {
+  private constructor(args:{ email?: Email; uuid?: UUID; permission?: Permission; cart_uuid?: UUID; name?: CharOnly; } = {}) {
     this.email      = args.email;
     this.uuid       = args.uuid;
     this.permission = args.permission;
@@ -86,10 +86,10 @@ class UserDB {
   readonly  user_uuid?: UUID;
   readonly permission?: Permission;
   readonly      phone?: NumOnly;
-  readonly       name?: CharOnly | null;
+  readonly       name?: CharOnly;
   readonly   password?: String;
 
-  private constructor(args:{ email?: Email; user_uuid?: UUID; permission?: Permission; phone?:NumOnly; name?: CharOnly | null; password?: String } = {}) {
+  private constructor(args:{ email?: Email; user_uuid?: UUID; permission?: Permission; phone?:NumOnly; name?: CharOnly; password?: String } = {}) {
     this.email      = args.email;
     this.user_uuid  = args.user_uuid;
     this.permission = args.permission;

@@ -1,15 +1,12 @@
-// import * as fs from "fs";
-// import * as help from '../functions/promise-helpers';
-// import * as bcrypt from 'bcrypt';
-// import { Inputs, PGOutput } from '../../typings/typings';
-// import { transporter, mailOptions } from "../config/mail-config.js";
-
+import * as help from '../functions/promise-helpers';
+import * as bcrypt from 'bcrypt';
+import { transporter, mailOptions } from "../config/mail-config.js";
 import * as coupons from '../functions/coupon-helpers'
-import { lastFourOnly } from '../functions/promise-helpers'
-import * as express from 'express';
-import { db } from '../middleware/async-database';
 import * as mailer from '../middleware/emailer'
+import * as express from 'express';
 const router = express.Router();
+
+// DB IS CURRENTLY USED HERE
 
 router.use('/test-route', mailer.mailer()) // middleware to load email junk
 router.get('/test-route', (req, res) => {
@@ -92,97 +89,95 @@ router.get('/test-route', (req, res) => {
 
 
 // render forgot pass page
-// router.get('/forgot-password', function (req, res, next) {
-//   res.render('login', {
-//     forgotPassword:true
-//   });
-// })
-//
-// router.route('/forgot-password/authorized')
-//   .post((req, res) => {
-//     let uuid = '';
-//     let nonce = '';
-//     let email = req.body.email;
-//
-//
-//     db.query("SELECT * FROM users WHERE email = $1", [email])
-//       .then((result) => {
-//         if (result.rows.length === 0) {
-//           console.log('should have error');
-//           throw new Error("Email not found");
-//         } else {
-//           uuid = result.rows[0].user_uuid
-//           return help.randomString
-//         }
-//       })
-//       .then((string) => {
-//         return bcrypt.hash(string, 10)
-//       })
-//       .then((hash) => {
-//         nonce = hash
-//         return db.query('UPDATE nonce SET nonce = $1, thetime = default WHERE user_uuid = $2', [hash, uuid])
-//       })
-//       .then((result) => {
-//         req.session.uuid = uuid;
-//         req.session.token = nonce;
-//         mailOptions.to = email;
-//         // doesn't have any content in the email anymore, use html
-//         return transporter.sendMail(mailOptions)
-//       })
-//       .then((result) => {
-//         res.render('login', {
-//           forgotPassword:true,
-//           message: "check your email to authorize new password!"
-//         })
-//       })
-//       .catch((error) => {
-//         res.render('login', { forgotPassword:true, dbError: error })
-//       })
-//     })
-//
-//     .get((req, res) => {
-//       let uuid = req.session.uuid
-//       db.query('SELECT * FROM nonce WHERE user_uuid = $1', [uuid])
-//         .then((result) => {
-//           if (result.rows.length === 0) {
-//             throw new Error("Account not found.")
-//           } else {
-//             var outputs = result.rows[0];
-//             var token = req.session.token;
-//             return help.isSessionValid(token, outputs)
-//           }
-//         })
-//         .then((result) => {
-//           if (result) {
-//             res.render('new-password', {
-//               forgotPassword:true,
-//               email:req.session.uuid,
-//             })
-//           }
-//         })
-//         .catch((error) => {
-//           console.log(error)
-//           res.render('login', { dbError: error })
-//         })
-//     })
-//     .put((req, res) => {
-//       let password = req.body.password;
-//       let uuid = req.session.uuid;
-//       bcrypt.hash(password, 10)
-//         .then((hash) => {
-//           console.log(hash)
-//           password = hash;
-//           return db.query('UPDATE users SET password = $1 WHERE user_uuid = $2', [password, uuid])
-//         })
-//         .then((result) => {
-//             console.log(result);
-//             res.render('login', {
-//               message:"try your new password"
-//             })
-//         })
-//         .catch((error) => {
-//           res.render('new-password', { forgotPassword:true, dbError: error, email:req.session.uuid })
-//         })
-//     })
+router.get('/forgot-password', function (req, res, next) {
+  res.render('forgot-password');
+})
+
+router.route('/forgot-password/authorized')
+  .post((req, res) => {
+    let uuid = '';
+    let nonce = '';
+    let email = req.body.email;
+
+
+    db.query("SELECT * FROM users WHERE email = $1", [email])
+      .then((result) => {
+        if (result.rows.length === 0) {
+          console.log('should have error');
+          throw new Error("Email not found");
+        } else {
+          uuid = result.rows[0].user_uuid
+          return help.randomString
+        }
+      })
+      .then((string) => {
+        return bcrypt.hash(string, 10)
+      })
+      .then((hash) => {
+        nonce = hash
+        return db.query('UPDATE nonce SET nonce = $1, thetime = default WHERE user_uuid = $2', [hash, uuid])
+      })
+      .then((result) => {
+        req.session.uuid = uuid;
+        req.session.token = nonce;
+        mailOptions.to = email;
+        // doesn't have any content in the email anymore, use html
+        return transporter.sendMail(mailOptions)
+      })
+      .then((result) => {
+        res.render('forgot-password', {
+          forgotPassword:true,
+          message: "check your email to authorize new password!"
+        })
+      })
+      .catch((error) => {
+        res.render('login', { forgotPassword:true, dbError: error })
+      })
+    })
+
+    .get((req, res) => {
+      let uuid = req.session.uuid
+      db.query('SELECT * FROM nonce WHERE user_uuid = $1', [uuid])
+        .then((result) => {
+          if (result.rows.length === 0) {
+            throw new Error("Account not found.")
+          } else {
+            var outputs = result.rows[0];
+            var token = req.session.token;
+            return help.isSessionValid(token, outputs)
+          }
+        })
+        .then((result) => {
+          if (result) {
+            res.render('new-password', {
+              forgotPassword:true,
+              email:req.session.uuid,
+            })
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          res.render('login', { dbError: error })
+        })
+    })
+    .put((req, res) => {
+      let password = req.body.password;
+      let uuid = req.session.uuid;
+      bcrypt.hash(password, 10)
+        .then((hash) => {
+          console.log(hash)
+          password = hash;
+          return db.query('UPDATE users SET password = $1 WHERE user_uuid = $2', [password, uuid])
+        })
+        .then((result) => {
+            console.log(result);
+            res.render('login', {
+              message:"try your new password"
+            })
+        })
+        .catch((error) => {
+          res.render('new-password', { forgotPassword:true, dbError: error, email:req.session.uuid })
+        })
+    })
 
 module.exports = router;

@@ -22,8 +22,6 @@ var FormWrapper = /** @class */ (function (_super) {
             var title = dataFromChild[0];
             var value = dataFromChild[2];
             data[title] = value;
-            console.log(data);
-            console.log(dataFromChild);
             _this.setState({
                 data: data
             });
@@ -61,19 +59,10 @@ var FormWrapper = /** @class */ (function (_super) {
         return true;
     };
     FormWrapper.prototype.handleSubmit = function (event) {
-        console.log(this.props.url);
-        fetch(this.props.url, {
-            body: JSON.stringify(this.state.data),
-            method: 'post',
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        });
-        if (this.state.submitable) {
+        if (this.state.submitable && this.props.method === 'post') {
             fetch(this.props.url, {
                 body: JSON.stringify(this.state.data),
-                method: 'post',
+                method: "post",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json"
@@ -87,10 +76,30 @@ var FormWrapper = /** @class */ (function (_super) {
                 submitted: true
             }))
                 .catch(function (error) {
-                console.log(error);
+                console.log(error.stack);
             });
         }
-        event.preventDefault();
+        else if (this.state.submitable && this.props.method === 'get') {
+            fetch(this.props.url, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            });
+        }
+        else {
+            console.log('some validation required before sending!');
+        }
+        this.props.noValidation ? console.log() : event.preventDefault();
+    };
+    FormWrapper.prototype.skipValidation = function () {
+        this.setState({
+            submitable: true
+        });
+    };
+    FormWrapper.prototype.componentDidMount = function () {
+        this.props.noValidation ? this.skipValidation() : console.log('validation required');
     };
     FormWrapper.prototype.render = function () {
         var _this = this;
@@ -101,7 +110,7 @@ var FormWrapper = /** @class */ (function (_super) {
             });
         });
         return (React.createElement("div", { className: 'formWrapper' },
-            React.createElement("form", { onSubmit: this.handleSubmit },
+            React.createElement("form", { onSubmit: this.handleSubmit, action: this.props.url },
                 childWithProp,
                 React.createElement(button_generic_1.default, { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: this.props.buttonText }))));
     };
