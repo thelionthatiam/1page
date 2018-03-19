@@ -63,9 +63,14 @@ class FormWrapper extends React.Component {
   }
 
   handleSubmit(event) {
+    console.log('HANDLE SUBMIT CALLED')
+    event.stopPropagation()
+    event.preventDefault()
     if (this.state.submitable && this.props.method === 'post') {
+      let dummyString = JSON.stringify(this.state.data);
+      console.log('test string: ',dummyString)
       fetch(this.props.url, {
-          body:JSON.stringify(this.state.data),
+          body:dummyString,
           method: "post",
           headers: {
             "Content-Type": "application/json",
@@ -74,6 +79,7 @@ class FormWrapper extends React.Component {
         })
         .then(res => res.json())
         .then(body => console.log(body))
+        // .then(() => {window.location.href = 'http://localhost:8000/home-redirect'})
         .then(
           this.setState({
             submitted:true
@@ -122,11 +128,11 @@ class FormWrapper extends React.Component {
           method = {this.props.method}
           >
           {childWithProp}
-          <Button
-            submitable = {this.state.submitable}
-            submitted = {this.state.submitted}
-            onClick = {this.handleSubmit}
-            buttonText = {this.props.buttonText}
+          <input
+            // submitable = {this.state.submitable}
+            // submitted = {this.state.submitted}
+            //onClick = {this.handleSubmit}
+            // buttonText = {this.props.buttonText}
             type = 'submit'
             />
         </form>

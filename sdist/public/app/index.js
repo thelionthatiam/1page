@@ -10,7 +10,9 @@ for (var tg = 0; tg < allTags.length; tg++) {
         ids.push(tag.id);
     }
 }
+console.log(ids);
 for (var i = 0; i < ids.length; i++) {
+    console.log(ids[i]);
     if (ids[i] === 'new-user') {
         new_account_1.default();
     }

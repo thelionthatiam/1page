@@ -38,6 +38,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "request": "^2.83.0",
+    "rollup": "^0.56.5",
     "runtime": "^0.14.1",
     "strict-mode": "^1.1.2",
     "uuid": "^3.1.0",

@@ -1,4 +1,4 @@
-<div id='login'>
+<div>
   <div class='flex column pageWrapper center'>
     <div class="flex column userWrapper">
       <h1>Snooze you Lose</h1>
@@ -7,7 +7,7 @@
     <div class = "flex column hero-img-wrapper">
        <img class='hero-img' src= "/other-imgs/splash-page-hero.jpg" />
     </div>
-    <div class="flex column userWrapper login">
+    <div class="flex column userWrapper login"  id = 'login'>
       <form action="/authorized" method="post">
         <p>email</p>
         <input name="email" class="userFormItem" type="text" placeholder="email" value="n@n.nn" />
@@ -41,4 +41,4 @@
 </div>
 <p class="noMarginsPassing preInputMimic">{{ message }}</p>
 <p class="formErrorReport">{{ dbError }}</p>
-{{!-- <script src='./rollup/bundle.js'></script> --}}
+<script src='./rollup/bundle.js'></script>

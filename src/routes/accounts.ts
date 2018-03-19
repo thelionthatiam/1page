@@ -18,7 +18,6 @@ router.post('/delete', function (req, res, next) {
   });
 });
 
-
 router.route('/accounts')
   .post((req,res) => {
     let inputs = {

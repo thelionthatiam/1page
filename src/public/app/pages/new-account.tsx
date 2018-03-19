@@ -9,7 +9,7 @@ function newAccount() {
   return ReactDOM.render(
     <div className="flex pageWrapper">
       <div className="flex column userWrapper">
-        <h3 className="formTitle">user info</h3>
+        <h3 className="formTitle">create account</h3>
           <FormWrapper
             buttonText = 'create new account'
             url = 'http://localhost:8000/accounts'

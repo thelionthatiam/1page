@@ -15,6 +15,10 @@ const app = express();
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+  console.log(req.method, req.url, req.body)
+  next();
+})
 app.use(bodyParser.urlencoded({ extended: true,limit:'50kb'}));
 app.set('view engine', "hbs");
 app.engine('hbs', hbs({

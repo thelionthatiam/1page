@@ -10,7 +10,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var button_generic_1 = require("./button-generic");
 var React = require("react");
 var FormWrapper = /** @class */ (function (_super) {
     __extends(FormWrapper, _super);
@@ -59,9 +58,14 @@ var FormWrapper = /** @class */ (function (_super) {
         return true;
     };
     FormWrapper.prototype.handleSubmit = function (event) {
+        console.log('HANDLE SUBMIT CALLED');
+        event.stopPropagation();
+        event.preventDefault();
         if (this.state.submitable && this.props.method === 'post') {
+            var dummyString = JSON.stringify(this.state.data);
+            console.log('test string: ', dummyString);
             fetch(this.props.url, {
-                body: JSON.stringify(this.state.data),
+                body: dummyString,
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
@@ -110,7 +114,12 @@ var FormWrapper = /** @class */ (function (_super) {
         return (React.createElement("div", { className: 'formWrapper' },
             React.createElement("form", { onSubmit: this.handleSubmit, action: this.props.url, method: this.props.method },
                 childWithProp,
-                React.createElement(button_generic_1.default, { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: this.props.buttonText, type: 'submit' }))));
+                React.createElement("input", { 
+                    // submitable = {this.state.submitable}
+                    // submitted = {this.state.submitted}
+                    //onClick = {this.handleSubmit}
+                    // buttonText = {this.props.buttonText}
+                    type: 'submit' }))));
     };
     return FormWrapper;
 }(React.Component));
