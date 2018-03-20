@@ -20,93 +20,62 @@
 //     login();
 //   }
 // }
-import PropTypes from 'prop-types';
-import * as React from 'react';
-import reactRedux, { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
-import { connect } from 'react-redux';
-import * as ReactDOM from 'react-dom'
 
-// Based on: https://github.com/vaibhavmule/react-redux-helloworld/
 
-// Actions
-const HELLO_WORLD = 'HELLO_WORLD'
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import { Provider } from 'react-redux'
+// import { createStore } from 'redux'
+// import reducer from './reducers/index'
+// import HelloWorld from './containers/HelloWorld'
+// import Counter from './components/counter'
+//
+// let store = createStore(reducer) // this is store
+//
+// const render = () => ReactDOM.render(
+//   <Provider store={store}>
+//     <HelloWorld />
+//     <Counter
+//       value = { store.getState() }
+//       onIncrement = { () => store.dispatch({type: 'INCRIMENT'}) }
+//       onDecrement = { () => store.dispatch({type: 'DECREMENT'}) }
+//     />
+//   </Provider>,
+// 	document.getElementById('login')
+// );
+//
+// render()
+// store.subscribe(render)
 
-const helloAction = () => {
-  console.log('helloWorld action')
-  return {
-    type: HELLO_WORLD
-  }
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux'
+import Counter from './components/counter'
+import counter from './reducers/counter'
+
+export const store = createStore(counter)
+console.log(store.getState())
+
+function current() {
+  let state = store.getState()
+  return state.current;
 }
 
-// Components
-class App extends React.Component {
-
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-      <HelloWorld />
-    )
-  }
+function total() {
+  let state = store.getState()
+  return state.total;
 }
 
-const Hello = ({ onClick, message }) => {
-  return (
-    <div>
-      <h1>{ message }</h1>
-      <button onClick={onClick}>Click</button>
-    </div>
-  )
-}
-
-Hello.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired
-}
-
-// Container
-const mapStateToProps = (state, ownProps) => {
-  return {
-    message: state.helloWorld.message
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onClick: () => {
-      dispatch(helloAction())
-    }
-  }
-}
-
-const HelloWorld = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Hello)
-
-// Reducers
-const helloWorldReducer = (state = { message: 'Hello' }, action) => {
-  switch (action.type) {
-    case HELLO_WORLD:
-      console.log('reducer: helloWorld')
-      return Object.assign({}, state, { message: 'Hello, World!' })
-    default:
-      return state
-  }
-}
-
-const helloReducer = combineReducers({
-  helloWorld: helloWorldReducer
-})
-
-// Index
-let store = createStore(helloReducer)
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+const render = () => ReactDOM.render (
+  <Counter
+    current = { current() }
+    total = { total() }
+    onIncrement = { () => store.dispatch({type: 'INCREMENT'}) }
+    onDecrement = { () => store.dispatch({type: 'DECREMENT'}) }
+    onReset = { () => store.dispatch({type: 'RESET'})}
+  />,
   document.getElementById('login')
 )
+
+render()
+store.subscribe(render)
