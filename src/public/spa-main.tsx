@@ -1,12 +1,12 @@
-import Main from '../components/spa-main'
+import Main from './components/spa-main'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-function login() {
+function menu() {
     return ReactDOM.render(
         <Main />,
-      document.getElementById('login')
+      document.getElementById('menu')
     );
 }
 
-export default login;
+export default menu;

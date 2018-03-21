@@ -24,9 +24,9 @@ router.use('/accounts/:email', require('./account/orders'));
 router.use('/accounts/:email', require('./account/settings'));
 router.use('/accounts/:email', require('./account/transactions'));
 
-
+// test
 router.get('/', function (req, res, next) {
-  res.render('login');
+  res.render('app');
 })
 
 // NEEDS GUEST AND USER BEHAVIOR

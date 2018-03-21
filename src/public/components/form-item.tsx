@@ -1,6 +1,6 @@
-import PasswordQuality from '../components/password-quality'
-import scorer from '../../behavior/password-strength'
-import { textFormValidation } from '../helpers/validation'
+import PasswordQuality from './password-quality'
+import scorer from './helpers/password-strength'
+import { textFormValidation } from './helpers/validation'
 
 import * as React from 'react';
 

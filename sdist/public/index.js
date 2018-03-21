@@ -1,29 +1,28 @@
-import newAccount from './new-account';
-import menu from './spa-main'
-import login from './login'
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var new_account_1 = require("./new-account");
+var spa_main_1 = require("./spa-main");
+var login_1 = require("./login");
 var allTags = document.body.getElementsByTagName('*');
 var ids = [];
-
-for (var tg = 0; tg< allTags.length; tg++) {
+for (var tg = 0; tg < allTags.length; tg++) {
     var tag = allTags[tg];
     if (tag.id) {
-            ids.push(tag.id);
-     }
+        ids.push(tag.id);
+    }
 }
-
-for (let i = 0; i < ids.length; i++) {
-  console.log(ids[i])
-  if (ids[i] === 'new-user') {
-    newAccount();
-  } else if (ids[i] === 'login') {
-    login();
-  } else if (ids[i] === 'menu') {
-    menu();
-  }
+for (var i = 0; i < ids.length; i++) {
+    console.log(ids[i]);
+    if (ids[i] === 'new-user') {
+        new_account_1.default();
+    }
+    else if (ids[i] === 'login') {
+        login_1.default();
+    }
+    else if (ids[i] === 'menu') {
+        spa_main_1.default();
+    }
 }
-
-
 // import React from 'react';
 // import ReactDOM from 'react-dom';
 // import { Provider } from 'react-redux'
@@ -48,7 +47,6 @@ for (let i = 0; i < ids.length; i++) {
 //
 // render()
 // store.subscribe(render)
-
 // import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 // import { createStore } from 'redux'
@@ -81,3 +79,4 @@ for (let i = 0; i < ids.length; i++) {
 //
 // render()
 // store.subscribe(render)
+//# sourceMappingURL=index.js.map

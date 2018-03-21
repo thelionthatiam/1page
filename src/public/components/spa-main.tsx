@@ -21,15 +21,15 @@ class Main extends Component {
   render() {
     return (
       <BrowserRouter>
-        <div>
-          <h1>Simple SPA</h1>
-          <ul className="header">
-            <li><Link exact to="/" activeClassName = 'spa-active'>Home</Link></li>
-            <li><Link to="/stuff" activeClassName = 'spa-active'>Stuff</Link></li>
-            <li><Link to="/contact" activeClassName = 'spa-active'>Contact</Link></li>
-            <li><Link to="/new-account" activeClassName = 'spa-active'>New Accout</Link></li>
+        <div className = 'app-wrapper'>
+          <ul className="app-menu">
+            <h1 className = 'app-menu-title'>Simple SPA</h1>
+            <li><Link exact to="/" className = 'app-menu-item'>Home</Link></li>
+            <li><Link to="/stuff" className = 'app-menu-item'>Stuff</Link></li>
+            <li><Link to="/contact" className = 'app-menu-item'>Contact</Link></li>
+            <li><Link to="/new-account" className = 'app-menu-item'>New Accout</Link></li>
           </ul>
-          <div className="content">
+          <div className="app-content">
             <Route exact path = '/' component = {Home} />
             <Route path = '/stuff' component = {Stuff} />
             <Route path = '/contact' component = {Contact} />

@@ -1,30 +1,3 @@
-// import typescript from 'rollup-plugin-typescript';
-//
-// let globals = {
-//   'react':'React',
-//   'react-redux':'reactRedux',
-//   'redux':'redux',
-//   'react-dom':'ReactDOM'}
-//
-//
-// export default {
-//   input: 'src/public/app/index.tsx',
-//   output: {
-//     file: 'sdist/public/rollup/bundle.js',
-//     format: 'iife',
-//     name: '_bundle',
-//     sourcemap: true,
-//     globals: globals
-//   },
-//   watch: {
-//     include: 'src/public/app/**'
-//   },
-//   plugins: [
-//     typescript()
-//   ],
-//   external: ['react', 'react-dom', 'redux'],
-// };
-
 var typescript = require('rollup-plugin-typescript');
 var ts = require('typescript');
 var resolve = require('rollup-plugin-node-resolve');
@@ -34,7 +7,7 @@ var uglify = require('rollup-plugin-uglify');
 var buble = require('rollup-plugin-buble');
 
 module.exports = {
-    input: 'src/public/app/index.tsx',
+    input: 'src/public/index.tsx',
     output: {
       file: 'sdist/public/rollup/bundle.js',
       format: 'iife',
@@ -42,7 +15,9 @@ module.exports = {
       sourcemap:true
     },
     watch: {
-      include: 'src/public/app/**'
+      include: 'src/public/app/**',
+      chokidar: false,
+      clearScreen: false
     },
     plugins: [
       replace({
@@ -70,10 +45,3 @@ module.exports = {
       uglify()
     ]
 };
-
-
-// npm install --save rollup-plugin-node-resolve
-// npm install --save rollup-plugin-commmonjs
-// npm install --save rollup-plugin-replace
-// npm install --save rollup-plugin-uglify
-// npm install --save rollup-plugin-buble

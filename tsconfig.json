@@ -13,7 +13,6 @@
     "node_modules",
     "tsDist",
     "dist",
-    "webpack.config.js",
     "test",
     "coverage"
   ],
