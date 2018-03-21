@@ -207,6 +207,13 @@ button.unavailable:active {
   color: grey;
   border-color: grey; }
 
+.spa-menu-test {
+  width: 100%; }
+
+.spa-active {
+  background-color: black;
+  color: white; }
+
 .passwordQualityWrapper {
   display: flex;
   flex-direction: column;
