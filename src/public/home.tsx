@@ -11,23 +11,6 @@ class Home extends Component {
     this.state = {};
   }
 
-  public componentDidMount() {
-    fetch("http://localhost:8000/permission", {
-        method: "get",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => res.json())
-      .then((body) => console.log(body))
-      .catch((error) => {
-        console.log(error.stack);
-      });
-  }
-  randomMethod() {
-    console.log('im so random')
-  }
   public render() {
     return (
       <div>

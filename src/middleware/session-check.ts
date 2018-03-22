@@ -1,20 +1,15 @@
 import * as helper from '../functions/helpers';
-import { ModRequest, ModResponse, PGOutput } from '../../typings/typings';
-import { RequestHandler } from '../../node_modules/@types/express-serve-static-core/index'
-import { db } from '../middleware/async-database';
+import { db } from './database';
 import * as session from "express-session";
 import * as express from "express";
-const router = express.Router();
 
 
-function check(req:Express.Request, res:ModResponse, next:Function) {
-  console.log('SESSION CHECK MIDDLEWARE RUNNING')
+function check(req:Express.Request, res, next:Function) {
+  console.log('>>>>SESSION CHECK MIDDLEWARE RUNNING')
   if (req.session.user && req.sessionID) {
-    console.log('SESSION USER AND SESSION ID EXIST')
     db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
       .then((result) => {
         if (result.rows[0].sessionid === req.sessionID) {
-          console.log('SESSIONID MATCHES DATABASE')
           return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid])
         } else {
           helper.genError(res, 'login', "you were no longer logged in, try to log in again");
@@ -24,7 +19,7 @@ function check(req:Express.Request, res:ModResponse, next:Function) {
         if (result.rows[0].permission === 'admin') {
           next();
         } else if (result.rows[0].permission === 'user') {
-          console.log('USER IS A USER')
+          console.log('>>>>USER IS A USER: ', req.session.user)
           next();
         } else if (result.rows[0].permission === 'guest') {
         }
@@ -34,7 +29,7 @@ function check(req:Express.Request, res:ModResponse, next:Function) {
         helper.genError(res, 'login', "you were no longer logged in, try to log in again");
       })
   } else {
-    console.log('USER IS A GUEST')
+    console.log('>>>>USER IS A GUEST')
     next()
   }
 }
@@ -69,4 +64,4 @@ function check(req:Express.Request, res:ModResponse, next:Function) {
 //     helper.genError(res, 'login', "you were no longer logged in or you do not have permission to access this page");
 //   }
 // }
-export { check, adminCheck};
+export { check };

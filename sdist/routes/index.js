@@ -23,22 +23,28 @@ router.use('/', require('./authorization'));
 // router.use('/accounts/:email', require('./account/transactions'));
 // HOME
 router.get('/', function (req, res, next) {
-    console.log('index root');
-    res.redirect('/home');
-});
-router.get('/home', function (req, res) {
-    console.log('home redirect');
-    res.render('dummy');
+    console.log('--------------ROOT : ', req.session);
+    console.log('--------------ROOT user information: ', req.session.user);
+    res.render('home');
 });
 // APP
 router.get('/app', function (req, res) {
+    console.log('--------------APP : ', req.session);
+    console.log('--------------APP user information: ', req.session.user);
     res.render('app');
 });
 // PERMISSION GETTER
 router.get('/permission', function (req, res) {
-    var user = { permission: req.session.user };
-    res.json(JSON.stringify(user));
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    console.log('permission', req.session.user);
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    res.json(JSON.stringify(req.session.user));
 });
+// router.get('/permission-test', (req, res) => {
+//   let data = JSON.stringify(req.session.user)
+//   console.log('--------------TEST-PERMISSION :', data)
+//   res.json(data);
+// })
 router.get('/dummy-route', function (req, res) {
     res.render('dummy');
 });

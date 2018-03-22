@@ -6,19 +6,36 @@ import {
   Redirect,
   Switch
 } from 'react-router-dom';
-
 import Home from "./spa-home";
 import Stuff from "./spa-stuff";
 import Contact from "./spa-contact";
 import SpaNewAccount from "./spa-new-account"
 import AlarmClock from "./alarm-clock"
 
-
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      permission:'guest'
+    }
   }
+
+  componentDidMount() {
+    fetch("http://localhost:8000/permission", {
+        method: "get",
+        credentials : 'same-origin',
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      })
+      .then((res) => res.json())
+      .then((body) => console.log('BODY:', body))
+      .catch((error) => {
+        console.log(error.stack);
+      });
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -30,6 +47,7 @@ class App extends Component {
                 src = '/icons/logo-placeholder.svg'
               />
               <h1 className = 'app-menu-title'>s.y.l.</h1>
+              < a href = 'http://localhost:8000/permission'>dummy {this.state.permission}</a>
             </div>
             <li className = 'app-menu-li'>
               <img

@@ -20,16 +20,36 @@ var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {};
+        _this.state = {
+            permission: 'guest'
+        };
         return _this;
     }
+    App.prototype.componentDidMount = function () {
+        fetch("http://localhost:8000/permission", {
+            method: "get",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (body) { return console.log('BODY:', body); })
+            .catch(function (error) {
+            console.log(error.stack);
+        });
+    };
     App.prototype.render = function () {
         return (react_1.default.createElement(react_router_dom_1.BrowserRouter, null,
             react_1.default.createElement("div", { className: 'app-wrapper' },
                 react_1.default.createElement("ul", { className: "app-menu" },
                     react_1.default.createElement("div", { className: 'app-menu-title-wrapper' },
                         react_1.default.createElement("img", { className: 'formIcon fadeIn', src: '/icons/logo-placeholder.svg' }),
-                        react_1.default.createElement("h1", { className: 'app-menu-title' }, "s.y.l.")),
+                        react_1.default.createElement("h1", { className: 'app-menu-title' }, "s.y.l."),
+                        react_1.default.createElement("a", { href: 'http://localhost:8000/permission' },
+                            "dummy ",
+                            this.state.permission)),
                     react_1.default.createElement("li", { className: 'app-menu-li' },
                         react_1.default.createElement("img", { className: 'formIcon fadeIn', src: '/icons/white/clock-alarm.svg' }),
                         react_1.default.createElement(react_router_dom_1.Link, { to: "/alarms", className: 'app-menu-text' }, "alarms")),

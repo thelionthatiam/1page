@@ -7,6 +7,7 @@ import counter from '../reducers/counter'
 export const store = createStore(counter)
 
 class App extends Component {
+  
   render() {
     return (
       <div>

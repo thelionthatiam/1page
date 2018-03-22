@@ -49,11 +49,7 @@ router.post('/authorized', (req, res) => {
         permission:user.permission,
         name:user.name
       })
-      console.log('user session', userSession)
       req.session.user = userSession;
-      console.log('session general', req.session)
-      console.log('usersession on session',req.session.user)
-      console.log('authorization sessionID', req.sessionID)
       // watchAlarms(userSession);
       // Q-ftR0NTm0-ikmeHa6i4RaM955qefD8R
       renderObj = {

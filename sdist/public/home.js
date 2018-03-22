@@ -19,23 +19,6 @@ var Home = /** @class */ (function (_super) {
         _this.state = {};
         return _this;
     }
-    Home.prototype.componentDidMount = function () {
-        fetch("http://localhost:8000/permission", {
-            method: "get",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-        })
-            .then(function (res) { return res.json(); })
-            .then(function (body) { return console.log(body); })
-            .catch(function (error) {
-            console.log(error.stack);
-        });
-    };
-    Home.prototype.randomMethod = function () {
-        console.log('im so random');
-    };
     Home.prototype.render = function () {
         return (react_1.default.createElement("div", null,
             react_1.default.createElement("div", { className: "home-img-wrapper" },

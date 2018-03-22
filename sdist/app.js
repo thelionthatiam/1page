@@ -9,6 +9,7 @@ var database_1 = require("./middleware/database");
 var session = require("express-session");
 var sessionCheck = require("./middleware/session-check");
 var methodOverride = require("method-override");
+var cors = require("cors");
 var app = express();
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
@@ -23,7 +24,15 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
+app.use(function (req, res, next) {
+    console.log('|||||||||||||||||||||||||||||||');
+    console.log(req.headers);
+    console.log('|||||||||||||||||||||||||||||||');
+    next();
+});
 app.use(database_1.init(combiner_1.dbConfig));
+app.options('*', cors());
+app.use(cors());
 //session using memory storage (I think this is application memory) for now. Will not be the case in production. see readme session stores
 app.set('trust proxy', 1); // necessary of server is behind a proxy and using secure:true for cookie
 app.use(session({

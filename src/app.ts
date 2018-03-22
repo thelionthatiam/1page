@@ -10,12 +10,12 @@ import { init } from "./middleware/database";
 import * as session from "express-session";
 import * as sessionCheck from "./middleware/session-check";
 import * as methodOverride from 'method-override';
+import * as cors from 'cors'
 
 const app = express();
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())
-
 app.use(bodyParser.urlencoded({ extended: true,limit:'50kb'}));
 app.set('view engine', "hbs");
 app.engine('hbs', hbs({
@@ -27,9 +27,15 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-
+app.use((req, res, next) => {
+  console.log('|||||||||||||||||||||||||||||||')
+  console.log(req.headers);
+  console.log('|||||||||||||||||||||||||||||||')
+  next();
+})
 app.use(init(dbConfig));
-
+app.options('*', cors())
+app.use(cors())
 //session using memory storage (I think this is application memory) for now. Will not be the case in production. see readme session stores
 app.set('trust proxy', 1) // necessary of server is behind a proxy and using secure:true for cookie
 app.use(session({
