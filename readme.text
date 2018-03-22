@@ -1,18 +1,23 @@
-STEPS TO GET RUNNING IN DEVMODE LOCALLY
+STEPS TO GET RUNNING LOCALLY
 
 1. $ git clone https://github.com/thelionthatiam/greenlight
 2. $ npm install
-3. navigate folders to sdist => config => connect-config.json. Delete this file.
-4. $ npm run build
+3. $ npm run build
+  - be sure to select false for 'use previous connect' so that you can define your own database
   - follow inline prompts
-5. check the connect-config.json to make sure that
+4. check the connect-config.json to make sure that
   - it has been created
   - it has the correct database connection information
-6. $ npm run start
+5. $ npm run start
 
-STEPS TO MODIFY FRONT END FILES EASILY
+WATCH FILES
 
-1. $ rollup -cw
-  - update bundle.js on save
-2. $ npm run watch-css
-  - compile scss to css upon save 
+ - server: $ tsc -w
+ - react: $ rollup -cw
+ - scss: # npm run watch-css
+
+ENVIRONMENT
+OSX: 10.13.3
+NODE: 8.4.0
+POSTGRESQL: 9.6.4
+ELSE: package.json
