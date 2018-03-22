@@ -4,6 +4,23 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "jsEnable": true,
+    "rules": {
+        "no-consecutive-blank-lines": false,
+        "no-console": {
+            "severity": "warning",
+            "options": [
+                "debug",
+                "info",
+                "log",
+                "time",
+                "timeEnd",
+                "trace",
+            ]
+        },
+        "import-source-order": {
+            "named-imports-order": ["lowecase-last"]
+        }
+    },
     "rulesDirectory": []
 }

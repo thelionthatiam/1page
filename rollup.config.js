@@ -15,9 +15,7 @@ module.exports = {
       sourcemap:true
     },
     watch: {
-      include: 'src/public/app/**',
-      chokidar: false,
-      clearScreen: false
+      include: 'src/public/**'
     },
     plugins: [
       replace({

@@ -1,5 +1,5 @@
-import newAccount from './new-account';
 import app from './spa-main'
+import newAccount from './new-account';
 import login from './login'
 import home from './home'
 
@@ -14,6 +14,7 @@ for (var tg = 0; tg< allTags.length; tg++) {
 }
 
 console.log(ids)
+
 
 for (let i = 0; i < ids.length; i++) {
   if (ids[i] === 'new-user') {

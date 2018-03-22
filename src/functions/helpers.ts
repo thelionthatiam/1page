@@ -1,5 +1,5 @@
-import * as bcrypt from 'bcrypt';
-import * as merge from './merge';
+import * as bcrypt from "bcrypt";
+import * as merge from "./merge";
 
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // want to remove req, but session.regenerate doesn't return promise
@@ -24,21 +24,18 @@ function genError(res:ModResponse, thisPage:string, param:Error | string) {
 }
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 
-
-
 // BUSINESS LOGIC TIER
 
-
 function dbErrTranslator(error:string) {
-  let emailChecker = /(email)/g
-    , phoneChecker = /(phone)/g
-    , keyChecker = /(key)/g
-    , checkChecker = /(check)/g
-    , passChecker = /(password)/g
-    , lengthChecker = /(value too long)/g
-    , alarms = /(alarms)/g
-    , awake = /(awake)/g
-    , title = /(title)/g
+  const emailChecker = /(email)/g
+  const phoneChecker = /(phone)/g
+  const keyChecker = /(key)/g
+  const checkChecker = /(check)/g
+  const passChecker = /(password)/g
+  const lengthChecker = /(value too long)/g
+  const alarms = /(alarms)/g
+  const awake = /(awake)/g
+  const title = /(title)/g
 
   if (emailChecker.test(error)) {
     if (keyChecker.test(error)) {
@@ -69,21 +66,20 @@ function dbErrTranslator(error:string) {
   }
 }
 
-function compare (a:Alarm, b:Alarm) {
-	const awakeA = parseInt(a.awake);
-	const awakeB = parseInt(b.awake);
+function compare(a:Alarm, b:Alarm) {
+  const awakeA = parseInt(a.awake);
+  const awakeB = parseInt(b.awake);
 
-	let comp = 0
-	if (awakeA > awakeB) {
-		comp = 1;
-	} else if (awakeB > awakeA) {
-		comp = -1;
-	}
-	return comp;
+  let comp = 0;
+  if (awakeA > awakeB) {
+    comp = 1;
+  } else if (awakeB > awakeA) {
+    comp = -1;
+  }
+  return comp;
 }
 
-
-let randomString = new Promise(
+const randomString = new Promise(
   (resolve, reject) => {
     let string = "";
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+-=`,.<>/?;:'{}[]|";
@@ -93,35 +89,35 @@ let randomString = new Promise(
     if (typeof string === "undefined") {
       reject("randomString failed to create anything ")
     }
-    resolve(string)
+    resolve(string);
   }
 )
 
-let isSessionValid = (token, outputs) => {
+const isSessionValid = (token, outputs) => {
   return new Promise(
     (resolve, reject) => {
-      let nonce = outputs.nonce
-        , oldDate = new Date(outputs.thetime)
-        , oldTime = oldDate.getTime()
-        , currentDate = new Date()
-        , currentTime = currentDate.getTime()
+      const nonce = outputs.nonce;
+      const oldDate = new Date(outputs.thetime);
+      const oldTime = oldDate.getTime();
+      const currentDate = new Date();
+      const currentTime = currentDate.getTime();
 
       if (token === nonce && currentTime < oldTime + 120000) {
         resolve(true);
       } else {
-        let failure = new Error('Token has expired, please try again.')
+        const failure = new Error("Token has expired, please try again.");
         reject(failure);
       }
-    }
-  )
-}
+    },
+  );
+};
 
-let merger = (objectOne, objectTwo) => {
+const merger = (objectOne, objectTwo) => {
   return new Promise(
     (resolve, reject) => {
       let ans = merge.deepMerge(objectOne, objectTwo);
-      if (ans === 'circular object') {
-        let failure = new Error('Circular object')
+      if (ans === "circular object") {
+        let failure = new Error("Circular object")
         reject(failure);
       } else {
         resolve(ans);
@@ -130,46 +126,39 @@ let merger = (objectOne, objectTwo) => {
   )
 }
 
-
 function lastFourOnly(cardNumber:string) {
-	let arr = [];
-  cardNumber = cardNumber.split('');
-
+  const arr = [];
+  
+  cardNumber = cardNumber.split("");
   for (let i = cardNumber.length; arr.length < 5; i-- ) {
-    arr.push(cardNumber[i])
+    arr.push(cardNumber[i]);
    }
-   arr.reverse()
-   return arr.join('')
+
+ arr.reverse();
+ return arr.join("")
 }
 
 // COULD GENERALIZE THIS FUNCTION: ADD KEY/VALUE(S) PAIR TO OBJCT
 function addOrderUUIDItemNumber(queryResult, order_uuid) {
   for (let i = 0; i < queryResult.length; i++) {
     queryResult[i].order_uuid = order_uuid;
-    queryResult[i].item_number = i+1;
+    queryResult[i].item_number = i + 1;
   }
   return queryResult;
 }
 
-let orgName = 'United Nations Childrens Fund';
+const orgName = "United Nations Childrens Fund";
 
-function idMaker(name:string) {
+function idMaker(name: string) {
   name = name.toLowerCase();
-  let arrName = name.split('');
+  const arrName = name.split("");
   for (let i = 0; i < arrName.length; i++) {
-    if (arrName[i] === ' ') {
-      arrName[i] = '-';
+    if (arrName[i] === " ") {
+      arrName[i] = "-";
     }
   }
-  return arrName.join('');
+  return arrName.join("");
 }
-
-console.log(idMaker(orgName))
-
-function convertToSeconds(time:string) {
-
-}
-
 
 export {
   dbErrTranslator,
@@ -182,5 +171,5 @@ export {
   lastFourOnly,
   addOrderUUIDItemNumber,
   merger,
-  idMaker
+  idMaker,
 };

@@ -27,7 +27,15 @@ exports.genError = genError;
 // REMOVE OR REWORK THESE FUNCTIONS---------------------------------
 // BUSINESS LOGIC TIER
 function dbErrTranslator(error) {
-    var emailChecker = /(email)/g, phoneChecker = /(phone)/g, keyChecker = /(key)/g, checkChecker = /(check)/g, passChecker = /(password)/g, lengthChecker = /(value too long)/g, alarms = /(alarms)/g, awake = /(awake)/g, title = /(title)/g;
+    var emailChecker = /(email)/g;
+    var phoneChecker = /(phone)/g;
+    var keyChecker = /(key)/g;
+    var checkChecker = /(check)/g;
+    var passChecker = /(password)/g;
+    var lengthChecker = /(value too long)/g;
+    var alarms = /(alarms)/g;
+    var awake = /(awake)/g;
+    var title = /(title)/g;
     if (emailChecker.test(error)) {
         if (keyChecker.test(error)) {
             return "The email you put in has already been used. Try again.";
@@ -91,12 +99,16 @@ var randomString = new Promise(function (resolve, reject) {
 exports.randomString = randomString;
 var isSessionValid = function (token, outputs) {
     return new Promise(function (resolve, reject) {
-        var nonce = outputs.nonce, oldDate = new Date(outputs.thetime), oldTime = oldDate.getTime(), currentDate = new Date(), currentTime = currentDate.getTime();
+        var nonce = outputs.nonce;
+        var oldDate = new Date(outputs.thetime);
+        var oldTime = oldDate.getTime();
+        var currentDate = new Date();
+        var currentTime = currentDate.getTime();
         if (token === nonce && currentTime < oldTime + 120000) {
             resolve(true);
         }
         else {
-            var failure = new Error('Token has expired, please try again.');
+            var failure = new Error("Token has expired, please try again.");
             reject(failure);
         }
     });
@@ -105,8 +117,8 @@ exports.isSessionValid = isSessionValid;
 var merger = function (objectOne, objectTwo) {
     return new Promise(function (resolve, reject) {
         var ans = merge.deepMerge(objectOne, objectTwo);
-        if (ans === 'circular object') {
-            var failure = new Error('Circular object');
+        if (ans === "circular object") {
+            var failure = new Error("Circular object");
             reject(failure);
         }
         else {
@@ -117,12 +129,12 @@ var merger = function (objectOne, objectTwo) {
 exports.merger = merger;
 function lastFourOnly(cardNumber) {
     var arr = [];
-    cardNumber = cardNumber.split('');
+    cardNumber = cardNumber.split("");
     for (var i = cardNumber.length; arr.length < 5; i--) {
         arr.push(cardNumber[i]);
     }
     arr.reverse();
-    return arr.join('');
+    return arr.join("");
 }
 exports.lastFourOnly = lastFourOnly;
 // COULD GENERALIZE THIS FUNCTION: ADD KEY/VALUE(S) PAIR TO OBJCT
@@ -134,19 +146,16 @@ function addOrderUUIDItemNumber(queryResult, order_uuid) {
     return queryResult;
 }
 exports.addOrderUUIDItemNumber = addOrderUUIDItemNumber;
-var orgName = 'United Nations Childrens Fund';
+var orgName = "United Nations Childrens Fund";
 function idMaker(name) {
     name = name.toLowerCase();
-    var arrName = name.split('');
+    var arrName = name.split("");
     for (var i = 0; i < arrName.length; i++) {
-        if (arrName[i] === ' ') {
-            arrName[i] = '-';
+        if (arrName[i] === " ") {
+            arrName[i] = "-";
         }
     }
-    return arrName.join('');
+    return arrName.join("");
 }
 exports.idMaker = idMaker;
-console.log(idMaker(orgName));
-function convertToSeconds(time) {
-}
 //# sourceMappingURL=helpers.js.map

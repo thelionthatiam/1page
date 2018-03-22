@@ -1,23 +1,23 @@
-import { connect } from 'react-redux'
-import { helloWorld, reset } from '../actions/hello'
-import Hello from '../components/Hello'
+import { connect } from "react-redux";
+import { helloWorld, reset } from "../actions/hello";
+import Hello from "../components/Hello";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    message: state.helloWorld.message
-  }
-}
+    message: state.helloWorld.message,
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick: () => dispatch(helloWorld()),
-    reset: () => dispatch(reset())
-  }
-}
+    reset: () => dispatch(reset()),
+  };
+};
 
 const HelloWorld = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Hello)
+  mapDispatchToProps,
+)(Hello);
 
-export default HelloWorld
+export default HelloWorld;

@@ -1,0 +1,1 @@
+{"version":3,"file":"spa-contact.js","sourceRoot":"","sources":["../../../src/public/components/spa-contact.tsx"],"names":[],"mappings":";;;;;;;;;;;;AAAA,+BAAyC;AAEzC;IAAsB,2BAAS;IAA/B;;IAWA,CAAC;IAVC,wBAAM,GAAN;QACE,MAAM,CAAC,CACL;YACE,2DAAuB;YACvB;;gBACI,qCAAG,IAAI,EAAC,yBAAyB,aAAW;oBAC5C,CACA,CACP,CAAC;IACJ,CAAC;IACH,cAAC;AAAD,CAAC,AAXD,CAAsB,iBAAS,GAW9B;AAED,kBAAe,OAAO,CAAC"}

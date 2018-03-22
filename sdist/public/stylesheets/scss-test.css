@@ -105,7 +105,6 @@ button.unavailable:active {
   background-image: url("/other-imgs/splash-page-hero.jpg");
   background-position: center center;
   background-repeat: no-repeat;
-  background-attachement: fixed;
   background-size: cover;
   background-color: #282828; }
 

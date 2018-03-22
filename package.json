@@ -6,7 +6,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar src/public/stylesheets -o sdist/public/stylesheets",
     "watch-css": "npm run build-css && node-sass-chokidar src/public/stylesheets -o sdist/public/stylesheets --watch --recursive",
-    "watch-react": "./node-modules/.bin/rollup -cw",
+    "watch-react": "./sdist/config/watch.js",
     "build": "node ./sdist/config/build/build.js",
     "start": "node ./sdist/app.js",
     "test": "nyc mocha ./test/*",
@@ -15,10 +15,12 @@
   "author": "thelionthatiam",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^6.3.0",
     "an-array-of-english-words": "^1.3.1",
     "axios": "^0.18.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "chokidar": "^2.0.2",
     "express": "^4.15.4",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.5",
