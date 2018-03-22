@@ -18,22 +18,22 @@ function newAccount() {
             <FormItem
               title = 'name'
               placeholder = 'type in your username'
-              imgSrc = {'/icons/user-fem.svg'}
+              imgSrc = {'/icons/black/user-fem.svg'}
               />
             <FormItem
               title = 'email'
               placeholder = 'type in your email'
-              imgSrc = {'/icons/mail.svg'}
+              imgSrc = {'/icons/black/mail.svg'}
               />
             <FormItem
               title = 'phone'
               placeholder = 'type in your phone number'
-              imgSrc = {'/icons/phone.svg'}
+              imgSrc = {'/icons/black/phone.svg'}
               />
             <FormItem
               title = 'password'
               placeholder = 'type in your password'
-              imgSrc = {'/icons/key.svg'}
+              imgSrc = {'/icons/black/key.svg'}
               type = 'password'
               newPass = {true}
               />

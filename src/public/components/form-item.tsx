@@ -275,7 +275,7 @@ class TextInput extends React.Component {
 
       } else {
         eye = <img
-          src = '/icons/eye.svg'
+          src = '/icons/black/eye.svg'
           className = 'icon fadeIn'
           onClick = {this.handleClick}
           />

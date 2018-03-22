@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var new_account_1 = require("./new-account");
-var spa_main_1 = require("./spa-main");
+'./spa-main';
 var login_1 = require("./login");
-var allTags = document.body.getElementsByTagName('*');
+'./homeepppar allTags = document.body.getElementsByTagName(' * ');;
 var ids = [];
 for (var tg = 0; tg < allTags.length; tg++) {
     var tag = allTags[tg];
@@ -11,8 +11,8 @@ for (var tg = 0; tg < allTags.length; tg++) {
         ids.push(tag.id);
     }
 }
+console.log(ids);
 for (var i = 0; i < ids.length; i++) {
-    console.log(ids[i]);
     if (ids[i] === 'new-user') {
         new_account_1.default();
     }
@@ -20,10 +20,15 @@ for (var i = 0; i < ids.length; i++) {
         login_1.default();
     }
     else if (ids[i] === 'menu') {
-        spa_main_1.default();
+        menu();
     }
+    else if (ids[i] === 'app{)
+        apppp;
 }
-// import React from 'react';
+homeeimport;
+React;
+fhomee;
+'react';
 // import ReactDOM from 'react-dom';
 // import { Provider } from 'react-redux'
 // import { createStore } from 'redux'

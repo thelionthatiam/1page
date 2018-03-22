@@ -15,10 +15,7 @@ const app = express();
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())
-app.use((req, res, next) => {
-  console.log(req.method, req.url, req.body)
-  next();
-})
+
 app.use(bodyParser.urlencoded({ extended: true,limit:'50kb'}));
 app.set('view engine', "hbs");
 app.engine('hbs', hbs({
@@ -39,17 +36,39 @@ app.use(session({
   name:'id',
   secret: 'this is my secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-      maxAge: 3600000, // CHANGE TO EXTEND
       httpOnly:true,
       // secure: true // will not send cookie unless https connection is established
     },
   })
 );
 
-app.use('/accounts/\*', sessionCheck.check)
-app.use('/admin/\*', sessionCheck.adminCheck)
+// AND REPORTS ON SESSION DATA
+
+// app.use((req, res, next) => {
+//   if (typeof req.session.user === 'undefined') {
+//     console.log('user is undf')
+//     console.log('user: ', req.session.user)
+//     console.log('sessionID: ', req.sessionID)
+//     // req.session.user = { permission: 'guest' }
+//   } else if (req.session.user.permission === 'guest') {
+//     console.log('user is guest')
+//     console.log('user: ', req.session.user)
+//     console.log('sessionID: ', req.sessionID)
+//     // req.session.user = { permission: 'guest' }
+//   } else {
+//     console.log('user is a guest')
+//     console.log('user: ', req.session.user)
+//     console.log('sessionID: ', req.sessionID)
+//   }
+//
+//   next();
+// })
+
+app.use(sessionCheck.check)
+// app.use('/accounts/\*', sessionCheck.check)
+// app.use('/admin/\*', sessionCheck.adminCheck)
 app.use('/', require('./routes/index'))
 
 app.use(function(req, res, next) {

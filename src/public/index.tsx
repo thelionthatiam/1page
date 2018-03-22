@@ -1,6 +1,7 @@
 import newAccount from './new-account';
-import menu from './spa-main'
+import app from './spa-main'
 import login from './login'
+import home from './home'
 
 var allTags = document.body.getElementsByTagName('*');
 var ids = [];
@@ -12,14 +13,17 @@ for (var tg = 0; tg< allTags.length; tg++) {
      }
 }
 
+console.log(ids)
+
 for (let i = 0; i < ids.length; i++) {
-  console.log(ids[i])
   if (ids[i] === 'new-user') {
     newAccount();
   } else if (ids[i] === 'login') {
     login();
-  } else if (ids[i] === 'menu') {
-    menu();
+  } else if (ids[i] === 'app') {
+    app();
+  } else if (ids[i] === 'home') {
+    home();
   }
 }
 

@@ -1,12 +1,12 @@
-import Main from './components/spa-main'
+import App from './components/spa-main'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-function menu() {
+function app() {
     return ReactDOM.render(
-        <Main />,
-      document.getElementById('menu')
+        <App />,
+      document.getElementById('app')
     );
 }
 
-export default menu;
+export default app;

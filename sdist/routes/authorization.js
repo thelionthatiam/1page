@@ -9,12 +9,10 @@ var alarm_1 = require("../functions/alarm");
 var database_1 = require("../middleware/database");
 var router = express.Router();
 router.post('/authorized', function (req, res) {
-    console.log('start authorized post');
     var inputs = {
         email: req.body.email,
         password: req.body.password
     };
-    console.log(inputs);
     var renderObj;
     var user;
     var cart;
@@ -25,7 +23,6 @@ router.post('/authorized', function (req, res) {
             throw new Error("Email not found");
         }
         else {
-            console.log('select user', result.rows[0]);
             user = r.UserDB.fromJSON(result.rows[0]);
             return bcrypt.compare(inputs.password, user.password);
         }
@@ -35,16 +32,13 @@ router.post('/authorized', function (req, res) {
             throw new Error('Password incorrect');
         }
         else {
-            console.log('pass quick', result);
             return help.regenerateSession(req);
         }
     })
         .then(function () {
-        console.log(req.sessionID);
         return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
     })
         .then(function (result) {
-        console.log(req.sessionID);
         userSession = r.UserSession.fromJSON({
             email: user.email,
             uuid: user.user_uuid,
@@ -55,8 +49,9 @@ router.post('/authorized', function (req, res) {
         req.session.user = userSession;
         console.log('session general', req.session);
         console.log('usersession on session', req.session.user);
-        console.log('id', req.sessionID);
-        alarm_1.watchAlarms(userSession);
+        console.log('authorization sessionID', req.sessionID);
+        // watchAlarms(userSession);
+        // Q-ftR0NTm0-ikmeHa6i4RaM955qefD8R
         renderObj = {
             email: user.email,
             name: user.name
@@ -66,15 +61,18 @@ router.post('/authorized', function (req, res) {
         }
         else if (user.permission === 'user') {
             console.log(result);
-            res.render('home', {
-                email: req.session.user.email,
-                name: req.session.user.name
-            });
+            res.render('app');
+            // res.render('home', {
+            //   email:req.session.user.email,
+            //   name:req.session.user.name
+            // })
         }
     })
         .catch(function (error) {
         console.log(error);
-        res.json(error);
+        res.render('login', {
+            dbError: error
+        });
     });
 });
 router.post('/api/authorized', function (req, res) {
@@ -142,17 +140,6 @@ router.post('/api/authorized', function (req, res) {
         console.log(error);
         res.json(error);
     });
-});
-router.get('/home-redirect', function (req, res) {
-    console.log('session general redirect', req.session);
-    console.log('id redirect', req.sessionID);
-    var userSession = r.UserSession.fromJSON({
-        email: req.session.user.email,
-        uuid: req.session.user.user_uuid,
-        permission: req.session.user.permission,
-        name: req.session.user.name
-    });
-    res.render('home', { email: req.session.user.email, name: req.session.user.name });
 });
 router.post('/log-out', function (req, res, next) {
     var inactive = uuidv4(); //if its uuidv4 its inactive

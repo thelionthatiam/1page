@@ -1,0 +1,53 @@
+<div class="full-page">
+  <h1>Home</h1>
+  <h3>Welcome, {{ name }}.</h3>
+  <div>
+    <p>
+      <b>about</b>
+    </p>
+    <p class = 'mini'>
+      You can manage everything from your alarms, to your donations to your pricing here. Please don't hesitate to use the contact with any questions, concerns or refunds.
+    </p>
+  </div>
+  <form action="/accounts/{{email}}/alarms" method="get">
+    <button class="yes">my alarms</button>
+    <p class = 'button-titles mini'>
+      Add, update and delete your alarms
+    </p>
+  </form>
+  <form action="/organizations">
+    <button class="yes">organizations</button>
+    <p class = 'button-titles mini'>
+      Choose which organization you will donate to, and how much
+    </p>
+  </form>
+  <form action="/accounts/{{email}}/organizations" method="get">
+    <button class="yes" type="submit">my organizations</button>
+    <p class = 'button-titles mini'>
+      Manage which of your saved organizations are active
+    </p>
+  </form>
+  <form action="/accounts/{{email}}" method="get">
+    <button class="yes">my account</button>
+    <p class = 'button-titles mini'>
+      Contact information, credit card numbers, passwords and more
+    </p>
+  </form>
+  <form action="/contact" method="get">
+    <button class="yes">contact</button>
+    <p class = 'button-titles mini'>
+      Get your questions answered -- fast.
+    </p>
+  </form>
+  <form action="/log-out" method='post'>
+    <button class="no">sign out</button>
+  </form>
+
+
+  <form action="/accounts/{{email}}/cart" method="get">
+    <button class="yes" type="submit">cart</button>
+    <p class = 'button-titles mini'>
+      This is the old cart, which may be a useful system in the future
+    </p>
+  </form>
+</div>

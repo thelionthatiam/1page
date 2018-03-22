@@ -1,32 +1,59 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 const router = express.Router();
-// import * as test from './test';
 
 router.use('/', require('./authorization'));
-router.use('/', require('./email'));
-router.use('/', require('./accounts'));
-router.use('/', require('./shopping'));
-router.use('/', require('./organizations'));
-// router.use('/', test.router);
+// router.use('/', require('./email'));
+// router.use('/', require('./accounts'));
+// router.use('/', require('./shopping'));
+// router.use('/', require('./organizations'));
+//
+// router.use('/admin', require('./admin/products'));
+// router.use('/admin', require('./admin/coupons'));
+// router.use('/admin', require('./admin/accounts'));
+//
+// router.use('/accounts', require('./account'));
+// router.use('/accounts/:email', require('./account/alarms'));
+// router.use('/accounts/:email', require('./account/payment'));
+// router.use('/accounts/:email', require('./account/organizations'));
+// router.use('/accounts/:email', require('./account/cart'));
+// router.use('/accounts/:email', require('./account/coupons'));
+// router.use('/accounts/:email', require('./account/orders'));
+// router.use('/accounts/:email', require('./account/settings'));
+// router.use('/accounts/:email', require('./account/transactions'));
 
-router.use('/admin', require('./admin/products'));
-router.use('/admin', require('./admin/coupons'));
-router.use('/admin', require('./admin/accounts'));
-
-router.use('/accounts', require('./account'));
-router.use('/accounts/:email', require('./account/alarms'));
-router.use('/accounts/:email', require('./account/payment'));
-router.use('/accounts/:email', require('./account/organizations'));
-router.use('/accounts/:email', require('./account/cart'));
-router.use('/accounts/:email', require('./account/coupons'));
-router.use('/accounts/:email', require('./account/orders'));
-router.use('/accounts/:email', require('./account/settings'));
-router.use('/accounts/:email', require('./account/transactions'));
-
-// test
+// HOME
 router.get('/', function (req, res, next) {
+  console.log('index root')
+  res.redirect('/home');
+})
+
+router.get('/home', (req, res) => {
+  console.log('home redirect')
+  res.render('dummy')
+})
+
+// APP
+router.get('/app', (req, res) => {
   res.render('app');
+})
+
+// PERMISSION GETTER
+
+router.get('/permission', (req, res) => {
+  let user = { permission: req.session.user }
+  res.json(JSON.stringify(user))
+})
+
+router.get('/dummy-route', (req, res) => {
+  res.render('dummy')
+})
+
+
+// TO LOGIN PAGE
+
+router.get('/to-login', (req, res) => {
+  res.render('login')
 })
 
 // NEEDS GUEST AND USER BEHAVIOR
