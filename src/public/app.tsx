@@ -1,25 +1,19 @@
-import React, { Component } from 'react';
-import HelloWorld from '../containers/HelloWorld'
-import { createStore } from 'redux'
-import Counter from '../components/counter'
-import counter from '../reducers/counter' 
+import App from './components/spa-main';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import permissions from './reducers/permissions'
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-export const store = createStore(counter)
+let store = createStore(permissions)
 
-class App extends Component {
-  
-  render() {
-    return (
-      <div>
-        <HelloWorld />
-        <Counter
-          value = { store.getState() }
-          onIncrement = { () => store.dispatch({type: 'INCRIMENT'}) }
-          onDecrement = { () => store.dispatch({type: 'DECREMENT'}) }
-        />
-      </div>
+function app() {
+    return ReactDOM.render(
+        <Provider>
+            <App/>
+        </Provider>,
+      document.getElementById('app')
     );
-  }
 }
 
-export default App;
+export default app;

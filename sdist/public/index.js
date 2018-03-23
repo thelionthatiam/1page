@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var spa_main_1 = require("./spa-main");
+var app_1 = require("./app");
 var new_account_1 = require("./new-account");
 var login_1 = require("./login");
 var home_1 = require("./home");
@@ -21,7 +21,7 @@ for (var i = 0; i < ids.length; i++) {
         login_1.default();
     }
     else if (ids[i] === 'app') {
-        spa_main_1.default();
+        app_1.default();
     }
     else if (ids[i] === 'home') {
         home_1.default();

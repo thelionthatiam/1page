@@ -1,4 +1,4 @@
-import app from './spa-main'
+import app from './app'
 import newAccount from './new-account';
 import login from './login'
 import home from './home'
