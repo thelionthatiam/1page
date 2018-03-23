@@ -16,6 +16,6 @@ var permissionCheck = function (state, action) {
             return state;
     }
 };
-var permission = redux_1.combineReducers({ permissionCheck: permissionCheck });
-exports.default = permission;
+var permissions = redux_1.combineReducers({ permissionCheck: permissionCheck });
+exports.default = permissions;
 //# sourceMappingURL=permissions.js.map

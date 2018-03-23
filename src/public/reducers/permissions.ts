@@ -16,6 +16,6 @@ const permissionCheck = (state = initialState, action) => {
     }
 }
 
-const permission = combineReducers({permissionCheck})
+const permissions = combineReducers({permissionCheck})
 
-export default permission
+export default permissions
