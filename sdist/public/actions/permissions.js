@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GUEST = 'GUEST';
 exports.USER = 'USER';
-exports.helloWorld = function () {
+exports.guest = function () {
     return {
-        type: HELLO_WORLD
+        type: exports.GUEST
     };
 };
-exports.reset = function () {
+exports.user = function () {
     return {
-        type: RESET
+        type: exports.USER
     };
 };
 //# sourceMappingURL=permissions.js.map

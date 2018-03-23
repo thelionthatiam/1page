@@ -34,8 +34,13 @@ router.get('/app', function (req, res) {
 // PERMISSION GETTER
 router.get('/permission', function (req, res) {
     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-    console.log('permission', req.session.user);
+    console.log('permission: ', req.session.user);
     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    if (req.session.user === 'undefined') {
+        req.session.user = { permission: 'guest' };
+        console.log('after default def: ', req.session.user);
+        res.json(JSON.stringify(req.session.user));
+    }
     res.json(JSON.stringify(req.session.user));
 });
 // router.get('/permission-test', (req, res) => {

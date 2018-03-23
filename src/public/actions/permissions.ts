@@ -1,14 +1,15 @@
 export const GUEST = 'GUEST'
 export const USER = 'USER'
 
-export const helloWorld = () => {
-  return {
-    type: HELLO_WORLD
-  }
+
+export const guest = () => {
+    return {
+      type: GUEST
+    }
 }
 
-export const reset = () => {
+export const user = () => {
   return {
-    type: RESET
+    type: USER
   }
 }

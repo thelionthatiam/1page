@@ -12,7 +12,7 @@ function childProcess(string, cb) {
         }
     });
 }
-childProcess('sudo rollup --config --watch', function (err, stdout, stderr) {
+childProcess('sudo rollup -cw', function (err, stdout, stderr) {
     err ? console.log(stderr) : stdout;
 });
 //# sourceMappingURL=watch.js.map

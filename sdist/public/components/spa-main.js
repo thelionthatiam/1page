@@ -14,6 +14,12 @@ var react_1 = require("react");
 var react_router_dom_1 = require("react-router-dom");
 var spa_contact_1 = require("./spa-contact");
 var spa_new_account_1 = require("./spa-new-account");
+AppStates;
+{
+    permission: string;
+    email ?  : string;
+    uuid ?  : string;
+}
 var App = /** @class */ (function (_super) {
     __extends(App, _super);
     function App(props) {

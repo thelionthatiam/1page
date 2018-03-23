@@ -1,6 +1,5 @@
 import {
   UserException,
-  ValidationResult,
   ValidationError,
   ValueScalar,
   Email,

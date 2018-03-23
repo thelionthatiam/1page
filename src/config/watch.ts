@@ -10,6 +10,6 @@ function childProcess(string:string, cb:Function) {
   })
 }
 
-childProcess('sudo rollup --config --watch', (err:Error, stdout:string, stderr:string) => {
+childProcess('sudo rollup -cw', (err:Error, stdout:string, stderr:string) => {
   err ? console.log(stderr) : stdout;
 })

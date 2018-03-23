@@ -1,16 +1,23 @@
-import App from './components/spa-main';
+import AppWithActions from './containers/appActions';
+import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import permissions from './reducers/permissions'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
-let store = createStore(permissions)
+const store = createStore(permissions, composeWithDevTools(
+    applyMiddleware(
+        thunkMiddleware,
+    )
+))
+
 
 function app() {
     return ReactDOM.render(
-        <Provider>
-            <App/>
+        <Provider store = {store}>
+            <AppWithActions/>
         </Provider>,
       document.getElementById('app')
     );
