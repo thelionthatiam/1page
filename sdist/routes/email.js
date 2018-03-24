@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var help = require("../functions/promise-helpers");
 var bcrypt = require("bcrypt");
 var mail_config_js_1 = require("../config/mail-config.js");
+var database_1 = require("../middleware/database");
 var coupons = require("../functions/coupon-helpers");
 var mailer = require("../middleware/emailer");
 var express = require("express");
@@ -11,22 +12,20 @@ var router = express.Router();
 router.use('/test-route', mailer.mailer()); // middleware to load email junk
 router.get('/test-route', function (req, res) {
     var uuid = '3e792f4c-1f49-4fcd-808c-fee4203ca056', cartContent = [], totalCost = 0, totalItems = 0, price, quantity, card_number, lastFour, discounted = 1, cart_uuid = '530e03ed-28be-47c1-a774-cff6486f0606', email = 'b@b.bb';
-    db.query('SELECT p.product_id, name, price, size, description, discount FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [cart_uuid])
+    database_1.db.query('SELECT p.product_id, name, price, size, description, discount FROM products p INNER JOIN cart_items c ON p.product_id = c.product_id AND (c.cart_uuid = $1)', [cart_uuid])
         .then(function (result) {
         cartContent = result.rows;
         for (var i = 0; i < cartContent.length; i++) {
             if (cartContent[i].discount === 0) {
                 cartContent[i].isDiscount = false;
             }
-            else
-                (cartContent[i].discount > 0);
-            {
+            else if (cartContent[i].discount > 0) {
                 cartContent[i].isDiscount = true;
                 cartContent[i].discount = ((cartContent[i].discount) * 100);
             }
             cartContent[i].email = email;
         }
-        return db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [cart_uuid]);
+        return database_1.db.query('SELECT * FROM cart_items WHERE cart_uuid = $1', [cart_uuid]);
     })
         .then(function (result) {
         for (var i = 0; i < cartContent.length; i++) {
@@ -43,12 +42,12 @@ router.get('/test-route', function (req, res) {
             totalItems = totalItems + quantity;
             console.log(price, quantity, totalCost, totalItems);
         }
-        return db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [uuid]);
+        return database_1.db.query('SELECT card_number FROM cart WHERE user_uuid = $1', [uuid]);
     })
         .then(function (result) {
         lastFour = lastFourOnly(result.rows[0].card_number);
         card_number = result.rows[0].card_number;
-        return db.query('SELECT * FROM users', []);
+        return database_1.db.query('SELECT * FROM users', []);
     })
         .then(function (result) {
         var mail = {
@@ -85,7 +84,7 @@ router.route('/forgot-password/authorized')
     var uuid = '';
     var nonce = '';
     var email = req.body.email;
-    db.query("SELECT * FROM users WHERE email = $1", [email])
+    database_1.db.query("SELECT * FROM users WHERE email = $1", [email])
         .then(function (result) {
         if (result.rows.length === 0) {
             console.log('should have error');
@@ -101,7 +100,7 @@ router.route('/forgot-password/authorized')
     })
         .then(function (hash) {
         nonce = hash;
-        return db.query('UPDATE nonce SET nonce = $1, thetime = default WHERE user_uuid = $2', [hash, uuid]);
+        return database_1.db.query('UPDATE nonce SET nonce = $1, thetime = default WHERE user_uuid = $2', [hash, uuid]);
     })
         .then(function (result) {
         req.session.uuid = uuid;
@@ -122,7 +121,7 @@ router.route('/forgot-password/authorized')
 })
     .get(function (req, res) {
     var uuid = req.session.uuid;
-    db.query('SELECT * FROM nonce WHERE user_uuid = $1', [uuid])
+    database_1.db.query('SELECT * FROM nonce WHERE user_uuid = $1', [uuid])
         .then(function (result) {
         if (result.rows.length === 0) {
             throw new Error("Account not found.");
@@ -153,7 +152,7 @@ router.route('/forgot-password/authorized')
         .then(function (hash) {
         console.log(hash);
         password = hash;
-        return db.query('UPDATE users SET password = $1 WHERE user_uuid = $2', [password, uuid]);
+        return database_1.db.query('UPDATE users SET password = $1 WHERE user_uuid = $2', [password, uuid]);
     })
         .then(function (result) {
         console.log(result);

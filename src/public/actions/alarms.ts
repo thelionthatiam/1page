@@ -1,26 +1,26 @@
-export const REQ_PERMISSIONS = 'REQ_PERMISSIONS';
+export const REQ_ALARMS = 'REQ_ALARMS';
 
 const reqPermissions = () => {
     return {
-        type: REQ_PERMISSIONS,
+        type: REQ_ALARMS,
     }
 }
 
-export const RECEIVE_PERMISSIONS = 'RECEIVE_PERMISSIONS'
+export const RECEIVE_ALARMS = 'RECEIVE_ALARMS'
 
-function receivePermissions(json) {
+function receiveAlarms(json) {
     return {
-        type: RECEIVE_PERMISSIONS,
-        gets: json.permission,
+        type: RECEIVE_ALARMS,
+        alarms: json,
         receivedAt: Date.now()
     }
 }
 
 
-export function fetchPermissions(){
+export function fetchAlarms(){
     return function (dispatch) {
         dispatch(reqPermissions())
-        return fetch("http://localhost:8000/permission", {
+        return fetch("http://localhost:8000/accounts/:email/api/alarms", {
                     method: "get",
                     credentials : 'same-origin',
                     headers: {
@@ -29,12 +29,13 @@ export function fetchPermissions(){
                     }
                 })
                 .then((res) => {
-                    console.log('fetch permissions response');
+                    console.log('fetch alarms response', res);
                     return res.json();
                 })
                 .then((body) => {
-                    let userSession = JSON.parse(body); 
-                    dispatch(receivePermissions(userSession));
+                    let userAlarms = JSON.parse(body); 
+                    console.log(userAlarms)
+                    dispatch(receiveAlarms(userAlarms));
                 })
     }
 }

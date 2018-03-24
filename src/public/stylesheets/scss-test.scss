@@ -13,21 +13,18 @@ a {
   color:inherit;
 }
 
-ul{
+ul {
     list-style:none;
     border:0;
     margin:0;
     padding:10px
 }
-li{
+li {
     padding-bottom:2px;
     margin-bottom:2px;
     font-size:12px
 }
-li:hover{
-    cursor:pointer;
-    background-color:lightgrey
-}
+
 
 body{
     border:0;
@@ -40,6 +37,7 @@ $miniFont: 10px;
 $darkGreen: #068721;
 $darkRed:#9f2121;
 $darkGrey:#282828;
+$justGrey:#756F6F;
 $almostBlack:#211A08;
 $white: #fff;
 
@@ -125,21 +123,24 @@ textarea {
   border-radius:2px;
 }
 
-
 textarea:focus {
   outline:0;
 }
 
 button {
   border:none;
+  background-color:transparent;
+}
+
+.button {
   box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, .1);
 }
 
-button:hover {
+.button:hover {
   cursor:pointer;
 }
 
-button:active {
+.button:active {
   transform: translate(1px, 1px);
 }
 
@@ -147,23 +148,23 @@ button:focus {
   outline:0;
 }
 
-button.yes {
+.button.yes {
   background-color:black;
   color:white;
 }
 
-button.no {
+.button.no {
   background-color:white;
 }
 
-button.unavailable {
+.button.unavailable {
   background-color:lightgrey;
   border-color:grey;
   color:grey;
   box-shadow:none;
 }
 
-button.unavailable:active {
+.button.unavailable:active {
  transform:translate(0px);
 }
 
@@ -358,6 +359,27 @@ button.unavailable:active {
   font-size:18px;
   font-weight:300;
   text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0);
+  transition:300ms;
+}
+.app-menu-text:hover {
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,1);
+  transition:300ms;
+}
+  
+.app-menu-text-disabled {
+  color:$justGrey;
+  text-transform:uppercase;
+  font-size:18px;
+  font-weight:300;
+  text-decoration:none;
+}
+
+.app-menu-text-disabled:hover {
+  cursor:default;
+  background-color:transparent;
+
 }
 
 #logout {
@@ -559,6 +581,10 @@ button.unavailable:active {
 }
 
 // INACTIVE TYPES
+
+.disabled-link {
+  pointer-events:none;
+}
 
 .buttonInactive {
   background-color:white;

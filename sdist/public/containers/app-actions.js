@@ -15,4 +15,4 @@ var mapDispatchToProps = function (dispatch, ownProps) {
 };
 var AppWithActions = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(spa_1.default);
 exports.default = AppWithActions;
-//# sourceMappingURL=appActions.js.map
+//# sourceMappingURL=app-actions.js.map

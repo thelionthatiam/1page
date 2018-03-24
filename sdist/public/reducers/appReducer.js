@@ -24,8 +24,8 @@ function getPermissions(state, action) {
             return state;
     }
 }
-var permissions = redux_1.combineReducers({
+var appReducer = redux_1.combineReducers({
     getPermissions: getPermissions
 });
-exports.default = permissions;
-//# sourceMappingURL=permissions.js.map
+exports.default = appReducer;
+//# sourceMappingURL=appReducer.js.map

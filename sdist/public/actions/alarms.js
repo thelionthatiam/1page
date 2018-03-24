@@ -1,23 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.REQ_PERMISSIONS = 'REQ_PERMISSIONS';
+exports.REQ_ALARMS = 'REQ_ALARMS';
 var reqPermissions = function () {
     return {
-        type: exports.REQ_PERMISSIONS,
+        type: exports.REQ_ALARMS,
     };
 };
-exports.RECEIVE_PERMISSIONS = 'RECEIVE_PERMISSIONS';
-function receivePermissions(json) {
+exports.RECEIVE_ALARMS = 'RECEIVE_ALARMS';
+function receiveAlarms(json) {
     return {
-        type: exports.RECEIVE_PERMISSIONS,
-        gets: json.permission,
+        type: exports.RECEIVE_ALARMS,
+        alarms: json,
         receivedAt: Date.now()
     };
 }
-function fetchPermissions() {
+function fetchAlarms() {
     return function (dispatch) {
         dispatch(reqPermissions());
-        return fetch("http://localhost:8000/permission", {
+        return fetch("http://localhost:8000/accounts/:email/api/alarms", {
             method: "get",
             credentials: 'same-origin',
             headers: {
@@ -26,14 +26,15 @@ function fetchPermissions() {
             }
         })
             .then(function (res) {
-            console.log('fetch permissions response');
+            console.log('fetch alarms response', res);
             return res.json();
         })
             .then(function (body) {
-            var userSession = JSON.parse(body);
-            dispatch(receivePermissions(userSession));
+            var userAlarms = JSON.parse(body);
+            console.log(userAlarms);
+            dispatch(receiveAlarms(userAlarms));
         });
     };
 }
-exports.fetchPermissions = fetchPermissions;
-//# sourceMappingURL=async-permissions.js.map
+exports.fetchAlarms = fetchAlarms;
+//# sourceMappingURL=alarms.js.map

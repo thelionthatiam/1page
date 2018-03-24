@@ -18,7 +18,7 @@ var Settings = /** @class */ (function (_super) {
     }
     Settings.prototype.render = function () {
         return (react_1.default.createElement("div", null,
-            react_1.default.createElement("h2", null, "Settings?"),
+            react_1.default.createElement("h2", null, "Settings"),
             react_1.default.createElement("p", null,
                 "The easiest thing to do is post on our ",
                 react_1.default.createElement("a", { href: "http://forum.kirupa.com" }, "forums"),

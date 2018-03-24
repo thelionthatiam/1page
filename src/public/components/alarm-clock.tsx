@@ -7,8 +7,15 @@ import {
   Switch
 } from 'react-router-dom';
 
+interface AlarmClockProps {
+  alarmGetter : () => void;
+  permission : string;
+}
+
 
 class AlarmClock extends Component {
+  props : AlarmClockProps
+
   constructor (props) {
     super(props)
     this.state = {
@@ -26,6 +33,10 @@ class AlarmClock extends Component {
       () => this.tick(),
       1000
     )
+    if (this.props.permission === 'user') {
+      this.props.alarmGetter();
+    }
+    
   }
 
   componentWillMount() {

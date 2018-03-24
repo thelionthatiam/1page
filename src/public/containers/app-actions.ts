@@ -1,19 +1,15 @@
 import { connect } from 'react-redux';
-import { guest, user } from '../actions/permissions';
-import { fetchPermissions } from '../actions/async-permissions';
+import { fetchPermissions } from '../actions/permissions';
 import App from '../components/spa'
-
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        message: state.permissionCheck.message
+        permission: state.getPermissions.permission
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        isLoggedIn: () => dispatch(user()),
-        isNotLoggedIn: () => dispatch(guest()),
         permissionChecker: () => dispatch(fetchPermissions())
     }
 }

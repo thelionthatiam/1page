@@ -1,6 +1,7 @@
 import * as help from '../functions/promise-helpers';
 import * as bcrypt from 'bcrypt';
 import { transporter, mailOptions } from "../config/mail-config.js";
+import { db } from '../middleware/database'
 import * as coupons from '../functions/coupon-helpers'
 import * as mailer from '../middleware/emailer'
 import * as express from 'express';
@@ -28,7 +29,7 @@ router.get('/test-route', (req, res) => {
       for (let i = 0; i < cartContent.length; i++) {
         if (cartContent[i].discount === 0) {
           cartContent[i].isDiscount = false;
-        } else (cartContent[i].discount > 0) {
+        } else if (cartContent[i].discount > 0) {
           cartContent[i].isDiscount = true;
           cartContent[i].discount = ((cartContent[i].discount)*100)
         }

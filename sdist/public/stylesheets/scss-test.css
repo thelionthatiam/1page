@@ -20,10 +20,6 @@ li {
   margin-bottom: 2px;
   font-size: 12px; }
 
-li:hover {
-  cursor: pointer;
-  background-color: lightgrey; }
-
 body {
   border: 0;
   margin: 0; }
@@ -71,31 +67,34 @@ textarea:focus {
 
 button {
   border: none;
+  background-color: transparent; }
+
+.button {
   box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1); }
 
-button:hover {
+.button:hover {
   cursor: pointer; }
 
-button:active {
+.button:active {
   transform: translate(1px, 1px); }
 
 button:focus {
   outline: 0; }
 
-button.yes {
+.button.yes {
   background-color: black;
   color: white; }
 
-button.no {
+.button.no {
   background-color: white; }
 
-button.unavailable {
+.button.unavailable {
   background-color: lightgrey;
   border-color: grey;
   color: grey;
   box-shadow: none; }
 
-button.unavailable:active {
+.button.unavailable:active {
   transform: translate(0px); }
 
 .home-img-wrapper {
@@ -244,7 +243,25 @@ button.unavailable:active {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 300;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
+  transition: 300ms; }
+
+.app-menu-text:hover {
+  cursor: pointer;
+  border-bottom: 1px solid white;
+  transition: 300ms; }
+
+.app-menu-text-disabled {
+  color: #756F6F;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 300;
   text-decoration: none; }
+
+.app-menu-text-disabled:hover {
+  cursor: default;
+  background-color: transparent; }
 
 #logout {
   justify-content: flex-end; }
@@ -406,6 +423,9 @@ button.unavailable:active {
 
 .formError input {
   border-color: #9f2121; }
+
+.disabled-link {
+  pointer-events: none; }
 
 .buttonInactive {
   background-color: white;

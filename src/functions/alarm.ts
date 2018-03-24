@@ -30,7 +30,7 @@ eventEmitter.on('ringingCountdown', () => {
 })
 
 function triggerAlarm(alarm:string, user:r.UserSession) {
-  db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['ringing', user.uuid, alarm]);
+  db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['ringing', user.uuid, alarm])
   .then((result) =>{
     console.log(result);
   })
@@ -41,7 +41,7 @@ function triggerAlarm(alarm:string, user:r.UserSession) {
 
 function addSnooze(alarm:string, user:r.UserSession) {
   console.log('------YOU SNOOZED! Now you have a snooze, but dont snooze to much!------')
-  db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['snoozing', user.uuid, alarm]);
+  db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['snoozing', user.uuid, alarm])
     .then((result) => {
       return db.query('INSERT INTO snoozes(user_uuid, alarm_uuid) VALUES ($1, $2)', [user.uuid, alarm]);
     })

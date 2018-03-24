@@ -18,7 +18,7 @@ var Organizations = /** @class */ (function (_super) {
     }
     Organizations.prototype.render = function () {
         return (react_1.default.createElement("div", null,
-            react_1.default.createElement("h2", null, "STUFF"),
+            react_1.default.createElement("h2", null, "organizations"),
             react_1.default.createElement("p", null, "Mauris sem velit, vehicula eget sodales vitae, rhoncus eget sapien:"),
             react_1.default.createElement("ol", null,
                 react_1.default.createElement("li", null, "Nulla pulvinar diam"),
