@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+
 class PasswordQuality extends React.Component {
   constructor(props) {
     super(props)

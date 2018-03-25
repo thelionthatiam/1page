@@ -1,5 +1,5 @@
-import { exec } from 'child_process'
-// test
+import { exec, spawn } from 'child_process'
+
 function childProcess(string:string, cb:Function) {
   exec(string, function(error, stdout, stderr) {
     if (error) {
@@ -10,6 +10,11 @@ function childProcess(string:string, cb:Function) {
   })
 }
 
-childProcess('sudo rollup -cw', (err:Error, stdout:string, stderr:string) => {
-  err ? console.log(stderr) : stdout;
+childProcess('rollup -cw', (err:Error, stdout:string, stderr:string) => {
+  console.log('rollup -cw')
+  console.log('stdout: ' + stdout);
+  console.log('stderr: ' + stderr);
+  if (err !== null) {
+    console.log('exec error: ' + err);
+  }
 })

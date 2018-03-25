@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = require("child_process");
-// test
 function childProcess(string, cb) {
     child_process_1.exec(string, function (error, stdout, stderr) {
         if (error) {
@@ -12,7 +11,12 @@ function childProcess(string, cb) {
         }
     });
 }
-childProcess('sudo rollup -cw', function (err, stdout, stderr) {
-    err ? console.log(stderr) : stdout;
+childProcess('rollup -cw', function (err, stdout, stderr) {
+    console.log('rollup -cw');
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (err !== null) {
+        console.log('exec error: ' + err);
+    }
 });
 //# sourceMappingURL=watch.js.map
