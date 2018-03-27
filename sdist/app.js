@@ -4,12 +4,12 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var hbs = require("express-handlebars");
 var path = require("path");
-var combiner_1 = require("./config/combiner");
-var database_1 = require("./middleware/database");
 var session = require("express-session");
-var sessionCheck = require("./middleware/session-check");
 var methodOverride = require("method-override");
 var cors = require("cors");
+var combiner_1 = require("./config/combiner");
+var database_1 = require("./routes/middleware/database");
+var sessionCheck = require("./routes/middleware/session-check");
 var app = express();
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
@@ -24,12 +24,12 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-app.use(function (req, res, next) {
-    console.log('|||||||||||||||||||||||||||||||');
-    console.log(req.headers);
-    console.log('|||||||||||||||||||||||||||||||');
-    next();
-});
+// app.use((req, res, next) => {
+//   console.log('|||||||||||||||||||||||||||||||')
+//   console.log(req.headers);
+//   console.log('|||||||||||||||||||||||||||||||')
+//   next();
+// })
 app.use(database_1.init(combiner_1.dbConfig));
 app.options('*', cors());
 app.use(cors());
@@ -44,26 +44,6 @@ app.use(session({
         httpOnly: true,
     },
 }));
-// AND REPORTS ON SESSION DATA
-// app.use((req, res, next) => {
-//   if (typeof req.session.user === 'undefined') {
-//     console.log('user is undf')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//     // req.session.user = { permission: 'guest' }
-//   } else if (req.session.user.permission === 'guest') {
-//     console.log('user is guest')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//     // req.session.user = { permission: 'guest' }
-//   } else {
-//     console.log('user is a guest')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//   }
-//
-//   next();
-// })
 app.use(sessionCheck.check);
 // app.use('/accounts/\*', sessionCheck.check)
 // app.use('/admin/\*', sessionCheck.adminCheck)

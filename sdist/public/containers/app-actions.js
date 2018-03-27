@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_redux_1 = require("react-redux");
 var permissions_1 = require("../actions/permissions");
-var spa_1 = require("../components/spa");
+var spa_1 = require("../spa");
 var mapStateToProps = function (state, ownProps) {
     return {
         permission: state.getPermissions.permission

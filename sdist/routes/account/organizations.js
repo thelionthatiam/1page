@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var helpers_1 = require("../../functions/helpers");
+var helpers_1 = require("../functions/helpers");
 var express = require("express");
-var database_1 = require("../../middleware/database");
+var database_1 = require("../middleware/database");
 var router = express.Router();
-// MY ORGS
-// MY ORGS
-// MY ORGS
-router.route('/organizations')
+router.route('/')
     .post(function (req, res) {
     var org = req.body.org_uuid;
     var userOrgs;
@@ -54,7 +51,7 @@ router.route('/organizations')
                 cause = organizationContent[i].cause;
             }
         }
-        res.render('account/my-organizations', {
+        res.render('account/organizations', {
             organizationContent: organizationContent,
             email: email,
             name: name,

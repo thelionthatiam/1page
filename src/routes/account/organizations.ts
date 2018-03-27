@@ -1,14 +1,9 @@
-import { dbErrTranslator, compare } from '../../functions/helpers';
+import { dbErrTranslator, compare } from '../functions/helpers';
 import * as express from 'express';
-import { db } from '../../middleware/database';
+import { db } from '../middleware/database';
 const router = express.Router();
 
-// MY ORGS
-// MY ORGS
-// MY ORGS
-
-
-router.route('/organizations')
+router.route('/')
   .post((req, res) => {
     let org = req.body.org_uuid;
     let userOrgs;
@@ -59,7 +54,7 @@ router.route('/organizations')
             cause = organizationContent[i].cause
           }
         }
-        res.render('account/my-organizations', {
+        res.render('account/organizations', {
           organizationContent:organizationContent,
           email: email,
           name:name,

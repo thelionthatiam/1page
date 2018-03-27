@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { fetchPermissions } from '../actions/permissions';
-import App from '../components/spa'
+import App from '../spa'
 
 const mapStateToProps = (state, ownProps) => {
     return {

@@ -1,27 +1,26 @@
 import * as express from 'express';
-import * as bcrypt from 'bcrypt';
 const router = express.Router();
 
-router.use('/', require('./authorization'));
-router.use('/', require('./email'));
-router.use('/', require('./accounts'));
-router.use('/', require('./shopping'));
-router.use('/', require('./organizations'));
+router.use('/', require('./guest/authorization'));
+router.use('/', require('./guest/accounts'));
+// router.use('/', require('./guest/email'));
+// router.use('/guest', require('./guest/shopping'));
+router.use('/app/guest/alarms', require('./guest/alarms'));
+router.use('/app/guest/orgs', require('./guest/organizations'));
 
-router.use('/admin', require('./admin/products'));
-router.use('/admin', require('./admin/coupons'));
-router.use('/admin', require('./admin/accounts'));
+// router.use('/admin', require('./admin/products'));
+// router.use('/admin', require('./admin/coupons'));
+// router.use('/admin', require('./admin/accounts'));
 
-router.use('/accounts', require('./account'));
-router.use('/accounts/:email', require('./account/alarms'));
-router.use('/accounts/:email', require('./account/payment'));
-router.use('/accounts/:email', require('./account/organizations'));
-router.use('/accounts/:email', require('./account/cart'));
-router.use('/accounts/:email', require('./account/coupons'));
-router.use('/accounts/:email', require('./account/orders'));
-
-router.use('/accounts/:email', require('./account/settings'));
-router.use('/accounts/:email', require('./account/transactions'));
+// router.use('/accounts', require('./account'));
+router.use('/app/accounts/:email/alarms', require('./account/alarms'));
+router.use('/app/accounts/:email/orgs', require('./account/organizations'));
+// router.use('/accounts/:email', require('./account/payment'));
+// router.use('/accounts/:email', require('./account/cart'));
+// router.use('/accounts/:email', require('./account/coupons'));
+// router.use('/accounts/:email', require('./account/orders'));
+// router.use('/accounts/:email', require('./account/settings'));
+// router.use('/accounts/:email', require('./account/transactions'));
 
 // HOME
 router.get('/', function (req, res, next) {
@@ -30,9 +29,22 @@ router.get('/', function (req, res, next) {
 
 // APP
 router.get('/app', (req, res) => {
-  res.render('app');
+  if (req.session.user) {
+    res.redirect('app/account');
+  } else {
+    res.redirect('app/guest');
+  }
 })
 
+router.get('/app/account', (req, res) => {
+  console.log('app account redirect')
+  res.render('account/app')
+})
+
+router.get('/app/guest', (req, res) => {
+  console.log('app guest redirect')
+  res.render('guest/app')
+})
 // PERMISSION GETTER
 
 router.get('/permission', (req, res) => {
@@ -49,7 +61,6 @@ router.get('/dummy-route', (req, res) => {
   res.render('dummy');
 })
 
-
 // TO LOGIN PAGE
 
 router.get('/to-login', (req, res) => {
@@ -59,17 +70,6 @@ router.get('/to-login', (req, res) => {
 // NEEDS GUEST AND USER BEHAVIOR
 router.get('/contact', function (req, res, next) {
   res.render('contact');
-})
-
-router.get('/splash', function (req, res, next) {
-  res.render('splash');
-})
-
-router.get('/home', (req, res) => {
-  res.render('home', {
-    email:req.session.user.email,
-    name: req.session.user.name
-  })
 })
 
 module.exports = router;

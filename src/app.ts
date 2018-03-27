@@ -1,16 +1,16 @@
 // const https = require('https');
 // const http = require('http');
-import * as fs from "fs"; // only using with https, no types right now
+import * as fs from "fs"; // only using with https
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as hbs from "express-handlebars";
 import * as path from "path";
-import { dbConfig } from "./config/combiner";
-import { init } from "./middleware/database";
 import * as session from "express-session";
-import * as sessionCheck from "./middleware/session-check";
 import * as methodOverride from 'method-override';
 import * as cors from 'cors'
+import { dbConfig } from "./config/combiner";
+import { init } from "./routes/middleware/database";
+import * as sessionCheck from "./routes/middleware/session-check";
 
 const app = express();
 
@@ -27,12 +27,12 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-app.use((req, res, next) => {
-  console.log('|||||||||||||||||||||||||||||||')
-  console.log(req.headers);
-  console.log('|||||||||||||||||||||||||||||||')
-  next();
-})
+// app.use((req, res, next) => {
+//   console.log('|||||||||||||||||||||||||||||||')
+//   console.log(req.headers);
+//   console.log('|||||||||||||||||||||||||||||||')
+//   next();
+// })
 app.use(init(dbConfig));
 app.options('*', cors())
 app.use(cors())
@@ -49,28 +49,6 @@ app.use(session({
     },
   })
 );
-
-// AND REPORTS ON SESSION DATA
-
-// app.use((req, res, next) => {
-//   if (typeof req.session.user === 'undefined') {
-//     console.log('user is undf')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//     // req.session.user = { permission: 'guest' }
-//   } else if (req.session.user.permission === 'guest') {
-//     console.log('user is guest')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//     // req.session.user = { permission: 'guest' }
-//   } else {
-//     console.log('user is a guest')
-//     console.log('user: ', req.session.user)
-//     console.log('sessionID: ', req.sessionID)
-//   }
-//
-//   next();
-// })
 
 app.use(sessionCheck.check)
 // app.use('/accounts/\*', sessionCheck.check)

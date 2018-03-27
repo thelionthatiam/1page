@@ -1,0 +1,78 @@
+<div id='app'>
+    <div class='app-wrapper'>
+        <ul class="app-menu">
+            <div class='app-menu-title-wrapper'>
+                <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
+                <h1 class='app-menu-title'>s.y.l.</h1>
+            </div>
+            <li class='app-menu-li'>
+                <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
+                <a href="/app/guest/alarms" class='app-menu-text'>alarms</a>
+            </li>
+
+            <li class='app-menu-li'>
+                <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
+                <a href="/app/guest/orgs" class='app-menu-text '>organizations</a>
+            </li>
+
+            <li class='app-menu-li'>
+                <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
+                <a href="/app/guest/insights" class='app-menu-text-disabled disabled-a'>insights</a>
+            </li>
+
+            <li class='app-menu-li'>
+                <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
+                <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
+            </li>
+
+            <li class='app-menu-li'>
+                <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
+                <a href="/app/guest/settings" class='app-menu-text-disabled disabled-a'>settings</a>
+            </li>
+
+            <li class='app-menu-li' id='logout'>
+                <img class='formIcon fadeIn' src='/icons/white/heart.svg' />
+                <form action="/to-login" method="get">
+                    <button type="submit" class="app-menu-text">log in</button>
+                </form>
+            </li>
+
+            <li class='app-menu-li' id='logout'>
+                <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                <form action="/log-out" method="post">
+                    <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
+                </form>
+            </li>
+
+        </ul>
+        <div class="app-content">
+            <div class="full-page" id="top">
+                <h1>Organizations</h1>
+                <p>
+                    This is where you can select which organizations you would like to support, and which organizations you'd rather not.
+                </p>
+                <div class="column searchWrapper">
+                    <div class="row">
+                        <input id="search" name="search" class="userFormItem dropdownSearch" type="text" placeholder="search for an organization"
+                        />
+                        <button class="searchButton" id='org-search'>go</button>
+                    </div>
+                    <div class="dropdownWrapper none">
+                        <ul class="dropdownList"></ul>
+                    </div>
+                    <p class="formErrorReport">{{ error }}</p>
+                </div>
+                <div class="categoryListWrapper">
+                    {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
+                </div>
+                <p class="formErrorReport">{{ dbError }}</p>
+                <div class='flex column'>
+                    <form action="/home" method="get">
+                        <button class="no" type="submit">back</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!--<script src='./rollup/bundle.js'></script> --}}
