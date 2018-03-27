@@ -10,6 +10,10 @@ var Query = /** @class */ (function () {
         var query = "SELECT * FROM users WHERE email = $1";
         return this.conn.query(query, values);
     };
+    Query.prototype.selectAuthenticatedUser = function (values) {
+        var query = "SELECT * FROM users WHERE user_uuid = $1";
+        return this.conn.query(query, values);
+    };
     Query.prototype.selectUserOrgs = function (values) {
         var query = "SELECT * FROM user_orgs WHERE user_uuid = $1";
         return this.conn.query(query, values);

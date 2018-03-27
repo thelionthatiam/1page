@@ -28,7 +28,7 @@ var AlarmClock = /** @class */ (function (_super) {
         var _this = this;
         this.timerID = setInterval(function () { return _this.tick(); }, 1000);
         if (this.props.permission === 'user') {
-            this.props.alarmGetter();
+            // this.props.alarmGetter();
         }
     };
     AlarmClock.prototype.componentWillMount = function () {

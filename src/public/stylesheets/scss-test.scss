@@ -580,6 +580,12 @@ button:focus {
   }
 }
 
+.formErrorReport {
+  color:$darkRed;
+  font-weight:600;
+  transition:300ms;
+}
+
 // INACTIVE TYPES
 
 .disabled-link {

@@ -1,6 +1,4 @@
-import { Inputs } from '../../typings/typings';
-import { Client } from '../../node_modules/@types/pg/index'
-import * as r from '../resources/valie-objects';
+import * as r from '../resources/value-objects';
 
 // DATA ACCESS TIER
 
@@ -15,6 +13,11 @@ class Query {
   // select
   selectUser(values:string[]) {
     const query = "SELECT * FROM users WHERE email = $1"
+    return this.conn.query(query, values);
+  }
+
+  selectAuthenticatedUser(values:string[]) {
+    const query = "SELECT * FROM users WHERE user_uuid = $1";
     return this.conn.query(query, values);
   }
 

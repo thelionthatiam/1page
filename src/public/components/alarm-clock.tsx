@@ -34,7 +34,7 @@ class AlarmClock extends Component {
       1000
     )
     if (this.props.permission === 'user') {
-      this.props.alarmGetter();
+      // this.props.alarmGetter();
     }
     
   }

@@ -32,6 +32,9 @@ function fetchPermissions() {
             .then(function (body) {
             var userSession = JSON.parse(body);
             dispatch(receivePermissions(userSession));
+        })
+            .catch(function (err) {
+            console.log(err);
         });
     };
 }

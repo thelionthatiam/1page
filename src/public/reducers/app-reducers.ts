@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
 import { REQ_PERMISSIONS, RECEIVE_PERMISSIONS } from '../actions/permissions';
 import { REQ_ALARMS, RECEIVE_ALARMS } from '../actions/alarms';
+import { REQ_USER, RECEIVE_USER } from '../actions/user-data'
 
 let initialState = {
     isFetching: false,
     permission: 'guest',
-    alarms: 'nothing here!'
+    alarms: 'nothing here!',
 }
 
 function getPermissions(state = initialState, action) {
@@ -43,10 +44,36 @@ function getAlarms(state = initialState, action) {
     }
 }
 
+let initialUserData = {
+        profile: {},
+        alarms: {},
+        settings: {},
+        orgs: {}
+}
+
+function getUserData(state = initialUserData, action) {
+    console.log('user data reducer')
+    switch(action.type) {
+        case REQ_USER:
+            return Object.assign({}, state, {
+                isFetching:true
+            })
+        case RECEIVE_USER:
+            return Object.assign({}, state, {
+                isFetching: false,
+                user: action.gets,
+                lastUpdatedUser: action.recievedAt
+            })
+        default: 
+            return state
+    }
+}
+
 
 const appReducers = combineReducers({
     getPermissions,
-    getAlarms
+    getAlarms,
+    getUserData
 })
 
 export default appReducers

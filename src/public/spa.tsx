@@ -16,9 +16,11 @@ import Organizations from "./components/organizations";
 interface AppProps {
   message : string;
   permission : string;
+  email : string;
   isLoggedIn : () => string;
   isNotLoggedIn : () => string;
   permissionChecker : () => string;
+  getUserData : () => Object;
 }
 
 class App extends Component {
@@ -31,6 +33,7 @@ class App extends Component {
 
   componentDidMount() {
     this.props.permissionChecker()
+    this.props.getUserData()
   }
 
   render() {
@@ -47,27 +50,27 @@ class App extends Component {
 
               <li className = 'app-menu-li'>
                 <img className = 'formIcon fadeIn' src = '/icons/white/clock-alarm.svg' />
-                <Link to="/app/alarms" className = 'app-menu-text'>alarms</Link>
+                <Link to="/app/guest/alarms" className = 'app-menu-text'>alarms</Link>
               </li>
 
               <li className = 'app-menu-li'>
                 <img className = 'formIcon fadeIn' src = '/icons/white/squares.svg' />
-                <Link to="/app/orgs" className = 'app-menu-text '>organizations</Link>
+                <Link to="/app/guest/orgs" className = 'app-menu-text '>organizations</Link>
               </li>
 
               <li className = 'app-menu-li'>
                 <img className = 'formIcon fadeIn' src = '/icons/white/graph-bar.svg' />
-                <Link to="/app/insights" className = 'app-menu-text-disabled disabled-link'>insights</Link>
+                <Link to="/app/guest/insights" className = 'app-menu-text-disabled disabled-link'>insights</Link>
               </li>
 
               <li className = 'app-menu-li'>
                 <img className = 'formIcon fadeIn' src = '/icons/white/user-fem.svg' />
-                <Link to="/app/profile" className = 'app-menu-text-disabled disabled-link'>profile</Link>
+                <Link to="/app/guest/profile" className = 'app-menu-text-disabled disabled-link'>profile</Link>
               </li>
 
               <li className = 'app-menu-li'>
                 <img className = 'formIcon fadeIn' src = '/icons/white/mixer.svg' />
-                <Link to="/app/settings" className = 'app-menu-text-disabled disabled-link'>settings</Link>
+                <Link to="/app/guest/settings" className = 'app-menu-text-disabled disabled-link'>settings</Link>
               </li>
 
               <li className = 'app-menu-li' id = 'logout'>
@@ -86,12 +89,12 @@ class App extends Component {
 
             </ul>
             <div className="app-content">
-              <Route path='/app/' render= {() => <Redirect to = '/app/alarms'/>}/>
-              <Route path='/app/alarms' component={AlarmsWithActions}/>
-              <Route path='/app/orgs' component={Organizations}/>
-              <Route path='/app/insights' component={GraphWrapper}/>
-              <Route path='/app/profile' component={Settings}/>
-              <Route path='/app/settings' component={Settings}/>
+              <Route path='/app/guest' render= {() => <Redirect to = '/app/guest/alarms'/>}/>
+              <Route path='/app/guest/alarms' component={AlarmsWithActions}/>
+              <Route path='/app/guest/orgs' component={Organizations}/>
+              <Route path='/app/guest/insights' component={GraphWrapper}/>
+              <Route path='/app/guest/profile' component={Settings}/>
+              <Route path='/app/guest/settings' component={Settings}/>
             </div>
           </div>
         </BrowserRouter>
@@ -109,27 +112,27 @@ class App extends Component {
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/clock-alarm.svg'/>
-                <Link to="/app/alarms" className='app-menu-text'>alarms</Link>
+                <Link to = { "/app/accounts/" + this.props.email + "/alarms" } className='app-menu-text'>alarms</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/squares.svg'/>
-                <Link to="/app/orgs" className='app-menu-text '>organizations</Link>
+                <Link to = { "/app/accounts/" + this.props.email + "/orgs" } className='app-menu-text '>organizations</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/graph-bar.svg'/>
-                <Link to="/app/insights" className='app-menu-text'>insights</Link>
+                <Link to = { "/app/accounts/" + this.props.email + "/insights" } className='app-menu-text'>insights</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/user-fem.svg'/>
-                <Link to="/app/profile" className='app-menu-text'>profile</Link>
+                <Link to = { "/app/accounts/" + this.props.email + "/profile" } className='app-menu-text'>profile</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/mixer.svg'/>
-                <Link to="/app/settings" className='app-menu-text'>settings</Link>
+                <Link to = { "/app/accounts/" + this.props.email + "/settings" } className='app-menu-text'>settings</Link>
               </li>
 
               <li className='app-menu-li' id='logout'>
@@ -141,12 +144,12 @@ class App extends Component {
 
             </ul>
             <div className="app-content">
-              <Route path='/app/' render= {() => <Redirect to = {'/app/accounts/' + this.props.email + 'alarms'}/>}/>
-              <Route path={'/app/accounts/' + this.props.email + 'alarms'} component={AlarmsWithActions}/>
-              <Route path={'/app/accounts/' + this.props.email + 'orgs'} component={Organizations}/>
-              <Route path={'/app/accounts/' + this.props.email + 'insights'} component={GraphWrapper}/>
-              <Route path={'/app/accounts/' + this.props.email + 'profile'} component={Settings}/>
-              <Route path={'/app/accounts/' + this.props.email + 'settings'} component={Settings}/>
+              <Route path = '/app/account' render= {() => <Redirect to = {'/app/accounts/' + this.props.email + '/alarms'}/>}/>
+              <Route path = { '/app/accounts/' + this.props.email + '/alarms' } component= { AlarmsWithActions }/>
+              <Route path = { '/app/accounts/' + this.props.email + '/orgs' } component= { Organizations }/>
+              <Route path = { '/app/accounts/' + this.props.email + '/insights' } component= { GraphWrapper }/>
+              <Route path = { '/app/accounts/' + this.props.email + '/profile' } component= { Settings }/>
+              <Route path = { '/app/accounts/' + this.props.email + '/settings' } component= { Settings }/>
             </div>
           </div>
         </BrowserRouter>

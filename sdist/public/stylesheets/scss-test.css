@@ -424,6 +424,11 @@ button:focus {
 .formError input {
   border-color: #9f2121; }
 
+.formErrorReport {
+  color: #9f2121;
+  font-weight: 600;
+  transition: 300ms; }
+
 .disabled-link {
   pointer-events: none; }
 

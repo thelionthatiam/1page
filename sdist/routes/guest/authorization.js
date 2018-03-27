@@ -5,7 +5,6 @@ var help = require("../functions/helpers");
 var bcrypt = require("bcrypt");
 var uuidv4 = require("uuid/v4");
 var r = require("../resources/value-objects");
-var alarm_1 = require("../functions/alarm");
 var database_1 = require("../middleware/database");
 var router = express.Router();
 router.post('/authorized', function (req, res) {
@@ -13,7 +12,6 @@ router.post('/authorized', function (req, res) {
         email: req.body.email,
         password: req.body.password
     };
-    var renderObj;
     var user;
     var cart;
     var userSession;
@@ -47,10 +45,6 @@ router.post('/authorized', function (req, res) {
         });
         req.session.user = userSession;
         // watchAlarms(userSession);
-        renderObj = {
-            email: user.email,
-            name: user.name
-        };
         if (user.permission === 'admin') {
             res.render('admin/home');
         }
@@ -60,10 +54,12 @@ router.post('/authorized', function (req, res) {
                 email: req.session.user.email,
                 name: req.session.user.name
             });
-            res.render('account/app', {
-                email: req.session.user.email,
-                name: req.session.user.name
-            });
+            res.redirect('/app'
+            // {
+            //   email:req.session.user.email,
+            //   name:req.session.user.name
+            // }
+            );
         }
     })
         .catch(function (error) {
@@ -73,72 +69,69 @@ router.post('/authorized', function (req, res) {
         });
     });
 });
-router.post('/api/authorized', function (req, res) {
-    console.log('start authorized post');
-    var inputs = {
-        email: req.body.email,
-        password: req.body.password
-    };
-    console.log(inputs);
-    var renderObj;
-    var user;
-    var cart;
-    var userSession;
-    req.aQuery.selectUser([inputs.email])
-        .then(function (result) {
-        if (result.rows.length === 0) {
-            throw new Error("Email not found");
-        }
-        else {
-            console.log('select user', result.rows[0]);
-            user = r.UserDB.fromJSON(result.rows[0]);
-            return bcrypt.compare(inputs.password, user.password);
-        }
-    })
-        .then(function (result) {
-        if (result === false) {
-            throw new Error('Password incorrect');
-        }
-        else {
-            console.log('pass quick', result);
-            return help.regenerateSession(req);
-        }
-    })
-        .then(function () {
-        console.log(req.sessionID);
-        return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
-    })
-        .then(function (result) {
-        console.log(req.sessionID);
-        userSession = r.UserSession.fromJSON({
-            email: user.email,
-            uuid: user.user_uuid,
-            permission: user.permission,
-            name: user.name
-        });
-        console.log('user session', userSession);
-        req.session.user = userSession;
-        console.log('session general', req.session);
-        console.log('usersession on session', req.session.user);
-        console.log('id', req.sessionID);
-        alarm_1.watchAlarms(userSession);
-        renderObj = {
-            email: user.email,
-            name: user.name
-        };
-        if (user.permission === 'admin') {
-            res.render('admin/home');
-        }
-        else if (user.permission === 'user') {
-            console.log(result);
-            res.json(result);
-        }
-    })
-        .catch(function (error) {
-        console.log(error);
-        res.json(error);
-    });
-});
+// router.post('/api/authorized', (req, res) => {
+//   console.log('start authorized post')
+//   let inputs = {
+//     email: req.body.email,
+//     password: req.body.password
+//   }
+//   console.log(inputs)
+//   let renderObj:AuthRender;
+//   let user:r.UserDB;
+//   let cart:r.CartDB;
+//   let userSession:r.UserSession;
+//   req.aQuery.selectUser([inputs.email])
+//     .then((result) => {
+//       if (result.rows.length === 0) {
+//         throw new Error("Email not found");
+//       } else {
+//         console.log('select user', result.rows[0])
+//         user = r.UserDB.fromJSON(result.rows[0]);
+//         return bcrypt.compare(inputs.password, user.password);
+//       }
+//     })
+//     .then((result : boolean) => {
+//       if (result === false) {
+//         throw new Error('Password incorrect');
+//       } else {
+//         console.log('pass quick', result)
+//         return help.regenerateSession(req);
+//       }
+//     })
+//     .then(() => {
+//       console.log(req.sessionID)
+//       return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+//     })
+//     .then((result ) => {
+//       console.log(req.sessionID)
+//       userSession = r.UserSession.fromJSON({
+//         email:user.email,
+//         uuid:user.user_uuid,
+//         permission:user.permission,
+//         name:user.name
+//       })
+//       console.log('user session', userSession)
+//       req.session.user = userSession;
+//       console.log('session general', req.session)
+//       console.log('usersession on session',req.session.user)
+//       console.log('id', req.sessionID)
+//       watchAlarms(userSession);
+//       renderObj = {
+//         email:user.email,
+//         name:user.name
+//        };
+//       if (user.permission === 'admin') {
+//         res.render('admin/home')
+//       } else if (user.permission === 'user') {
+//         console.log(result)
+//         res.json(result)
+//       }
+//     })
+//     .catch((error:Error) => {
+//       console.log(error)
+//       res.json(error)
+//     })
+// })
 router.post('/log-out', function (req, res, next) {
     var inactive = uuidv4(); //if its uuidv4 its inactive
     database_1.db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])

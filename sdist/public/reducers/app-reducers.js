@@ -3,10 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var redux_1 = require("redux");
 var permissions_1 = require("../actions/permissions");
 var alarms_1 = require("../actions/alarms");
+var user_data_1 = require("../actions/user-data");
 var initialState = {
     isFetching: false,
     permission: 'guest',
-    alarms: 'nothing here!'
+    alarms: 'nothing here!',
 };
 function getPermissions(state, action) {
     if (state === void 0) { state = initialState; }
@@ -42,9 +43,34 @@ function getAlarms(state, action) {
             return state;
     }
 }
+var initialUserData = {
+    profile: {},
+    alarms: {},
+    settings: {},
+    orgs: {}
+};
+function getUserData(state, action) {
+    if (state === void 0) { state = initialUserData; }
+    console.log('user data reducer');
+    switch (action.type) {
+        case user_data_1.REQ_USER:
+            return Object.assign({}, state, {
+                isFetching: true
+            });
+        case user_data_1.RECEIVE_USER:
+            return Object.assign({}, state, {
+                isFetching: false,
+                user: action.gets,
+                lastUpdatedUser: action.recievedAt
+            });
+        default:
+            return state;
+    }
+}
 var appReducers = redux_1.combineReducers({
     getPermissions: getPermissions,
-    getAlarms: getAlarms
+    getAlarms: getAlarms,
+    getUserData: getUserData
 });
 exports.default = appReducers;
 //# sourceMappingURL=app-reducers.js.map
