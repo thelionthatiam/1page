@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { compare } from '../../routes/functions/helpers';
 import {
   Route,
   Link,
@@ -33,10 +34,6 @@ class AlarmClock extends Component {
       () => this.tick(),
       1000
     )
-    if (this.props.permission === 'user') {
-      // this.props.alarmGetter();
-    }
-    
   }
 
   componentWillMount() {
@@ -75,6 +72,7 @@ class AlarmClock extends Component {
  }
 
   render() {
+    console.log('|||||||||ALARM COMPONENT', this.props)
     return (
       <div className = 'app-alarm-wrapper'>
         <Clock time={this.state.date.toLocaleTimeString()} />

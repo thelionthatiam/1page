@@ -6,21 +6,29 @@ import {
   Redirect,
   Switch
 } from 'react-router-dom';
-import Home from "./components/profile";
+import ProfileWithActions from "./containers/profile-actions";
 import GraphWrapper from "./components/user-graph";
-import Settings from "./components/settings";
+import SettingsWithActions from "./containers/settings-actions";
 import SpaNewAccount from "./new-account"
 import AlarmsWithActions from "./containers/alarm-actions";
-import Organizations from "./components/organizations";
+import OrgsWithActions from "./containers/organizations-actions";
+import AlarmClock from './components/alarm-clock';
+import Orgs from './components/guest-orgs'
+
 
 interface AppProps {
   message : string;
   permission : string;
   email : string;
+  userData : Object;
   isLoggedIn : () => string;
   isNotLoggedIn : () => string;
   permissionChecker : () => string;
   getUserData : () => Object;
+}
+
+interface Profile {
+
 }
 
 class App extends Component {
@@ -32,11 +40,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // this.props.getUserData()
     this.props.permissionChecker()
-    this.props.getUserData()
   }
 
   render() {
+    console.log(this.props)
     if (this.props.permission === 'guest') {
       return (
         <BrowserRouter>
@@ -86,15 +95,15 @@ class App extends Component {
                   <button type = "submit" className = "app-menu-text-disabled disabled-link" >logout</button>
                 </form>
               </li>
-
+            
             </ul>
             <div className="app-content">
               <Route path='/app/guest' render= {() => <Redirect to = '/app/guest/alarms'/>}/>
               <Route path='/app/guest/alarms' component={AlarmsWithActions}/>
-              <Route path='/app/guest/orgs' component={Organizations}/>
+              <Route path='/app/guest/orgs' component={Orgs}/>
               <Route path='/app/guest/insights' component={GraphWrapper}/>
-              <Route path='/app/guest/profile' component={Settings}/>
-              <Route path='/app/guest/settings' component={Settings}/>
+              <Route path='/app/guest/profile' component={GraphWrapper}/>
+              <Route path='/app/guest/settings' component={GraphWrapper}/>
             </div>
           </div>
         </BrowserRouter>
@@ -112,27 +121,27 @@ class App extends Component {
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/clock-alarm.svg'/>
-                <Link to = { "/app/accounts/" + this.props.email + "/alarms" } className='app-menu-text'>alarms</Link>
+                <Link to = { "/app/accounts/" + this.props.profile.email + "/alarms" } className='app-menu-text'>alarms</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/squares.svg'/>
-                <Link to = { "/app/accounts/" + this.props.email + "/orgs" } className='app-menu-text '>organizations</Link>
+                <Link to = { "/app/accounts/" + this.props.profile.email + "/orgs" } className='app-menu-text '>organizations</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/graph-bar.svg'/>
-                <Link to = { "/app/accounts/" + this.props.email + "/insights" } className='app-menu-text'>insights</Link>
+                <Link to = { "/app/accounts/" + this.props.profile.email + "/insights" } className='app-menu-text'>insights</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/user-fem.svg'/>
-                <Link to = { "/app/accounts/" + this.props.email + "/profile" } className='app-menu-text'>profile</Link>
+                <Link to = { "/app/accounts/" + this.props.profile.email + "/profile" } className='app-menu-text'>profile</Link>
               </li>
 
               <li className='app-menu-li'>
                 <img className='formIcon fadeIn' src='/icons/white/mixer.svg'/>
-                <Link to = { "/app/accounts/" + this.props.email + "/settings" } className='app-menu-text'>settings</Link>
+                <Link to = { "/app/accounts/" + this.props.profile.email + "/settings" } className='app-menu-text'>settings</Link>
               </li>
 
               <li className='app-menu-li' id='logout'>
@@ -141,15 +150,14 @@ class App extends Component {
                   <button type="submit" className="app-menu-text">logout</button>
                 </form>
               </li>
-
             </ul>
             <div className="app-content">
-              <Route path = '/app/account' render= {() => <Redirect to = {'/app/accounts/' + this.props.email + '/alarms'}/>}/>
-              <Route path = { '/app/accounts/' + this.props.email + '/alarms' } component= { AlarmsWithActions }/>
-              <Route path = { '/app/accounts/' + this.props.email + '/orgs' } component= { Organizations }/>
-              <Route path = { '/app/accounts/' + this.props.email + '/insights' } component= { GraphWrapper }/>
-              <Route path = { '/app/accounts/' + this.props.email + '/profile' } component= { Settings }/>
-              <Route path = { '/app/accounts/' + this.props.email + '/settings' } component= { Settings }/>
+              <Route path = '/app/account' render= {() => <Redirect to = {'/app/accounts/' + this.props.profile.email + '/alarms'}/>}/>
+              <Route path = { '/app/accounts/' + this.props.profile.email + '/alarms' } component= { AlarmsWithActions }/>
+              <Route path = { '/app/accounts/' + this.props.profile.email + '/orgs' } component= { OrgsWithActions }/>
+              <Route path = { '/app/accounts/' + this.props.profile.email + '/insights' } component= { GraphWrapper }/>
+              <Route path = { '/app/accounts/' + this.props.profile.email + '/profile' } component= { ProfileWithActions }/>
+              <Route path = { '/app/accounts/' + this.props.profile.email + '/settings' } component= { SettingsWithActions }/>
             </div>
           </div>
         </BrowserRouter>

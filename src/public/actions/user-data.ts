@@ -7,17 +7,18 @@ const reqUserData = () => {
 export const RECEIVE_USER = 'RECEIVE_USER'
 
 function receiveUserData(json) {
-    console.log('recieve user data')
     return {
         type: RECEIVE_USER,
-        gets: json,
+        profile: json.profile,
+        alarms: json.alarms,
+        settings: json.settings,
+        orgs: json.orgs,
         receivedAt: Date.now()
     }
 }
 
 export function fetchUserData() {
     return function (dispatch) {
-        console.log('fetch user data')
         dispatch(reqUserData())
         return fetch("http://localhost:8000/user-data", {
             method: "get",
@@ -27,11 +28,8 @@ export function fetchUserData() {
                 "Content-Type": "application/json"
             }
         }).then((res) => {
-            console.log('fetch user data response', res);
             return res.json();
         }).then((body) => {
-            console.log(typeof body)
-            let userData = JSON.stringify(body);
             dispatch(receiveUserData(body));
         })
         .catch((err) => {

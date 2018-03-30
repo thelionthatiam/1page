@@ -24,6 +24,9 @@ body {
   border: 0;
   margin: 0; }
 
+.paragraph-margins {
+  margin: 15px 0 20px 0; }
+
 .centerColumn {
   display: flex;
   flex-direction: column;
@@ -46,7 +49,8 @@ input {
   border-bottom: 2px solid black;
   flex-grow: 1;
   font-size: 14px;
-  padding: 2px; }
+  padding: 2px;
+  background-color: transparent; }
 
 input:focus {
   outline: 0; }
@@ -96,6 +100,46 @@ button:focus {
 
 .button.unavailable:active {
   transform: translate(0px); }
+
+.full-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+.left-text {
+  align-self: flex-start; }
+
+.error-wrapper {
+  width: 60vw;
+  max-width: 600px;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
+.login-img-wrapper {
+  width: 100vw;
+  height: 100vh;
+  min-height: 300px;
+  background-image: url("/other-imgs/blur-hero-100.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #282828;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; }
+
+.login-wrapper {
+  min-width: 30vw;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.76);
+  padding: 1vw; }
 
 .home-img-wrapper {
   width: 100vw;
@@ -156,10 +200,12 @@ button:focus {
 
 .home-create-account {
   height: 5vh;
-  width: 10vw;
+  width: 11vw;
   text-transform: uppercase;
   color: #282828;
-  font-weight: 600; }
+  font-weight: 600;
+  padding: 4px;
+  background-color: rgba(255, 255, 255, 0.76); }
 
 .home-tryit-wrapper {
   position: absolute;
@@ -333,7 +379,8 @@ button:focus {
       display: flex;
       width: 100%; }
       .formWrapper form .textFormWrapper div input {
-        flex-grow: 1; }
+        flex-grow: 1;
+        background-color: transparent; }
     .formWrapper form .textFormWrapper p {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -442,7 +489,8 @@ button:focus {
 
 .formInactive input {
   color: grey;
-  border-color: grey; }
+  border-color: grey;
+  background-color: transparent; }
 
 .spa-menu-test {
   width: 100%; }

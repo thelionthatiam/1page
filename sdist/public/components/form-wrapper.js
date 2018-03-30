@@ -27,6 +27,8 @@ var FormWrapper = /** @class */ (function (_super) {
             _this.getValidation(dataFromChild);
         };
         _this.state = {
+            errorMessage: '',
+            error: false,
             submitted: false,
             submitable: false,
             data: {}
@@ -58,15 +60,16 @@ var FormWrapper = /** @class */ (function (_super) {
         return true;
     };
     FormWrapper.prototype.handleSubmit = function (event) {
-        console.log('HANDLE SUBMIT CALLED');
+        var _this = this;
+        console.log('HANDLE SUBMIT CALLED:', this.state.data);
         event.stopPropagation();
         event.preventDefault();
         if (this.state.submitable && this.props.method === 'post') {
-            var dummyString = JSON.stringify(this.state.data);
-            console.log('test string: ', dummyString);
+            var formData = JSON.stringify(this.state.data);
             fetch(this.props.url, {
-                body: dummyString,
+                body: formData,
                 method: "post",
+                credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json"
@@ -78,7 +81,13 @@ var FormWrapper = /** @class */ (function (_super) {
                 submitted: true
             }))
                 .catch(function (error) {
-                console.log(error.stack);
+                console.log(error);
+                _this.setState({
+                    errorMessage: error,
+                    submitted: false,
+                    submitable: false,
+                    data: {}
+                });
             });
         }
         else if (this.state.submitable && this.props.method === 'get') {
@@ -114,12 +123,11 @@ var FormWrapper = /** @class */ (function (_super) {
         return (react_1.default.createElement("div", { className: 'formWrapper' },
             react_1.default.createElement("form", { onSubmit: this.handleSubmit, action: this.props.url, method: this.props.method },
                 childWithProp,
-                react_1.default.createElement("input", { 
-                    // submitable = {this.state.submitable}
-                    // submitted = {this.state.submitted}
-                    //onClick = {this.handleSubmit}
+                react_1.default.createElement("input", { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, 
                     // buttonText = {this.props.buttonText}
-                    type: 'submit' }))));
+                    type: 'submit', value: 'login' })),
+            react_1.default.createElement("div", null,
+                react_1.default.createElement("p", { className: this.state.error ? "textError fadeIn" : 'fadeOut' }, this.state.errorMessage))));
     };
     return FormWrapper;
 }(react_1.default.Component));

@@ -16,10 +16,12 @@ function check(req, res, next) {
         })
             .then(function (result) {
             if (result.rows[0].permission === 'admin') {
+                res.locals.permission = 'admin';
                 next();
             }
             else if (result.rows[0].permission === 'user') {
                 console.log('>>>>USER IS A USER: ', req.session.user);
+                res.locals.permission = 'user';
                 next();
             }
             else if (result.rows[0].permission === 'guest') {
@@ -31,7 +33,7 @@ function check(req, res, next) {
         });
     }
     else {
-        // console.log('>>>>USER IS A GUEST')
+        res.locals.permission = 'guest';
         next();
     }
 }

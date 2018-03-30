@@ -1,0 +1,46 @@
+<h1>TEST PAGE</h1>
+{{!-- <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script
+ src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script> --}}
+<div id='root'></div>
+<div id='anotherTest'></div>
+
+
+
+<script>
+    let dummy = {{{ dummy }}};
+    console.log(dummy)
+    window.data = dummy
+</script>
+<script>console.log(window.data)</script>
+<script src='./rollup/bundle.js'></script>
+
+<script>
+    ReactDOM.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('anotherTest')
+    );
+</script>
+
+
+
+
+{{!-- <script>
+    console.log('can I render this from the rollup, now that it is used?', window.testThing)
+    class Hello extends React.Component {
+    render() {
+        return React.createElement('div', null, `Hello ${this.props.toWhat}`);
+    }
+    }
+
+    ReactDOM.render(
+    React.createElement(window.testThing, {}, null),
+    document.getElementById('root')
+    );
+
+</script> --}}
+
+
+
+<script>const test = 'this is another test'</script>

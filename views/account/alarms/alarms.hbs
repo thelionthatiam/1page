@@ -75,6 +75,15 @@
     </div>
   </div>
 </div>
-<script src='../../rollup/bundle.js'></script>
+<script>
+    let userData = {{{ userData }}};
+    console.log(userData)
+    window.userData = userData
+    
+    let permission = "{{permission}}"
+    window.permission = permission;
+    console.log(permission)
+</script>
+<script src='../../../rollup/bundle.js'></script>
 {{!-- <script src="/behavior/alarm-display.js"></script>
 <script src='/behavior/clock.js'></script> --}}

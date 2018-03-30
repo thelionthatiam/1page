@@ -68,4 +68,13 @@
         </div>
     </div>
 </div>
+<script>
+    let userData = {{{ userData }}};
+    console.log(userData)
+    window.userData = userData
+    
+    let permission = "{{permission}}"
+    window.permission = permission;
+    console.log(permission)
+</script>
 <script src='../../rollup/bundle.js'></script>

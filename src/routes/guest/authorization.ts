@@ -3,6 +3,7 @@ import * as help from '../functions/helpers';
 import * as bcrypt from 'bcrypt';
 import * as uuidv4 from 'uuid/v4';
 import * as r from '../resources/value-objects'
+import { checkEmail, checkPassword, regenerateSession, updateSession, defineSession } from '../functions/query-logic'
 import { watchAlarms } from '../functions/alarm'
 import { BaseRequestHandler } from '../resources/handlers';
 import { db } from '../middleware/database';
@@ -18,64 +19,29 @@ router.post('/authorized', (req, res) => {
   }
 
   let user:r.UserDB;
-  let cart:r.CartDB;
   let userSession:r.UserSession;
 
-  req.aQuery.selectUser([inputs.email])
+  checkEmail(req.aQuery, inputs.email)
     .then((result) => {
-      if (result.rows.length === 0) {
-        throw new Error("Email not found");
-      } else {
-        user = r.UserDB.fromJSON(result.rows[0]);
-        return bcrypt.compare(inputs.password, user.password);
-      }
+      user = result;
+      return checkPassword(inputs.password, user.password)
     })
-    .then((result : boolean) => {
-      if (result === false) {
-        throw new Error('Password incorrect');
-      } else {
-        return help.regenerateSession(req);
-      }
+    .then((boolean) => {
+      return regenerateSession(req.session)
     })
     .then(() => {
-      return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+      return updateSession(req.aQuery, req.sessionID, user.user_uuid);
     })
     .then((result ) => {
-
-      userSession = r.UserSession.fromJSON({
-        email:user.email,
-        uuid:user.user_uuid,
-        permission:user.permission,
-        name:user.name
-      })
-      req.session.user = userSession;
-      // watchAlarms(userSession);
-
-      if (user.permission === 'admin') {
-        res.render('admin/home')
-      } else if (user.permission === 'user') {
-        console.log(result)
-        console.log('user information', {
-          email:req.session.user.email,
-          name:req.session.user.name
-        })
-        res.redirect('/app'
-        // {
-        //   email:req.session.user.email,
-        //   name:req.session.user.name
-        // }
-        )
-      }
+      req.session.user = defineSession(user)
+      res.redirect('/app')
     })
     .catch((error:Error) => {
-      console.log(error)
-      res.render('login', {
-        dbError:error
-      })
+      res.render('login', {dbError:error})
     })
 })
 
-// router.post('/api/authorized', (req, res) => {
+// router.post('/authorized', (req, res) => {
 
 //   console.log('start authorized post')
 
@@ -113,19 +79,16 @@ router.post('/authorized', (req, res) => {
 //       return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
 //     })
 //     .then((result ) => {
-//       console.log(req.sessionID)
-//       userSession = r.UserSession.fromJSON({
+
+//      userSession = r.UserSession.fromJSON({
 //         email:user.email,
 //         uuid:user.user_uuid,
 //         permission:user.permission,
 //         name:user.name
 //       })
-//       console.log('user session', userSession)
-//       req.session.user = userSession;
-//       console.log('session general', req.session)
-//       console.log('usersession on session',req.session.user)
-//       console.log('id', req.sessionID)
-//       watchAlarms(userSession);
+//       req.session.user = userSession;]
+
+//       // watchAlarms(userSession);
 
 //       renderObj = {
 //         email:user.email,

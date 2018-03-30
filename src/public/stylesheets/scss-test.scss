@@ -78,6 +78,11 @@ $white: #fff;
 $small-margin-l:25px;
 $small-margin-r:25px;
 
+.paragraph-margins {
+  margin: 15px 0 20px 0;
+}
+
+
 //  common element sizes
 $icon-width:30px;
 $icon-container-width:$icon-width + $small-margin-l;
@@ -104,6 +109,7 @@ input {
   flex-grow:1;
   font-size:14px;
   padding:2px;
+  background-color:transparent;
 }
 
 input:focus {
@@ -168,6 +174,58 @@ button:focus {
  transform:translate(0px);
 }
 
+.full-page {
+  width:100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-text {
+  align-self: flex-start;
+}
+// ERROR PAGE 
+
+.error-wrapper {
+  width:60vw;
+  max-width:600px;
+  min-width:400px;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+}
+
+
+//  LOGIN PAGE
+.login-img-wrapper {
+  width:100vw;
+  height:100vh;
+  min-height: 300px;
+  background-image: url('/other-imgs/blur-hero-100.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color:$darkGrey;
+
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-wrapper {
+  // width:40vw;
+  // height:30vh;
+  min-width:30vw;
+  display:flex;
+  align-items: center;
+  background-color: rgba(255,255,255,0.76);
+  padding:1vw;
+}
+
+
 // HOME page
 
 
@@ -182,6 +240,8 @@ button:focus {
   background-size: cover;
   background-color:$darkGrey;
 }
+
+
 
 .home-navigation-bar {
   position:absolute;
@@ -241,10 +301,12 @@ button:focus {
 
 .home-create-account {
   height:5vh;
-  width:10vw;
+  width:11vw;
   text-transform:uppercase;
   color:$darkGrey;
   font-weight:600;
+  padding: 4px;
+  background-color:rgba(255,255,255,0.76);
 }
 
 .home-tryit-wrapper {
@@ -460,6 +522,7 @@ button:focus {
           width:100%;
           input {
             flex-grow:1;
+            background-color:transparent;
           }
         }
 
@@ -605,6 +668,7 @@ button:focus {
   input {
     color:grey;
     border-color:grey;
+    background-color:transparent;
   }
 }
 

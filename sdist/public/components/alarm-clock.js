@@ -27,9 +27,6 @@ var AlarmClock = /** @class */ (function (_super) {
     AlarmClock.prototype.componentDidMount = function () {
         var _this = this;
         this.timerID = setInterval(function () { return _this.tick(); }, 1000);
-        if (this.props.permission === 'user') {
-            // this.props.alarmGetter();
-        }
     };
     AlarmClock.prototype.componentWillMount = function () {
         clearInterval(this.timerID);
@@ -61,6 +58,7 @@ var AlarmClock = /** @class */ (function (_super) {
         });
     };
     AlarmClock.prototype.render = function () {
+        console.log('|||||||||ALARM COMPONENT', this.props);
         return (react_1.default.createElement("div", { className: 'app-alarm-wrapper' },
             react_1.default.createElement(Clock, { time: this.state.date.toLocaleTimeString() }),
             react_1.default.createElement(AlarmForm, { formSubmit: this.handleSubmit, time: this.state.time, inputChange: this.handleChange }),

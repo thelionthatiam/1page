@@ -1,4 +1,3 @@
-import TextForm from './form-item-text';
 import Button from './button-generic'
 import React from 'react';
 
@@ -16,9 +15,11 @@ class FormWrapper extends React.Component {
   buttonText:string;
   noValidation:boolean;
 
-  constructor(props:FormWrapper) {
+  constructor(props) {
     super(props)
     this.state = {
+      errorMessage:'',
+      error:false,
       submitted: false,
       submitable: false,
       data: {}
@@ -63,15 +64,15 @@ class FormWrapper extends React.Component {
   }
 
   handleSubmit(event) {
-    console.log('HANDLE SUBMIT CALLED')
+    console.log('HANDLE SUBMIT CALLED:', this.state.data)
     event.stopPropagation()
     event.preventDefault()
     if (this.state.submitable && this.props.method === 'post') {
-      let dummyString = JSON.stringify(this.state.data);
-      console.log('test string: ',dummyString)
+      let formData = JSON.stringify(this.state.data);
       fetch(this.props.url, {
-          body:dummyString,
+          body:formData,
           method: "post",
+          credentials: "same-origin",
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -79,14 +80,18 @@ class FormWrapper extends React.Component {
         })
         .then(res => res.json())
         .then(body => console.log(body))
-        // .then(() => {window.location.href = 'http://localhost:8000/home-redirect'})
-        .then(
-          this.setState({
+        .then(this.setState({
             submitted:true
           })
         )
         .catch((error) => {
-          console.log(error.stack)
+          console.log(error)
+          this.setState({
+            errorMessage:error,
+            submitted:false,
+            submitable:false,
+            data:{}
+          })
         })
     } else if (this.state.submitable && this.props.method === 'get') { // this is not in use
       fetch(this.props.url, {
@@ -129,19 +134,23 @@ class FormWrapper extends React.Component {
           >
           {childWithProp}
           <input
-            // submitable = {this.state.submitable}
-            // submitted = {this.state.submitted}
-            //onClick = {this.handleSubmit}
+            submitable = {this.state.submitable}
+            submitted = {this.state.submitted}
+            onClick = {this.handleSubmit}
             // buttonText = {this.props.buttonText}
             type = 'submit'
+            value = 'login'
             />
         </form>
+        <div>
+          <p className = {this.state.error ? "textError fadeIn" : 'fadeOut' }>
+            {this.state.errorMessage}
+          </p>
+       </div>
       </div>
     )
   }
 }
-
-
 
 
 export default FormWrapper;

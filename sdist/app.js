@@ -10,6 +10,7 @@ var cors = require("cors");
 var combiner_1 = require("./config/combiner");
 var database_1 = require("./routes/middleware/database");
 var sessionCheck = require("./routes/middleware/session-check");
+var e = require("./routes/functions/error-handling");
 var app = express();
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
+// CHECK HEADERS
 // app.use((req, res, next) => {
 //   console.log('|||||||||||||||||||||||||||||||')
 //   console.log(req.headers);
@@ -45,27 +47,40 @@ app.use(session({
     },
 }));
 app.use(sessionCheck.check);
-// app.use('/accounts/\*', sessionCheck.check)
-// app.use('/admin/\*', sessionCheck.adminCheck)
 app.use('/', require('./routes/index'));
 app.use(function (req, res, next) {
     res.status(404);
     res.render('error', { errName: null, errMessage: "We couldn't find this page." });
 });
 app.use(function (err, req, res, next) {
-    console.log('err name: ', err.name);
-    console.log(err);
     if (err.name === 'PayloadTooLargeError') {
         res.status(413);
-        res.render('error', { errName: err.message, errMessage: "You entered something over 50kb. Please make your inputs are smaller and try again." });
+        res.render('error', {
+            errName: err.message,
+            errMessage: "You entered something over 50kb. Please make your inputs are smaller and try again."
+        });
     }
     else if (err.name === 'ReferenceError') {
         res.status(500);
-        res.render('error', { errName: err.message, errMessage: "Something was missing." });
+        res.render('error', {
+            errName: err.message,
+            errMessage: "Something was missing."
+        });
+    }
+    else if (e.serverErrorFileNotFound.test(err.message)) {
+        res.status(404);
+        res.render('error', {
+            number: "404",
+            errName: err.message,
+            errMessage: "Could not find this page!"
+        });
     }
     else {
         res.status(500);
-        res.render('error', { errName: err.message, errMessage: null });
+        res.render('error', {
+            errName: err.message,
+            errMessage: null
+        });
     }
 });
 // production

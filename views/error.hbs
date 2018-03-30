@@ -1,22 +1,23 @@
 <div class="full-page">
-  <h1>ERROR.</h1>
-
-  <h5>
-    {{ errName }}
-  </h5>
-  <p>
-    {{ errMessage }}
-  </p>
-  <p>
-    Sorry for the hangup! You can use the home button below to try again.
-  </p>
-  <form action='/home' method='get'>
-    <button class='no'> go back home </button>
-  </form>
-  <p>
-    If that doesn't work try logging in again.
-  </p>
-  <form action='/' method='get'>
-    <button class='no'> login </button>
-  </form>
+  <div class = "error-wrapper">
+    <h1 class = "error-title">{{number}} ERROR.</h1>
+    <div class="paragraph-margins error-wrapper">
+      <h5 class = 'textError'>
+        {{ errName }}
+      </h5>
+   
+      <p class = 'paragraph-margins'>
+        {{ errMessage }}
+      </p>
+      <p>
+        Sorry for the hangup. You can use the home button below to try again.
+      </p>
+    </div>
+    <form action='/' method='get'>
+      <button> go back home </button>
+    </form>
+    <form action='/to-login' method='get'>
+      <button> login </button>
+    </form>
+  </div>
 </div>

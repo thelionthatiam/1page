@@ -1,22 +1,23 @@
 import { connect } from 'react-redux';
-import { fetchPermissions } from '../actions/permissions';
+import { reqPermissions } from '../actions/permissions';
 import { fetchUserData } from '../actions/user-data'
 import App from '../spa'
 
 const mapStateToProps = (state, ownProps) => {
-    console.log('state', state.getUserData.user.profile.email)
     return {
-        permission: state.getPermissions.permission,
-        email: state.getUserData.user.profile
+        userData: state.getPermissions,
+        profile: state.getPermissions.profile,
+        alarms: state.getPermissions.alarms,
+        settings: state.getPermissions.settings,
+        orgs: state.getPermissions.orgs,
+        permission: state.getPermissions.permission
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    console.log('dispatch function')
     return {
-        permissionChecker: () => dispatch(fetchPermissions()),
-        getUserData: () => dispatch(fetchUserData())
-
+        // getUserData: () => dispatch(fetchUserData()),
+        permissionChecker: () => dispatch(reqPermissions()),
     }
 }
 

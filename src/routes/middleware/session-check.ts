@@ -17,9 +17,11 @@ function check(req:Express.Request, res, next:Function) {
       })
       .then((result) => {
         if (result.rows[0].permission === 'admin') {
+          res.locals.permission = 'admin'
           next();
         } else if (result.rows[0].permission === 'user') {
           console.log('>>>>USER IS A USER: ', req.session.user)
+          res.locals.permission = 'user'
           next();
         } else if (result.rows[0].permission === 'guest') {
         }
@@ -29,7 +31,7 @@ function check(req:Express.Request, res, next:Function) {
         helper.genError(res, 'login', "you were no longer logged in, try to log in again");
       })
   } else {
-    // console.log('>>>>USER IS A GUEST')
+    res.locals.permission = 'guest'
     next()
   }
 }

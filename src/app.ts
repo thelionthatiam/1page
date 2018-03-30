@@ -11,6 +11,7 @@ import * as cors from 'cors'
 import { dbConfig } from "./config/combiner";
 import { init } from "./routes/middleware/database";
 import * as sessionCheck from "./routes/middleware/session-check";
+import * as e from './routes/functions/error-handling'
 
 const app = express();
 
@@ -27,12 +28,15 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
+
+// CHECK HEADERS
 // app.use((req, res, next) => {
 //   console.log('|||||||||||||||||||||||||||||||')
 //   console.log(req.headers);
 //   console.log('|||||||||||||||||||||||||||||||')
 //   next();
 // })
+
 app.use(init(dbConfig));
 app.options('*', cors())
 app.use(cors())
@@ -51,28 +55,40 @@ app.use(session({
 );
 
 app.use(sessionCheck.check)
-// app.use('/accounts/\*', sessionCheck.check)
-// app.use('/admin/\*', sessionCheck.adminCheck)
 app.use('/', require('./routes/index'))
 
-app.use(function(req, res, next) {
+app.use(function(req, res, next) { 
   res.status(404);
   res.render('error', { errName: null, errMessage: "We couldn't find this page." });
 });
 
 app.use(function (err:Error, req:express.Request, res:express.Response, next:express.NextFunction) {
-  console.log('err name: ', err.name);
-  console.log(err);
 
   if (err.name === 'PayloadTooLargeError' ) {
     res.status(413);
-    res.render('error', { errName: err.message, errMessage: "You entered something over 50kb. Please make your inputs are smaller and try again." });
+    res.render('error', { 
+      errName: err.message,
+      errMessage: "You entered something over 50kb. Please make your inputs are smaller and try again." 
+    });
   } else if (err.name === 'ReferenceError') {
     res.status(500);
-    res.render('error', { errName: err.message, errMessage: "Something was missing." });
+    res.render('error', { 
+      errName: err.message,
+      errMessage: "Something was missing." 
+    });
+  } else if (e.serverErrorFileNotFound.test(err.message)) {
+    res.status(404)
+    res.render('error', { 
+      number: "404", // only because 404 is well-known to users
+      errName: err.message, 
+      errMessage: "Could not find this page!"
+    })
   } else {
     res.status(500);
-    res.render('error', { errName: err.message, errMessage: null });
+    res.render('error', { 
+      errName: err.message,
+      errMessage: null 
+    });
   }
 })
 

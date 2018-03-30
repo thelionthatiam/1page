@@ -4,6 +4,7 @@
             <div class='app-menu-title-wrapper'>
                 <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
                 <h1 class='app-menu-title'>s.y.l.</h1>
+                <p> You're a {{permission}}.</p>
             </div>
             <li class='app-menu-li'>
                 <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
@@ -75,4 +76,10 @@
         </div>
     </div>
 </div>
-<script src='../rollup/bundle.js'></script>
+{{!-- <script>
+    let dummy = {{{ dummy }}};
+    console.log(dummy)
+    window.data = dummy
+</script> --}}
+{{!-- <script>console.log(window.data)</script>
+<script src='../rollup/bundle.js'></script> --}}
