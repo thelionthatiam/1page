@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
-var uuidv4 = require("uuid/v4");
+var is_uuid_1 = require("is-uuid");
 var query_logic_1 = require("../functions/query-logic");
-var database_1 = require("../middleware/database");
 var router = express.Router();
 router.post('/authorized', function (req, res) {
     var inputs = {
@@ -89,9 +88,10 @@ router.post('/authorized', function (req, res) {
 //       res.json(error)
 //     })
 // })
+// LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 router.post('/log-out', function (req, res, next) {
-    var inactive = uuidv4(); //if its uuidv4 its inactive
-    database_1.db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
+    var inactive = is_uuid_1.default(); //if its uuidv4 its inactive
+    db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
         .then(function (result) {
         req.session.destroy(function (err) {
             if (err) {

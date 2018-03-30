@@ -1,12 +1,12 @@
 import * as express from 'express';
-import * as help from '../functions/helpers';
-import * as bcrypt from 'bcrypt';
-import * as uuidv4 from 'uuid/v4';
+import uuidv4 from 'is-uuid'
 import * as r from '../resources/value-objects'
-import { checkEmail, checkPassword, regenerateSession, updateSession, defineSession } from '../functions/query-logic'
+import { checkEmail,
+  checkPassword,
+  regenerateSession,
+  updateSession,
+  defineSession } from '../functions/query-logic'
 import { watchAlarms } from '../functions/alarm'
-import { BaseRequestHandler } from '../resources/handlers';
-import { db } from '../middleware/database';
 const router = express.Router();
 
 
@@ -107,6 +107,9 @@ router.post('/authorized', (req, res) => {
 //       res.json(error)
 //     })
 // })
+
+
+// LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 
 router.post('/log-out', function(req, res, next) {
     let inactive = uuidv4(); //if its uuidv4 its inactive
