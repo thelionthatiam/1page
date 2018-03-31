@@ -11,7 +11,7 @@ module.exports = {
     output: {
       file: 'sdist/public/rollup/bundle.js',
       format: 'iife',
-      name: 'supercoolnamehere',
+      name: 'a',
       sourcemap:true
     },
     watch: {

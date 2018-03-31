@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var helper = require("../functions/helpers");
 var database_1 = require("./database");
-function check(req, res, next) {
-    // console.log('>>>>SESSION CHECK MIDDLEWARE RUNNING')
+// console.log('>>>>SESSION CHECK MIDDLEWARE RUNNING')
+function sessionCheck(req, res, next) {
     if (req.session.user && req.sessionID) {
         database_1.db.query('SELECT sessionID FROM session WHERE user_uuid = $1', [req.session.user.uuid])
             .then(function (result) {
@@ -25,6 +25,8 @@ function check(req, res, next) {
                 next();
             }
             else if (result.rows[0].permission === 'guest') {
+                res.locals.psermission = 'guest';
+                next();
             }
         })
             .catch(function (error) {
@@ -37,5 +39,5 @@ function check(req, res, next) {
         next();
     }
 }
-exports.check = check;
+exports.default = sessionCheck;
 //# sourceMappingURL=session-check.js.map

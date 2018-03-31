@@ -36,6 +36,9 @@
                     <button type="submit" class="app-menu-text">logout</button>
                 </form>
             </li>
+            <li>
+                <p> You're a {{permission}}.</p>
+            </li>
 
         </ul>
         <div class="app-content">
@@ -68,7 +71,7 @@
         </div>
     </div>
 </div>
-<script>
+{{!-- <script>
     let userData = {{{ userData }}};
     console.log(userData)
     window.userData = userData
@@ -77,4 +80,4 @@
     window.permission = permission;
     console.log(permission)
 </script>
-<script src='../../rollup/bundle.js'></script>
+<script src='../../rollup/bundle.js'></script> --}}

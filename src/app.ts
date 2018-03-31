@@ -10,7 +10,8 @@ import * as methodOverride from 'method-override';
 import * as cors from 'cors'
 import { dbConfig } from "./config/combiner";
 import { init } from "./routes/middleware/database";
-import * as sessionCheck from "./routes/middleware/session-check";
+import renderState from './routes/middleware/server-render-state';
+import sessionCheck from "./routes/middleware/session-check";
 import * as e from './routes/functions/error-handling'
 
 const app = express();
@@ -29,14 +30,6 @@ app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
 
-// CHECK HEADERS
-// app.use((req, res, next) => {
-//   console.log('|||||||||||||||||||||||||||||||')
-//   console.log(req.headers);
-//   console.log('|||||||||||||||||||||||||||||||')
-//   next();
-// })
-
 app.use(init(dbConfig));
 app.options('*', cors())
 app.use(cors())
@@ -54,8 +47,14 @@ app.use(session({
   })
 );
 
-app.use(sessionCheck.check)
+app.use(sessionCheck)
+app.use(renderState)
 app.use('/', require('./routes/index'))
+
+
+
+
+// ERROR STUFF
 
 app.use(function(req, res, next) { 
   res.status(404);
@@ -63,7 +62,6 @@ app.use(function(req, res, next) {
 });
 
 app.use(function (err:Error, req:express.Request, res:express.Response, next:express.NextFunction) {
-
   if (err.name === 'PayloadTooLargeError' ) {
     res.status(413);
     res.render('error', { 

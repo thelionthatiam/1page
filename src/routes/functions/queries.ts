@@ -76,9 +76,25 @@ class Query {
   // insert
 
   insertUser(values:string[]) {
-    const query = 'INSERT INTO users(email, phone, password, name) VALUES($1, $2, $3, $4) RETURNING *'
+    const query = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(query, values)
   }
+
+  insertNonce(values:string[]) {
+    const query = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+    return this.conn.query(query, values);
+  }
+
+  insertSession(values:string[]) {
+    const query = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+    return this.conn.query(query, values);
+  }
+
+  insertSettings(values:string[]) {
+    const query = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
+    return this.conn.query(query, values);
+  }
+
   insertSnooze(values:string[]) {
     const query = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
     return this.conn.query(query, values);

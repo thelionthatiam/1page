@@ -56,7 +56,19 @@ var Query = /** @class */ (function () {
     };
     // insert
     Query.prototype.insertUser = function (values) {
-        var query = 'INSERT INTO users(email, phone, password, name) VALUES($1, $2, $3, $4) RETURNING *';
+        var query = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
+        return this.conn.query(query, values);
+    };
+    Query.prototype.insertNonce = function (values) {
+        var query = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+        return this.conn.query(query, values);
+    };
+    Query.prototype.insertSession = function (values) {
+        var query = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+        return this.conn.query(query, values);
+    };
+    Query.prototype.insertSettings = function (values) {
+        var query = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
         return this.conn.query(query, values);
     };
     Query.prototype.insertSnooze = function (values) {

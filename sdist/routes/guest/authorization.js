@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
-var is_uuid_1 = require("is-uuid");
-var query_logic_1 = require("../functions/query-logic");
+var business_logic_1 = require("../functions/business-logic");
 var router = express.Router();
 router.post('/authorized', function (req, res) {
     var inputs = {
@@ -11,23 +10,26 @@ router.post('/authorized', function (req, res) {
     };
     var user;
     var userSession;
-    query_logic_1.checkEmail(req.aQuery, inputs.email)
+    business_logic_1.checkEmail(req.aQuery, inputs.email)
         .then(function (result) {
         user = result;
-        return query_logic_1.checkPassword(inputs.password, user.password);
+        return business_logic_1.checkPassword(inputs.password, user.password);
     })
         .then(function (boolean) {
-        return query_logic_1.regenerateSession(req.session);
+        console.log('before regen', req.sessionID);
+        return business_logic_1.regenerateSession(req.session);
     })
         .then(function () {
-        return query_logic_1.updateSession(req.aQuery, req.sessionID, user.user_uuid);
+        console.log('after regen', req.sessionID);
+        return business_logic_1.updateSession(req.aQuery, req.sessionID, user.user_uuid);
     })
         .then(function (result) {
-        req.session.user = query_logic_1.defineSession(user);
+        req.session.user = business_logic_1.defineSession(user);
         res.redirect('/app');
     })
-        .catch(function (error) {
-        res.render('login', { dbError: error });
+        .catch(function (err) {
+        console.log(err);
+        res.render('login', { dbError: err });
     });
 });
 // router.post('/authorized', (req, res) => {
@@ -89,20 +91,31 @@ router.post('/authorized', function (req, res) {
 //     })
 // })
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
-router.post('/log-out', function (req, res, next) {
-    var inactive = is_uuid_1.default(); //if its uuidv4 its inactive
-    db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
-        .then(function (result) {
-        req.session.destroy(function (err) {
-            if (err) {
-                res.render('error', { errName: err.message, errMessage: null });
-            }
-            else {
-                console.log("after destory", req.session);
-                res.render('login');
-            }
-        });
+router.post('/log-out', function (req, res) {
+    business_logic_1.updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
+        .then(function () { return business_logic_1.destroySession(req.session); })
+        .then(function () {
+        res.redirect('/');
+    })
+        .catch(function (err) {
+        console.log(err.stack);
+        console.log(err);
+        res.render('error', { errName: err.message, errMessage: null });
     });
 });
+// router.post('/log-out', function(req, res, next) {
+//     let inactive = uuidv4(); //if its uuidv4 its inactive
+//     db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
+//     .then((result) => {
+//       req.session.destroy(function(err:Error) {
+//         if (err) {
+//           res.render('error', { errName: err.message, errMessage: null });
+//         } else {
+//           console.log("after destory", req.session)
+//           res.render('login');
+//         }
+//       });
+//     })
+//   });
 module.exports = router;
 //# sourceMappingURL=authorization.js.map

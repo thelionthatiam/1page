@@ -1,11 +1,86 @@
-<div class="column categoryWrapper">
+<div class="column contentWrapper">
+  <div class="alarm-row">
+    <h4 class = "alarm-title">{{title}}</h4>
+    <ul class = "week-list">
+      <li class = "day-of-week">mon</li>
+      <li class = "day-of-week">tues</li>
+      <li class = "day-of-week">wed</li>
+      <li class = "day-of-week">thurs</li>
+      <li class = "day-of-week">fri</li>
+      <li class = "day-of-week">sat</li>
+      <li class = "day-of-week">sun</li>
+    </ul>
+    <div class = 'time-wrapper'>
+      <h4>{{time}}</h4>
+      <a class = 'link-img'>
+        <img class='icon fadeIn' src='/icons/black/gear.svg'>
+      </a>
+    </div>
+    
+  </div>
+  <div class="alarm-row">
+    {{#if active}}
+      <p>
+        on
+      </p>
+    {{else}}
+      <p>
+        off
+      </p>
+    {{/if}}
+    {{#if permission}}
+    <h1>A.V.</h1>
+    <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}" method="get">
+        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
+        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+        <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
+    </form>
+    <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}?_method=DELETE" method="post">
+        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
+        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+        <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
+    </form>
+    {{else}}
+    <form action="/accounts/{{user_uuid}}/alarms/{{title}}" method="get">
+        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
+        <input name="title" type="hidden" value="{{ title }}">
+    </form>
+    <form action="/accounts/{{user_uuid}}/alarms/{{title}}?_method=DELETE" method="post">
+        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
+        <input name="title" type="hidden" value="{{ title }}">
+    </form>
+    {{/if}}
+  </div>
+  {{!-- <div class="alarm-row">
+    <form class = 'flex center' action="/accounts/{{user_uuid}}/alarms/{{title}}/snooze" method="post">
+      <button class="yes med-margin" type="submit">snooze</button>
+      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+    </form>
+    <form action="/accounts/{{user_uuid}}/alarms/{{title}}/dismiss" method="post">
+      <button class="no med-margin" type="submit">dismiss</button>
+      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+    </form>
+    <form action='/accounts/{{user_uuid}}/alarms/{{title}}/wake' method='post'>
+      <button type='submit' class='no med-margin'>wake</button>
+      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+    </form>
+   
+  </div> --}}
+  <p class="noMarginsPassing preInputMimic">{{ message }}</p>
+  <p class="formErrorReport">{{ dbError }}</p>
+  <h1>
+    {{ message }}
+  </h1>
+</div>
+
+{{!-- <div class="column categoryWrapper">
   <div class="row categoryTitle">
     <h4>{{title}}</h4>
     <div class="time-wrapper flex space-around ">
       <p class="self right awakeTime">
         {{time}}
       </p>
-      <img src="https://png.icons8.com/ios/540/alarm-clock.png" />
+      <img class = "icon" src="https://png.icons8.com/ios/540/alarm-clock.png" />
     </div>
   </div>
   <div class="box subCategoryWrapper none">
@@ -73,4 +148,4 @@
     <p class="noMarginsPassing preInputMimic">{{ message }}</p>
     <p class="formErrorReport">{{ dbError }}</p>
   </div>
-</div>
+</div> --}}

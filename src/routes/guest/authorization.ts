@@ -1,11 +1,12 @@
 import * as express from 'express';
-import uuidv4 from 'is-uuid'
 import * as r from '../resources/value-objects'
 import { checkEmail,
   checkPassword,
   regenerateSession,
   updateSession,
-  defineSession } from '../functions/query-logic'
+  defineSession,
+  updateToInactiveSessionID,
+  destroySession } from '../functions/business-logic'
 import { watchAlarms } from '../functions/alarm'
 const router = express.Router();
 
@@ -27,17 +28,20 @@ router.post('/authorized', (req, res) => {
       return checkPassword(inputs.password, user.password)
     })
     .then((boolean) => {
+      console.log('before regen', req.sessionID)
       return regenerateSession(req.session)
     })
     .then(() => {
+      console.log('after regen', req.sessionID)
       return updateSession(req.aQuery, req.sessionID, user.user_uuid);
     })
     .then((result ) => {
       req.session.user = defineSession(user)
       res.redirect('/app')
     })
-    .catch((error:Error) => {
-      res.render('login', {dbError:error})
+    .catch((err:Error) => {
+      console.log(err)
+      res.render('login', {dbError:err})
     })
 })
 
@@ -111,19 +115,32 @@ router.post('/authorized', (req, res) => {
 
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 
-router.post('/log-out', function(req, res, next) {
-    let inactive = uuidv4(); //if its uuidv4 its inactive
-    db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
-    .then((result) => {
-      req.session.destroy(function(err:Error) {
-        if (err) {
-          res.render('error', { errName: err.message, errMessage: null });
-        } else {
-          console.log("after destory", req.session)
-          res.render('login');
-        }
-      });
+router.post('/log-out', (req, res) => {
+  updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
+    .then(() => destroySession(req.session))
+    .then(()=> {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      console.log(err.stack)
+      console.log(err)
+      res.render('error', { errName: err.message, errMessage: null });
     })
   });
+
+// router.post('/log-out', function(req, res, next) {
+//     let inactive = uuidv4(); //if its uuidv4 its inactive
+//     db.query('UPDATE session SET sessionid = $1 WHERE user_uuid = $2', [inactive, req.session.user.uuid])
+//     .then((result) => {
+//       req.session.destroy(function(err:Error) {
+//         if (err) {
+//           res.render('error', { errName: err.message, errMessage: null });
+//         } else {
+//           console.log("after destory", req.session)
+//           res.render('login');
+//         }
+//       });
+//     })
+//   });
 
 module.exports = router;

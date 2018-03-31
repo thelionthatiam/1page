@@ -9,7 +9,8 @@ var methodOverride = require("method-override");
 var cors = require("cors");
 var combiner_1 = require("./config/combiner");
 var database_1 = require("./routes/middleware/database");
-var sessionCheck = require("./routes/middleware/session-check");
+var server_render_state_1 = require("./routes/middleware/server-render-state");
+var session_check_1 = require("./routes/middleware/session-check");
 var e = require("./routes/functions/error-handling");
 var app = express();
 app.use(methodOverride('_method'));
@@ -25,13 +26,6 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-// CHECK HEADERS
-// app.use((req, res, next) => {
-//   console.log('|||||||||||||||||||||||||||||||')
-//   console.log(req.headers);
-//   console.log('|||||||||||||||||||||||||||||||')
-//   next();
-// })
 app.use(database_1.init(combiner_1.dbConfig));
 app.options('*', cors());
 app.use(cors());
@@ -46,8 +40,10 @@ app.use(session({
         httpOnly: true,
     },
 }));
-app.use(sessionCheck.check);
+app.use(session_check_1.default);
+app.use(server_render_state_1.default);
 app.use('/', require('./routes/index'));
+// ERROR STUFF
 app.use(function (req, res, next) {
     res.status(404);
     res.render('error', { errName: null, errMessage: "We couldn't find this page." });

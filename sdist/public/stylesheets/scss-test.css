@@ -13,7 +13,7 @@ ul {
   list-style: none;
   border: 0;
   margin: 0;
-  padding: 10px; }
+  padding: 1vw; }
 
 li {
   padding-bottom: 2px;
@@ -23,6 +23,22 @@ li {
 body {
   border: 0;
   margin: 0; }
+
+.userFormItem, .light-button, .dark-button, .formErrorReport {
+  padding: .4vw;
+  margin: .3vw; }
+
+.formTitle, .userFormItem, .alarm-row {
+  margin-left: 0vw;
+  padding-left: 0vw;
+  margin-bottom: 2.5vh; }
+
+.generic-form {
+  padding: .5vw;
+  margin: 1vw; }
+
+.contentWrapper {
+  padding: 4vw; }
 
 .paragraph-margins {
   margin: 15px 0 20px 0; }
@@ -37,6 +53,11 @@ body {
   margins: 0 !important;
   padding: 0 !important; }
 
+.link-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
 label {
   font-size: 10px; }
 
@@ -44,13 +65,16 @@ form {
   display: flex;
   flex-direction: column; }
 
+.generic-form {
+  display: flex;
+  flex-direction: column; }
+
 input {
   border: none;
-  border-bottom: 2px solid black;
-  flex-grow: 1;
-  font-size: 14px;
-  padding: 2px;
   background-color: transparent; }
+
+.userFormItem {
+  border-bottom: 2px solid #282828; }
 
 input:focus {
   outline: 0; }
@@ -70,6 +94,7 @@ textarea:focus {
   outline: 0; }
 
 button {
+  font-size: 14px;
   border: none;
   background-color: transparent; }
 
@@ -85,25 +110,36 @@ button {
 button:focus {
   outline: 0; }
 
-.button.yes {
-  background-color: black;
-  color: white; }
-
-.button.no {
-  background-color: white; }
-
-.button.unavailable {
-  background-color: lightgrey;
-  border-color: grey;
-  color: grey;
+.light-button {
+  border-bottom: 1px solid transparent;
+  transition: 300ms;
   box-shadow: none; }
 
-.button.unavailable:active {
-  transform: translate(0px); }
+.light-button:hover {
+  border-bottom: 1px solid #282828;
+  transition: 300ms; }
+
+.dark-button {
+  background-color: #282828;
+  color: #fff;
+  border-bottom: 1px solid transparent;
+  border-radius: 4px;
+  transition: 300ms; }
+
+.dark-button:hover {
+  border-bottom: 1px solid #282828;
+  transition: 300ms; }
 
 .full-page {
-  width: 100vw;
+  width: 80vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+
+.full-width {
+  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,6 +147,11 @@ button:focus {
 
 .left-text {
   align-self: flex-start; }
+
+.categoryListWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
 
 .error-wrapper {
   width: 60vw;
@@ -139,7 +180,10 @@ button:focus {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.76);
-  padding: 1vw; }
+  padding: 1vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
 
 .home-img-wrapper {
   width: 100vw;
@@ -205,6 +249,17 @@ button:focus {
   color: #282828;
   font-weight: 600;
   padding: 4px;
+  font-size: 1vw;
+  background-color: rgba(255, 255, 255, 0.76); }
+
+.home-to-alarm {
+  height: 5vh;
+  width: 11vw;
+  text-transform: uppercase;
+  color: #282828;
+  font-weight: 600;
+  padding: 4px;
+  font-size: 1vw;
   background-color: rgba(255, 255, 255, 0.76); }
 
 .home-tryit-wrapper {
@@ -263,8 +318,9 @@ button:focus {
   display: flex; }
 
 .app-menu {
-  width: 20vw;
-  height: 100vh;
+  width: 18vw;
+  height: 98vh;
+  max-width: 200px;
   display: flex;
   flex-direction: column;
   background-color: #282828; }
@@ -287,7 +343,7 @@ button:focus {
 .app-menu-text {
   color: #fff;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 300;
   text-decoration: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0);
@@ -301,7 +357,7 @@ button:focus {
 .app-menu-text-disabled {
   color: #756F6F;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 300;
   text-decoration: none; }
 
@@ -316,7 +372,20 @@ button:focus {
   text-transform: lowercase; }
 
 .app-content {
-  width: 80vw; }
+  width: 80vw;
+  overflow: scroll; }
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  width: 100%; }
+
+.alarm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #756F6F; }
 
 .app-alarm-wrapper {
   display: flex;
@@ -331,9 +400,39 @@ button:focus {
   width: 80vw;
   color: #282828; }
 
+.alarm-title {
+  width: 120px;
+  text-transform: uppercase; }
+
 .clock > h1 {
   font-size: 8vw;
   font-weight: 400; }
+
+.week-wrapper {
+  display: flex;
+  max-width: 30vw;
+  padding: 0;
+  margin: 0; }
+
+.week-list {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  max-width: 30vw;
+  padding: 0;
+  margin: 0; }
+
+.day-of-week {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; }
+
+.time-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 120px; }
 
 .alarmForm {
   margin-top: 10px;

@@ -4,7 +4,6 @@
             <div class='app-menu-title-wrapper'>
                 <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
                 <h1 class='app-menu-title'>s.y.l.</h1>
-                <p> You're a {{permission}}.</p>
             </div>
             <li class='app-menu-li'>
                 <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
@@ -44,10 +43,12 @@
                     <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
                 </form>
             </li>
-
+            <li>
+                <p> You're a {{permission}}.</p>
+            </li>
         </ul>
         <div class="app-content">
-            <div class="full-page" id="top">
+            <div class="full-width" id="top">
                 <h1>Organizations</h1>
                 <p>
                     This is where you can select which organizations you would like to support, and which organizations you'd rather not.
@@ -68,9 +69,6 @@
                 </div>
                 <p class="formErrorReport">{{ dbError }}</p>
                 <div class='flex column'>
-                    <form action="/home" method="get">
-                        <button class="no" type="submit">back</button>
-                    </form>
                 </div>
             </div>
         </div>

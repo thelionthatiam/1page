@@ -22,23 +22,38 @@
                         <a href="/dummy-route">
                             <li class="home-navigation-item">pricing</li>
                         </a>
-                        <a href="/to-login">
-                            <li class="home-navigation-item">log in</li>
-                        </a>
-                        <li class="home-navigation-item">
-                            <a href="/new-account">
-                                <button class="home-create-account">create account</button>
+                        {{#if loggedIn}}
+                            <form action='/log-out' method="POST">
+                                <input class="home-navigation-item" type="submit" value = "log out">
+                            </form>
+                        {{else}}
+                            <a href="/to-login">
+                                <li class="home-navigation-item">log in</li>
                             </a>
+                        {{/if}}
+                        <li class="home-navigation-item">
+                            {{#if loggedIn}}
+                                <a href="/app">
+                                    <button class="home-to-alarm">alarm clock</button>
+                                </a>
+                            {{else}}
+                                <a href="/new-account">
+                                    <button class="home-create-account">create account</button>
+                                </a>
+                            {{/if}}
                         </li>
                     </ul>
                 </div>
             </div>
+            {{#if loggedIn}}
+            {{else}}
             <div class="home-tryit-wrapper">
                 <a href="/app">
                     <button class="home-try">try it</button>
                 </a>
                 <img class="icon" src="/icons/white/forward-1.svg" />
             </div>
+            {{/if}}
         </div>
         <div class="home-try-alarm-wrapper" id="features-section">
             <h1>Add Alarm trial</h1>

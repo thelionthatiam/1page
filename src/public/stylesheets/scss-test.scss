@@ -1,3 +1,4 @@
+
 * {
   margin: 0px;
   padding: 0px;
@@ -17,7 +18,7 @@ ul {
     list-style:none;
     border:0;
     margin:0;
-    padding:10px
+    padding:1vw
 }
 li {
     padding-bottom:2px;
@@ -38,7 +39,9 @@ $darkGreen: #068721;
 $darkRed:#9f2121;
 $darkGrey:#282828;
 $justGrey:#756F6F;
+$lightBlue:#325872;
 $almostBlack:#211A08;
+$yellow:#E5CC61;
 $white: #fff;
 
 @mixin centerColumn {
@@ -72,9 +75,33 @@ $white: #fff;
   margin-bottom:10px;
 }
 
-//COMMON DIMENSIONS
-//  margings
+%one-item-spacing {
+  padding:.4vw;
+  margin: .3vw;
+}
 
+%one-item-spacing-col {
+  margin-left: 0vw;
+  padding-left: 0vw;
+  margin-bottom: 2.5vh;
+}
+
+%wrapper-spacing {
+  padding: .5vw;
+  margin: 1vw;
+}
+
+%wrapper-spacing-col {
+  margin-left: 0vw;
+  padding-left: 0vw;
+  margin-bottom: 25px;
+}
+
+%app-content-gutters {
+  padding:4vw;
+}
+
+//COMMON DIMENSIONS
 $small-margin-l:25px;
 $small-margin-r:25px;
 
@@ -94,6 +121,13 @@ $icon-container-width:$icon-width + $small-margin-l;
   margins:0!important;
   padding:0!important;
 }
+
+.link-img {
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+}
+
 label {
   font-size:10px;
 }
@@ -103,13 +137,25 @@ form {
   flex-direction:column;
 }
 
+.generic-form {
+  @extend %wrapper-spacing;
+  display:flex;
+  flex-direction:column;
+}
+
+.formTitle {
+  @extend %one-item-spacing-col;
+}
+
 input {
   border:none;
-  border-bottom:2px solid black;
-  flex-grow:1;
-  font-size:14px;
-  padding:2px;
   background-color:transparent;
+}
+
+.userFormItem {
+  @extend %one-item-spacing;
+  @extend %one-item-spacing-col;
+  border-bottom:2px solid $darkGrey;
 }
 
 input:focus {
@@ -117,7 +163,7 @@ input:focus {
 }
 
 input:placeholder-shown {
-  color:black;
+  color:black; 
 }
 
 textarea {
@@ -134,6 +180,7 @@ textarea:focus {
 }
 
 button {
+  font-size:14px;
   border:none;
   background-color:transparent;
 }
@@ -154,29 +201,43 @@ button:focus {
   outline:0;
 }
 
-.button.yes {
-  background-color:black;
-  color:white;
-}
-
-.button.no {
-  background-color:white;
-}
-
-.button.unavailable {
-  background-color:lightgrey;
-  border-color:grey;
-  color:grey;
+.light-button {
+  @extend %one-item-spacing;
+  border-bottom:1px solid transparent;
+  transition:300ms;
   box-shadow:none;
 }
 
-.button.unavailable:active {
- transform:translate(0px);
+.light-button:hover {
+  border-bottom:1px solid $darkGrey;
+  transition:300ms;
+}
+
+.dark-button {
+  @extend %one-item-spacing;
+  background-color:$darkGrey;
+  color:$white;
+  border-bottom:1px solid transparent;
+  border-radius:4px;
+  transition:300ms;
+}
+
+.dark-button:hover {
+  border-bottom:1px solid $darkGrey;
+  transition:300ms;
 }
 
 .full-page {
-  width:100vw;
+  width:80vw;
   height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-width {
+  width:80vw;
   display:flex;
   flex-direction:column;
   align-items: center;
@@ -185,6 +246,15 @@ button:focus {
 
 .left-text {
   align-self: flex-start;
+}
+
+
+// ORGANIZATIONS 
+
+.categoryListWrapper {
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
 }
 // ERROR PAGE 
 
@@ -223,12 +293,13 @@ button:focus {
   align-items: center;
   background-color: rgba(255,255,255,0.76);
   padding:1vw;
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
 }
 
 
 // HOME page
-
-
 
 .home-img-wrapper {
   width:100vw;
@@ -306,6 +377,18 @@ button:focus {
   color:$darkGrey;
   font-weight:600;
   padding: 4px;
+  font-size:1vw;
+  background-color:rgba(255,255,255,0.76);
+}
+
+.home-to-alarm {
+  height:5vh;
+  width:11vw;
+  text-transform:uppercase;
+  color:$darkGrey;
+  font-weight:600;
+  padding: 4px;
+  font-size:1vw;
   background-color:rgba(255,255,255,0.76);
 }
 
@@ -390,8 +473,9 @@ button:focus {
 // APP-MENU
 
 .app-menu {
-  width:20vw;
-  height:100vh;
+  width:18vw;
+  height:98vh;
+  max-width:200px;
   display:flex;
   flex-direction:column;
   background-color:$darkGrey;
@@ -418,7 +502,7 @@ button:focus {
 .app-menu-text {
   color:$white;
   text-transform:uppercase;
-  font-size:18px;
+  font-size:14px;
   font-weight:300;
   text-decoration:none;
   border-bottom:1px solid rgba(255,255,255,0);
@@ -433,7 +517,7 @@ button:focus {
 .app-menu-text-disabled {
   color:$justGrey;
   text-transform:uppercase;
-  font-size:18px;
+  font-size:14px;
   font-weight:300;
   text-decoration:none;
 }
@@ -456,8 +540,28 @@ button:focus {
 
 .app-content {
   width:80vw;
+  overflow:scroll;
 }
+
+.contentWrapper {
+   @extend %app-content-gutters;
+}
+
 // ALARM
+
+
+.listWrapper {
+  @include fullWidthColumn;
+  width:100%;
+}
+
+.alarm-row {
+  @extend %one-item-spacing-col;
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  border-bottom:1px solid $justGrey;
+}
 
 .app-alarm-wrapper {
   display:flex;
@@ -474,9 +578,44 @@ button:focus {
   color:$darkGrey;
 }
 
+.alarm-title {
+  width:120px;
+  text-transform:uppercase;
+}
+
 .clock > h1 {
   font-size:8vw;
   font-weight:400;
+}
+
+.week-wrapper {
+  display:flex;
+  max-width:30vw;
+  padding:0;
+  margin:0;
+}
+
+.week-list {
+  display:flex;
+  align-self:center;
+  justify-content: center;
+  max-width:30vw; 
+  padding:0;
+  margin:0;
+}
+
+.day-of-week {
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  width:40px;
+}
+
+.time-wrapper {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  width:120px;
 }
 
 .alarmForm {
@@ -644,6 +783,7 @@ button:focus {
 }
 
 .formErrorReport {
+  @extend %one-item-spacing;
   color:$darkRed;
   font-weight:600;
   transition:300ms;
@@ -686,7 +826,7 @@ button:focus {
 
 // INFORMATION TYPES
 .passwordQualityWrapper {
-  @include fullWidthColumn
+  @include fullWidthColumn;
   margin-left:$icon-container-width;
 }
 

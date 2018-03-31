@@ -36,10 +36,13 @@
           <button type="submit" class="app-menu-text">logout</button>
         </form>
       </li>
+      <li>
+        <p> You're a {{permission}}.</p>
+      </li>
 
     </ul>
     <div class="app-content">
-      <div class="full-page">
+      <div class="full-width">
         <h1>My Organizations</h1>
         <p>
           This is where you can view your organizations and set them to alarms for the month.
@@ -94,14 +97,35 @@
         <p class='fromErrorReport'>
           {{error}}
         </p>
-        <form action="/home" method="get">
-          <button class="no " type="submit"> home </button>
-        </form>
+      </div>
+      <div class="full-width" id="top">
+        <h1>Organizations</h1>
+        <p>
+            This is where you can select which organizations you would like to support, and which organizations you'd rather not.
+        </p>
+        <div class="column searchWrapper">
+            <div class="row">
+                <input id="search" name="search" class="userFormItem dropdownSearch" type="text" placeholder="search for an organization"
+                />
+                <button class="searchButton" id='org-search'>go</button>
+            </div>
+            <div class="dropdownWrapper none">
+                <ul class="dropdownList"></ul>
+            </div>
+            <p class="formErrorReport">{{ error }}</p>
+        </div>
+        <div class="categoryListWrapper">
+            {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
+        </div>
+        <p class="formErrorReport">{{ dbError }}</p>
+        <div class='flex column'>
+            <form action="/home" method="get">
+                <button class="" type="submit">back</button>
+            </form>
+        </div>
       </div>      
-      {{!-- <script src="/behavior/alarm-display.js"></script> --}}
-
     </div>
   </div>
 </div>
-<script src='../../../rollup/bundle.js'></script>
+{{!-- <script src='../../../rollup/bundle.js'></script> --}}
 {{!-- variables unchanged --}}
