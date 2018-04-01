@@ -28,28 +28,14 @@
         off
       </p>
     {{/if}}
-    {{#if permission}}
-    <h1>A.V.</h1>
-    <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}" method="get">
-        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
-        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-        <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
-    </form>
-    <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}?_method=DELETE" method="post">
-        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
-        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-        <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
-    </form>
-    {{else}}
-    <form action="/accounts/{{user_uuid}}/alarms/{{title}}" method="get">
+    <form action="/app/accounts/{{user_uuid}}/alarms/{{title}}" method="get">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
         <input name="title" type="hidden" value="{{ title }}">
     </form>
-    <form action="/accounts/{{user_uuid}}/alarms/{{title}}?_method=DELETE" method="post">
+    <form action="/app/accounts/{{user_uuid}}/alarms/{{title}}?_method=DELETE" method="post">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
         <input name="title" type="hidden" value="{{ title }}">
     </form>
-    {{/if}}
   </div>
   {{!-- <div class="alarm-row">
     <form class = 'flex center' action="/accounts/{{user_uuid}}/alarms/{{title}}/snooze" method="post">

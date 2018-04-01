@@ -36,15 +36,18 @@ router.get('/to-login', (req, res) => {
 })
 
 // APP
-router.get('/app', (req, res) => req.session.user ? res.redirect('app/account') : res.redirect('app/guest'))
+router.get('/app', (req, res) => 
+    req.session.user ? res.redirect('app/account') : res.redirect('app/guest')
+)
 
 router.get('/app/guest', (req, res) => {
   res.render('guest/app')
 })
 
 router.get('/app/account', (req, res) => {
-    res.render('account/app')
+    req.session.user ? res.render('account/app') : res.redirect('/app/guest')
 })
+
 // TEST
 let dummy = {
     "video": [

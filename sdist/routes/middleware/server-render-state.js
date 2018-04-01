@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function renderState(req, res, next) {
-    console.log('render state running');
-    console.log(res.locals.permission);
     if (res.locals.permission === 'user') {
         var userState_1 = {};
         req.aQuery.selectUserOrgs([req.session.user.uuid])
@@ -21,7 +19,8 @@ function renderState(req, res, next) {
             .then(function (result) {
             result.rowCount > 0 ? userState_1.profile = result.rows[0] : userState_1.profile = 'n/a';
             res.locals.userState = userState_1;
-            console.log(res.locals.userState);
+            res.locals.email = req.session.user.email;
+            res.locals.uuid = req.session.user.uuid;
             next();
         })
             .catch(function (err) {

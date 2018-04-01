@@ -54,6 +54,7 @@ router.route('/')
             cause = organizationContent[i].cause
           }
         }
+        console.log(organizationContent)
         res.render('account/organizations', {
           organizationContent:organizationContent,
           email: email,

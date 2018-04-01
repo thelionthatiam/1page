@@ -17,17 +17,17 @@
 
             <li class='app-menu-li'>
                 <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
-                <a href="/app/accounts/{{email}}/insights" class='app-menu-text-disabled disabled-a'>insights</a>
+                <a href="/app/accounts/{{email}}/insights" class='app-menu-text'>insights</a>
             </li>
 
             <li class='app-menu-li'>
                 <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
-                <a href="/app/accounts/{{email}}/profile" class='app-menu-text-disabled disabled-a'>profile</a>
+                <a href="/app/accounts/{{email}}/profile" class='app-menu-text'>profile</a>
             </li>
 
             <li class='app-menu-li'>
                 <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
-                <a href="/app/accounts/{{email}}/settings" class='app-menu-text-disabled disabled-a'>settings</a>
+                <a href="/app/accounts/{{email}}/settings" class='app-menu-text'>settings</a>
             </li>
 
             <li class='app-menu-li' id='logout'>
@@ -44,29 +44,27 @@
         <div class="app-content">
             {{!-- defaulting to alarm guest --}}
             <div class="full-page">
-                <h1>Clock</h1>
-                <p>
-                    This is where you can view, add, remove and edit your alarms
-                </p>
-                <div class='flex space-around'>
-                    <div class='flex center'>
-                        <h2 id='clock'></h2>
-                    </div>
-                </div>
-                <h1>My alarms</h1>
-                <div class="categoryListWrapper">
-                    {{#each alarmContent}} {{> alarmdiv}} {{/each}}
-                </div>
-                <p class="formErrorReport">{{ dbError }}</p>
-                <form action="" method='post'>
-                    <button class='yes'>finish month</button>
-                </form>
-                <form action="" method="get">
-                    <button class="yes"> add alarm </button>
-                </form>
-                <form action="/home" method="get">
-                    <button class="no" type="submit">back</button>
-                </form>
+                <h1>No javascript?</h1>
+                <br>
+                <div class = 'message-box'>
+                    <p>
+                        Its okay that javascript is disabled, but there will be some things that won't work for you.
+                    </p>
+                    <br>
+                    <p>
+                        You can still change your account, alarms, organizations, view transactions, but interactive components like the alarm clock
+                        don't work without javascript.
+                    </p>
+                    <br>
+                    <p>
+                        To learn more about enabling javascript look
+                        <a class = 'link' href='https://www.enable-javascript.com/'>here</a>.
+                    </p>
+                    <br>
+                    <h3>
+                        Please user the menu to take your next steps!
+                    </h3>
+                </div>                
             </div>
         </div>
     </div>

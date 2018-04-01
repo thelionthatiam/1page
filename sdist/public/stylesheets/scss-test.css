@@ -24,6 +24,15 @@ body {
   border: 0;
   margin: 0; }
 
+.link {
+  color: #068721;
+  padding: 1px; }
+
+.link:hover {
+  background-color: lightGrey;
+  border-radius: 4px;
+  padding: 1px; }
+
 .userFormItem, .light-button, .dark-button, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
@@ -147,6 +156,9 @@ button:focus {
 
 .left-text {
   align-self: flex-start; }
+
+.message-box {
+  width: 40vw; }
 
 .categoryListWrapper {
   display: flex;

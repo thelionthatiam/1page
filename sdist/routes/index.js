@@ -32,12 +32,14 @@ router.get('/to-login', function (req, res) {
     res.render('login');
 });
 // APP
-router.get('/app', function (req, res) { return req.session.user ? res.redirect('app/account') : res.redirect('app/guest'); });
+router.get('/app', function (req, res) {
+    return req.session.user ? res.redirect('app/account') : res.redirect('app/guest');
+});
 router.get('/app/guest', function (req, res) {
     res.render('guest/app');
 });
 router.get('/app/account', function (req, res) {
-    res.render('account/app');
+    req.session.user ? res.render('account/app') : res.redirect('/app/guest');
 });
 // TEST
 var dummy = {

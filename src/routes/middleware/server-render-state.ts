@@ -1,6 +1,4 @@
 function renderState(req, res, next) {
-    console.log('render state running')
-    console.log(res.locals.permission)
     if (res.locals.permission === 'user') {
         let userState:any = {};
         req.aQuery.selectUserOrgs([req.session.user.uuid])
@@ -19,16 +17,16 @@ function renderState(req, res, next) {
             .then((result) => {
                 result.rowCount > 0 ? userState.profile = result.rows[0] : userState.profile = 'n/a';
                 res.locals.userState = userState;
-                console.log(res.locals.userState)
+                res.locals.email = req.session.user.email
+                res.locals.uuid = req.session.user.uuid
                 next()
             })
             .catch(err => {
                 console.log(err)
                 res.locals.userState = 'n/a';
-                res.locals.permission = 'guest';
+                res.locals.permission = 'guest';                
                 res.redirect('/log-out', {dbError:err});
             })
-    
     } else {
         console.log('render state says im a guest')
         next()

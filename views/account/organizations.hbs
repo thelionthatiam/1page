@@ -17,17 +17,17 @@
 
       <li class='app-menu-li'>
         <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
-        <a href="/app/accounts/{{email}}/insights" class='app-menu-text-disabled disabled-a'>insights</a>
+        <a href="/app/accounts/{{email}}/insights" class='app-menu-text'>insights</a>
       </li>
 
       <li class='app-menu-li'>
         <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
-        <a href="/app/accounts/{{email}}/profile" class='app-menu-text-disabled disabled-a'>profile</a>
+        <a href="/app/accounts/{{email}}/profile" class='app-menu-text'>profile</a>
       </li>
 
       <li class='app-menu-li'>
         <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
-        <a href="/app/accounts/{{email}}/settings" class='app-menu-text-disabled disabled-a'>settings</a>
+        <a href="/app/accounts/{{email}}/settings" class='app-menu-text'>settings</a>
       </li>
 
       <li class='app-menu-li' id='logout'>
@@ -42,6 +42,29 @@
 
     </ul>
     <div class="app-content">
+      <div class="full-width" id="top">
+        <h1>Organizations</h1>
+          <p>
+              Save organizations to your profile for later. Some, you may like some may be motivating. ^^
+          </p>
+          <div class="column searchWrapper">
+              <div class="row">
+                  <input id="search" name="search" class="userFormItem dropdownSearch" type="text" placeholder="search for an organization"
+                  />
+                  <button class="searchButton" id='org-search'>go</button>
+              </div>
+              <div class="dropdownWrapper none">
+                  <ul class="dropdownList"></ul>
+              </div>
+              <p class="formErrorReport">{{ error }}</p>
+          </div>
+          <div class="categoryListWrapper">
+              {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
+          </div>
+          <p class="formErrorReport">{{ dbError }}</p>
+          <div class='flex column'>
+          </div>
+        </div>
       <div class="full-width">
         <h1>My Organizations</h1>
         <p>
@@ -98,31 +121,6 @@
           {{error}}
         </p>
       </div>
-      <div class="full-width" id="top">
-        <h1>Organizations</h1>
-        <p>
-            This is where you can select which organizations you would like to support, and which organizations you'd rather not.
-        </p>
-        <div class="column searchWrapper">
-            <div class="row">
-                <input id="search" name="search" class="userFormItem dropdownSearch" type="text" placeholder="search for an organization"
-                />
-                <button class="searchButton" id='org-search'>go</button>
-            </div>
-            <div class="dropdownWrapper none">
-                <ul class="dropdownList"></ul>
-            </div>
-            <p class="formErrorReport">{{ error }}</p>
-        </div>
-        <div class="categoryListWrapper">
-            {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
-        </div>
-        <p class="formErrorReport">{{ dbError }}</p>
-        <div class='flex column'>
-            <form action="/home" method="get">
-                <button class="" type="submit">back</button>
-            </form>
-        </div>
       </div>      
     </div>
   </div>
