@@ -1,31 +1,107 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt = require("bcrypt");
-var R = require("../resources/value-objects");
+var r = require("../resources/value-objects");
 var uuidv4 = require("uuid/v4");
-asdfasdf;
 // AUTHORIZATION
-var BusinessLogic = /** @class */ (function () {
-    function BusinessLogic(client) {
+var AuthSvc = /** @class */ (function () {
+    function AuthSvc(client, session, user, inputs) {
         this.client = client;
+        this.session = session;
+        this.user = user;
+        this.inputs = inputs;
     }
-    BusinessLogic.prototype.checkEmail = function (email) {
+    AuthSvc.prototype.checkEmail = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.client.selectUser([email])
+            _this.client.selectUser([_this.inputs.email])
                 .then(function (result) {
                 if (result.rows.length === 0) {
                     throw new Error("Email not found");
                 }
                 else {
-                    resolve(R.UserDB.fromJSON(result.rows[0]));
+                    resolve(r.UserDB.fromJSON(result.rows[0]));
                 }
             })
                 .catch(function (err) { return reject(err); });
         });
     };
-    return BusinessLogic;
+    AuthSvc.prototype.checkPassword = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            bcrypt.compare(_this.inputs.password, _this.user.password)
+                .then(function (result) {
+                if (result === false) {
+                    throw new Error('Password incorrect');
+                }
+                else {
+                    resolve(result);
+                }
+            })
+                .catch(function (err) { return reject(err); });
+        });
+    };
+    AuthSvc.prototype.regenerateSession = function () {
+        var _this = this;
+        console.log('~~~~~~ session id before regnerate', this.session.id);
+        return new Promise(function (resolve, reject) {
+            _this.session.regenerate(function (err) {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    console.log('~~~~~~ session id after regnerate', this.session.id);
+                    resolve();
+                }
+            });
+        });
+    };
+    AuthSvc.prototype.updateSession = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.client.updateSessionID([_this.session.id, _this.user.user_uuid])
+                .then(function (result) {
+                resolve(result);
+            })
+                .catch(function (err) { return reject(err); });
+        });
+    };
+    AuthSvc.prototype.defineSession = function () {
+        var session = r.UserSession.fromJSON({
+            email: this.user.email,
+            uuid: this.user.user_uuid,
+            permission: this.user.permission,
+            name: this.user.name
+        });
+        return session;
+    };
+    AuthSvc.prototype.doAuth = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.checkEmail()
+                .then(function (result) {
+                _this.user = result;
+                return _this.checkPassword();
+            })
+                .then(function (boolean) {
+                console.log('%%%%%%%%before regen', _this.session.id);
+                return _this.regenerateSession();
+            })
+                .then(function () {
+                console.log('%%%%%%%%after regen', _this.session.id);
+                return _this.updateSession();
+            })
+                .then(function (result) {
+                var userSession = _this.defineSession();
+                console.log('final promise do auth', _this.session.id);
+                resolve(userSession);
+            })
+                .catch(function (err) { return reject(err); });
+        });
+    };
+    return AuthSvc;
 }());
+exports.AuthSvc = AuthSvc;
 function checkEmail(client, email) {
     return new Promise(function (resolve, reject) {
         client.selectUser([email])
@@ -34,7 +110,7 @@ function checkEmail(client, email) {
                 throw new Error("Email not found");
             }
             else {
-                resolve(R.UserDB.fromJSON(result.rows[0]));
+                resolve(r.UserDB.fromJSON(result.rows[0]));
             }
         })
             .catch(function (err) { return reject(err); });
@@ -58,12 +134,16 @@ function checkPassword(inputPass, realPass) {
 }
 exports.checkPassword = checkPassword;
 function regenerateSession(session) {
+    console.log('~~~~~~ session id before regnerate', session.id);
     return new Promise(function (resolve, reject) {
         session.regenerate(function (err) {
-            if (err)
+            if (err) {
                 reject(err);
-            else
+            }
+            else {
+                console.log('~~~~~~ session id after regnerate', session.id);
                 resolve();
+            }
         });
     });
 }

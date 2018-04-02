@@ -1,13 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var login_1 = require("./login");
-exports.login = login_1.default;
-var test_1 = require("./test");
-exports.Tester = test_1.default;
-var React = require("react");
-exports.React = React;
-var ReactDOM = require("react-dom");
-exports.ReactDOM = ReactDOM;
 // var allTags = document.body.getElementsByTagName('*');
 // var ids = [];
 // for (var tg = 0; tg< allTags.length; tg++) {
@@ -29,12 +21,13 @@ exports.ReactDOM = ReactDOM;
 //     console.log('index working')
 //   }
 // }
-function render(eltId, data) {
-    ReactDOM.render(a.React.createElement(function () { return ; }, null), document.getElementById(eltId));
-}
-exports.render = render;
-var test = 'a string';
-exports.test = test;
-var math = function (a, b) { return a * b; };
-exports.math = math;
+// export function render(eltId : string, data : any) {
+//   ReactDOM.render(
+//       a.React.createElement(<Tester, data, null),
+//       document.getElementById(eltId)
+//   );
+// }
+// const test = 'a string'
+// const math = (a, b) => a * b;
+// export { test, math, React, ReactDOM, Tester, login };
 //# sourceMappingURL=index.js.map

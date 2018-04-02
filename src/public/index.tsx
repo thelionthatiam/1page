@@ -33,14 +33,14 @@ import * as ReactDOM from 'react-dom';
 //   }
 // }
 
-export function render(eltId : string, data : any) {
+// export function render(eltId : string, data : any) {
 
-  ReactDOM.render(
-      a.React.createElement(<Tester, data, null),
-      document.getElementById(eltId)
-  );
-}
+//   ReactDOM.render(
+//       a.React.createElement(<Tester, data, null),
+//       document.getElementById(eltId)
+//   );
+// }
 
-const test = 'a string'
-const math = (a, b) => a * b;
-export { test, math, React, ReactDOM, Tester, login };
+// const test = 'a string'
+// const math = (a, b) => a * b;
+// export { test, math, React, ReactDOM, Tester, login };

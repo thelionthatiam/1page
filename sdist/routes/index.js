@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var authorization_1 = require("./guest/authorization");
 var router = express.Router();
-router.use('/', require('./guest/authorization'));
+router.use('/', authorization_1.default);
 router.use('/', require('./guest/accounts'));
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));

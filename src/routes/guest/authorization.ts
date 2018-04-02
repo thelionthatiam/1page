@@ -1,53 +1,34 @@
 import * as express from 'express';
 import * as r from '../resources/value-objects'
-import { checkEmail,
-  checkPassword,
-  regenerateSession,
-  updateSession,
-  defineSession,
-  updateToInactiveSessionID,
-  destroySession } from '../functions/business-logic'
+import {
+    checkEmail,
+    checkPassword,
+    regenerateSession,
+    updateSession,
+    defineSession,
+    updateToInactiveSessionID,
+    destroySession,
+    AuthSvc
+} from '../functions/business-logic';
 import { watchAlarms } from '../functions/alarm'
-const router = express.Router();
+const auth = express.Router();
 
-
-
-router.post('/authorized', (req, res) => {
-
+auth.post('/authorized', (req, res) => {
   let inputs = {
     email: req.body.email,
     password: req.body.password
   }
-
-  let user:r.UserDB;
+  console.log('**** do auth', req.sessionID);
+  let user:r.UserDB
   let userSession:r.UserSession;
 
-  req.authSvc.doAuthorization(...)
-    .then((res) => {
-      // success
-      res.render()
-    })
-    .catch((e) => {
-      // fail`
-      res.render()
-    })
+  req.AuthSvc = new AuthSvc(req.aQuery, req.session, user, inputs);
 
-
-  req.bizLogic.checkEmail(req.aQuery, inputs.email)
-    .then((result) => {
-      user = result;
-      return checkPassword(inputs.password, user.password)
-    })
-    .then((boolean) => {
-      console.log('before regen', req.sessionID)
-      return regenerateSession(req.session)
-    })
-    .then(() => {
-      console.log('after regen', req.sessionID)
-      return updateSession(req.aQuery, req.sessionID, user.user_uuid);
-    })
-    .then((result ) => {
-      req.session.user = defineSession(user)
+  req.AuthSvc.doAuth()
+    .then((userSession) => {
+      req.session.user = userSession
+      console.log('render promise authorizations', req.session.user)
+      console.log('**** do auth last', req.sessionID);
       res.redirect('/app')
     })
     .catch((err:Error) => {
@@ -55,6 +36,45 @@ router.post('/authorized', (req, res) => {
       res.render('login', {dbError:err})
     })
 })
+
+
+
+
+
+
+
+
+// req.bizLogic.checkEmail(req.aQuery, inputs.email)
+// auth.post('/authorized', (req, res) => {
+//     let inputs = {
+//       email: req.body.email,
+//       password: req.body.password
+//     }
+//     let user:r.UserDB
+//     let userSession:r.UserSession;
+//   checkEmail(req.aQuery, inputs.email)
+//     .then((result) => {
+//       user = result;
+//       return checkPassword(inputs.password, user.password)
+//     })
+//     .then((boolean) => {
+//       console.log('before regen', req.sessionID)
+//       return regenerateSession(req.session)
+//     })
+//     .then(() => {
+//       console.log('after regen', req.sessionID)
+//       return updateSession(req.aQuery, req.sessionID, user.user_uuid);
+//     })
+//     .then((result ) => {
+//       req.session.user = defineSession(user)
+
+//       res.redirect('/app')
+//     })
+//     .catch((err:Error) => {
+//       console.log(err)
+//       res.render('login', {dbError:err})
+//     })
+// })
 
 // router.post('/authorized', (req, res) => {
 
@@ -126,7 +146,7 @@ router.post('/authorized', (req, res) => {
 
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 
-router.post('/log-out', (req, res) => {
+auth.post('/log-out', (req, res) => {
   updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
     .then(() => destroySession(req.session))
     .then(()=> {
@@ -154,4 +174,5 @@ router.post('/log-out', (req, res) => {
 //     })
 //   });
 
-module.exports = router;
+// module.exports = router;
+export default auth;

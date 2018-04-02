@@ -2,45 +2,58 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var business_logic_1 = require("../functions/business-logic");
-var router = express.Router();
-router.post('/authorized', function (req, res) {
+var auth = express.Router();
+auth.post('/authorized', function (req, res) {
     var inputs = {
         email: req.body.email,
         password: req.body.password
     };
+    console.log('**** do auth', req.sessionID);
     var user;
     var userSession;
-    (_a = req.authSvc).doAuthorization.apply(_a, ).then(function (res) {
-        // success
-        res.render();
-    })
-        .catch(function (e) {
-        // fail`
-        res.render();
-    });
-    req.bizLogic.checkEmail(req.aQuery, inputs.email)
-        .then(function (result) {
-        user = result;
-        return business_logic_1.checkPassword(inputs.password, user.password);
-    })
-        .then(function (boolean) {
-        console.log('before regen', req.sessionID);
-        return business_logic_1.regenerateSession(req.session);
-    })
-        .then(function () {
-        console.log('after regen', req.sessionID);
-        return business_logic_1.updateSession(req.aQuery, req.sessionID, user.user_uuid);
-    })
-        .then(function (result) {
-        req.session.user = business_logic_1.defineSession(user);
+    req.AuthSvc = new business_logic_1.AuthSvc(req.aQuery, req.session, user, inputs);
+    req.AuthSvc.doAuth()
+        .then(function (userSession) {
+        req.session.user = userSession;
+        console.log('render promise authorizations', req.session.user);
+        console.log('**** do auth last', req.sessionID);
         res.redirect('/app');
     })
         .catch(function (err) {
         console.log(err);
         res.render('login', { dbError: err });
     });
-    var _a;
 });
+// req.bizLogic.checkEmail(req.aQuery, inputs.email)
+// auth.post('/authorized', (req, res) => {
+//     let inputs = {
+//       email: req.body.email,
+//       password: req.body.password
+//     }
+//     let user:r.UserDB
+//     let userSession:r.UserSession;
+//   checkEmail(req.aQuery, inputs.email)
+//     .then((result) => {
+//       user = result;
+//       return checkPassword(inputs.password, user.password)
+//     })
+//     .then((boolean) => {
+//       console.log('before regen', req.sessionID)
+//       return regenerateSession(req.session)
+//     })
+//     .then(() => {
+//       console.log('after regen', req.sessionID)
+//       return updateSession(req.aQuery, req.sessionID, user.user_uuid);
+//     })
+//     .then((result ) => {
+//       req.session.user = defineSession(user)
+//       res.redirect('/app')
+//     })
+//     .catch((err:Error) => {
+//       console.log(err)
+//       res.render('login', {dbError:err})
+//     })
+// })
 // router.post('/authorized', (req, res) => {
 //   console.log('start authorized post')
 //   let inputs = {
@@ -100,7 +113,7 @@ router.post('/authorized', function (req, res) {
 //     })
 // })
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
-router.post('/log-out', function (req, res) {
+auth.post('/log-out', function (req, res) {
     business_logic_1.updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
         .then(function () { return business_logic_1.destroySession(req.session); })
         .then(function () {
@@ -126,5 +139,6 @@ router.post('/log-out', function (req, res) {
 //       });
 //     })
 //   });
-module.exports = router;
+// module.exports = router;
+exports.default = auth;
 //# sourceMappingURL=authorization.js.map

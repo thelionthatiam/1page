@@ -1,7 +1,8 @@
 import * as express from 'express';
+import auth from './guest/authorization';
 const router = express.Router();
 
-router.use('/', require('./guest/authorization'));
+router.use('/', auth);
 router.use('/', require('./guest/accounts'));
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
