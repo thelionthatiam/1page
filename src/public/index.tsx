@@ -30,9 +30,17 @@ import * as ReactDOM from 'react-dom';
 //     home();
 //   } else if (ids[i] === 'root') {
 //     console.log('index working')
-//   } 
+//   }
 // }
 
+export function render(eltId : string, data : any) {
+
+  ReactDOM.render(
+      a.React.createElement(<Tester, data, null),
+      document.getElementById(eltId)
+  );
+}
+
 const test = 'a string'
-const math = (a, b) => a * b; 
+const math = (a, b) => a * b;
 export { test, math, React, ReactDOM, Tester, login };

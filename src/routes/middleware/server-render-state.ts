@@ -24,7 +24,7 @@ function renderState(req, res, next) {
             .catch(err => {
                 console.log(err)
                 res.locals.userState = 'n/a';
-                res.locals.permission = 'guest';                
+                res.locals.permission = 'guest';
                 res.redirect('/log-out', {dbError:err});
             })
     } else {
@@ -32,5 +32,6 @@ function renderState(req, res, next) {
         next()
     }
 }
+
 
 export default renderState;

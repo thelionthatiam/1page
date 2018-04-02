@@ -1,10 +1,33 @@
 import { Query } from './queries';
 import * as bcrypt from 'bcrypt';
 import * as help from '../functions/helpers';
-import * as r from '../resources/value-objects';
+import * as R from '../resources/value-objects';
 import * as uuidv4 from 'uuid/v4';
-
+asdfasdf
 // AUTHORIZATION
+
+class BusinessLogic {
+  client: Query;
+  constructor(client) {
+    this.client = client;
+  }
+
+  checkEmail(email) {
+    return new Promise (
+        (resolve, reject) => {
+            this.client.selectUser([email])
+            .then((result) => {
+                if (result.rows.length === 0) {
+                    throw new Error("Email not found");
+                } else {
+                    resolve(R.UserDB.fromJSON(result.rows[0]));
+                }
+            })
+            .catch(err => reject(err))
+        }
+    )
+  }
+}
 
 function checkEmail(client, email) {
     return new Promise (
@@ -14,7 +37,7 @@ function checkEmail(client, email) {
                 if (result.rows.length === 0) {
                     throw new Error("Email not found");
                 } else {
-                    resolve(r.UserDB.fromJSON(result.rows[0]));
+                    resolve(R.UserDB.fromJSON(result.rows[0]));
                 }
             })
             .catch(err => reject(err))
@@ -60,7 +83,7 @@ function updateSession(client, sessionID, uuid) {
             })
             .catch(err => reject(err))
         }
-    )  
+    )
 }
 
 function defineSession(user) {
@@ -100,7 +123,7 @@ export function saveUserInformation(client, email, phone, password, name) {
                     phone:u.phone,
                     name:u.name,
                     password:u.password
-                }) 
+                })
                 console.log(user)
                 resolve(user)
             })

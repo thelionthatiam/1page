@@ -10,7 +10,15 @@ router.post('/authorized', function (req, res) {
     };
     var user;
     var userSession;
-    business_logic_1.checkEmail(req.aQuery, inputs.email)
+    (_a = req.authSvc).doAuthorization.apply(_a, ).then(function (res) {
+        // success
+        res.render();
+    })
+        .catch(function (e) {
+        // fail`
+        res.render();
+    });
+    req.bizLogic.checkEmail(req.aQuery, inputs.email)
         .then(function (result) {
         user = result;
         return business_logic_1.checkPassword(inputs.password, user.password);
@@ -31,6 +39,7 @@ router.post('/authorized', function (req, res) {
         console.log(err);
         res.render('login', { dbError: err });
     });
+    var _a;
 });
 // router.post('/authorized', (req, res) => {
 //   console.log('start authorized post')

@@ -22,7 +22,18 @@ router.post('/authorized', (req, res) => {
   let user:r.UserDB;
   let userSession:r.UserSession;
 
-  checkEmail(req.aQuery, inputs.email)
+  req.authSvc.doAuthorization(...)
+    .then((res) => {
+      // success
+      res.render()
+    })
+    .catch((e) => {
+      // fail`
+      res.render()
+    })
+
+
+  req.bizLogic.checkEmail(req.aQuery, inputs.email)
     .then((result) => {
       user = result;
       return checkPassword(inputs.password, user.password)

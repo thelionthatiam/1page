@@ -1,9 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt = require("bcrypt");
-var r = require("../resources/value-objects");
+var R = require("../resources/value-objects");
 var uuidv4 = require("uuid/v4");
+asdfasdf;
 // AUTHORIZATION
+var BusinessLogic = /** @class */ (function () {
+    function BusinessLogic(client) {
+        this.client = client;
+    }
+    BusinessLogic.prototype.checkEmail = function (email) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            _this.client.selectUser([email])
+                .then(function (result) {
+                if (result.rows.length === 0) {
+                    throw new Error("Email not found");
+                }
+                else {
+                    resolve(R.UserDB.fromJSON(result.rows[0]));
+                }
+            })
+                .catch(function (err) { return reject(err); });
+        });
+    };
+    return BusinessLogic;
+}());
 function checkEmail(client, email) {
     return new Promise(function (resolve, reject) {
         client.selectUser([email])
@@ -12,7 +34,7 @@ function checkEmail(client, email) {
                 throw new Error("Email not found");
             }
             else {
-                resolve(r.UserDB.fromJSON(result.rows[0]));
+                resolve(R.UserDB.fromJSON(result.rows[0]));
             }
         })
             .catch(function (err) { return reject(err); });

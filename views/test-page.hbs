@@ -3,11 +3,6 @@
 
 <script src='./rollup/bundle.js'></script>
 <script>
-    let dummy = {{{ dummy }}};
-    console.log(dummy)
+    a.render('root', { userData: {{{ userState }}}});
 
-    a.ReactDOM.render(
-        a.React.createElement(a.Tester, { userData: dummy }, null),
-        document.getElementById('root')
-    );
 </script>

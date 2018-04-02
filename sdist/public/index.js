@@ -27,8 +27,12 @@ exports.ReactDOM = ReactDOM;
 //     home();
 //   } else if (ids[i] === 'root') {
 //     console.log('index working')
-//   } 
+//   }
 // }
+function render(eltId, data) {
+    ReactDOM.render(a.React.createElement(function () { return ; }, null), document.getElementById(eltId));
+}
+exports.render = render;
 var test = 'a string';
 exports.test = test;
 var math = function (a, b) { return a * b; };
