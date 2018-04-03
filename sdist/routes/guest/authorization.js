@@ -8,27 +8,15 @@ auth.post('/authorized', function (req, res) {
         email: req.body.email,
         password: req.body.password
     };
-    console.log('**** do auth', req.sessionID);
     var user;
     var userSession;
-    // req.session.regenerate((err) => {
-    //   if (err) {
-    //     return err;
-    //   } else {
-    //     req.AuthSvc = new AuthSvc(req.aQuery, user, inputs, req.sessionID)
-    //     return req.AuthSvc.doAuth()
-    //   }
-    // })
     business_logic_1.regenerateSession(req.session)
         .then(function () {
-        console.log('**** outside do auth first response', req.sessionID);
         req.AuthSvc = new business_logic_1.AuthSvc(req.aQuery, user, inputs, req.sessionID);
         return req.AuthSvc.doAuth();
     })
         .then(function (userSession) {
         req.session.user = userSession;
-        console.log('render promise authorizations', req.session.user);
-        console.log('**** do auth last', req.sessionID);
         res.redirect('/app');
     })
         .catch(function (err) {
@@ -36,18 +24,6 @@ auth.post('/authorized', function (req, res) {
         res.render('login', { dbError: err });
     });
 });
-//   req.AuthSvc.doAuth()
-//     .then((userSession) => {
-//       req.session.user = userSession
-//       console.log('render promise authorizations', req.session.user)
-//       console.log('**** do auth last', req.sessionID);
-//       res.redirect('/app')
-//     })
-//     .catch((err:Error) => {
-//       console.log(err)
-//       res.render('login', {dbError:err})
-//     })
-// })
 // auth.post('/authorized', (req, res) => {
 //     let inputs = {
 //       email: req.body.email,
@@ -137,13 +113,12 @@ auth.post('/authorized', function (req, res) {
 // })
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 auth.post('/log-out', function (req, res) {
-    business_logic_1.updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
-        .then(function () { return business_logic_1.destroySession(req.session); })
+    updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
+        .then(function () { return destroySession(req.session); })
         .then(function () {
         res.redirect('/');
     })
         .catch(function (err) {
-        console.log(err.stack);
         console.log(err);
         res.render('error', { errName: err.message, errMessage: null });
     });

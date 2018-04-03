@@ -8,11 +8,11 @@ import * as path from "path";
 import * as session from "express-session";
 import * as methodOverride from 'method-override';
 import * as cors from 'cors'
-import { dbConfig } from "./config/combiner";
-import { init } from "./routes/middleware/database";
-import renderState from './routes/middleware/server-render-state';
-import sessionCheck from "./routes/middleware/session-check";
-import * as e from './routes/functions/error-handling'
+import { dbConfig } from "./services/db-connect-config";
+import { init } from "./middleware/database";
+import renderState from './middleware/server-render-state';
+import sessionCheck from "./middleware/session-check";
+import * as e from './services/error-handling'
 
 const app = express();
 
@@ -49,7 +49,7 @@ app.use(session({
 
 app.use(sessionCheck)
 app.use(renderState)
-app.use('/', require('./routes/index'))
+app.use('/', require('./index'))
 
 
 

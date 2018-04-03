@@ -18,23 +18,22 @@ router.route('/organizations')
             organizationContent[i].email = user.email;
             organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
         }
-        res.render('shopping/organizations', {
+        res.render('guest/organizations', {
             organizationContent: organizationContent,
             email: user.email
         });
     })
         .catch(function (err) {
         console.log(err);
-        var userError = helpers_1.dbErrTranslator(err.message);
-        res.render('shopping/organizations', { dbError: userError });
+        res.render('guest/organizations', { dbError: err });
     });
 });
-router.route('/app/guest/orgs')
+//
+router.route('/')
     .post(function (req, res) {
     // all happens via admin
 })
     .get(function (req, res) {
-    var user = r.UserSession.fromJSON(req.session.user);
     req.aQuery.selectOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
@@ -42,7 +41,9 @@ router.route('/app/guest/orgs')
             var org = r.OrgsDB.fromJSON(organizationContent[i]); // at least it catches problems
             organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
         }
-        res.json(organizationContent);
+        res.render('guest/organizations', {
+            organizationContent: organizationContent
+        });
     })
         .catch(function (err) {
         console.log(err);

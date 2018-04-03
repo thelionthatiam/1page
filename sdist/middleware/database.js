@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var pg_1 = require("pg");
-var combiner_1 = require("../config/combiner");
-var queries_1 = require("../functions/queries");
-var pool = new pg_1.Pool(combiner_1.dbConfig);
+var db_connect_config_1 = require("../services/db-connect-config");
+var queries_1 = require("../data-access/queries");
+var pool = new pg_1.Pool(db_connect_config_1.dbConfig);
 var db = {
     query: function (text, params) { return pool.query(text, params); }
 };

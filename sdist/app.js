@@ -7,11 +7,11 @@ var path = require("path");
 var session = require("express-session");
 var methodOverride = require("method-override");
 var cors = require("cors");
-var combiner_1 = require("./config/combiner");
-var database_1 = require("./routes/middleware/database");
-var server_render_state_1 = require("./routes/middleware/server-render-state");
-var session_check_1 = require("./routes/middleware/session-check");
-var e = require("./routes/functions/error-handling");
+var db_connect_config_1 = require("./services/db-connect-config");
+var database_1 = require("./middleware/database");
+var server_render_state_1 = require("./middleware/server-render-state");
+var session_check_1 = require("./middleware/session-check");
+var e = require("./services/error-handling");
 var app = express();
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
@@ -26,7 +26,7 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
-app.use(database_1.init(combiner_1.dbConfig));
+app.use(database_1.init(db_connect_config_1.dbConfig));
 app.options('*', cors());
 app.use(cors());
 //session using memory storage (I think this is application memory) for now. Will not be the case in production. see readme session stores
@@ -42,7 +42,7 @@ app.use(session({
 }));
 app.use(session_check_1.default);
 app.use(server_render_state_1.default);
-app.use('/', require('./routes/index'));
+app.use('/', require('./index'));
 // ERROR STUFF
 app.use(function (req, res, next) {
     res.status(404);

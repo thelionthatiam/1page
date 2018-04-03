@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var helpers_1 = require("../functions/helpers");
 var database_1 = require("../middleware/database");
+//
 var router = express.Router();
 router.route('/')
     .post(function (req, res) {
@@ -20,6 +21,9 @@ router.route('/')
 })
     .get(function (req, res) {
     console.log('alarms get route');
+    if (req.session.user.permission === 'guest') {
+        res.render('guest/alarms');
+    }
     database_1.db.query("SELECT * FROM alarms WHERE user_uuid = $1", [req.session.user.uuid])
         .then(function (result) {
         console.log(res.locals.user);
