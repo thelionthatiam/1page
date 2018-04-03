@@ -1,5 +1,6 @@
 function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
+        res.locals.loggedIn = true;
         let userState:any = {};
         req.aQuery.selectUserOrgs([req.session.user.uuid])
             .then((result) => {
@@ -28,6 +29,7 @@ function renderState(req, res, next) {
                 res.redirect('/log-out', {dbError:err});
             })
     } else {
+        res.locals.loggedIn = false;
         console.log('render state says im a guest')
         next()
     }

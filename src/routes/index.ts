@@ -1,11 +1,15 @@
 import * as express from 'express';
 import auth from './guest/authorization';
+import appLayout from './middleware/choose-layout';
 const router = express.Router();
+
 
 router.use('/', auth);
 router.use('/', require('./guest/accounts'));
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
+
+router.use('/app*', appLayout)
 router.use('/app/guest/alarms', require('./guest/alarms'));
 router.use('/app/guest/orgs', require('./guest/organizations'));
 
@@ -24,11 +28,11 @@ router.use('/app/accounts/:email/orgs', require('./account/organizations'));
 // router.use('/accounts/:email', require('./account/settings'));
 // router.use('/accounts/:email', require('./account/transactions'));
 
+
 // HOME
-router.get('/', function (req, res, next) {
-    let loggedIn = false
-    res.locals.permission === 'user' ? loggedIn = true : loggedIn = false;
-    res.render('home', {loggedIn:loggedIn})
+
+router.get('/', function (req, res) {
+    res.render('home', {home:true})
 })
 
 // TO LOGIN PAGE

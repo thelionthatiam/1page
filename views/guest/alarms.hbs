@@ -1,62 +1,10 @@
-<div id='app'>
-    <div class='app-wrapper'>
-        <ul class="app-menu">
-            <div class='app-menu-title-wrapper'>
-                <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
-                <h1 class='app-menu-title'>s.y.l.</h1>
-            </div>
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
-                <a href="/app/guest/alarms" class='app-menu-text'>alarms</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
-                <a href="/app/guest/orgs" class='app-menu-text '>organizations</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
-                <a href="/app/guest/insights" class='app-menu-text-disabled disabled-a'>insights</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
-                <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
-                <a href="/app/guest/settings" class='app-menu-text-disabled disabled-a'>settings</a>
-            </li>
-
-            <li class='app-menu-li' id='logout'>
-                <img class='formIcon fadeIn' src='/icons/white/heart.svg' />
-                <form action="/to-login" method="get">
-                    <button type="submit" class="app-menu-text">log in</button>
-                </form>
-            </li>
-
-            <li class='app-menu-li' id='logout'>
-                <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
-                <form action="/log-out" method="post">
-                    <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
-                </form>
-            </li>
-            <li>
-                <p> You're a {{permission}}.</p>                
-            </li>
-
-        </ul>
-        <div class="app-content">
-            {{!-- defaulting to alarm guest --}}
-            <div class="full-page">
-                <h1>unavailable :(</h1>
-                <p>
-                    Sorry, you're going to need javascript in order to user this alarm clock.
-                </p>
-            </div>
-        </div>
+<div class="app-content">
+    {{!-- defaulting to alarm guest --}}
+    <div class="full-page">
+        <h1>unavailable :(</h1>
+        <p>
+            Sorry, you're going to need javascript in order to use this alarm clock.
+        </p>
     </div>
 </div>
 {{!-- <script>

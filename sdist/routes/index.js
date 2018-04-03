@@ -2,11 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var authorization_1 = require("./guest/authorization");
+var choose_layout_1 = require("./middleware/choose-layout");
 var router = express.Router();
 router.use('/', authorization_1.default);
 router.use('/', require('./guest/accounts'));
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
+router.use('/app*', choose_layout_1.default);
 router.use('/app/guest/alarms', require('./guest/alarms'));
 router.use('/app/guest/orgs', require('./guest/organizations'));
 // router.use('/admin', require('./admin/products'));
@@ -23,10 +25,8 @@ router.use('/app/accounts/:email/orgs', require('./account/organizations'));
 // router.use('/accounts/:email', require('./account/settings'));
 // router.use('/accounts/:email', require('./account/transactions'));
 // HOME
-router.get('/', function (req, res, next) {
-    var loggedIn = false;
-    res.locals.permission === 'user' ? loggedIn = true : loggedIn = false;
-    res.render('home', { loggedIn: loggedIn });
+router.get('/', function (req, res) {
+    res.render('home', { home: true });
 });
 // TO LOGIN PAGE
 router.get('/to-login', function (req, res) {

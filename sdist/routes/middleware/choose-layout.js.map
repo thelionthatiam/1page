@@ -1,0 +1,1 @@
+{"version":3,"file":"choose-layout.js","sourceRoot":"","sources":["../../../src/routes/middleware/choose-layout.ts"],"names":[],"mappings":";;AAAA,mBAAmB,GAAG,EAAE,GAAG,EAAE,IAAI;IAC7B,GAAG,CAAC,MAAM,CAAC,MAAM,GAAG,KAAK,CAAA;IACzB,OAAO,CAAC,GAAG,CAAC,uBAAuB,CAAC,CAAA;IACpC,IAAI,EAAE,CAAC;AACX,CAAC;AACD,kBAAe,SAAS,CAAC"}

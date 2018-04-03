@@ -18,15 +18,14 @@ router.route('/organizations')
             organizationContent[i].email = user.email;
             organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
         }
-        res.render('shopping/organizations', {
+        res.render('guest/organizations', {
             organizationContent: organizationContent,
             email: user.email
         });
     })
         .catch(function (err) {
         console.log(err);
-        var userError = helpers_1.dbErrTranslator(err.message);
-        res.render('shopping/organizations', { dbError: userError });
+        res.render('guest/organizations', { dbError: err });
     });
 });
 router.route('/')

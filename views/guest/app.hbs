@@ -1,88 +1,29 @@
-<div id='app'>
-    <div class='app-wrapper'>
-        <ul class="app-menu">
-            <div class='app-menu-title-wrapper'>
-                <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
-                <h1 class='app-menu-title'>s.y.l.</h1>
-            </div>
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
-                <a href="/app/guest/alarms" class='app-menu-text'>alarms</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
-                <a href="/app/guest/orgs" class='app-menu-text '>organizations</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
-                <a href="/app/guest/insights" class='app-menu-text-disabled disabled-a'>insights</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
-                <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
-            </li>
-
-            <li class='app-menu-li'>
-                <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
-                <a href="/app/guest/settings" class='app-menu-text-disabled disabled-a'>settings</a>
-            </li>
-
-            <li class='app-menu-li' id='logout'>
-                <img class='formIcon fadeIn' src='/icons/white/heart.svg' />
-                <form action="/to-login" method="get">
-                    <button type="submit" class="app-menu-text">log in</button>
-                </form>
-            </li>
-
-            <li class='app-menu-li' id='logout'>
-                <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
-                <form action="/log-out" method="post">
-                    <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
-                </form>
-            </li>
-            <li>
-                <p> You're a {{permission}}.</p>
-            </li>
-
-        </ul>
-        <div class="app-content">
-            {{!-- defaulting to alarm guest --}}
-            <div class="full-page">
-                <div class="full-page">
-                    <h1>No javascript?</h1>
-                    <br>
-                    <div class = 'message-box'>
-                        <p>
-                            Its okay that javascript is disabled, but there will be some things that won't work for you.
-                        </p>
-                        <br>
-                        <p>
-                            You can still check out what organizations are around, but interactive components like the alarm clock
-                            don't work without javascript. If you make a free account, you can do much more, even without javascript ;)
-                        </p>
-                        <br>
-                        <p>
-                            To learn more about enabling javascript look
-                            <a class = 'link' href='https://www.enable-javascript.com/'>here</a>.
-                        </p>
-                        <br>
-                        <h3>
-                            Please user the menu to take your next steps!
-                        </h3>
-                    </div>                
-                </div>
-            </div>
+<div class="app-content">
+    {{!-- defaulting to alarm guest --}}
+    <div class="full-page">
+        <div class="full-page">
+            <h1>No javascript?</h1>
+            <br>
+            <div class = 'message-box'>
+                <p>
+                    Its okay that javascript is disabled, but there will be some things that won't work for you.
+                </p>
+                <br>
+                <p>
+                    You can still check out what organizations are around, but interactive components like the alarm clock
+                    don't work without javascript. If you make a free account, you can do much more, even without javascript ;)
+                </p>
+                <br>
+                <p>
+                    To learn more about enabling javascript look
+                    <a class = 'link' href='https://www.enable-javascript.com/'>here</a>.
+                </p>
+                <br>
+                <h3>
+                    Please user the menu to take your next steps!
+                </h3>
+            </div>                
         </div>
     </div>
 </div>
-{{!--
-<script>
-    let dummy = {{{ dummy }}};
-    console.log(dummy)
-    window.data = dummy
-</script> --}} {{!--
-<script>console.log(window.data)</script>
-<script src='../rollup/bundle.js'></script> --}}
+{{!-- <script src='../rollup/bundle.js'></script> --}}

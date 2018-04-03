@@ -5,11 +5,17 @@ var r = require("../resources/value-objects");
 var uuidv4 = require("uuid/v4");
 // AUTHORIZATION
 var AuthSvc = /** @class */ (function () {
-    function AuthSvc(client, session, user, inputs) {
+    function AuthSvc(client, user, inputs, sessionID) {
+        this.sessionID = sessionID;
         this.client = client;
-        this.session = session;
         this.user = user;
         this.inputs = inputs;
+        this.checkEmail = this.checkEmail.bind(this);
+        this.checkPassword = this.checkPassword.bind(this);
+        // this.regenerateSession = this.regenerateSession.bind(this);
+        this.updateSession = this.updateSession.bind(this);
+        this.defineSession = this.defineSession.bind(this);
+        this.doAuth = this.doAuth.bind(this);
     }
     AuthSvc.prototype.checkEmail = function () {
         var _this = this;
@@ -41,25 +47,26 @@ var AuthSvc = /** @class */ (function () {
                 .catch(function (err) { return reject(err); });
         });
     };
-    AuthSvc.prototype.regenerateSession = function () {
-        var _this = this;
-        console.log('~~~~~~ session id before regnerate', this.session.id);
-        return new Promise(function (resolve, reject) {
-            _this.session.regenerate(function (err) {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    console.log('~~~~~~ session id after regnerate', this.session.id);
-                    resolve();
-                }
-            });
-        });
-    };
+    // regenerateSession(req) {
+    //     console.log('~~~~~~ session id before regnerate', req.session.id)
+    //     return new Promise (
+    //         (resolve, reject) => {
+    //         req.session.regenerate(function(err) {
+    //                 console.log('%%%%%%%%%%%5.5', this)
+    //                 if (err) {
+    //                     reject(err)
+    //                 } else {
+    //                     resolve();
+    //                 }
+    //             })
+    //         }
+    //     )
+    // }
     AuthSvc.prototype.updateSession = function () {
         var _this = this;
+        console.log('~~~~~~ session id after regnerate', this.sessionID);
         return new Promise(function (resolve, reject) {
-            _this.client.updateSessionID([_this.session.id, _this.user.user_uuid])
+            _this.client.updateSessionID([_this.sessionID, _this.user.user_uuid])
                 .then(function (result) {
                 resolve(result);
             })
@@ -77,23 +84,22 @@ var AuthSvc = /** @class */ (function () {
     };
     AuthSvc.prototype.doAuth = function () {
         var _this = this;
+        console.log('%%%%%%%%%%%1', this);
         return new Promise(function (resolve, reject) {
+            console.log('%%%%%%%%%%%2', _this);
             _this.checkEmail()
                 .then(function (result) {
+                console.log('%%%%%%%%%%%3', _this);
                 _this.user = result;
                 return _this.checkPassword();
             })
-                .then(function (boolean) {
-                console.log('%%%%%%%%before regen', _this.session.id);
-                return _this.regenerateSession();
-            })
                 .then(function () {
-                console.log('%%%%%%%%after regen', _this.session.id);
+                console.log('%%%%%%%%after regen', _this.sessionID);
                 return _this.updateSession();
             })
                 .then(function (result) {
                 var userSession = _this.defineSession();
-                console.log('final promise do auth', _this.session.id);
+                console.log('final promise do auth', _this.sessionID);
                 resolve(userSession);
             })
                 .catch(function (err) { return reject(err); });

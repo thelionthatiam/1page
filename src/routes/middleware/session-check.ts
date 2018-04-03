@@ -7,10 +7,10 @@ import * as express from "express";
 // console.log('>>>>SESSION CHECK MIDDLEWARE RUNNING')
 function sessionCheck(req:Express.Request, res, next:Function) {
   if (req.session.user && req.sessionID) {
-    console.log('>>>>>>>>>>>..session check', req.sessionID)
+    // console.log('>>>>>>>>>>>..session check', req.sessionID)
     db.query('SELECT sessionid FROM session WHERE user_uuid = $1', [req.session.user.uuid])
       .then((result) => {
-        console.log('>>>>>>>>>>>>session check before sending query', result, result.rows[0].sessionid, req.sessionID)
+        // console.log('>>>>>>>>>>>>session check before sending query', result, result.rows[0].sessionid, req.sessionID)
         if (result.rows[0].sessionid === req.sessionID) {
           console.log('>>>>>>>>>>>>session check before sending query', req.session.user.uuid)
           return db.query('SELECT permission FROM users WHERE user_uuid = $1', [req.session.user.uuid])
@@ -19,12 +19,12 @@ function sessionCheck(req:Express.Request, res, next:Function) {
         }
       })
       .then((result) => {
-        console.log('>>>>>>>session check middleware result of select permission from users', result)
+        // console.log('>>>>>>>session check middleware result of select permission from users', result)
         if (result.rows[0].permission === 'admin') {
           res.locals.permission = 'admin'
           next();
         } else if (result.rows[0].permission === 'user') {
-          console.log('>>>>USER IS A USER: ', req.session.user)
+          // console.log('>>>>USER IS A USER: ', req.session.user)
           res.locals.permission = 'user'
           next();
         } else if (result.rows[0].permission === 'guest') {

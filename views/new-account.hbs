@@ -1,158 +1,26 @@
-<div id = 'new-user'>
-  <div class="login-img-wrapper">
-    <div class="home-navigation-bar">
-      <div class="home-title-wrapper">
-        <div class="home-logo-wrapper">
-          <img class="home-icon fadeIn" src="/icons/logo-placeholder.svg" />
-        </div>
-        <div class="home-title-text-wrapper">
-          <h1 class="home-title">snooze you lose</h1>
-          <h4 class="home-subtitle">Or how sleeping in can hurt your bottom line.</h4>
-          <p> You're a {{permission}}.</p>
-        </div>
+<div class='login-wrapper'>
+  <div class="flex column userWrapper">
+  <h3 class="formTitle"></h3>
+    <form action="/accounts" method="post">
+      <div class = "generic-form">
+        <p>name</p>
+        <input id="name" name="name" class="userFormItem" type="text" placeholder="name" value = 't' />
+
+        <p>email</p>
+        <input id="email" name="email" class="userFormItem" type="text" placeholder="email" value="t@t.tt"/>
+
+        <p>phone #</p>
+        <input id="phone" name="phone" class="userFormItem" type="text" placeholder="phone" value = "1"/>
+
+        <p>password</p>
+        <input id="password" name="password" class="userFormItem" type="password" placeholder="" value= "1234!@#$qwer"/>
+        <p class="formErrorReport">{{ dbError }}</p>
       </div>
-      <div class="home-navigation-wrapper">
-        <ul class="home-navigation-list">
-          <a href="#features-section">
-            <li class="home-navigation-item">features</li>
-          </a>
-          <a href="#about-section">
-            <li class="home-navigation-item">about</li>
-          </a>
-          <a href="/dummy-route">
-            <li class="home-navigation-item">pricing</li>
-          </a>
-          <a href="/to-login">
-            <li class="home-navigation-item">log in</li>
-          </a>
-          <li class="home-navigation-item">
-            <a href="/new-account">
-              <button class="home-create-account">create account</button>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class='login-wrapper'>
-      <div class="flex column userWrapper">
-      <h3 class="formTitle"></h3>
-        <form action="/accounts" method="post">
-          <div class = "generic-form">
-            <p>name</p>
-            <input id="name" name="name" class="userFormItem" type="text" placeholder="name" value = 't' />
 
-            <p>email</p>
-            <input id="email" name="email" class="userFormItem" type="text" placeholder="email" value="t@t.tt"/>
-
-            <p>phone #</p>
-            <input id="phone" name="phone" class="userFormItem" type="text" placeholder="phone" value = "1"/>
-
-            <p>password</p>
-            <input id="password" name="password" class="userFormItem" type="password" placeholder="" value= "1234!@#$qwer"/>
-            <p class="formErrorReport">{{ dbError }}</p>
-          </div>
-
-          <button class="dark-button button" type="submit"> create account </button>
-        </form>
-    </div>
-    </div>
-    <div class="home-tryit-wrapper">
-      <a href="/app">
-        <button class="home-try">try it</button>
-      </a>
-      <img class="icon" src="/icons/white/forward-1.svg" />
-    </div>
-  </div>
-  <div class="home-try-alarm-wrapper" id="features-section">
-    <h1>Add Alarm trial</h1>
-  </div>
-  <div class="home-about-wrapper" id="about-section">
-    <h1>About section</h1>
-    <div class="home-about-wrapper-center">
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
-    </div>
-  </div>
-  <div class="home-footer-wrapper">
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam</p>
-    <div class="home-footer-icon-wrapper">
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-    </div>
+      <button class="dark-button button" type="submit"> create account </button>
+    </form>
   </div>
 </div>
 
-{{!-- <noScript>
-  <div class="flex pageWrapper">
-    <div class="flex column userWrapper">
-      <h3 class="formTitle">user info</h3>
-
-      {{# if success}}
-        <form action="/" method="get">
-          <p>name</p>
-          <p class="inputMimic">{{ name }}</p>
-
-          <p>email</p>
-          <p class="inputMimic">{{ email }}</p>
-
-          <p>phone #</p>
-          <p class="inputMimic">{{ phone }}</p>
-
-          <p>password</p>
-          <p class="inputMimic"> success </p>
-
-          <button class="yes" type="submit"> log in </button>
-        </form>
-        <form class="flex center" action="/" method="get">
-          <button class="flex center back" type="submit">
-         <img class="icon" src="https://image.flaticon.com/icons/svg/53/53567.svg" />
-       </button>
-        <h4>account created!</h4>
-
-        {{ else }}
-
-        <form action="/accounts" method="post">
-          <p>name</p>
-          <input id="name" name="name" class="userFormItem" type="text" placeholder="name" />
-          <p class="formErrorReport" id="nameError"></p>
-
-          <p>email</p>
-          <input id="email" name="email" class="userFormItem" type="text" placeholder="email" />
-          <p class="formErrorReport" id="emailError"></p>
-
-          <p>phone #</p>
-          <input id="phone" name="phone" class="userFormItem numericOnly" type="text" placeholder="phone" />
-          <p class="formErrorReport" id="phoneError"></p>
-
-          <p>password</p>
-          <input id="password" name="password" class="userFormItem" type="password" placeholder="" />
-          <div id='passIndicator' class='passIndicator'></div>
-          <div id='passScorer' class = 'formErrorReport blackText'><p>
-            no password
-          </p></div>
-          <p class="formErrorReport" id="passwordError"></p>
-
-          <p>confirm password</p>
-          <input id="confirmPassword" name="confirmPassword" class="userFormItem" type="password" placeholder="" />
-          <p class="formErrorReport" id="confirmPasswordError"></p>
-          <button id="formSubmitter" class="unavailable submit" type="submit"> create account </button>
-        </form>
-        <form class="flex center" action="/" method="get">
-          <button class="flex center back" type="submit">
-         <img class="icon" src="https://image.flaticon.com/icons/svg/53/53567.svg" />
-       </button>
-        {{/if}}
-        <p class="formErrorReport">{{ dbError }}</p>
-        </form>
-
-    </div>
-  </div>
-</noScript>
-<div id='new-user'></div>
+{{!-- <div id='new-user'></div>
 <script src = './rollup/bundle.js'></script> --}}
-{{!-- <script src="/behavior/account-action.js"></script>
-<script src="/behavior/password-strength.js"></script> --}}

@@ -7,17 +7,25 @@ import * as uuidv4 from 'uuid/v4';
 // AUTHORIZATION
 
 export class AuthSvc {
-  client: Query;
-  session: session;
-  user: r.UserDB;
-  inputs: inputs;
+    client: Query;
+    sessionID: string;
+    user: r.UserDB;
+    inputs: inputs;
+    req: Request;
 
-  constructor(client, session, user, inputs) {
-    this.client = client;
-    this.session = session;
-    this.user = user;
-    this.inputs = inputs;
-  }
+    constructor(client, user, inputs, sessionID) {
+        this.sessionID = sessionID;
+        this.client = client;
+        this.user = user;
+        this.inputs = inputs;
+
+        this.checkEmail = this.checkEmail.bind(this);
+        this.checkPassword = this.checkPassword.bind(this);
+        // this.regenerateSession = this.regenerateSession.bind(this);
+        this.updateSession = this.updateSession.bind(this);
+        this.defineSession = this.defineSession.bind(this);
+        this.doAuth = this.doAuth.bind(this);
+    }
 
     checkEmail() {
         return new Promise (
@@ -50,25 +58,26 @@ export class AuthSvc {
             }
         )
     }
-    regenerateSession() {
-    console.log('~~~~~~ session id before regnerate', this.session.id)
-        return new Promise (
-            (resolve, reject) => {
-            this.session.regenerate(function(err) {
-                if (err) {
-                    reject(err)
-                } else {
-                    console.log('~~~~~~ session id after regnerate', this.session.id)
-                    resolve();
-                }
-            })
-            }
-        )
-    }
+    // regenerateSession(req) {
+    //     console.log('~~~~~~ session id before regnerate', req.session.id)
+    //     return new Promise (
+    //         (resolve, reject) => {
+    //         req.session.regenerate(function(err) {
+    //                 console.log('%%%%%%%%%%%5.5', this)
+    //                 if (err) {
+    //                     reject(err)
+    //                 } else {
+    //                     resolve();
+    //                 }
+    //             })
+    //         }
+    //     )
+    // }
     updateSession() {
+        console.log('~~~~~~ session id after regnerate', this.sessionID)
         return new Promise (
             (resolve, reject) => {
-                this.client.updateSessionID([this.session.id, this.user.user_uuid])
+                this.client.updateSessionID([this.sessionID, this.user.user_uuid])
                 .then((result) => {
                     resolve(result)
                 })
@@ -87,24 +96,23 @@ export class AuthSvc {
     }
 
     doAuth() {
+        console.log('%%%%%%%%%%%1', this)
         return new Promise (
             (resolve, reject) => {
+                console.log('%%%%%%%%%%%2', this)
                 this.checkEmail()
                     .then((result) => {
+                        console.log('%%%%%%%%%%%3', this)
                         this.user = result;
                         return this.checkPassword();
                     })
-                    .then((boolean) => {
-                        console.log('%%%%%%%%before regen', this.session.id)
-                        return this.regenerateSession();
-                    })
                     .then(() => {
-                        console.log('%%%%%%%%after regen', this.session.id)
+                        console.log('%%%%%%%%after regen', this.sessionID)
                         return this.updateSession();
                     })
                     .then((result) => {
                         let userSession = this.defineSession();
-                        console.log('final promise do auth', this.session.id)
+                        console.log('final promise do auth', this.sessionID)
                         resolve(userSession);
                     })
                     .catch((err) => reject(err))

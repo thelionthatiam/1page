@@ -1,89 +1,25 @@
-<div id = 'login'>
-  <div class="login-img-wrapper">
-    <div class="home-navigation-bar">
-      <div class="home-title-wrapper">
-        <div class="home-logo-wrapper">
-          <img class="home-icon fadeIn" src="/icons/logo-placeholder.svg" />
-        </div>
-        <div class="home-title-text-wrapper">
-          <h1 class="home-title">snooze you lose</h1>
-          <h4 class="home-subtitle">Or how sleeping in can hurt your bottom line.</h4>
-          <p> You're a {{permission}}.</p>
-        </div>
-      </div>
-      <div class="home-navigation-wrapper">
-        <ul class="home-navigation-list">
-          <a href="#features-section">
-            <li class="home-navigation-item">features</li>
-          </a>
-          <a href="#about-section">
-            <li class="home-navigation-item">about</li>
-          </a>
-          <a href="/dummy-route">
-            <li class="home-navigation-item">pricing</li>
-          </a>
-          <a href="/to-login">
-            <li class="home-navigation-item">log in</li>
-          </a>
-          <li class="home-navigation-item">
-            <a href="/new-account">
-              <button class="home-create-account">create account</button>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class='login-wrapper'>
-      <div class="flex column userWrapper">
-      <h3 class="formTitle"></h3>
-        <form class="" action="/authorized" method="post">
-          <div class = "generic-form">
-            <p class =>email</p>
-            <input name="email" class="userFormItem" type="text" placeholder="email" value="n@n.nn" />
+<div class='login-wrapper'>
+  <div class="flex column userWrapper">
+  <h3 class="formTitle"></h3>
+    <form class="" action="/authorized" method="post">
+      <div class = "generic-form">
+        <p class =>email</p>
+        <input name="email" class="userFormItem" type="text" placeholder="email" value="n@n.nn" />
 
-            <p class =>password</p>
-            <input name="password" class="userFormItem" type="password" value="1234!@#$qwer" />
-            <p class="formErrorReport">{{dbError}}</p>
-          </div>
-
-          <button class="button dark-button" type="submit"> log in </button>
-          
-        </form>
+        <p class =>password</p>
+        <input name="password" class="userFormItem" type="password" value="1234!@#$qwer" />
+        <p class="formErrorReport">{{dbError}}</p>
       </div>
-      <div class="flex column">
-        <form action="/forgot-password" method="get">
-          <button class="button light-button" type="submit">forgot password</button>
-        </form>
-        </div>
-    </div>
-    <div class="home-tryit-wrapper">
-      <a href="/app">
-        <button class="home-try">try it</button>
-      </a>
-      <img class="icon" src="/icons/white/forward-1.svg" />
-    </div>
+
+      <button class="button dark-button" type="submit"> log in </button>
+      
+    </form>
   </div>
-  <div class="home-try-alarm-wrapper" id="features-section">
-    <h1>Add Alarm trial</h1>
-  </div>
-  <div class="home-about-wrapper" id="about-section">
-    <h1>About section</h1>
-    <div class="home-about-wrapper-center">
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
-      <div class="home-about-wrapper-square"></div>
+  <div class="flex column">
+    <form action="/forgot-password" method="get">
+      <button class="button light-button" type="submit">forgot password</button>
+    </form>
     </div>
-  </div>
-  <div class="home-footer-wrapper">
-    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam</p>
-    <div class="home-footer-icon-wrapper">
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-      <img class="icon" src="/icons/white/forward-1.svg" />
-    </div>
-  </div>
 </div>
 {{!-- <script>
   let userData = {{{ userData }}};
@@ -96,44 +32,3 @@
 </script>
 <script src='./rollup/bundle.js'></script> --}}
 
-{{!-- <div id = 'login'>
-  <div class='flex column pageWrapper center'>
-    <div class="flex column userWrapper">
-      <h1>Snooze you Lose</h1>
-      <p class="noMarginsPadding">or how sleeping in really hurts your bottom line</p>
-    </div>
-    <div class="flex column userWrapper login"  id = 'login'>
-      <form action="/authorized" method="post">
-        <p>email</p>
-        <input name="email" class="userFormItem" type="text" placeholder="email" value="n@n.nn" />
-        <p class="formErrorReport"></p>
-
-        <p>password</p>
-        <input name="password" class="userFormItem" type="password" value="1234!@#$qwer" />
-        <p class="formErrorReport"></p>
-
-        <button class="unavailable submit" type="submit"> log in </button>
-      </form>
-      <form action="/new-account" method="get">
-        <button class="yes" type="submit">create account</button>
-      </form>
-      <div class="flex column">
-        <form action="/forgot-password" method="get">
-          <button class="no" type="submit">forgot password</button>
-        </form>
-      </div>
-      <div class = 'flex column'>
-        <h3>how it works</h3>
-        <p>
-          You choose an organization and an amount of money, and every time you sleep in, you donate to that organization. You are putting a price on the snooze.
-        </p>
-        <p>
-          You can send the money to a group that you like, or for added incentive, to an organization you hate. Maybe knowing that you money will go to the opposing political party or the flat earth society will finally get you out of bed!
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-<p class="noMarginsPassing preInputMimic">{{ message }}</p>
-<p class="formErrorReport">{{ dbError }}</p>
-<script src='./rollup/bundle.js'></script> --}}

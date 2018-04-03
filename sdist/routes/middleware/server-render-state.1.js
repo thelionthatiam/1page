@@ -38,4 +38,4 @@ function renderState(req, res, next) {
     }
 }
 exports.default = renderState;
-//# sourceMappingURL=server-render-state.js.map
+//# sourceMappingURL=server-render-state.1.js.map

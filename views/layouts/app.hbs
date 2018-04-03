@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>FORM APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {{!--
+    <link rel="stylesheet" href="/stylesheets/styles.css" /> --}}
+    <link rel="stylesheet" href="/stylesheets/scss-test.css" />
+</head>
+
+<body>
+    <div id='app'>
+        <div class='app-wrapper'>
+            <ul class="app-menu">
+                <div class='app-menu-title-wrapper'>
+                    <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
+                    <h1 class='app-menu-title'>s.y.l.</h1>
+                </div>
+                <li class='app-menu-li'>
+                    <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
+                    {{#if loggedIn}}
+                    <a href="/app/accounts/{{email}}/alarms" class='app-menu-text'>alarms</a>
+                    {{else}}
+                    <a href="/app/guest/alarms" class='app-menu-text'>alarms</a>
+                    {{/if}}
+                </li>
+    
+                <li class='app-menu-li'>
+                    <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
+                    {{#if loggedIn}}
+                    <a href="/app/accounts/{{email}}/orgs" class='app-menu-text '>organizations</a>
+                    {{else}}
+                    <a href="/app/guest/orgs" class='app-menu-text '>organizations</a>
+                    {{/if}}
+                </li>
+    
+                <li class='app-menu-li'>
+                    <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
+                    {{#if loggedIn}}
+                    <a href="/app/accounts/{{email}}/insights" class='app-menu-text'>insights</a>
+                    {{else}}
+                    <a href="/app/guest/insights" class='app-menu-text-disabled disabled-a'>insights</a>
+                    {{/if}}
+                </li>
+    
+                <li class='app-menu-li'>
+                    <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
+                    {{#if loggedIn}}
+                    <a href="/app/accounts/{{email}}/profile" class='app-menu-text'>profile</a>
+                    {{else}}
+                    <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
+                    {{/if}}
+                </li>
+    
+                <li class='app-menu-li'>
+                    <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
+                    {{#if loggedIn}}
+                    <a href="/app/accounts/{{email}}/settings" class='app-menu-text'>settings</a>
+                    {{else}}
+                    <a href="/app/guest/settings" class='app-menu-text-disabled disabled-a'>settings</a>
+                    {{/if}}
+                </li>
+                {{#if loggedIn}}                
+                {{else}}
+                <li class='app-menu-li' id='logout'>
+                    <img class='formIcon fadeIn' src='/icons/white/heart.svg' />
+                    <form action="/to-login" method="get">
+                        <button type="submit" class="app-menu-text">log in</button>
+                    </form>
+                </li>
+                {{/if}}
+    
+                <li class='app-menu-li' id='logout'>
+                    <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                    <form action="/log-out" method="post">
+                        {{#if loggedIn}}
+                        <button type="submit" class="app-menu-text">logout</button>
+                        {{else}}
+                        <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
+                        {{/if}}
+                    </form>
+                </li>
+                <li>
+                    <p> You're a {{permission}}.</p>
+                </li>
+    
+            </ul>
+            {{{body}}}
+        </div>
+    </div>
+</body>
+
+</html>
+//

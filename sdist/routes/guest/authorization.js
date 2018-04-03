@@ -11,8 +11,20 @@ auth.post('/authorized', function (req, res) {
     console.log('**** do auth', req.sessionID);
     var user;
     var userSession;
-    req.AuthSvc = new business_logic_1.AuthSvc(req.aQuery, req.session, user, inputs);
-    req.AuthSvc.doAuth()
+    // req.session.regenerate((err) => {
+    //   if (err) {
+    //     return err;
+    //   } else {
+    //     req.AuthSvc = new AuthSvc(req.aQuery, user, inputs, req.sessionID)
+    //     return req.AuthSvc.doAuth()
+    //   }
+    // })
+    business_logic_1.regenerateSession(req.session)
+        .then(function () {
+        console.log('**** outside do auth first response', req.sessionID);
+        req.AuthSvc = new business_logic_1.AuthSvc(req.aQuery, user, inputs, req.sessionID);
+        return req.AuthSvc.doAuth();
+    })
         .then(function (userSession) {
         req.session.user = userSession;
         console.log('render promise authorizations', req.session.user);
@@ -24,7 +36,18 @@ auth.post('/authorized', function (req, res) {
         res.render('login', { dbError: err });
     });
 });
-// req.bizLogic.checkEmail(req.aQuery, inputs.email)
+//   req.AuthSvc.doAuth()
+//     .then((userSession) => {
+//       req.session.user = userSession
+//       console.log('render promise authorizations', req.session.user)
+//       console.log('**** do auth last', req.sessionID);
+//       res.redirect('/app')
+//     })
+//     .catch((err:Error) => {
+//       console.log(err)
+//       res.render('login', {dbError:err})
+//     })
+// })
 // auth.post('/authorized', (req, res) => {
 //     let inputs = {
 //       email: req.body.email,
