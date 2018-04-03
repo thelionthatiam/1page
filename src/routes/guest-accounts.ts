@@ -1,11 +1,5 @@
-import * as r from '../services/value-objects';
-import { hash,
-  saveUserInformation,
-  randomString,
-  insertUserNonce,
-  createUserSessionStorage,
-  createUserSettings
-} from '../logic/logic-accounts';
+import * as R from '../services/value-objects';
+import CreateAcctSvc from '../logic/logic-accounts';
 
 import * as express from 'express';
 const accts = express.Router();
@@ -32,35 +26,16 @@ accts.route('/accounts')
       name:req.body.name,
     };
     
-    let user:r.UserDB;
+    let user:R.UserDB;
 
-    hash(inputs.password)
-      .then((result) => {
-        let hashedPassword = result
-        return saveUserInformation(req.aQuery, inputs.email, inputs.phone, hashedPassword, inputs.name)
-      })  
-      .then((newUser) => {
-        user = newUser
-        console.log(newUser)
-        return randomString;
-      })
-      .then((string) => {
-        console.log(string)
-        return hash(string)
-      })
-      .then((hash)=> {
-        return insertUserNonce(req.aQuery, user.user_uuid, hash)
-      })
-      .then((result) => {
-        return createUserSessionStorage(req.aQuery, user.user_uuid, req.sessionID)
-      })
-      .then((result)=> {
-        return createUserSettings(req.aQuery, user.user_uuid)
-      })
+    req.CreateAcctSvc = new CreateAcctSvc(req.aQuery, inputs, user, req.sessionID)
+    
+    req.CreateAcctSvc.createAcct()
       .then((result)=> {
         res.render('login');
       })
       .catch((err) => {
+        console.log(err)
         res.render('new-account', {
           dbError:err
         })

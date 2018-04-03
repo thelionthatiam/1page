@@ -22,33 +22,13 @@ accts.route('/accounts')
         name: req.body.name,
     };
     var user;
-    logic_accounts_1.hash(inputs.password)
-        .then(function (result) {
-        var hashedPassword = result;
-        return logic_accounts_1.saveUserInformation(req.aQuery, inputs.email, inputs.phone, hashedPassword, inputs.name);
-    })
-        .then(function (newUser) {
-        user = newUser;
-        console.log(newUser);
-        return logic_accounts_1.randomString;
-    })
-        .then(function (string) {
-        console.log(string);
-        return logic_accounts_1.hash(string);
-    })
-        .then(function (hash) {
-        return logic_accounts_1.insertUserNonce(req.aQuery, user.user_uuid, hash);
-    })
-        .then(function (result) {
-        return logic_accounts_1.createUserSessionStorage(req.aQuery, user.user_uuid, req.sessionID);
-    })
-        .then(function (result) {
-        return logic_accounts_1.createUserSettings(req.aQuery, user.user_uuid);
-    })
+    req.CreateAcctSvc = new logic_accounts_1.default(req.aQuery, inputs, user, req.sessionID);
+    req.CreateAcctSvc.createAcct()
         .then(function (result) {
         res.render('login');
     })
         .catch(function (err) {
+        console.log(err);
         res.render('new-account', {
             dbError: err
         });
