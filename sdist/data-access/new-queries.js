@@ -118,4 +118,4 @@ var QuerySvc = /** @class */ (function () {
 }());
 exports.default = QuerySvc;
 ;
-//# sourceMappingURL=queries.js.map
+//# sourceMappingURL=new-queries.js.map

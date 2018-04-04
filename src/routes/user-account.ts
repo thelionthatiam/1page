@@ -1,35 +1,34 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as url from 'url';
-import { Inputs, PGOutput } from '../../typings/typings';
-import { db } from '../middleware/async-database';
-const router = express.Router();
+import { db } from '../middleware/database';
 
-let viewPrefix = 'account/'
+const profile = express.Router();
 
-router.route('/:email')
+profile.route('/')
   .get((req,res) => {
-    res.render(viewPrefix + 'my-account', {
+    console.log('get my acount')
+    res.render( 'account/account/my-account', {
       email:req.session.user.email,
     })
   })
   .delete((req, res) => {
     db.query('DELETE FROM users WHERE user_uuid = $1', [req.session.user.uuid])
       .then((result) => {
-        res.render('login', {
+        res.render('home', {
           message:"account was deleted, please make a new one to enter"
         })
       })
       .catch((err) => {
         console.log(err.stack)
-        res.render(viewPrefix + 'my-account', { dbError: err.stack });
+        res.render( 'account/account/my-account', { dbError: err.stack });
       });
   })
 
 
-router.route('/:email/contact')
+profile.route('/contact')
   .get((req,res) => {
-    res.render(viewPrefix + 'my-contact', {
+    res.render( 'account/account/my-contact', {
       email:req.session.user.email,
       phone:req.session.user.phone
     })
@@ -45,21 +44,21 @@ router.route('/:email/contact')
         req.session.user.email = email;
         req.session.user.phone = phone;
 
-        res.render(viewPrefix + 'my-account', {
+        res.render( 'account/account/my-account', {
           title:"account updated",
           email:req.session.user.email
         })
       })
       .catch((err) => {
         console.log(err.stack)
-        res.render(viewPrefix + 'my-account', { dbError: err.stack });
+        res.render( 'account/account/my-account', { dbError: err.stack });
       });
   })
 
 
-router.route('/:email/password')
+profile.route('/password')
   .get((req, res) => {
-    res.render(viewPrefix + 'new-password', {
+    res.render( 'account/account/new-password', {
       email:req.session.user.email
     })
   })
@@ -82,22 +81,21 @@ router.route('/:email/password')
         }
       })
       .then((hash) => {
-
         inputs.password = hash;
         let query = 'UPDATE users SET password = $1 WHERE user_uuid = $2'
         let input = [inputs.password, req.session.user.uuid]
         return db.query(query, input)
       })
       .then((result) => {
-        res.render(viewPrefix + 'new-password', {
+        res.render( 'account/account/new-password', {
           success:true,
           email:req.session.user.email
         })
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPrefix + 'new-password', { dbError: error })
+        res.render( 'account/account/new-password', { dbError: error })
       })
   })
 
-module.exports = router;
+export default profile;

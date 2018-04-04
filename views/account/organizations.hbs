@@ -9,7 +9,7 @@
                 <li class = "org-filter-text">current</li>
                 <li class = "org-filter-text">saved</li>
                 <li class = "org-filter-text">explore</li>
-                <a class = 'a' href = '/app/accounts/{{email}}/orgs/all'>
+                <a class = 'a' href = '/app/orgs/all'>
                   <li class="org-filter-text">all</li>
                 </a>
                 
@@ -20,9 +20,6 @@
             <p class = 'top-row-time-text small-text'>Monday, April 2, 2018</p>
         </div>
     </div>
-    {{!-- <p>
-        This is where you can select which organizations you would like to support, and which organizations you'd rather not.
-    </p> --}}
     <div class="column searchWrapper">
         <div class="column contentWrapper">
             <h4 class = 'organization-subtitle'>current donation</h4>
@@ -44,22 +41,22 @@
                         <a class='a' href="{{link}}">
                           <img class='icon-mini' src='/icons/black/share.svg'>
                         </a>
-                        <form class='a' action="/app/accounts/{{email}}/orgs/{{org_sku}}?_method=PUT" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
+                        <form class='a' action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
+                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
                           <input type='image' class='icon-mini' src='/icons/black/star.svg'>
                         </form>
-                        <form class='a' action="/app/accounts/{{email}}/orgs/" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
+                        {{!-- <form class='a' action="/app/accounts/{{email}}/orgs" method="post">
+                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
                           <input type='image' class='icon-mini' src='/icons/black/x.svg'>
-                        </form>
-                        <form class="flex product-cart-form" action="/app/accounts/{{email}}/orgs/{{org_sku}}?_method=PUT" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-                          <button class='yes'>remove default</button>
+                        </form> --}}
+                        <form action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
+                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
+                          <button class='button dark-button'>remove default</button>
                         </form>
                       </div>
                     </div>
                     <div class='org-img-wrapper'>
-                      <img class='org-img' src="/product-pictures/{{ img }}.jpg" />
+                      <img class = 'org-img' src="/product-pictures/{{ img }}.jpg" />
                     </div>
                   </div>
                 
@@ -98,90 +95,4 @@
     <p class="formErrorReport">{{ dbError }}</p>
 </div>
 {{!-- <script src='../rollup/bundle.js'></script> --}}
-{{!-- 
 
-
-<div class="app-content">
-  <div class="full-width" id="top">
-    <h1>Organizations</h1>
-      <p>
-          Save organizations to your profile for later. Some, you may like some may be motivating. ^^
-      </p>
-      <div class="column searchWrapper">
-          <div class="row">
-              <input id="search" name="search" class="userFormItem dropdownSearch" type="text" placeholder="search for an organization"
-              />
-              <button class="searchButton" id='org-search'>go</button>
-          </div>
-          <div class="dropdownWrapper none">
-              <ul class="dropdownList"></ul>
-          </div>
-          <p class="formErrorReport">{{ error }}</p>
-      </div>
-      <div class="categoryListWrapper">
-          {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
-      </div>
-      <p class="formErrorReport">{{ dbError }}</p>
-      <div class='flex column'>
-      </div>
-    </div>
-  <div class="full-width">
-    <h1>My Organizations</h1>
-    <p>
-      This is where you can view your organizations and set them to alarms for the month.
-    </p>
-    {{#if defaultSet}}
-    <h4>
-      currently donating to:
-    </h4>
-    <div class='categoryListWrapper boxBorder'>
-  
-      <div class="flex column" id='{{frontEndID}}'>
-        <div class="flex product-name-price-wrapper">
-          <h3 class="product-title">{{ name }}</h3>
-          <p class="small">{{ cause }}</p>
-        </div>
-  
-        <div class="flex description-img-wrapper">
-          <div class="flex column">
-            <p class="description-text">{{ description }}</p>
-            <a href='{{link}}'>link to the website</a>
-          </div>
-  
-          <div class="organization-img">
-            <img src="/product-pictures/{{ image }}" />
-          </div>
-        </div>
-        <div class="flex product-action-wrapper">
-          <form class="flex product-cart-form" action="/accounts/{{email}}/organizations/{{org_sku}}?_method=PUT" method="post">
-            <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-            <button class='yes'>remove default</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    {{else}}
-    <div class='boxBorder padding'>
-      <h4>
-        Not currently donating to any org.
-      </h4>
-      <p class='button-titles'>
-        Add an organization from your saved orgs below or go to the organization area from the home menu.
-      </p>
-    </div>
-    {{/if}}
-    <h4>
-      saved organizations:
-    </h4>
-    <div class="categoryListWrapper">
-      {{#each organizationContent}} {{> my-organizationsdiv}} {{/each}}
-    </div>
-    <p class="formErrorReport">{{ dbError }}</p>
-    <p class='fromErrorReport'>
-      {{error}}
-    </p>
-  </div>
-  </div>      
-</div> --}}
-{{!-- <script src='../../../rollup/bundle.js'></script> --}}
-{{!-- variables unchanged --}}

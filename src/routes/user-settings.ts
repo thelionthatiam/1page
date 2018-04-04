@@ -1,15 +1,11 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as url from 'url';
-import { deepMerge } from '../../functions/merge'
-import { Inputs, PGOutput } from '../../../typings/typings';
-import { db } from '../../middleware/database';
-const router = express.Router();
+import { deepMerge } from '../services/merge'
+import { db } from '../middleware/database';
+const settings = express.Router();
 
-router.route('/settings')
-  .post((req, res) => {
-
-  })
+settings.route('/')
   .get((req,res) => {
     db.query('SELECT * FROM user_settings WHERE user_uuid = $1', [req.session.user.uuid])
       .then((result) => {
@@ -18,12 +14,11 @@ router.route('/settings')
       })
       .catch((error) => {
         console.log(error)
-        res.redirect('/accounts/' + req.session.user.email + '/settings')
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings')
       })
-
   })
 
-router.put('/settings/payment-scheme', (req, res) => {
+settings.put('/payment-scheme', (req, res) => {
   let input = [
     req.body.payment_scheme,
     req.session.user.uuid
@@ -33,15 +28,15 @@ router.put('/settings/payment-scheme', (req, res) => {
   db.query(query, input)
     .then((result) => {
       console.log(result);
-      res.redirect('/accounts/' + req.session.user.email + '/settings')
+      res.redirect('/app/accounts/' + req.session.user.email + '/settings')
     })
     .catch((error) => {
       console.log(error)
-      res.redirect('/accounts/' + req.session.user.email + '/settings')
+      res.redirect('/app/accounts/' + req.session.user.email + '/settings')
     })
 })
 
-router.put('/settings/monthly-max', (req, res) => {
+settings.put('/monthly-max', (req, res) => {
   let input = [
     req.body.month_max,
     req.session.user.uuid
@@ -60,7 +55,7 @@ router.put('/settings/monthly-max', (req, res) => {
     })
     .then((result) => {
       console.log(result);
-      res.redirect('/accounts/' + req.session.user.email + '/settings')
+      res.redirect('/app/accounts/' + req.session.user.email + '/settings')
     })
     .catch((error) => {
       console.log(error)
@@ -70,7 +65,7 @@ router.put('/settings/monthly-max', (req, res) => {
     })
 })
 
-router.put('/settings/price-per-snooze', (req, res) => {
+settings.put('/price-per-snooze', (req, res) => {
   let input = [
     req.body.snooze_price,
     req.session.user.uuid
@@ -101,7 +96,7 @@ router.put('/settings/price-per-snooze', (req, res) => {
 })
 
 
-router.put('/settings/price-per-dismiss', (req, res) => {
+settings.put('/price-per-dismiss', (req, res) => {
   let input = [
     req.body.dismiss_price,
     req.session.user.uuid
@@ -115,12 +110,12 @@ router.put('/settings/price-per-dismiss', (req, res) => {
       if (req.body.dismiss_price > result.rows[0].month_max) {
         throw new Error ('You should probably select a dismiss price that is less than the dismiss price')
       } else {
-        return   db.query(query, input)
+        return db.query(query, input)
       }
     })
     .then((result) => {
       console.log(result);
-      res.redirect('/accounts/' + req.session.user.email + '/settings')
+      res.redirect('/app/accounts/' + req.session.user.email + '/settings')
     })
     .catch((error) => {
       console.log(error)
@@ -131,4 +126,5 @@ router.put('/settings/price-per-dismiss', (req, res) => {
 })
 
 
-module.exports = router;
+export default settings;
+

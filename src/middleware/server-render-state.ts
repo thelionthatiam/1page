@@ -1,5 +1,6 @@
 function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
+        console.log('render state says Im a user', res.locals)
         res.locals.loggedIn = true;
         let userState:any = {};
         req.aQuery.selectUserOrgs([req.session.user.uuid])

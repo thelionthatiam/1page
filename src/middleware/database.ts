@@ -1,5 +1,6 @@
 import { Pool } from 'pg';
 import { dbConfig } from "../services/db-connect-config";
+import { Client } from '../../typings/typings'
 import * as r from '../services/value-objects';
 import { Query } from '../data-access/queries'
 import * as express from "express";
@@ -9,7 +10,7 @@ let db = {
   query: (text:string, params:any[]) => pool.query(text, params)
 }
 
-function init(databaseInformation:ConnectionConfig):RequestHandler {
+function init(databaseInformation){
   const pool = new Pool(databaseInformation);
   return (req, res, next) => {
     let client:Client;

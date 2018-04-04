@@ -133,7 +133,7 @@ $small-margin-r:25px;
   margin: 15px 0 20px 0;
 }
 
-
+.one-item-spacing {@extend %one-item-spacing;}
 //  common element sizes
 $icon-width:30px;
 $icon-container-width:$icon-width + $small-margin-l;
@@ -272,6 +272,60 @@ button:focus {
   align-self: flex-start;
 }
 
+// SETTINGS NO JS
+
+.settings-form-wrapper {
+  display:flex;
+  flex-direction:column;
+  width:90%;
+}
+
+.settings-title {
+  text-transform:uppercase;
+}
+
+// PAYMENT NO JS
+
+.card-number-wrapper {
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ACCOUNT / PROFILE NO JS 
+
+.profile-wrapper {
+  display:flex;
+  flex-direction:column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.profile-form {
+  @extend %one-item-spacing-col;
+  display:flex;
+  justify-content: space-between;
+  width: 50vw;
+  align-items: center;
+  align-content: center;
+
+}
+
+.profile-title {
+  // text-transform:uppercase;
+  font-weight:400;
+}
+
+.line {
+  height:1px;
+  flex-grow:1;
+  border-radius:4px;
+  background-color:$lightGrey;
+  margin-left:5px;
+  margin-right:5px;
+}
+
 // ORGANIZATIONS NO JS
 
 .top-row-wrapper {
@@ -387,6 +441,9 @@ button:focus {
   justify-content: space-around;
   align-items: center;
 }
+
+
+
 // NO JAVASCRIPT ALERT PAGE
 
 .message-box {
@@ -845,6 +902,10 @@ button:focus {
   width:$icon-width*.75;
   height:$icon-width*.75;
   transition:300ms;
+}
+
+.icon-disabled {
+  opacity:.3;
 }
 
 .fadeIn {

@@ -56,18 +56,8 @@ export class AuthSvc {
             }
         )
     }
-    updateSession() {
-        // console.log('~~~~~~ session id after regnerate', this.sessionID)
-        return new Promise (
-            (resolve, reject) => {
-                this.client.updateSessionID([this.sessionID, this.user.user_uuid])
-                .then((result) => {
-                    resolve(result)
-                })
-                .catch(err => reject(err))
-            }
-        )
-    }
+    updateSession() { return this.client.updateSessionID([this.sessionID, this.user.user_uuid]) }
+
     defineSession() {
         let session = R.UserSession.fromJSON({
             email:this.user.email,

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
+        console.log('render state says Im a user', res.locals);
         res.locals.loggedIn = true;
         var userState_1 = {};
         req.aQuery.selectUserOrgs([req.session.user.uuid])

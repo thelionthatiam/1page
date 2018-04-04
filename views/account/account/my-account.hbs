@@ -1,39 +1,44 @@
-<div class="flex pageWrapper center">
-  <div class="flex column userWrapper">
-    <h3 class="formTitle">manage account</h3>
-    <form action="/accounts/{{email}}/settings" method="get">
-      <button class="yes" type="submit">settings</button>
-      <p class = 'button-titles mini'>
-        choose how how your alarms will wake you up.
-      </p>
-    </form>
-    <form action="/accounts/{{email}}/contact" method="get">
-      <button class="yes" type="submit">contact information</button>
-      <p class = 'button-titles mini'>
-        Update your contact information
-      </p>
-    </form>
-    <form action="/accounts/{{email}}/password" method="get">
-      <button class="yes"> security </button>
-      <p class = 'button-titles mini'>
-        Change your password
-      </p>
-    </form>
-    <form action="/accounts/{{email}}/payment" method="get">
-      <button class="yes" type="submit">payment information</button>
-      <p class = 'button-titles mini'>
-        Add, update, and delet payment information. Set defaults.
-      </p>
-    </form>
-    <form action="/accounts/{{email}}?_method=DELETE" method="post">
-      <button class="no" type="submit"> delete </button>
-      <p class = 'button-titles mini'>
-        Delete your account, this cannot be undone.
-      </p>
-    </form>
-    <form action="/home" method="get">
-      <button class="no" type="submit">home</button>
-    </form>
+<div class = 'app-content'>
+  <div class = 'profile-wrapper full-width'>
+    <div class='top-row-wrapper'>
+      <div class='top-row-search-bar'>
+      </div>
+      <div class='top-row-time'>
+        <p class='top-row-time-text small-text'>5:50:00AM</p>
+        <p class='top-row-time-text small-text'>Monday, April 2, 2018</p>
+      </div>
+    </div>
+   
+    <div class = "profile-form">
+      <h5 class='profile-title'>Contact information</h5>
+      <div class="line"></div>
+      <form class = "" action="/app/accounts/{{email}}/contact" method="get">
+        <button class="button dark-button" type="submit">manage</button>
+      </form>
+    </div>
+    
+    <div class = "profile-form">
+      <h5 class = 'profile-title'>Security</h5>
+      <div class="line"></div>
+      <form class = "" action="/app/accounts/{{email}}/password" method="get">
+        <button class="button dark-button">manage </button>      
+      </form>    
+    </div>
+    <div class = "profile-form">
+      <h5 class = 'profile-title'>Payment</h5>
+      <div class="line"></div>
+      <form class = "" action="/app/accounts/{{email}}/payment" method="get">
+        <button class="button dark-button" type="submit">manage</button>
+      </form>
+    </div>
+    <div class = "profile-form">
+      <h5 class = 'profile-title'>Delete account</h5>
+      <div class="line"></div>
+      <form class = "" action="/app/accounts/{{email}}?_method=DELETE" method="post">
+        <button class="button dark-button" type="submit"> delete </button>    
+      </form>
+    </div>
   </div>
 </div>
 {{!-- <script src="/behavior/genericChangeForm.js"></script> --}}
+

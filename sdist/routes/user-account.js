@@ -2,30 +2,30 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var bcrypt = require("bcrypt");
-var async_database_1 = require("../middleware/async-database");
-var router = express.Router();
-var viewPrefix = 'account/';
-router.route('/:email')
+var database_1 = require("../middleware/database");
+var profile = express.Router();
+profile.route('/')
     .get(function (req, res) {
-    res.render(viewPrefix + 'my-account', {
+    console.log('get my acount');
+    res.render('account/account/my-account', {
         email: req.session.user.email,
     });
 })
     .delete(function (req, res) {
-    async_database_1.db.query('DELETE FROM users WHERE user_uuid = $1', [req.session.user.uuid])
+    database_1.db.query('DELETE FROM users WHERE user_uuid = $1', [req.session.user.uuid])
         .then(function (result) {
-        res.render('login', {
+        res.render('home', {
             message: "account was deleted, please make a new one to enter"
         });
     })
         .catch(function (err) {
         console.log(err.stack);
-        res.render(viewPrefix + 'my-account', { dbError: err.stack });
+        res.render('account/account/my-account', { dbError: err.stack });
     });
 });
-router.route('/:email/contact')
+profile.route('/contact')
     .get(function (req, res) {
-    res.render(viewPrefix + 'my-contact', {
+    res.render('account/account/my-contact', {
         email: req.session.user.email,
         phone: req.session.user.phone
     });
@@ -35,23 +35,23 @@ router.route('/:email/contact')
     var phone = req.body.phone;
     var query = 'UPDATE users SET (email, phone) = ($1, $2) WHERE user_uuid = $3';
     var input = [email, phone, req.session.user.uuid];
-    async_database_1.db.query(query, input)
+    database_1.db.query(query, input)
         .then(function (result) {
         req.session.user.email = email;
         req.session.user.phone = phone;
-        res.render(viewPrefix + 'my-account', {
+        res.render('account/account/my-account', {
             title: "account updated",
             email: req.session.user.email
         });
     })
         .catch(function (err) {
         console.log(err.stack);
-        res.render(viewPrefix + 'my-account', { dbError: err.stack });
+        res.render('account/account/my-account', { dbError: err.stack });
     });
 });
-router.route('/:email/password')
+profile.route('/password')
     .get(function (req, res) {
-    res.render(viewPrefix + 'new-password', {
+    res.render('account/account/new-password', {
         email: req.session.user.email
     });
 })
@@ -60,7 +60,7 @@ router.route('/:email/password')
         password: req.body.password,
         oldPassword: req.body.oldPassword
     };
-    async_database_1.db.query("SELECT * FROM users WHERE user_uuid = $1", [req.session.user.uuid])
+    database_1.db.query("SELECT * FROM users WHERE user_uuid = $1", [req.session.user.uuid])
         .then(function (result) {
         console.log(result);
         return bcrypt.compare(req.body.oldPassword, result.rows[0].password);
@@ -77,18 +77,18 @@ router.route('/:email/password')
         inputs.password = hash;
         var query = 'UPDATE users SET password = $1 WHERE user_uuid = $2';
         var input = [inputs.password, req.session.user.uuid];
-        return async_database_1.db.query(query, input);
+        return database_1.db.query(query, input);
     })
         .then(function (result) {
-        res.render(viewPrefix + 'new-password', {
+        res.render('account/account/new-password', {
             success: true,
             email: req.session.user.email
         });
     })
         .catch(function (error) {
         console.log(error);
-        res.render(viewPrefix + 'new-password', { dbError: error });
+        res.render('account/account/new-password', { dbError: error });
     });
 });
-module.exports = router;
+exports.default = profile;
 //# sourceMappingURL=user-account.js.map

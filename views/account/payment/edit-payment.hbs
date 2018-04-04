@@ -2,7 +2,7 @@
   <div class="flex column userWrapper">
 
     <h3 class="formTitle">edit a payment method</h3>
-    {{#if permission}}
+    {{!-- {{#if permission}}
     <h1>ADMIN UPDATE</h1>
       <form action="/admin/accounts/{{ user_uuid }}/payment/{{card_number}}?_method=PUT" method="POST">
         <p>name {{name}}</p>
@@ -49,8 +49,8 @@
         <input type="hidden" name="user_uuid" value={{user_uuid}} />
         <button id="formSubmitter" class="unavailable submit" type="submit">submit</button>
       </form>`
-    {{else}}
-      <form action="/accounts/{{ user_uuid }}/payment/{{card_number}}?_method=PUT" method="POST">
+    {{else}} --}}
+      <form action="/app/accounts/{{ user_uuid }}/payment/{{card_number}}?_method=PUT" method="POST">
         <p>name {{name}}</p>
         <input id="name" name="name" class="userFormItem" type="text" placeholder="darth vader" value="{{name}}" />
         <p class="formErrorReport" id="nameError"></p>
@@ -94,7 +94,7 @@
         <input type="hidden" name="oldCard" value={{card_number}} />
         <button id="formSubmitter" class="unavailable submit" type="submit">submit</button>
       </form>
-    {{/if}}
+    {{!-- {{/if}} --}}
 
   </div>
 </div>

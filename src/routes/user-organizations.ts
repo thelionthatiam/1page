@@ -1,61 +1,73 @@
 import * as express from 'express';
 import { db } from '../middleware/database';
-import * as r from '../services/value-objects'
+import { OrgSvc } from '../logic/logic-organizations';
+import * as R from '../services/value-objects';
 const orgs = express.Router();
 
 
 orgs.route('/')
   .post((req, res) => {
     let org = req.body.org_uuid;
-    let userOrgs;
-    console.log(req.session.user)
-    db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
-    .then((result) => {
-      userOrgs = result.rows
-      for (let i = 0; i < userOrgs.length; i++) {
-        if (userOrgs[i].org_uuid === org) {
-          throw new Error('You have already added this org!')
-        }
-      }
-      if (result.rowCount >= 2) {
-        throw new Error('You can only save 2 organizations to favorites right now.')
-      }  else {
-        console.log(req.session.user.uuid, org)
-        db.query('INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)', [req.session.user.uuid, org])
-      }
-    })
-    .then((result) => {
-      res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs' )
-    })
-    .catch((error) => {
-      console.log(error);
-      error = {error:error}
-      res.render('/app/accounts/' + req.session.user.uuid + '/orgs', error)
-    })
+
+    let userSession = R.UserSession.fromJSON(req.session.user);
+
+    // db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
+    // .then((result) => {
+    //   userOrgs = result.rows
+    //   for (let i = 0; i < userOrgs.length; i++) {
+    //     if (userOrgs[i].org_uuid === org) {
+    //       throw new Error('You have already added this org!')
+    //     }
+    //   }
+    //   if (result.rowCount >= 2) {
+    //     throw new Error('You can only save 2 organizations to favorites right now.')
+    //   }  else {
+    //     console.log(req.session.user.uuid, org)
+    //     db.query('INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)', [req.session.user.uuid, org])
+    //   }
+    // })
+
+    req.OrgSvc = new OrgSvc(req.aQuery, userSession, org)
+
+    req.OrgSvc.addToUserOrgs()
+      .then(() => {
+        res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs')
+      })
+      .catch((error) => {
+        console.trace('HEY YOU')
+        console.log(error);
+
+        res.render('account/organizations', error)
+      })
   })
   .get((req, res) => {
     let name:string,
         description:string,
         cause:string,
         link:string,
-        defaultSet:boolean = false;
+        defaultSet:boolean = false,
+        img:string,
+        uuid:string;
 
     let email = req.session.user.email;
-    db.query('SELECT x.org_uuid, name, description, link, cause, active FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)', [req.session.user.uuid])
+    db.query('SELECT x.org_uuid, name, description, link, cause, active, img, org_sku, user_uuid FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)', [req.session.user.uuid])
       .then((result) => {
         let organizationContent = result.rows;
         for (let i = 0; i < organizationContent.length; i++) {
           organizationContent[i].email = email;
-          console.log( organizationContent[i].link)
+          organizationContent[i].user_orgs = true;
+          organizationContent[i].loggedIn = res.locals.loggedIn;
           if (organizationContent[i].active) {
             defaultSet = true;
             name = organizationContent[i].name
             description = organizationContent[i].description
             link = organizationContent[i].link
             cause = organizationContent[i].cause
-          }
+            img = organizationContent[i].img
+            uuid = organizationContent[i].org_uuid
+          } 
         }
-        console.log('@@@@@@@@@@@@@@@@ organization content get',organizationContent)
+        // console.log('get user organizations', organizationContent)
         res.render('account/organizations', {
           organizationContent:organizationContent,
           email: email,
@@ -63,7 +75,9 @@ orgs.route('/')
           description:description,
           cause:cause,
           link:link,
-          defaultSet:defaultSet
+          defaultSet:defaultSet,
+          img:img,
+          uuid:uuid
         })
       })
 
@@ -73,52 +87,51 @@ orgs.route('/')
       });
   })
 
-orgs.route('/all')
-  .post((req, res) => {
-    // all happens via admin
-  })
-  .get((req, res) => {
-    let user = r.UserSession.fromJSON(req.session.user)
-
-    req.aQuery.selectOrgs([])
-      .then((result) => {
-        let organizationContent = result.rows;
-
-        for (let i = 0; i < organizationContent.length; i++) {
-          let org = r.OrgsDB.fromJSON(organizationContent[i]) // at least it catches problems
-          organizationContent[i].email = user.email;
-          // this was used for the jquery version of the front end to scroll to a name via click
-          // organizationContent[i].frontEndID = idMaker(organizationContent[i].name)
-        }
-
-        res.render('account/all-organizations', {
-          organizationContent:organizationContent,
-          email: user.email
-        })
-      })
-      .catch((err) => {
-        console.log(err);
-        res.render('account/all-organizations', { dbError: err });
-      });
-  })
-
 
 // MUST FLIP BOOL
 orgs.route('/:sku')
   .put((req,res) => {
-    let userOrgs;
     let addingOrg = req.body.org_uuid
-    console.log(addingOrg, req.body)
-    db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
-      .then((result) =>{
-        return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [true, req.session.user.uuid, addingOrg])
+    // console.log('put change default donation', addingOrg)
+
+    db.query('SELECT FROM user_orgs WHERE org_uuid = $1', [addingOrg])
+      .then((result) => {
+        if (result.rowCount === 0) {
+          console.log('case where the org isnt even added to the user orgs yet')
+          return db.query('INSERT INTO user_orgs (org_uuid, active, user_uuid) VALUES ($1, $2, $3)', [addingOrg, true, req.session.user.uuid])
+        } else {
+          db.query('SELECT active, org_uuid FROM user_orgs where active = $1 AND user_uuid = $2', [ true, req.session.user.uuid])
+            .then((result) => {
+              if (result.rowCount === 0) {
+                // console.log('case where nothing is saved to the database with active')
+                // console.log('case where they are different')
+                return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
+                .then((result) =>{
+                  // console.log('all are set to false')
+                  return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [true, req.session.user.uuid, addingOrg])
+                })
+              } else if (result.rows[0].org_uuid === addingOrg) {
+                // console.log('case where uuid is the same as being added')
+                return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [false, req.session.user.uuid, addingOrg])
+              } else {
+                // console.log('case where they are different')
+                return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
+                .then((result) =>{
+                  // console.log('all are set to false')
+                  return db.query('UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3', [true, req.session.user.uuid, addingOrg])
+                })
+              }
+            })
+        }
       })
       .then((result) => {
+        console.log('result res redirect')
         res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs/' )
       })
       .catch((error) => {
+        console.log('err case')
         console.log(error)
-res.render('/app/accounts/' + req.session.user.uuid + '/orgs/', error)
+        res.render('accounts/organizations', error)
       })
   })
   .delete((req,res) => {
@@ -129,7 +142,7 @@ res.render('/app/accounts/' + req.session.user.uuid + '/orgs/', error)
     })
     .catch((error) => {
       console.log(error)
-      res.render('/app/accounts/' + req.session.user.uuid + '/orgs/', error)
+      res.render('accounts/organizations', error)
     })
   })
   

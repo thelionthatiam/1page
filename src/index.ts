@@ -2,11 +2,14 @@ import * as express from 'express';
 import auth from './routes/guest-authorization';
 import accts from './routes/guest-accounts';
 import appLayout from './middleware/choose-layout';
-import gOrgs from './routes/guest-organizations';
+import allOrgs from './routes/organizations';
 
+import profile from './routes/user-account'
 import allUserData from './routes/user-all';
 import alarms from './routes/user-alarms';
-import orgs from './routes/user-organizations'
+import orgs from './routes/user-organizations';
+import settings from './routes/user-settings';
+import payment from './routes/user-payment';
 
 const router = express.Router();
 
@@ -17,21 +20,21 @@ router.use('/', accts);
 // router.use('/guest', require('./guest/shopping'));
 
 router.use('/app*', appLayout)
-router.use('/app/guest/orgs', gOrgs);
+router.use('/app/orgs', allOrgs);
 
 // router.use('/admin', require('./admin/products'));
 // router.use('/admin', require('./admin/coupons'));
 // router.use('/admin', require('./admin/accounts'));
 
-// router.use('/accounts', require('./account'));
+router.use('/app/accounts/:email', profile)
 router.use('/app/accounts/:email', allUserData)
 router.use('/app/accounts/:email/alarms', alarms);
 router.use('/app/accounts/:email/orgs', orgs);
-// router.use('/accounts/:email', require('./account/payment'));
+router.use('/app/accounts/:email/settings', settings);
+router.use('/app/accounts/:email/payment', payment);
 // router.use('/accounts/:email', require('./account/cart'));
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
-// router.use('/accounts/:email', require('./account/settings'));
 // router.use('/accounts/:email', require('./account/transactions'));
 
 

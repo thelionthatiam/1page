@@ -1,32 +1,24 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as url from 'url';
-import { Inputs, PGOutput } from '../../typings/typings';
-import { db } from '../../middleware/async-database';
-const router = express.Router();
+import { db } from '../middleware/database';
+const payment = express.Router();
 
-let viewPefix = 'payment/'
 
-router.get('/new-payment', (req, res) => {
-  let email = req.session.user.email;
-  res.render(viewPefix + 'new-payment', {
-    email:email
-  })
-})
 
-router.route('/payment')
+payment.route('/')
   .get((req, res) => {
     db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [req.session.user.uuid])
       .then((result) => {
         let paymentContent = result.rows
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           paymentContent:paymentContent,
           email:req.session.user.email
         })
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           dbError:error,
           email:req.session.user.email
         })
@@ -64,26 +56,26 @@ router.route('/payment')
         return db.query(query, input);
       })
       .then((result) => {
-        res.render(viewPefix + 'new-payment', {
-          success:true,
-          name:inputs.name,
-          address:inputs.address,
-          city:inputs.city,
-          state:inputs.state,
-          zip:inputs.zip,
-          email:email
-        })
+        res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'new-payment', {
+        res.render('account/payment/new-payment', {
           dbError:error,
           email:req.session.user.email
         })
       })
   })
 
-router.route('/payment/active-payment')
+payment.get('/new-payment', (req, res) => {
+  let email = req.session.user.email;
+  res.render('account/payment/new-payment', {
+    email:email
+  })
+})
+
+
+payment.route('/active-payment')
   .put((req, res) => {
     let card_number = req.body.card_number;
     console.log(card_number)
@@ -94,11 +86,11 @@ router.route('/payment/active-payment')
         return db.query(query, input)
       })
       .then((result) => {
-        res.redirect('/accounts/' + req.session.user.email + '/payment')
+        res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           dbError:error,
           email:req.session.user.email
         })
@@ -106,7 +98,7 @@ router.route('/payment/active-payment')
   })
 
 
-router.route('/payment/:card_number')
+payment.route('/:card_number')
   .get((req, res) => {
     let card_number = req.query.card_number;
     let payment;
@@ -116,7 +108,7 @@ router.route('/payment/:card_number')
         payment = result.rows[0]
         console.log(payment)
 
-        res.render('payment/edit-payment', {
+        res.render('account/payment/edit-payment', {
           name: payment.name,
           card_number: payment.card_number,
           exp_date: payment.exp_date,
@@ -131,7 +123,7 @@ router.route('/payment/:card_number')
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           dbError:error,
           email:req.session.user.email
         })
@@ -155,11 +147,11 @@ router.route('/payment/:card_number')
 
     db.query(query, input)
       .then((result)=>{
-        res.redirect('/accounts/' + req.session.user.email + '/payment')
+        res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           dbError:error,
           email:req.session.user.email
         })
@@ -167,20 +159,18 @@ router.route('/payment/:card_number')
   })
   .delete((req, res) => {
     let card_number = req.body.card_number
-    let query = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number =$2'
-    let input = [req.session.user.uuid, card_number]
 
-    db.query(query, input)
+    db.query('DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2', [req.session.user.uuid, card_number])
       .then((result) => {
-        res.redirect('/accounts/' + req.session.user.email + '/payment')
+        res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render(viewPefix + 'payments', {
+        res.render('account/payment/payments', {
           dbError:error,
           email:req.session.user.email
         })
       })
   })
 
-module.exports = router;
+export default payment;

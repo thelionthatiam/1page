@@ -46,17 +46,7 @@ var AuthSvc = /** @class */ (function () {
                 .catch(function (err) { return reject(err); });
         });
     };
-    AuthSvc.prototype.updateSession = function () {
-        var _this = this;
-        // console.log('~~~~~~ session id after regnerate', this.sessionID)
-        return new Promise(function (resolve, reject) {
-            _this.client.updateSessionID([_this.sessionID, _this.user.user_uuid])
-                .then(function (result) {
-                resolve(result);
-            })
-                .catch(function (err) { return reject(err); });
-        });
-    };
+    AuthSvc.prototype.updateSession = function () { return this.client.updateSessionID([this.sessionID, this.user.user_uuid]); };
     AuthSvc.prototype.defineSession = function () {
         var session = R.UserSession.fromJSON({
             email: this.user.email,

@@ -1,0 +1,89 @@
+<div class='app-content'>
+  <div class='profile-wrapper full-width'>
+    <div class='top-row-wrapper'>
+      <div class='top-row-search-bar'>
+      </div>
+      <div class='top-row-time'>
+        <p class='top-row-time-text small-text'>5:50:00AM</p>
+        <p class='top-row-time-text small-text'>Monday, April 2, 2018</p>
+      </div>
+    </div>
+    <div class = "settings-form-wrapper">
+      <h4 class = "settings-title">payment scheme<br /><span class = 'current-selection'>current: {{payment_scheme}}</span></h4>
+      <form class = 'radio' action"/app/accounts/{{email}}/settings/payment-scheme?_method=PUT" method="post">
+        <div class = ''>
+          <div class = 'flex column center'>
+            <input type="radio"  name="payment_scheme" value="classic">
+            <label for="contactChoice1">classic</label>
+          </div>
+          <div class = 'flex column center'>
+            <input type="radio"  name="payment_scheme" value="altruistic">
+            <label for="contactChoice2">altruistic</label>
+          </div>
+        </div>
+        <p>
+          about
+        </p>
+        <p class = 'button-titles mini'>
+          <b>classic:</b> choose one organization and the price per snooze and per missed alarm. If you wake up, no money leaves your account.
+        </p>
+        <p class = 'button-titles mini'>
+          <b>altruistic:</b> choose one organization and the price per snooze and per missed alarm. A certain amount goes to your oranization, but if you snooze or dont wake up, the money is diverted to your least favorite organization.
+        </p>
+        <button class="button dark-button" type="submit">upadate scheme</button>
+      </form>
+    </div>
+
+    <div class="settings-form-wrapper">
+      <h4 class = "settings-title">monthly max<br /><span class = 'current-selection'>current: ${{month_max}}</span>
+      </h4>
+      <form action="/app/accounts/{{email}}/settings/monthly-max?_method=PUT" method="post">
+        <div class = 'flex center'>
+          <p>
+            $
+          </p>
+          <input type = 'text' name="month_max" value = "{{month_max}}"/>
+        </div>
+        <button class = "button dark-button" type="submit">set limit</button>
+      </form>
+    </div>
+
+    <div class="settings-form-wrapper">
+      <h4 class = "settings-title">price per snooze<br /><span class = 'current-selection'>current: ${{snooze_price}}</span>
+      </h4>
+      <form action="/app/accounts/{{email}}/settings/price-per-snooze?_method=PUT" method="post">
+        <div class = 'flex center'>
+          <p>
+            $
+          </p>
+          <input type = 'text' name='snooze_price' value = "{{snooze_price}}"/>
+        </div>
+        <button class = "button dark-button" type="submit">set snooze price</button>
+        <p class = 'button-titles mini'>
+          everytime you snooze, this amount will leave your account and go to the organization of choice
+        </p>
+      </form>
+    </div>
+
+    <div class="settings-form-wrapper">
+      <h4 class = "settings-title">price per dismiss<br /><span class = 'current-selection'>current: ${{dismiss_price}}</span>
+      </h4>
+      <form action="/app/accounts/{{email}}/settings/price-per-dismiss?_method=PUT" method="post">
+        <div class = 'flex center'>
+          <p>
+            $
+          </p>
+          <input type = 'text' name='dismiss_price' value = "{{dismiss_price}}"/>
+        </div>
+        <button class = "button dark-button" type="submit">set dismiss price</button>
+        <p class = 'button-titles mini'>
+          everytime you dismiss an alarm, this amount will leave your account and go to the organization of choice
+        </p>
+      </form>
+    </div>
+    <p class = "formErrorReport">
+      {{ error }}
+    </p>
+  </div>
+</div>
+{{!-- <script src="/behavior/genericChangeForm.js"></script> --}}

@@ -1,55 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
-var r = require("../resources/value-objects");
-var helpers_1 = require("../functions/helpers");
-var router = express.Router();
-router.route('/organizations')
+var allOrgs = express.Router();
+allOrgs.route('/all')
     .post(function (req, res) {
     // all happens via admin
 })
     .get(function (req, res) {
-    var user = r.UserSession.fromJSON(req.session.user);
+    var email;
+    res.locals.loggedIn ? email = req.session.user.email : email = undefined;
     req.aQuery.selectOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {
-            var org = r.OrgsDB.fromJSON(organizationContent[i]); // at least it catches problems
-            organizationContent[i].email = user.email;
-            organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
+            organizationContent[i].loggedIn = res.locals.loggedIn;
+            organizationContent[i].email = email;
         }
-        res.render('guest/organizations', {
+        res.render('account/all-organizations', {
             organizationContent: organizationContent,
-            email: user.email
+            loggedIn: res.locals.loggedIn
         });
     })
         .catch(function (err) {
         console.log(err);
-        res.render('guest/organizations', { dbError: err });
+        res.render('account/all-organizations', { dbError: err });
     });
 });
-//
-router.route('/')
-    .post(function (req, res) {
-    // all happens via admin
-})
-    .get(function (req, res) {
-    req.aQuery.selectOrgs([])
-        .then(function (result) {
-        var organizationContent = result.rows;
-        for (var i = 0; i < organizationContent.length; i++) {
-            var org = r.OrgsDB.fromJSON(organizationContent[i]); // at least it catches problems
-            organizationContent[i].frontEndID = helpers_1.idMaker(organizationContent[i].name);
-        }
-        res.render('guest/organizations', {
-            organizationContent: organizationContent
-        });
-    })
-        .catch(function (err) {
-        console.log(err);
-        var userError = helpers_1.dbErrTranslator(err.message);
-        res.render('shopping/organizations', { dbError: userError });
-    });
-});
-module.exports = router;
+exports.default = allOrgs;
 //# sourceMappingURL=organizations.js.map

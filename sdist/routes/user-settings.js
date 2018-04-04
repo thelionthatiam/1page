@@ -1,12 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
-var merge_1 = require("../../functions/merge");
-var database_1 = require("../../middleware/database");
-var router = express.Router();
-router.route('/settings')
-    .post(function (req, res) {
-})
+var merge_1 = require("../services/merge");
+var database_1 = require("../middleware/database");
+var settings = express.Router();
+settings.route('/')
     .get(function (req, res) {
     database_1.db.query('SELECT * FROM user_settings WHERE user_uuid = $1', [req.session.user.uuid])
         .then(function (result) {
@@ -15,10 +13,10 @@ router.route('/settings')
     })
         .catch(function (error) {
         console.log(error);
-        res.redirect('/accounts/' + req.session.user.email + '/settings');
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings');
     });
 });
-router.put('/settings/payment-scheme', function (req, res) {
+settings.put('/payment-scheme', function (req, res) {
     var input = [
         req.body.payment_scheme,
         req.session.user.uuid
@@ -27,14 +25,14 @@ router.put('/settings/payment-scheme', function (req, res) {
     database_1.db.query(query, input)
         .then(function (result) {
         console.log(result);
-        res.redirect('/accounts/' + req.session.user.email + '/settings');
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings');
     })
         .catch(function (error) {
         console.log(error);
-        res.redirect('/accounts/' + req.session.user.email + '/settings');
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings');
     });
 });
-router.put('/settings/monthly-max', function (req, res) {
+settings.put('/monthly-max', function (req, res) {
     var input = [
         req.body.month_max,
         req.session.user.uuid
@@ -53,7 +51,7 @@ router.put('/settings/monthly-max', function (req, res) {
     })
         .then(function (result) {
         console.log(result);
-        res.redirect('/accounts/' + req.session.user.email + '/settings');
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings');
     })
         .catch(function (error) {
         console.log(error);
@@ -62,7 +60,7 @@ router.put('/settings/monthly-max', function (req, res) {
         res.render('account/settings', renderObj);
     });
 });
-router.put('/settings/price-per-snooze', function (req, res) {
+settings.put('/price-per-snooze', function (req, res) {
     var input = [
         req.body.snooze_price,
         req.session.user.uuid
@@ -90,7 +88,7 @@ router.put('/settings/price-per-snooze', function (req, res) {
         res.render('account/settings', renderObj);
     });
 });
-router.put('/settings/price-per-dismiss', function (req, res) {
+settings.put('/price-per-dismiss', function (req, res) {
     var input = [
         req.body.dismiss_price,
         req.session.user.uuid
@@ -109,7 +107,7 @@ router.put('/settings/price-per-dismiss', function (req, res) {
     })
         .then(function (result) {
         console.log(result);
-        res.redirect('/accounts/' + req.session.user.email + '/settings');
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings');
     })
         .catch(function (error) {
         console.log(error);
@@ -118,5 +116,5 @@ router.put('/settings/price-per-dismiss', function (req, res) {
         res.render('account/settings', renderObj);
     });
 });
-module.exports = router;
+exports.default = settings;
 //# sourceMappingURL=user-settings.js.map

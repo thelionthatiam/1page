@@ -43,11 +43,11 @@ body {
   border-radius: 4px;
   padding: 1px; }
 
-.userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
+.one-item-spacing, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
 
-.formTitle, .userFormItem, .organization-subtitle, .org-img-description-wrapper, .alarm-row {
+.formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row {
   margin-left: 0vw;
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
@@ -166,6 +166,44 @@ button:focus {
 
 .left-text {
   align-self: flex-start; }
+
+.settings-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 90%; }
+
+.settings-title {
+  text-transform: uppercase; }
+
+.card-number-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; }
+
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center; }
+
+.profile-form {
+  display: flex;
+  justify-content: space-between;
+  width: 50vw;
+  align-items: center;
+  align-content: center; }
+
+.profile-title {
+  font-weight: 400; }
+
+.line {
+  height: 1px;
+  flex-grow: 1;
+  border-radius: 4px;
+  background-color: lightGrey;
+  margin-left: 5px;
+  margin-right: 5px; }
 
 .top-row-wrapper {
   width: 100%;
@@ -625,6 +663,9 @@ button:focus {
   width: 22.5px;
   height: 22.5px;
   transition: 300ms; }
+
+.icon-disabled {
+  opacity: .3; }
 
 .fadeIn {
   opacity: 1;

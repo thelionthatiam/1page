@@ -29,7 +29,7 @@ app.set('trust proxy', 1);
 app.use(database_1.init(db_connect_config_1.dbConfig));
 app.options('*', cors());
 app.use(cors());
-//session using memory storage (I think this is application memory) for now. Will not be the case in production. see readme session stores
+//session using memory storage for now. Will not be the case in production. see readme session stores
 app.set('trust proxy', 1); // necessary of server is behind a proxy and using secure:true for cookie
 app.use(session({
     name: 'id',

@@ -1,47 +1,7 @@
-<div class="flex pageWrapper">
-  <div class="flex column userWrapper">
+<div class="app-content">
+  <div class="full-width">
 
-    {{#if success}}
-        <h3 class="formTitle">nice, now you can make a cart</h3>
-        <form>
-          <p>name</p>
-          <p class="inputMimic">{{ name }}</p>
-
-
-          <p>card number</p>
-          <p class="inputMimic">success</p>
-
-
-          <p>expiration</p>
-          <p class="inputMimic">success</p>
-
-
-          <p>CVV</p>
-          <p class="inputMimic">success</p>
-
-
-          <p>address</p>
-          <p class="inputMimic">{{ address_1 }}</p>
-
-
-          <p>city</p>
-          <p class="inputMimic">{{ city }}</p>
-
-
-          <p>state</p>
-          <p class="inputMimic">{{ state }}</p>
-
-
-          <p>ZIP code</p>
-          <p class="inputMimic">{{ zip }}</p>
-        </form>
-
-
-    {{else}}
-
-      <h3 class="formTitle">add a payment method</h3>
-
-      <form action="/accounts/{{ email }}/payment" method="POST">
+      <form action="/app/accounts/{{ email }}/payment" method="POST">
         <p>name</p>
         <input id="name" name="name" class="userFormItem" type="text" placeholder="darth vader" value="asdf asdf" />
         <p class="formErrorReport" id="nameError"></p>
@@ -82,15 +42,9 @@
         <input id="zipCode" name="zip" class="userFormItem numericOnly" type="text" placeholder="ZIP" value="12345" />
         <p class="formErrorReport" id="zipCodeError"></p>
 
-        <button id="formSubmitter" class="unavailable submit" type="submit">submit</button>
-
+        <button id="formSubmitter" class="button dark-button" type="submit">submit</button>
 
       </form>
-    {{/if}}
-
-    <form action="/accounts/:email" method="GET">
-      <button class="submit" type="submit">back</button>
-    </form>
     {{dbError}}
 
 

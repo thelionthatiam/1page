@@ -1,27 +1,14 @@
-<div class="flex pageWrapper">
-  <div class="flex column userWrapper">
-    {{#if permission}}
-    <h1>ADMIN UPDATE</h1>
-    {{permission}}
-    {{user_uuid}}
-    {{phone}}
-    {{email}}
-    <form action="/admin/accounts/:{{user_uuid}}/contact?_method=PUT" method="post">
-      <p><b>email: </b>{{ email }}</p>
-      <input id="email" name="email" class="userFormItem" type="text" value= {{email}}>
-      <p class="formErrorReport" id="emailError"></p>
-
-      <p><b>phone: </b>{{ phone }}</p>
-      <input id="phone" name="phone" class="userFormItem numericOnly" type="text" value= {{phone}}>
-      <p class="formErrorReport" id="phoneError"></p>
-      <input type="hidden" name="user_uuid" value="{{user_uuid}}" />
-      <p class="formErrorReport" id="awakeError"></p>
-      <button id="formSubmitter" class="submit" type="submit"> change </button>
-    </form>
-
-    {{else}}
-
-    <form action="/accounts/:{{email}}/contact?_method=PUT" method="post">
+<div class='app-content'>
+  <div class='profile-wrapper full-width'>
+    <div class='top-row-wrapper'>
+      <div class='top-row-search-bar'>
+      </div>
+      <div class='top-row-time'>
+        <p class='top-row-time-text small-text'>5:50:00AM</p>
+        <p class='top-row-time-text small-text'>Monday, April 2, 2018</p>
+      </div>
+    </div>
+    <form action="/app/accounts/:{{email}}/contact?_method=PUT" method="post">
       <p><b>email: </b>{{ email }}</p>
       <input id="email" name="email" class="userFormItem" type="text" value= {{email}}>
       <p class="formErrorReport" id="emailError"></p>
@@ -31,10 +18,7 @@
       <p class="formErrorReport" id="phoneError"></p>
       <input type="hidden" name="prevTitle" value="{{title}}" />
       <p class="formErrorReport" id="awakeError"></p>
-      <button id="formSubmitter" class="submit" type="submit"> change </button>
+      <button id="formSubmitter" class="button light-button" type="submit"> change </button>
     </form>
-
-    {{/if}}
-
   </div>
 </div>

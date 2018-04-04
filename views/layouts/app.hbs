@@ -31,7 +31,7 @@
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/orgs" class='app-menu-text '>organizations</a>
                     {{else}}
-                    <a href="/app/guest/orgs" class='app-menu-text '>organizations</a>
+                    <a href="/app/orgs/all" class='app-menu-text '>organizations</a>
                     {{/if}}
                 </li>
     
@@ -47,12 +47,11 @@
                 <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
                     {{#if loggedIn}}
-                    <a href="/app/accounts/{{email}}/profile" class='app-menu-text'>profile</a>
+                    <a href="/app/accounts/{{email}}" class='app-menu-text'>profile</a>
                     {{else}}
                     <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
                     {{/if}}
                 </li>
-    
                 <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
                     {{#if loggedIn}}
@@ -92,4 +91,3 @@
 </body>
 
 </html>
-//
