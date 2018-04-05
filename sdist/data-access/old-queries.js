@@ -18,7 +18,7 @@ var Query = /** @class */ (function () {
             .conn
             .query(query, values);
     };
-    Query.prototype.getOrgsViaEmail = function (values) {
+    Query.prototype.getUserOrgs = function (values) {
         var query = "SELECT * FROM user_orgs WHERE user_uuid = $1";
         return this
             .conn

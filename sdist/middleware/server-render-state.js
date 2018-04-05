@@ -2,10 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
-        console.log('render state says Im a user', res.locals);
         res.locals.loggedIn = true;
         var userState_1 = {};
-        req.querySvc.getOrgsViaEmail([req.session.user.uuid])
+        req.querySvc.getUserOrgs([req.session.user.uuid])
             .then(function (result) {
             result.rowCount > 0 ? userState_1.orgs = result.rows : userState_1.settings = 'n/a';
             return req.querySvc.getAlarms([req.session.user.uuid]);

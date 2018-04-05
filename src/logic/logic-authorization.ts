@@ -12,7 +12,7 @@ export default class AuthSvc {
     user: R.UserDB;
     inputs: { email: V.Email, password: String };
     req: Request;
-
+    
     constructor(querySvc, inputs, sessionID) {
         this.sessionID = sessionID;
         this.querySvc = querySvc;
@@ -62,8 +62,7 @@ export default class AuthSvc {
     }
 }
 
-
-export function regenerateSession(session) {
+export function regenerateSession(session:Express.Session) {
     return new Promise (
         (resolve, reject) => {
             session.regenerate(function(err) {
@@ -79,14 +78,14 @@ export function regenerateSession(session) {
 
 // LOGOUT
 
-export function updateToInactiveSessionID(querySvc, uuid) {
+export function updateToInactiveSessionID(querySvc:QuerySvc, uuid:V.UUID) {
     let inactive = uuidv4();
     return querySvc.updateSessionID([inactive, uuid])
             .then(() => {})
             .catch(err => err)
 }
 
-export function destroySession(session) {
+export function destroySession(session:Express.Session) {
     return new Promise (
         (resolve, reject) => {
             session.destroy(err => err ? reject(err) : resolve())

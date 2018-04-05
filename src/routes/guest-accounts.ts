@@ -1,6 +1,4 @@
-import * as R from '../services/value-objects';
 import CreateAcctSvc from '../logic/logic-accounts';
-
 import * as express from 'express';
 const accts = express.Router();
 
@@ -26,9 +24,7 @@ accts.route('/accounts')
       name:req.body.name,
     };
     
-    let user:R.UserDB;
-
-    req.CreateAcctSvc = new CreateAcctSvc(req.querySvc, inputs, user, req.sessionID)
+    req.CreateAcctSvc = new CreateAcctSvc(req.querySvc, inputs, req.sessionID)
     
     req.CreateAcctSvc.createAcct()
       .then((result)=> {

@@ -1,9 +1,10 @@
 import { ConnectionConfig, Client, QueryResult } from './../node_modules/@types/pg/index'; // pg types
 import { Request, Response, RequestHandler } from './../node_modules/@types/express-serve-static-core/index';
 // import { compare } from './../node_modules/@types/bcrypt/index'
-import { OrgSvc } from '../src/logic/logic-organizations';
+import OrgSvc from '../src/logic/logic-organizations';
 import AuthSvc from '../src/logic/logic-authorization';
-import QuerySvc from '../src/data-access/queries'
+import CreateAcctSvc from '../src/logic/logic-accounts';
+import QuerySvc from '../src/data-access/queries';
 // import QuerySvc from '../src/data-access/queries';
 import * as R from '../src/services/value-objects';
 import * as V from '../src/services/validation';
@@ -29,6 +30,8 @@ declare global {
     interface Request {
       AuthSvc : AuthSvc;
       querySvc : QuerySvc;
+      CreateAcctSvc : CreateAcctSvc; 
+      OrgSvc : OrgSvc;
     }
   } 
 }

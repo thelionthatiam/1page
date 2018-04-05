@@ -22,7 +22,7 @@ class Query {
       .query(query, values);
   }
 
-  getOrgsViaEmail(values : string[]) {
+  getUserOrgs(values : string[]) {
     const query = "SELECT * FROM user_orgs WHERE user_uuid = $1"
     return this
       .conn

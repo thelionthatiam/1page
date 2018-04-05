@@ -5,7 +5,7 @@ let nonZeroRow = (user, result, object) => result.rowCount > 0 ? user[object] = 
 
 allUserData.get('/all', (req, res, next) => {
     let user = {};
-    req.querySvc.getOrgsViaEmail([req.session.user.uuid])
+    req.querySvc.getUserOrgs([req.session.user.uuid])
         .then((result) => {
             nonZeroRow(user, result, "orgs")
             console.log('^^^^^^^^^^^^^^^')

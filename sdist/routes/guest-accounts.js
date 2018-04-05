@@ -21,8 +21,7 @@ accts.route('/accounts')
         password: req.body.password,
         name: req.body.name,
     };
-    var user;
-    req.CreateAcctSvc = new logic_accounts_1.default(req.querySvc, inputs, user, req.sessionID);
+    req.CreateAcctSvc = new logic_accounts_1.default(req.querySvc, inputs, req.sessionID);
     req.CreateAcctSvc.createAcct()
         .then(function (result) {
         res.render('login');

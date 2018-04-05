@@ -12,9 +12,15 @@ var QuerySvc = /** @class */ (function () {
             .then(function (res) { return R.UserDB.fromJSON(res.rows[0]); })
             .catch(function (e) { return e; });
     };
-    QuerySvc.prototype.getOrgsViaEmail = function (values) {
+    QuerySvc.prototype.getUserOrgs = function (values) {
+        // console.log('get orgs via email')
         var text = "SELECT * FROM user_orgs WHERE user_uuid = $1";
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return result; })
+            .catch(function (e) {
+            // console.log(e)
+            return e;
+        });
     };
     QuerySvc.prototype.getUser = function (values) {
         var text = "SELECT * FROM users WHERE user_uuid = $1";
@@ -60,19 +66,34 @@ var QuerySvc = /** @class */ (function () {
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertUser = function (values) {
         var text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return R.UserDB.fromJSON({
+            email: result.rows[0].email,
+            user_uuid: result.rows[0].user_uuid,
+            permission: result.rows[0].permission,
+            phone: result.rows[0].phone,
+            name: result.rows[0].name,
+            password: result.rows[0].password
+        }); })
+            .catch(function (e) { return e; });
     };
     QuerySvc.prototype.insertNonce = function (values) {
         var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return result; })
+            .catch(function (e) { return e; });
     };
     QuerySvc.prototype.insertSession = function (values) {
         var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return null; })
+            .catch(function (e) { return e; });
     };
     QuerySvc.prototype.insertSettings = function (values) {
         var text = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return null; })
+            .catch(function (e) { return e; });
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertSnooze = function (values) {
@@ -95,8 +116,11 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values);
     };
     QuerySvc.prototype.insertUserOrgs = function (values) {
+        console.log('inseruser orgs');
         var text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) { return result; })
+            .catch(function (e) { return e; });
     };
     // update
     QuerySvc.prototype.updateSessionID = function (values) {

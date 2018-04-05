@@ -44,7 +44,7 @@ router.route('/transact')
         console.log('wakes', result.rowCount);
         wakes = result.rowCount;
         unpaidWakes = result.rows;
-        return req.querySvc.getOrgsViaEmail([user.uuid]);
+        return req.querySvc.getUserOrgs([user.uuid]);
     })
         .then(function (result) {
         for (var i = 0; i < result.rows.length; i++) {
@@ -135,7 +135,7 @@ router.route('/pay-org')
     .post(function (req, res) {
     var user = r.UserSession.fromJSON(req.session.user);
     var recipient;
-    req.querySvc.getOrgsViaEmail([user.uuid])
+    req.querySvc.getUserOrgs([user.uuid])
         .then(function (result) {
         for (var i = 0; i < result.rows.length; i++) {
             var org = r.UserOrgsDB.fromJSON(result.rows[i]);

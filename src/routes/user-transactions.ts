@@ -51,7 +51,7 @@ router.route('/transact')
         console.log('wakes', result.rowCount)
         wakes = result.rowCount
         unpaidWakes = result.rows
-        return req.querySvc.getOrgsViaEmail([user.uuid])
+        return req.querySvc.getUserOrgs([user.uuid])
       })
       .then((result) => {
         for (let i = 0; i < result.rows.length; i++) {
@@ -156,7 +156,7 @@ router.route('/pay-org')
     let recipient:UUID;
 
 
-    req.querySvc.getOrgsViaEmail([user.uuid])
+    req.querySvc.getUserOrgs([user.uuid])
       .then((result) => {
         for (let i = 0; i < result.rows.length; i++) {
           let org = r.UserOrgsDB.fromJSON(result.rows[i])

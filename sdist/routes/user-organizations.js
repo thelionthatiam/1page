@@ -5,10 +5,13 @@ var database_1 = require("../middleware/database");
 var logic_organizations_1 = require("../logic/logic-organizations");
 var R = require("../services/value-objects");
 var orgs = express.Router();
+//
 orgs.route('/')
     .post(function (req, res) {
     var org = req.body.org_uuid;
+    console.log(org);
     var userSession = R.UserSession.fromJSON(req.session.user);
+    console.log(userSession);
     // db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
     // .then((result) => {
     //   userOrgs = result.rows
@@ -24,7 +27,7 @@ orgs.route('/')
     //     db.query('INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)', [req.session.user.uuid, org])
     //   }
     // })
-    req.OrgSvc = new logic_organizations_1.OrgSvc(req.querySvc, userSession, org);
+    req.OrgSvc = new logic_organizations_1.default(req.querySvc, userSession, org);
     req.OrgSvc.addToUserOrgs()
         .then(function () {
         res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs');

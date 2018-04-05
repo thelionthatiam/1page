@@ -5,7 +5,7 @@ var allUserData = express.Router();
 var nonZeroRow = function (user, result, object) { return result.rowCount > 0 ? user[object] = result.rows : user[object] = 'n/a'; };
 allUserData.get('/all', function (req, res, next) {
     var user = {};
-    req.querySvc.getOrgsViaEmail([req.session.user.uuid])
+    req.querySvc.getUserOrgs([req.session.user.uuid])
         .then(function (result) {
         nonZeroRow(user, result, "orgs");
         console.log('^^^^^^^^^^^^^^^');

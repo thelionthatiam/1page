@@ -1,12 +1,9 @@
 import * as V from '../services/validation';
 import * as R from '../services/value-objects';
-// import { Client, QueryResult } from '../../typings/typings';
 import * as pg from 'pg';
  
 export default class QuerySvc {
   conn:pg.Client;
-  
-
 
   constructor(conn : pg.Client) {
     this.conn = conn;
@@ -20,9 +17,15 @@ export default class QuerySvc {
       .catch(e => e)
   }
   
-  getOrgsViaEmail(values:V.Email[]) {
+  getUserOrgs(values:V.UUID[]) { // ERROR NOT BUBBLING OUT! REPRO WITH WRONG DATA TYPE
+    // console.log('get orgs via email')
     const text = "SELECT * FROM user_orgs WHERE user_uuid = $1"
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => result)
+      .catch(e => {
+        // console.log(e)
+        return e
+      })
   }
 
   getUser(values:V.UUID[]) {
@@ -79,24 +82,40 @@ getUnpaidSnoozes(values : [V.UUID, boolean]) {
 
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertUser(values:string[]) {
+  insertUser(values:[V.Email, V.NumOnly, V.String, V.CharOnly, V.String]) {
     const text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(text, values)
+      .then(result => R.UserDB.fromJSON({
+                        email:result.rows[0].email,
+                        user_uuid:result.rows[0].user_uuid,
+                        permission:result.rows[0].permission,
+                        phone:result.rows[0].phone,
+                        name:result.rows[0].name,
+                        password:result.rows[0].password
+                      })
+      )
+      .catch(e => e)
   }
 
   insertNonce(values:[V.UUID, string]) {
     const text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => result)
+      .catch(e => e)
   }
 
   insertSession(values:[V.UUID, string]) {
     const text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => null)
+      .catch(e => e)
   }
 
   insertSettings(values:V.UUID[]) {
     const text = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => null)
+      .catch(e => e)
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
@@ -124,8 +143,11 @@ getUnpaidSnoozes(values : [V.UUID, boolean]) {
   }
 
   insertUserOrgs(values:V.UUID[]) {
+    console.log('inseruser orgs')
     const text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)'
     return this.conn.query(text, values)
+      .then(result => result)
+      .catch(e => e)
   }
 
   // update

@@ -1,9 +1,8 @@
 function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
-        console.log('render state says Im a user', res.locals)
         res.locals.loggedIn = true;
         let userState:any = {};
-        req.querySvc.getOrgsViaEmail([req.session.user.uuid])
+        req.querySvc.getUserOrgs([req.session.user.uuid])
             .then((result) => {
                 result.rowCount > 0 ? userState.orgs = result.rows : userState.settings = 'n/a';
                 return req.querySvc.getAlarms([req.session.user.uuid])

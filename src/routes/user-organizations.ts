@@ -1,16 +1,16 @@
 import * as express from 'express';
 import { db } from '../middleware/database';
-import { OrgSvc } from '../logic/logic-organizations';
+import OrgSvc from '../logic/logic-organizations';
 import * as R from '../services/value-objects';
 const orgs = express.Router();
-
+//
 
 orgs.route('/')
   .post((req, res) => {
     let org = req.body.org_uuid;
-
+    console.log(org)
     let userSession = R.UserSession.fromJSON(req.session.user);
-
+    console.log(userSession)
     // db.query('SELECT * FROM user_orgs WHERE user_uuid = $1', [req.session.user.uuid])
     // .then((result) => {
     //   userOrgs = result.rows
