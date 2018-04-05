@@ -12,7 +12,7 @@ var database_1 = require("./middleware/database");
 var server_render_state_1 = require("./middleware/server-render-state");
 var session_check_1 = require("./middleware/session-check");
 var e = require("./services/error-handling");
-var app = express();
+var app = express(); //
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '50kb' }));

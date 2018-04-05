@@ -17,7 +17,7 @@ router.post('/authorized', function (req, res) {
     var user;
     var cart;
     var userSession;
-    req.aQuery.selectUser([inputs.email])
+    req.querySvc.getUserViaEmail([inputs.email])
         .then(function (result) {
         if (result.rows.length === 0) {
             throw new Error("Email not found");
@@ -36,7 +36,7 @@ router.post('/authorized', function (req, res) {
         }
     })
         .then(function () {
-        return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+        return req.querySvc.updateSessionID([req.sessionID, user.user_uuid]);
     })
         .then(function (result) {
         userSession = r.UserSession.fromJSON({
@@ -82,7 +82,7 @@ router.post('/api/authorized', function (req, res) {
     var user;
     var cart;
     var userSession;
-    req.aQuery.selectUser([inputs.email])
+    req.querySvc.getUserViaEmail([inputs.email])
         .then(function (result) {
         if (result.rows.length === 0) {
             throw new Error("Email not found");
@@ -104,7 +104,7 @@ router.post('/api/authorized', function (req, res) {
     })
         .then(function () {
         console.log(req.sessionID);
-        return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+        return req.querySvc.updateSessionID([req.sessionID, user.user_uuid]);
     })
         .then(function (result) {
         console.log(req.sessionID);

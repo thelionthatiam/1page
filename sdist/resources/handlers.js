@@ -9,13 +9,13 @@ var BaseRequestHandler = /** @class */ (function () {
         this.req = req;
         this.res = res;
         this.inputs = req.query;
-        this.aQuery = req.aQuery;
+        this.querySvc = req.querySvc;
         this.nextPage = nextPage;
         this.errPage = errPage;
     }
     BaseRequestHandler.prototype.handler = function () {
         var _this = this;
-        this.aQuery.selectUser([this.inputs.email])
+        this.querySvc.getUserViaEmail([this.inputs.email])
             .then(function (result) {
             return r.UserDB.fromJSON(result.rows[0]);
         })

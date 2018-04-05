@@ -4,18 +4,18 @@ function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
         res.locals.loggedIn = true;
         var userState_1 = {};
-        req.aQuery.selectUserOrgs([req.session.user.uuid])
+        req.querySvc.getOrgsViaEmail([req.session.user.uuid])
             .then(function (result) {
             result.rowCount > 0 ? userState_1.orgs = result.rows : userState_1.settings = 'n/a';
-            return req.aQuery.selectAlarms([req.session.user.uuid]);
+            return req.querySvc.getAlarms([req.session.user.uuid]);
         })
             .then(function (result) {
             result.rowCount > 0 ? userState_1.alarms = result.rows : userState_1.settings = 'n/a';
-            return req.aQuery.selectUserSettings([req.session.user.uuid]);
+            return req.querySvc.getSettingsViaEmail([req.session.user.uuid]);
         })
             .then(function (result) {
             result.rowCount > 0 ? userState_1.settings = result.rows[0] : userState_1.settings = 'n/a';
-            return req.aQuery.selectAuthenticatedUser([req.session.user.uuid]);
+            return req.querySvc.getUser([req.session.user.uuid]);
         })
             .then(function (result) {
             result.rowCount > 0 ? userState_1.profile = result.rows[0] : userState_1.profile = 'n/a';

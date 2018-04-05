@@ -19,7 +19,7 @@ var AuthSvc = /** @class */ (function () {
     AuthSvc.prototype.checkEmail = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            _this.client.selectUser([_this.inputs.email])
+            _this.client.getUserViaEmail([_this.inputs.email])
                 .then(function (result) {
                 if (result.rows.length === 0) {
                     throw new Error("Email not found");

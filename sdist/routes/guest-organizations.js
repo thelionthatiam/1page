@@ -7,7 +7,7 @@ allOrgs.route('/all')
     // all happens via admin
 })
     .get(function (req, res) {
-    req.aQuery.selectOrgs([])
+    req.querySvc.getOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {

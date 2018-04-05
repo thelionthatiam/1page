@@ -12,7 +12,7 @@ allOrgs.route('/all')
 
     res.locals.loggedIn ? email = req.session.user.email : email = undefined;
 
-    req.aQuery.selectOrgs([])
+    req.querySvc.getOrgs([])
       .then((result) => {
         let organizationContent = result.rows;
 

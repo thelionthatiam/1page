@@ -28,7 +28,7 @@ accts.route('/accounts')
     
     let user:R.UserDB;
 
-    req.CreateAcctSvc = new CreateAcctSvc(req.aQuery, inputs, user, req.sessionID)
+    req.CreateAcctSvc = new CreateAcctSvc(req.querySvc, inputs, user, req.sessionID)
     
     req.CreateAcctSvc.createAcct()
       .then((result)=> {

@@ -18,7 +18,7 @@ class BaseRequestHandler {
   req:Express.Request;
   res:Response;
   inputs:any;
-  aQuery:any;
+  querySvc:any;
   nextPage:string;
   errPage:string;
 
@@ -26,13 +26,13 @@ class BaseRequestHandler {
     this.req = req;
     this.res = res;
     this.inputs = req.query;
-    this.aQuery = req.aQuery;
+    this.querySvc = req.querySvc;
     this.nextPage = nextPage;
     this.errPage = errPage;
   }
 
   handler() {
-    this.aQuery.selectUser([this.inputs.email])
+    this.querySvc.getUserViaEmail([this.inputs.email])
       .then((result : any) => {
         return r.UserDB.fromJSON(result.rows[0])
       })

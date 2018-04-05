@@ -5,7 +5,7 @@ var r = require("../resources/value-objects");
 // AUTHORIZATION
 function checkEmail(client, email) {
     return new Promise(function (resolve, reject) {
-        client.selectUser([email])
+        client.getUserViaEmail([email])
             .then(function (result) {
             if (result.rows.length === 0) {
                 throw new Error("Email not found");

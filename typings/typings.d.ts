@@ -1,6 +1,9 @@
 import { ConnectionConfig, Client, QueryResult } from './../node_modules/@types/pg/index'; // pg types
 import { Request, Response, RequestHandler } from './../node_modules/@types/express-serve-static-core/index';
+// import { compare } from './../node_modules/@types/bcrypt/index'
 import { OrgSvc } from '../src/logic/logic-organizations';
+import AuthSvc from '../src/logic/logic-authorization';
+import QuerySvc from '../src/data-access/queries'
 // import QuerySvc from '../src/data-access/queries';
 import * as R from '../src/services/value-objects';
 import * as V from '../src/services/validation';
@@ -14,12 +17,21 @@ interface Alarm {
   active: boolean;
 }
 
-
 export interface Client {
   query(queryText: string, values?: any[]): Promise<QueryResult>;
-  release(err?: Error): void;
+  release(err?: Error): void; 
 }
 
+export interface QueryResult {}
+
+declare global {
+  namespace Express {
+    interface Request {
+      AuthSvc : AuthSvc;
+      querySvc : QuerySvc;
+    }
+  } 
+}
 
 
 interface ModResponse extends Response {

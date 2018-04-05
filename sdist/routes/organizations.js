@@ -9,7 +9,7 @@ allOrgs.route('/all')
     .get(function (req, res) {
     var email;
     res.locals.loggedIn ? email = req.session.user.email : email = undefined;
-    req.aQuery.selectOrgs([])
+    req.querySvc.getOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {

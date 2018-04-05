@@ -27,24 +27,24 @@ router.route('/transact')
     var dismissPrice;
     var wakePrice;
     var user = r.UserSession.fromJSON(req.session.user);
-    req.aQuery.selectUnpaidSnoozes([user.uuid, false])
+    req.querySvc.getUnpaidSnoozes([user.uuid, false])
         .then(function (result) {
         console.log('snoozes', result.rowCount);
         snoozes = result.rowCount;
         unpaidSnoozes = result.rows;
-        return req.aQuery.selectUnpaidDismisses([user.uuid, false]);
+        return req.querySvc.getUnpaidDismisses([user.uuid, false]);
     })
         .then(function (result) {
         console.log('dismisses', result.rowCount);
         dismisses = result.rowCount;
         unpaidDismisses = result.rows;
-        return req.aQuery.selectUnpaidWakes([user.uuid, false]);
+        return req.querySvc.getUnpaidWakes([user.uuid, false]);
     })
         .then(function (result) {
         console.log('wakes', result.rowCount);
         wakes = result.rowCount;
         unpaidWakes = result.rows;
-        return req.aQuery.selectUserOrgs([user.uuid]);
+        return req.querySvc.getOrgsViaEmail([user.uuid]);
     })
         .then(function (result) {
         for (var i = 0; i < result.rows.length; i++) {
@@ -53,7 +53,7 @@ router.route('/transact')
                 recipient = org.org_uuid;
             }
         }
-        return req.aQuery.selectUserSettings([user.uuid]);
+        return req.querySvc.getSettingsViaEmail([user.uuid]);
     })
         .then(function (result) {
         var settings = r.UserSettings.fromJSON(result.rows[0]);
@@ -75,33 +75,33 @@ router.route('/transact')
             wakes,
             total
         ];
-        return req.aQuery.insertTransaction(inputs);
+        return req.querySvc.insertTransaction(inputs);
     })
         .then(function (result) {
         trans_uuid = result.rows[0].trans_uuid;
         var payArr = [];
         for (var i = 0; i < unpaidSnoozes.length; i++) {
             var input = [true, unpaidSnoozes[i].snooze_uuid];
-            var promise = req.aQuery.snoozesToPaid(input);
+            var promise = req.querySvc.updateSnoozeToPaid(input);
             payArr.push(promise);
         }
         for (var i = 0; i < unpaidDismisses.length; i++) {
             var input = [true, unpaidDismisses[i].dismiss_uuid];
-            var promise = req.aQuery.dismissesToPaid(input);
+            var promise = req.querySvc.updateDismissesToPaid(input);
             payArr.push(promise);
         }
         for (var i = 0; i < unpaidWakes.length; i++) {
             var input = [true, unpaidWakes[i].wakes_uuid];
-            var promise = req.aQuery.wakesToPaid(input);
+            var promise = req.querySvc.updateWakesToPaid(input);
             payArr.push(promise);
         }
         return Promise.all(payArr);
     })
         .then(function (info) {
-        return req.aQuery.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false]);
+        return req.querySvc.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false]);
     })
         .then(function (result) {
-        return req.aQuery.insertRevenue([trans_uuid, user.uuid, revenue]);
+        return req.querySvc.insertRevenue([trans_uuid, user.uuid, revenue]);
     })
         .then(function (result) {
         var mail = {
@@ -135,7 +135,7 @@ router.route('/pay-org')
     .post(function (req, res) {
     var user = r.UserSession.fromJSON(req.session.user);
     var recipient;
-    req.aQuery.selectUserOrgs([user.uuid])
+    req.querySvc.getOrgsViaEmail([user.uuid])
         .then(function (result) {
         for (var i = 0; i < result.rows.length; i++) {
             var org = r.UserOrgsDB.fromJSON(result.rows[i]);
@@ -143,13 +143,13 @@ router.route('/pay-org')
                 recipient = org.org_uuid;
             }
         }
-        return req.aQuery.selectPendingPayments([recipient, false]);
+        return req.querySvc.getPendingPayments([recipient, false]);
     })
         .then(function (result) {
         var total;
         var unPaidTransactions;
         for (var i = 0; i < result.rows.length; i++) {
-            unPaidTransactions.push(req.aQuery.orgToPaid([true, result.rows[i].recipient]));
+            unPaidTransactions.push(req.querySvc.updateOrgToPaid([true, result.rows[i].recipient]));
             total = total + result.rows[i].org_trans_total;
         }
         console.log(total);

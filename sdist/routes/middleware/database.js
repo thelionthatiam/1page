@@ -17,21 +17,21 @@ function init(databaseInformation) {
             // events to release
             req.on('abort', function () {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
             req.on('timeout', function () {
                 req.abort();
             });
             res.on('close', function () {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
             res.on('finish', function () {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
             console.log('database running');
-            req.aQuery = new queries_1.Query(client);
+            req.querySvc = new queries_1.Query(client);
             next();
         })
             .catch(function (err) {

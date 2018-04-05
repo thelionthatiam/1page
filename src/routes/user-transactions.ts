@@ -34,24 +34,24 @@ router.route('/transact')
 
     let user = r.UserSession.fromJSON(req.session.user);
 
-    req.aQuery.selectUnpaidSnoozes([user.uuid, false])
+    req.querySvc.getUnpaidSnoozes([user.uuid, false])
       .then((result) => {
         console.log('snoozes', result.rowCount)
         snoozes = result.rowCount
         unpaidSnoozes = result.rows
-        return req.aQuery.selectUnpaidDismisses([user.uuid, false])
+        return req.querySvc.getUnpaidDismisses([user.uuid, false])
       })
       .then((result) => {
         console.log('dismisses', result.rowCount)
         dismisses = result.rowCount
         unpaidDismisses = result.rows
-        return req.aQuery.selectUnpaidWakes([user.uuid, false])
+        return req.querySvc.getUnpaidWakes([user.uuid, false])
       })
       .then((result) => {
         console.log('wakes', result.rowCount)
         wakes = result.rowCount
         unpaidWakes = result.rows
-        return req.aQuery.selectUserOrgs([user.uuid])
+        return req.querySvc.getOrgsViaEmail([user.uuid])
       })
       .then((result) => {
         for (let i = 0; i < result.rows.length; i++) {
@@ -60,7 +60,7 @@ router.route('/transact')
             recipient = org.org_uuid;
           }
         }
-        return req.aQuery.selectUserSettings([user.uuid])
+        return req.querySvc.getSettingsViaEmail([user.uuid])
       })
       .then((result) => {
         let settings = r.UserSettings.fromJSON(result.rows[0])
@@ -86,7 +86,7 @@ router.route('/transact')
               total
             ]
 
-        return req.aQuery.insertTransaction(inputs)
+        return req.querySvc.insertTransaction(inputs)
       })
       .then((result) => {
         trans_uuid = result.rows[0].trans_uuid
@@ -95,29 +95,29 @@ router.route('/transact')
 
         for (let i = 0; i < unpaidSnoozes.length; i++ ) {
           let input = [ true, unpaidSnoozes[i].snooze_uuid]
-          let promise = req.aQuery.snoozesToPaid(input);
+          let promise = req.querySvc.updateSnoozeToPaid(input);
           payArr.push(promise)
         }
 
         for (let i = 0; i < unpaidDismisses.length; i++ ) {
           let input = [ true, unpaidDismisses[i].dismiss_uuid]
-          let promise = req.aQuery.dismissesToPaid(input);
+          let promise = req.querySvc.updateDismissesToPaid(input);
           payArr.push(promise)
         }
 
         for (let i = 0; i < unpaidWakes.length; i++ ) {
           let input = [ true, unpaidWakes[i].wakes_uuid]
-          let promise = req.aQuery.wakesToPaid(input);
+          let promise = req.querySvc.updateWakesToPaid(input);
           payArr.push(promise)
         }
 
         return Promise.all(payArr)
       })
       .then((info) => {
-        return req.aQuery.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false])
+        return req.querySvc.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false])
       })
       .then((result) => {
-        return req.aQuery.insertRevenue([trans_uuid, user.uuid, revenue])
+        return req.querySvc.insertRevenue([trans_uuid, user.uuid, revenue])
       })
       .then((result) => {
         let mail = {
@@ -156,7 +156,7 @@ router.route('/pay-org')
     let recipient:UUID;
 
 
-    req.aQuery.selectUserOrgs([user.uuid])
+    req.querySvc.getOrgsViaEmail([user.uuid])
       .then((result) => {
         for (let i = 0; i < result.rows.length; i++) {
           let org = r.UserOrgsDB.fromJSON(result.rows[i])
@@ -165,14 +165,14 @@ router.route('/pay-org')
           }
         }
 
-        return req.aQuery.selectPendingPayments([recipient, false])
+        return req.querySvc.getPendingPayments([recipient, false])
       })
       .then((result) => {
         let total:number;
         let unPaidTransactions:UUID[];
 
         for (let i = 0; i < result.rows.length; i++) {
-          unPaidTransactions.push(req.aQuery.orgToPaid([true, result.rows[i].recipient]))
+          unPaidTransactions.push(req.querySvc.updateOrgToPaid([true, result.rows[i].recipient]))
           total = total + result.rows[i].org_trans_total;
         }
         console.log(total)

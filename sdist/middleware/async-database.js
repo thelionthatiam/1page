@@ -17,20 +17,20 @@ function init(databaseInformation) {
             // events to release
             req.on('abort', () => {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
             req.on('timeout', () => {
                 req.abort();
             });
             res.on('close', () => {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
             res.on('finish', function () {
                 client.release();
-                req.aQuery = null;
+                req.querySvc = null;
             });
-            req.aQuery = new queries_1.Query(client);
+            req.querySvc = new queries_1.Query(client);
             next();
         })
             .catch((err) => {

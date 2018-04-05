@@ -27,7 +27,7 @@ orgs.route('/')
     //   }
     // })
 
-    req.OrgSvc = new OrgSvc(req.aQuery, userSession, org)
+    req.OrgSvc = new OrgSvc(req.querySvc, userSession, org)
 
     req.OrgSvc.addToUserOrgs()
       .then(() => {

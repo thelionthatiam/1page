@@ -12,18 +12,18 @@ router.route('/finish-month')
     let payment_uuid;
     let recipient;
     let user = r.UserSession.fromJSON(req.session.user);
-    req.aQuery.selectSnoozes([user.uuid, false])
+    req.querySvc.selectSnoozes([user.uuid, false])
         .then((result) => {
         snoozes = result.rowCount;
-        return req.aQuery.selectDismisses([user.uuid, false]);
+        return req.querySvc.selectDismisses([user.uuid, false]);
     })
         .then((result) => {
         dismisses = result.rowCount;
-        return req.aQuery.selectWakes([user.uuid, false]);
+        return req.querySvc.selectWakes([user.uuid, false]);
     })
         .then((result) => {
         wakes = result.rowCount;
-        return req.aQuery.selectSnoozes([user.uuid, false]);
+        return req.querySvc.selectSnoozes([user.uuid, false]);
     });
 });
 module.exports = router;

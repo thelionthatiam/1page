@@ -86,9 +86,9 @@ class UserDB {
   readonly permission?: Permission;
   readonly      phone?: NumOnly;
   readonly       name?: CharOnly;
-  readonly   password?: String;
+  readonly   password?: String | string;
 
-  private constructor(args:{ email?: Email; user_uuid?: UUID; permission?: Permission; phone?:NumOnly; name?: CharOnly; password?: String } = {}) {
+  private constructor(args:{ email?: Email; user_uuid?: UUID; permission?: Permission; phone?:NumOnly; name?: CharOnly; password?: String | string } = {}) {
     this.email      = args.email;
     this.user_uuid  = args.user_uuid;
     this.permission = args.permission;

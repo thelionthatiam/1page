@@ -3,18 +3,18 @@ function renderState(req, res, next) {
         console.log('render state says Im a user', res.locals)
         res.locals.loggedIn = true;
         let userState:any = {};
-        req.aQuery.selectUserOrgs([req.session.user.uuid])
+        req.querySvc.getOrgsViaEmail([req.session.user.uuid])
             .then((result) => {
                 result.rowCount > 0 ? userState.orgs = result.rows : userState.settings = 'n/a';
-                return req.aQuery.selectAlarms([req.session.user.uuid])
+                return req.querySvc.getAlarms([req.session.user.uuid])
             })
             .then((result) => {
                 result.rowCount > 0 ? userState.alarms = result.rows : userState.settings = 'n/a';
-                return req.aQuery.selectUserSettings([req.session.user.uuid])
+                return req.querySvc.getSettingsViaEmail([req.session.user.uuid])
             })
             .then((result) => {
                 result.rowCount > 0 ? userState.settings = result.rows[0] : userState.settings = 'n/a';
-                return req.aQuery.selectAuthenticatedUser([req.session.user.uuid])
+                return req.querySvc.getUser([req.session.user.uuid])
             })
             .then((result) => {
                 result.rowCount > 0 ? userState.profile = result.rows[0] : userState.profile = 'n/a';

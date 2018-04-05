@@ -26,7 +26,7 @@ router.route('/accounts')
     business_logic_1.hash(inputs.password)
         .then(function (result) {
         var hashedPassword = result;
-        return business_logic_1.saveUserInformation(req.aQuery, inputs.email, inputs.phone, hashedPassword, inputs.name);
+        return business_logic_1.saveUserInformation(req.querySvc, inputs.email, inputs.phone, hashedPassword, inputs.name);
     })
         .then(function (newUser) {
         user = newUser;
@@ -38,13 +38,13 @@ router.route('/accounts')
         return business_logic_1.hash(string);
     })
         .then(function (hash) {
-        return business_logic_1.insertUserNonce(req.aQuery, user.user_uuid, hash);
+        return business_logic_1.insertUserNonce(req.querySvc, user.user_uuid, hash);
     })
         .then(function (result) {
-        return business_logic_1.createUserSessionStorage(req.aQuery, user.user_uuid, req.sessionID);
+        return business_logic_1.createUserSessionStorage(req.querySvc, user.user_uuid, req.sessionID);
     })
         .then(function (result) {
-        return business_logic_1.createUserSettings(req.aQuery, user.user_uuid);
+        return business_logic_1.createUserSettings(req.querySvc, user.user_uuid);
     })
         .then(function (result) {
         res.render('login');

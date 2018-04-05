@@ -14,6 +14,7 @@ function init(databaseInformation) {
         var client;
         pool.connect()
             .then(function (client) {
+            // events to release
             req.on('abort', function () {
                 client.release();
                 req.querySvc = null;
@@ -30,7 +31,7 @@ function init(databaseInformation) {
                 req.querySvc = null;
             });
             console.log('database running');
-            req.querySvc = new queries_1.default(client);
+            req.querySvc = new queries_1.Query(client);
             next();
         })
             .catch(function (err) {
@@ -40,4 +41,4 @@ function init(databaseInformation) {
     };
 }
 exports.init = init;
-//# sourceMappingURL=database.js.map
+//# sourceMappingURL=old-database.js.map

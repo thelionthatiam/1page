@@ -12,7 +12,7 @@ auth.post('/authorized', function (req, res) {
     var userSession;
     business_logic_1.regenerateSession(req.session)
         .then(function () {
-        req.AuthSvc = new business_logic_1.AuthSvc(req.aQuery, user, inputs, req.sessionID);
+        req.AuthSvc = new business_logic_1.AuthSvc(req.querySvc, user, inputs, req.sessionID);
         return req.AuthSvc.doAuth();
     })
         .then(function (userSession) {
@@ -31,7 +31,7 @@ auth.post('/authorized', function (req, res) {
 //     }
 //     let user:r.UserDB
 //     let userSession:r.UserSession;
-//   checkEmail(req.aQuery, inputs.email)
+//   checkEmail(req.querySvc, inputs.email)
 //     .then((result) => {
 //       user = result;
 //       return checkPassword(inputs.password, user.password)
@@ -42,7 +42,7 @@ auth.post('/authorized', function (req, res) {
 //     })
 //     .then(() => {
 //       console.log('after regen', req.sessionID)
-//       return updateSession(req.aQuery, req.sessionID, user.user_uuid);
+//       return updateSession(req.querySvc, req.sessionID, user.user_uuid);
 //     })
 //     .then((result ) => {
 //       req.session.user = defineSession(user)
@@ -64,7 +64,7 @@ auth.post('/authorized', function (req, res) {
 //   let user:r.UserDB;
 //   let cart:r.CartDB;
 //   let userSession:r.UserSession;
-//   req.aQuery.selectUser([inputs.email])
+//   req.querySvc.getUserViaEmail([inputs.email])
 //     .then((result) => {
 //       if (result.rows.length === 0) {
 //         throw new Error("Email not found");
@@ -84,7 +84,7 @@ auth.post('/authorized', function (req, res) {
 //     })
 //     .then(() => {
 //       console.log(req.sessionID)
-//       return req.aQuery.updateSessionID([req.sessionID, user.user_uuid]);
+//       return req.querySvc.updateSessionID([req.sessionID, user.user_uuid]);
 //     })
 //     .then((result ) => {
 //      userSession = r.UserSession.fromJSON({
@@ -113,7 +113,7 @@ auth.post('/authorized', function (req, res) {
 // })
 // LOGOUT WILL NOT WORK BECAUSE DB IS A FAIL
 auth.post('/log-out', function (req, res) {
-    updateToInactiveSessionID(req.aQuery, req.session.user_uuid)
+    updateToInactiveSessionID(req.querySvc, req.session.user_uuid)
         .then(function () { return destroySession(req.session); })
         .then(function () {
         res.redirect('/');

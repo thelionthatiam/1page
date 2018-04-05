@@ -9,12 +9,12 @@ import * as session from "express-session";
 import * as methodOverride from 'method-override';
 import * as cors from 'cors'
 import { dbConfig } from "./services/db-connect-config";
-import { init } from "./middleware/database";
+import { init } from './middleware/database'
 import renderState from './middleware/server-render-state';
 import sessionCheck from "./middleware/session-check";
 import * as e from './services/error-handling'
 
-const app = express();
+const app = express();//
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())

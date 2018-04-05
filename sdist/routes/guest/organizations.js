@@ -10,7 +10,7 @@ router.route('/organizations')
 })
     .get(function (req, res) {
     var user = r.UserSession.fromJSON(req.session.user);
-    req.aQuery.selectOrgs([])
+    req.querySvc.getOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {
@@ -34,7 +34,7 @@ router.route('/')
     // all happens via admin
 })
     .get(function (req, res) {
-    req.aQuery.selectOrgs([])
+    req.querySvc.getOrgs([])
         .then(function (result) {
         var organizationContent = result.rows;
         for (var i = 0; i < organizationContent.length; i++) {

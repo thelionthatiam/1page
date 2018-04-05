@@ -14,9 +14,9 @@ export class OrgSvc {
         this.org = org;
     }
 
-    selectOrgs() {
-        console.log('selectOrgs')
-        return this.orgClient.selectUserOrgs([this.user.uuid])
+    getOrgs() {
+        console.log('getOrgs')
+        return this.orgClient.getOrgsViaEmail([this.user.uuid])
     }
 
     insertOrgs() {
@@ -47,7 +47,7 @@ export class OrgSvc {
         console.log('addToUserOrgs')
         return new Promise (
             (resolve, reject) => {
-                this.selectOrgs()
+                this.getOrgs()
                     .then((userOrgs) => this.canAddOrg(userOrgs))
                     .then(() => this.insertOrgs())
                     .then(() => resolve())

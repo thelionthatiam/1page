@@ -6,9 +6,9 @@ var OrgSvc = /** @class */ (function () {
         this.user = user;
         this.org = org;
     }
-    OrgSvc.prototype.selectOrgs = function () {
-        console.log('selectOrgs');
-        return this.orgClient.selectUserOrgs([this.user.uuid]);
+    OrgSvc.prototype.getOrgs = function () {
+        console.log('getOrgs');
+        return this.orgClient.getOrgsViaEmail([this.user.uuid]);
     };
     OrgSvc.prototype.insertOrgs = function () {
         console.log('insertOrgs');
@@ -35,7 +35,7 @@ var OrgSvc = /** @class */ (function () {
         var _this = this;
         console.log('addToUserOrgs');
         return new Promise(function (resolve, reject) {
-            _this.selectOrgs()
+            _this.getOrgs()
                 .then(function (userOrgs) { return _this.canAddOrg(userOrgs); })
                 .then(function () { return _this.insertOrgs(); })
                 .then(function () { return resolve(); })
