@@ -123,7 +123,7 @@ CREATE TABLE cart (
   id BIGSERIAL PRIMARY KEY NOT NULL,
   user_uuid UUID REFERENCES users(user_uuid) ON DELETE CASCADE ON UPDATE CASCADE,
   cart_uuid UUID UNIQUE NOT NULL default uuid_generate_v4(),
-  card_number varchar(20), -- REFERENCES payment_credit(card_number) NEEDS TO BE ADDED
+  card_number varchar(20) ON UPDATE CASCADE ON DELETE CASCADE, -- REFERENCES payment_credit(card_number) NEEDS TO BE ADDED
   create_timestamp timestamptz NOT NULL DEFAULT now(),
   updated_timestamp timestamptz NOT NULL DEFAULT now()
 );
@@ -154,7 +154,7 @@ CREATE TABLE orders (
   id BIGSERIAL PRIMARY KEY NOT NULL,
   user_uuid UUID references users(user_uuid),
   order_uuid UUID UNIQUE NOT NULL default uuid_generate_v4(),
-  card_number varchar(20) REFERENCES payment_credit(card_number),
+  card_number varchar(20) REFERENCES payment_credit(card_number) ON UPDATE CASCADE ON DELETE CASCADE,
   order_number numeric(10) NOT NULL default 1,
   create_timestamp timestamptz NOT NULL DEFAULT now(),
   updated_timestamp timestamptz NOT NULL DEFAULT now()

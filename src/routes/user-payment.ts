@@ -2,174 +2,87 @@ import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as url from 'url';
 import { db } from '../middleware/database';
+import PaymentsSvc from '../logic/logic-payments'
 const payment = express.Router();
 
 
 
 payment.route('/')
   .get((req, res) => {
-    db.query("SELECT * FROM payment_credit WHERE user_uuid = $1", [req.session.user.uuid])
-      .then((result) => {
-        let paymentContent = result.rows
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, null)
+    req.PaymentsSvc.getFormsOfPayment()
+      .then((paymentContent) => {
         res.render('account/payment/payments', {
           paymentContent:paymentContent,
-          email:req.session.user.email
         })
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/payments', {dbError:error,})
       })
   })
   .post((req, res) => {
-    let uuid = req.session.user.uuid;
-    let email = req.session.user.email;
-    let inputs = {
-      name:req.body.name,
-      cardNumber:req.body.cardNumber,
-      expDay:req.body.expDay,
-      expMonth:req.body.expMonth,
-      cvv:req.body.cvv,
-      address:req.body.address,
-      city:req.body.city,
-      state:req.body.state,
-      zip:req.body.zip,
-    }
-    db.query('SELECT * FROM payment_credit WHERE user_uuid = $1', [uuid])
-      .then((result) => {
-        if (result.rows.length > 0) {
-          return db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, uuid])
-        }
-      })
-      .then((result) => {
-        let query = 'INSERT INTO payment_credit (user_uuid, card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
-        let input = [uuid, inputs.cardNumber, inputs.name, inputs.expMonth, inputs.expDay, inputs.cvv, inputs.address, inputs.city, inputs.state, inputs.zip];
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.body)
 
-        return db.query(query, input);
-      })
-      .then((result) => {
-        let query = 'INSERT INTO cart (card_number, user_uuid) VALUES ($1, $2)';
-        let input = [inputs.cardNumber, req.session.user.uuid];
-        return db.query(query, input);
-      })
-      .then((result) => {
+    req.PaymentsSvc.addNewFormOfPayment()
+      .then(result =>
         res.redirect('/app/accounts/' + req.session.user.email + '/payment')
-      })
+      )
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/new-payment', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/new-payment', {dbError:error})
       })
   })
 
-payment.get('/new-payment', (req, res) => {
-  let email = req.session.user.email;
-  res.render('account/payment/new-payment', {
-    email:email
-  })
-})
-
+payment.get('/new-payment', (req, res) => res.render('account/payment/new-payment'))
 
 payment.route('/active-payment')
   .put((req, res) => {
-    let card_number = req.body.card_number;
-    console.log(card_number)
-    db.query('UPDATE payment_credit SET active = $1 WHERE user_uuid = $2', [false, req.session.user.uuid])
-      .then((result) => {
-        let query = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
-        let input = [true, card_number, req.session.user.uuid];
-        return db.query(query, input)
-      })
-      .then((result) => {
-        res.redirect('/app/accounts/' + req.session.user.email + '/payment')
-      })
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.body)
+
+    req.PaymentsSvc.changeActivePayement()
+      .then((result) => res.redirect('/app/accounts/' + req.session.user.email + '/payment'))
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/payments', {dbError:error})
       })
   })
 
 
 payment.route('/:card_number')
   .get((req, res) => {
-    let card_number = req.query.card_number;
-    let payment;
-    console.log('payment get')
-    db.query('SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2', [req.session.user.uuid, card_number])
-      .then((result) =>{
-        payment = result.rows[0]
-        console.log(payment)
+    console.log(req.query)
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.query)
 
-        res.render('account/payment/edit-payment', {
-          name: payment.name,
-          card_number: payment.card_number,
-          exp_date: payment.exp_date,
-          exp_month: payment.exp_month,
-          cvv: payment.cvv,
-          address_1: payment.address_1,
-          city: payment.city,
-          state: payment.state,
-          zip: payment.zip,
-          user_uuid:req.session.user.uuid
-        })
-      })
+    req.PaymentsSvc.getFormOfPayement()
+      .then(result => res.render('account/payment/edit-payment', result))
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/payments', {dbError:error})
       })
   })
   .put((req, res) => {
-    let oldCard = req.body.oldCard;
-    let inputs = {
-      name:req.body.name,
-      cardNumber:req.body.cardNumber,
-      expDay:req.body.expDay,
-      expMonth:req.body.expMonth,
-      cvv:req.body.cvv,
-      address:req.body.address,
-      city:req.body.city,
-      state:req.body.state,
-      zip:req.body.zip,
-    }
-    let query = 'UPDATE payment_credit SET (card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) = ($1, $2, $3, $4, $5, $6, $7, $8, $9) WHERE user_uuid = $10 AND card_number = $11';
-    let input = [inputs.cardNumber, inputs.name, inputs.expMonth, inputs.expDay, inputs.cvv, inputs.address, inputs.city, inputs.state, inputs.zip, req.session.user.uuid, oldCard];
-
-    db.query(query, input)
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.body)
+    console.log(req.body)
+    req.PaymentsSvc.updateFormOfPayment()
       .then((result)=>{
         res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/payments', {dbError:error})
       })
   })
   .delete((req, res) => {
-    let card_number = req.body.card_number
+    req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.body)
 
-    db.query('DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2', [req.session.user.uuid, card_number])
+    req.PaymentsSvc.deleteFormOfPayment()
       .then((result) => {
         res.redirect('/app/accounts/' + req.session.user.email + '/payment')
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {
-          dbError:error,
-          email:req.session.user.email
-        })
+        res.render('account/payment/payments', {dbError:error})
       })
   })
 

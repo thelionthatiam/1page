@@ -577,6 +577,10 @@ button:focus {
   justify-content: center;
   width: 40px; }
 
+.days-radio-wrapper {
+  display: flex;
+  justify-content: space-between; }
+
 .time-wrapper {
   display: flex;
   align-items: center;

@@ -9,22 +9,62 @@ var QuerySvc = /** @class */ (function () {
     QuerySvc.prototype.getUserViaEmail = function (values) {
         var text = "SELECT * FROM users WHERE email = $1";
         return this.conn.query(text, values)
-            .then(function (res) { return R.UserDB.fromJSON(res.rows[0]); })
-            .catch(function (e) { return e; });
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return R.UserDB.fromJSON(result.rows[0]);
+            }
+        });
+    };
+    QuerySvc.prototype.getSessionID = function (values) {
+        var text = 'SELECT sessionid FROM session WHERE user_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error("Your session does not match the saved sesesion. Try to log in again");
+            }
+            else {
+                return result.rows[0].sessionid;
+            }
+        });
     };
     QuerySvc.prototype.getUserOrgs = function (values) {
-        // console.log('get orgs via email')
         var text = "SELECT * FROM user_orgs WHERE user_uuid = $1";
         return this.conn.query(text, values)
-            .then(function (result) { return result; })
-            .catch(function (e) {
-            // console.log(e)
-            return e;
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return result;
+            }
+        });
+    };
+    QuerySvc.prototype.getUserOrgData = function (values) {
+        var text = 'SELECT x.org_uuid, name, description, link, cause, active, img, org_sku, user_uuid FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return result.rows;
+            }
         });
     };
     QuerySvc.prototype.getUser = function (values) {
         var text = "SELECT * FROM users WHERE user_uuid = $1";
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return R.UserDB.fromJSON(result.rows[0]);
+            }
+        });
     };
     QuerySvc.prototype.getOrder = function (values) {
         var text = "SELECT * FROM orders WHERE user_uuid = $1";
@@ -42,6 +82,11 @@ var QuerySvc = /** @class */ (function () {
         var text = 'SELECT * FROM alarms WHERE user_uuid = $1';
         return this.conn.query(text, values);
     };
+    QuerySvc.prototype.getAlarm = function (values) {
+        var text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) { return result.rows[0]; });
+    };
     QuerySvc.prototype.getUnpaidSnoozes = function (values) {
         var text = 'SELECT * FROM snoozes WHERE user_uuid = $1 AND paid = $2';
         return this.conn.query(text, values);
@@ -54,13 +99,77 @@ var QuerySvc = /** @class */ (function () {
         var text = 'SELECT * FROM wakes WHERE user_uuid = $1 AND paid = $2';
         return this.conn.query(text, values);
     };
-    QuerySvc.prototype.getSettingsViaEmail = function (values) {
+    QuerySvc.prototype.getUserSettings = function (values) {
         var text = 'SELECT * FROM user_settings where user_uuid = $1';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return result.rows[0];
+            }
+        });
+    };
+    QuerySvc.prototype.getUserFormsOfPayment = function (values) {
+        var text = 'SELECT * FROM payment_credit WHERE user_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('No saved payments');
+                return [];
+            }
+            else {
+                return result.rows;
+            }
+        });
     };
     QuerySvc.prototype.getPendingPayments = function (values) {
         var text = 'SELECT org_trans_total FROM org_transactions WHERE org_uuid = $1 AND sent = $2';
         return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.getFormOfPayment = function (values) {
+        var text = 'SELECT * FROM payment_credit WHERE user_uuid = $1 AND card_number = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database like that...');
+            }
+            else {
+                return {
+                    name: result.rows[0].name,
+                    card_number: result.rows[0].card_number,
+                    exp_date: result.rows[0].exp_date,
+                    exp_month: result.rows[0].exp_month,
+                    cvv: result.rows[0].cvv,
+                    address_1: result.rows[0].address_1,
+                    city: result.rows[0].city,
+                    state: result.rows[0].state,
+                    zip: result.rows[0].zip,
+                    user_uuid: result.rows[0].user_uuid
+                };
+            }
+        });
+    };
+    QuerySvc.prototype.getDaysOfWeek = function (values) {
+        var text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('There was no alarm by that id that belonged to that user.');
+            }
+            else {
+                return {
+                    mon: result.rows[0].mon,
+                    tues: result.rows[0].tues,
+                    wed: result.rows[0].wed,
+                    thur: result.rows[0].thur,
+                    fri: result.rows[0].fri,
+                    sat: result.rows[0].sat,
+                    sun: result.rows[0].sun,
+                };
+            }
+        });
     };
     // insert
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
@@ -74,26 +183,22 @@ var QuerySvc = /** @class */ (function () {
             phone: result.rows[0].phone,
             name: result.rows[0].name,
             password: result.rows[0].password
-        }); })
-            .catch(function (e) { return e; });
+        }); });
     };
     QuerySvc.prototype.insertNonce = function (values) {
         var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
         return this.conn.query(text, values)
-            .then(function (result) { return result; })
-            .catch(function (e) { return e; });
+            .then(function (result) { return result; });
     };
     QuerySvc.prototype.insertSession = function (values) {
         var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
         return this.conn.query(text, values)
-            .then(function (result) { return null; })
-            .catch(function (e) { return e; });
+            .then(function (result) { return null; });
     };
     QuerySvc.prototype.insertSettings = function (values) {
         var text = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
         return this.conn.query(text, values)
-            .then(function (result) { return null; })
-            .catch(function (e) { return e; });
+            .then(function (result) { return null; });
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertSnooze = function (values) {
@@ -115,19 +220,146 @@ var QuerySvc = /** @class */ (function () {
         var text = 'INSERT INTO revenue(trans_uuid, user_uuid, trans_revenue_total) VALUES ($1, $2, $3)';
         return this.conn.query(text, values);
     };
-    QuerySvc.prototype.insertUserOrgs = function (values) {
+    QuerySvc.prototype.insertUserOrg = function (values) {
         console.log('inseruser orgs');
-        var text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2)';
+        var text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2) RETURNING *';
         return this.conn.query(text, values)
-            .then(function (result) { return result; })
-            .catch(function (e) { return e; });
+            .then(function (result) {
+            return result.rows[0].active;
+        });
+    };
+    QuerySvc.prototype.insertFormOfPayment = function (values) {
+        var text = 'INSERT INTO payment_credit (user_uuid, card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+        return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.insertCardToCart = function (values) {
+        var text = 'INSERT INTO cart (card_number, user_uuid) VALUES ($1, $2)';
+        return this.conn.query(text, values);
     };
     // update
     QuerySvc.prototype.updateSessionID = function (values) {
         var text = 'UPDATE session SET sessionid = $1 WHERE user_uuid = $2';
         return this.conn.query(text, values)
-            .then(function () { }) // DO I NEED THIS FOR A VOID FUNCTION?
-            .catch(function (e) { return e; });
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateAllUserOrgsToFalse = function (values) {
+        var text = 'UPDATE user_orgs SET active = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateActiveOrg = function (values) {
+        var text = 'UPDATE user_orgs SET active = $1 WHERE user_uuid = $2 AND org_uuid = $3';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateAllFormsOfPaymentToFalse = function (values) {
+        var text = 'UPDATE payment_credit SET active = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateActiveFormOfPayment = function (values) {
+        var text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updatePaymentScheme = function (values) {
+        var text = 'UPDATE user_settings SET payment_scheme = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Payment scheme doesnt exists for this user, or the user doesnt exists, thats not good at all');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateMonthMax = function (values) {
+        var text = 'UPDATE user_settings SET month_max = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Month max doesnt exists for this user, or the user doesnt exists, thats not good at all');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updatePricePerSnooze = function (values) {
+        var text = 'UPDATE user_settings SET snooze_price = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Snooze price doesnt exists for this user, or the user doesnt exists, thats not good at all');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updatePricePerDismiss = function (values) {
+        var text = 'UPDATE user_settings SET dismiss_price = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Dismiss price doesnt exist for this user, or the user doesnt exists, thats not good at all');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.updateUserPaymentsToFalse = function (values) {
+        var text = 'UPDATE payment_credit SET active = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.updateFormOfPayment = function (values) {
+        var text = 'UPDATE payment_credit SET (card_number, name, exp_month, exp_date, cvv, address_1, city, state, zip) = ($1, $2, $3, $4, $5, $6, $7, $8, $9) WHERE user_uuid = $10 AND card_number = $11';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Something doesnt exist in the database..');
+            }
+            else {
+                return null;
+            }
+        });
     };
     QuerySvc.prototype.updateSnoozeToPaid = function (values) {
         var text = 'UPDATE snoozes SET paid = $1 WHERE snooze_uuid = $2';
@@ -143,6 +375,23 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.updateOrgToPaid = function (values) {
         var text = 'UPDATE org_transactions SET sent = $1 WHERE recipient = $2';
+        return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.updateDaysOfWeek = function (values) {
+        var text = "UPDATE alarms SET (mon, tues, wed, thur, fri, sat, sun) = ($1,$2,$3,$4,$5,$6,$7) WHERE user_uuid = $8 AND alarm_uuid = $9";
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Something was missing from the DB');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    // delete
+    QuerySvc.prototype.deleteFormOfPayement = function (values) {
+        var text = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2';
         return this.conn.query(text, values);
     };
     return QuerySvc;

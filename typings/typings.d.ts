@@ -4,6 +4,10 @@ import { Request, Response, RequestHandler } from './../node_modules/@types/expr
 import OrgSvc from '../src/logic/logic-organizations';
 import AuthSvc from '../src/logic/logic-authorization';
 import CreateAcctSvc from '../src/logic/logic-accounts';
+import SettingsSvc from '../src/logic/logic-settings';
+import PaymentsSvc from '../src/logic/logic-payments';
+import AlarmSvc from '../src/logic/logic-alarms';
+import { SessionCheckSvc } from '../src/logic/logic-middleware';
 import QuerySvc from '../src/data-access/queries';
 // import QuerySvc from '../src/data-access/queries';
 import * as R from '../src/services/value-objects';
@@ -32,6 +36,10 @@ declare global {
       querySvc : QuerySvc;
       CreateAcctSvc : CreateAcctSvc; 
       OrgSvc : OrgSvc;
+      SettingsSvc: SettingsSvc;
+      SessionCheckSvc:SessionCheckSvc;
+      PaymentsSvc:PaymentsSvc;
+      AlarmSvc:AlarmSvc;
     }
   } 
 }

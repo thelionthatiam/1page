@@ -9,7 +9,7 @@ function renderState(req, res, next) {
             })
             .then((result) => {
                 result.rowCount > 0 ? userState.alarms = result.rows : userState.settings = 'n/a';
-                return req.querySvc.getSettingsViaEmail([req.session.user.uuid])
+                return req.querySvc.getUserSettings([req.session.user.uuid])
             })
             .then((result) => {
                 result.rowCount > 0 ? userState.settings = result.rows[0] : userState.settings = 'n/a';

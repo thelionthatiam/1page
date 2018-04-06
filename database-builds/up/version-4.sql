@@ -76,6 +76,13 @@ CREATE TABLE wakes (
 
 alter table alarms add column state varchar(30) default 'pending';
 
+ALTER TABLE alarms ADD COLUMN mon BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN tues BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN wed BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN thur BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN fri BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN sat BOOLEAN DEFAULT false;
+ALTER TABLE alarms ADD COLUMN sun BOOLEAN DEFAULT false;
 -- need somewhere to store price history per user
 
 

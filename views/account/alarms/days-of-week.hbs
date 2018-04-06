@@ -1,0 +1,114 @@
+<div class = "column contentWrapper">
+    <h1>{{title}}</h1>
+    <form action = "/app/accounts/{{email}}/alarms/{{title}}/days-of-week?_method=PUT" method="POST">
+        <div class = "">
+            <div class="days-radio-wrapper">
+                <p>mon</p>
+                <h6>on</h6>
+                {{#if mon}}
+                <input type = "radio" name = "mon" value="true" checked="checked">
+                <h6>off</h6>
+                <input type="radio" name="mon" value="false">
+                {{else}}
+                <input type="radio" name="mon" value="true">
+                <h6>off</h6>
+                <input type="radio" name="mon" value="false" checked="checked">
+                {{/if}}
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if tues}}
+                <p>tues</p>
+                <h6>on</h6>
+                <input type = "radio" name = "tues" value="true" checked="checked">
+                <h6>off</h6>
+                <input type="radio" name="tues" value="false">
+                {{else}}
+                <p>tues</p>
+                <h6>on</h6>
+                <input type = "radio" name = "tues" value="true">
+                <h6>off</h6>
+                <input type="radio" name="tues" value="false" checked="checked">
+                {{/if}}
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if wed}}
+                <p>wed</p>
+                <h6>on</h6>
+                <input type = "radio" name = "wed" value="true" checked = "checked">
+                <h6>off</h6>
+                <input type="radio" name="wed" value="false">
+                {{else}}
+                <p>wed</p>
+                <h6>on</h6>
+                <input type="radio" name="wed" value="true">
+                <h6>off</h6>
+                <input type="radio" name="wed" value="false" checked = "checked">
+                {{/if}}
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if thur}}
+                <p>thur</p>
+                <h6>on</h6>
+                <input type = "radio" name = "thur" value="true" checked = "checked">
+                <h6>off</h6>
+                <input type="radio" name="thur" value="false">
+                {{else}}
+                <p>thur</p>
+                <h6>on</h6>
+                <input type = "radio" name = "thur" value="true">
+                <h6>off</h6>
+                <input type="radio" name="thur" value="false" checked = "checked">
+                {{/if}}
+
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if fri}}
+                <p>fri</p>
+                <h6>on</h6>
+                <input type="radio" name="fri" value="true"checked="checked">
+                <h6>off</h6>
+                <input type="radio" name="fri" value="false">
+                {{else}}
+                <p>fri</p>
+                <h6>on</h6>
+                <input type="radio" name="fri" value="true">
+                <h6>off</h6>
+                <input type="radio" name="fri" value="false"checked="checked">
+                {{/if}}
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if sat}}
+                <p>sat</p>
+                <h6>on</h6>
+                <input type="radio" name="sat" value="true"checked="checked">
+                <h6>off</h6>
+                <input type="radio" name="sat" value="false">
+                {{else}}
+                <p>sat</p>
+                <h6>on</h6>
+                <input type="radio" name="sat" value="true">
+                <h6>off</h6>
+                <input type="radio" name="sat" value="false"checked="checked">
+                {{/if}}
+            </div>
+            <div class="days-radio-wrapper">
+                {{#if sun}}
+                <p>sun</p>
+                <h6>on</h6>
+                <input type = "radio" name = "sun" value="true" checked="checked">
+                <h6>off</h6>
+                <input type="radio" name="sun" value="false">
+                {{else}}
+                <p>sun</p>
+                <h6>on</h6>
+                <input type="radio" name="sun" value="true">
+                <h6>off</h6>
+                <input type="radio" name="sun" value="false" checked="checked">
+                {{/if}}
+            </div>
+        </div>
+        <button type = 'submit' class = "button light-button">update active days</button>
+        <input name="title" type="hidden" value="{{ title }}">
+        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+    </form>
+</div>

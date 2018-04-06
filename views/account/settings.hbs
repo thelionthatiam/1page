@@ -10,7 +10,7 @@
     </div>
     <div class = "settings-form-wrapper">
       <h4 class = "settings-title">payment scheme<br /><span class = 'current-selection'>current: {{payment_scheme}}</span></h4>
-      <form class = 'radio' action"/app/accounts/{{email}}/settings/payment-scheme?_method=PUT" method="post">
+      <form class = 'radio' action="/app/accounts/{{email}}/settings/payment-scheme?_method=PUT" method="post">
         <div class = ''>
           <div class = 'flex column center'>
             <input type="radio"  name="payment_scheme" value="classic">

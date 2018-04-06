@@ -2,13 +2,20 @@
   <div class="alarm-row">
     <h4 class = "alarm-title">{{title}}</h4>
     <ul class = "week-list">
-      <li class = "day-of-week">mon</li>
-      <li class = "day-of-week">tues</li>
-      <li class = "day-of-week">wed</li>
-      <li class = "day-of-week">thurs</li>
-      <li class = "day-of-week">fri</li>
-      <li class = "day-of-week">sat</li>
-      <li class = "day-of-week">sun</li>
+      <li class = "day-of-week {{#if mon}}dark-button{{/if}}">mon</li>
+      <li class = "day-of-week {{#if tues}}dark-button{{/if}}">tues</li>
+      <li class = "day-of-week {{#if wed}}dark-button{{/if}}">wed</li>
+      <li class = "day-of-week {{#if thur}}dark-button{{/if}}">thur</li>
+      <li class = "day-of-week {{#if fri}}dark-button{{/if}}">fri</li>
+      <li class = "day-of-week {{#if sat}}dark-button{{/if}}">sat</li>
+      <li class = "day-of-week {{#if sun}}dark-button{{/if}}">sun</li>
+      <li class = "day-of-week">
+        <form action="/app/accounts/{{user_uuid}}/alarms/{{title}}/days-of-week" method="get">
+            <input class = "icon" type="image" src="/icons/black/calendar.svg">
+            <input name="title" type="hidden" value="{{ title }}">
+            <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+        </form>
+      </li>
     </ul>
     <div class = 'time-wrapper'>
       <h4>{{time}}</h4>
@@ -31,7 +38,7 @@
     <form action="/app/accounts/{{user_uuid}}/alarms/{{title}}" method="get">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
         <input name="title" type="hidden" value="{{ title }}">
-    </form>
+    </form> 
     <form action="/app/accounts/{{user_uuid}}/alarms/{{title}}?_method=DELETE" method="post">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
         <input name="title" type="hidden" value="{{ title }}">

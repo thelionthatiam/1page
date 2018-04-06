@@ -41,15 +41,15 @@
                         <a class='a' href="{{link}}">
                           <img class='icon-mini' src='/icons/black/share.svg'>
                         </a>
-                        <form class='a' action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
+                        {{!-- <form class='a' action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
                           <input type="hidden" name="org_uuid" value="{{ uuid }}" />
                           <input type='image' class='icon-mini' src='/icons/black/star.svg'>
-                        </form>
+                        </form> --}}
                         {{!-- <form class='a' action="/app/accounts/{{email}}/orgs" method="post">
                           <input type="hidden" name="org_uuid" value="{{ uuid }}" />
                           <input type='image' class='icon-mini' src='/icons/black/x.svg'>
                         </form> --}}
-                        <form action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
+                        <form action="/app/accounts/{{email}}/orgs/{{uuid}}/remove-default?_method=PUT" method="post">
                           <input type="hidden" name="org_uuid" value="{{ uuid }}" />
                           <button class='button dark-button'>remove default</button>
                         </form>

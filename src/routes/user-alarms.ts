@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { db } from '../middleware/database';
+import AlarmSvc from '../logic/logic-alarms';
 const alarms = express.Router();
 
 
@@ -111,7 +112,33 @@ alarms.route('/:title')
         });
     })
 
-// // alarm functionality
+// NEW DAYS OF WEEK SECTION
+
+alarms.route('/:title/days-of-week')
+    .get((req, res) => {
+      console.log(req.query)
+      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)
+
+      req.AlarmSvc.getAlarm()
+        .then(daysOfWeek => res.render('account/alarms/days-of-week', daysOfWeek))
+        .catch(e => {
+          console.log(e)
+          res.render('error', {error:e})
+        })
+    })
+    .put((req, res) => {
+      console.log('REQ BODY', req.body)
+      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+      req.AlarmSvc.updateDaysOfWeek()
+        .then(daysOfWeek => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+        .catch(e => {
+          console.log(e)
+          res.render('error', {error:e})
+        })
+    })
+
+
+// //  THIS IS STILL IMPORTANT !!!! alarm functionality
 
 // router.post('/:title/snooze', (req, res) => {
 //   let alarm = req.body.alarm_uuid

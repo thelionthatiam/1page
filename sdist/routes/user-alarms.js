@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var database_1 = require("../middleware/database");
+var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
 // random helper that will go with logic for alarms
 function compare(a, b) {
@@ -101,7 +102,29 @@ alarms.route('/:title')
         res.render('accoount/alarms/edit-alarm', { dbError: err.stack });
     });
 });
-// // alarm functionality
+// NEW DAYS OF WEEK SECTION
+alarms.route('/:title/days-of-week')
+    .get(function (req, res) {
+    console.log(req.query);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
+    req.AlarmSvc.getAlarm()
+        .then(function (daysOfWeek) { return res.render('account/alarms/days-of-week', daysOfWeek); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+})
+    .put(function (req, res) {
+    console.log('REQ BODY', req.body);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.updateDaysOfWeek()
+        .then(function (daysOfWeek) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+});
+// //  THIS IS STILL IMPORTANT !!!! alarm functionality
 // router.post('/:title/snooze', (req, res) => {
 //   let alarm = req.body.alarm_uuid
 //   console.log(alarm)

@@ -206,6 +206,19 @@ class String extends ValueScalar {
   }
 }
 
+interface PaymentCredit {
+  user_uuid:UUID;
+  card_number:string;
+  name:CharOnly;
+  exp_month:string;
+  exp_date:string;
+  cvv:string;
+  address_1:string;
+  city:string;
+  state:string;
+  zip:string;
+}
+
 
 export {
   UserException,
@@ -219,4 +232,5 @@ export {
   UUID,
   Bool,
   String,
+  PaymentCredit
 }
