@@ -42,6 +42,7 @@ app.use(session({
 }));
 app.use(session_check_1.default);
 app.use(server_render_state_1.default);
+// app.use(handleRender);
 app.use('/', require('./index'));
 // ERROR STUFF
 app.use(function (req, res, next) {

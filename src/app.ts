@@ -12,6 +12,7 @@ import { dbConfig } from "./services/db-connect-config";
 import { init } from './middleware/database'
 import renderState from './middleware/server-render-state';
 import sessionCheck from "./middleware/session-check";
+import handleRender from './middleware/init-render-test'
 import * as e from './services/error-handling'
 
 const app = express();//
@@ -47,8 +48,10 @@ app.use(session({
   })
 );
 
+
 app.use(sessionCheck);
 app.use(renderState);
+// app.use(handleRender);
 app.use('/', require('./index'))
 
 

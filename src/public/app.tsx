@@ -5,7 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import appReducers from './reducers/app-reducers'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const store = createStore(appReducers, composeWithDevTools(
     applyMiddleware(
@@ -22,5 +22,4 @@ function app() {
       document.getElementById('app')
     );
 }
-
 export default app;
