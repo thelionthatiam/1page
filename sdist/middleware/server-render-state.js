@@ -1,39 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var logic_middleware_1 = require("../logic/logic-middleware");
 function renderState(req, res, next) {
+    console.log('render state running');
+    console.log(res.locals);
     if (res.locals.permission === 'user') {
         res.locals.loggedIn = true;
-        var userState_1 = {};
-        req.querySvc.getUserOrgs([req.session.user.uuid])
-            .then(function (result) {
-            result.rowCount > 0 ? userState_1.orgs = result.rows : userState_1.settings = 'n/a';
-            return req.querySvc.getAlarms([req.session.user.uuid]);
-        })
-            .then(function (result) {
-            result.rowCount > 0 ? userState_1.alarms = result.rows : userState_1.settings = 'n/a';
-            return req.querySvc.getUserSettings([req.session.user.uuid]);
-        })
-            .then(function (result) {
-            result.rowCount > 0 ? userState_1.settings = result.rows[0] : userState_1.settings = 'n/a';
-            return req.querySvc.getUser([req.session.user.uuid]);
-        })
-            .then(function (result) {
-            result.rowCount > 0 ? userState_1.profile = result.rows[0] : userState_1.profile = 'n/a';
-            res.locals.userState = userState_1;
+        req.RenderStateSvc = new logic_middleware_1.RenderStateSvc(req.querySvc, req.session.user);
+        req
+            .RenderStateSvc
+            .getEverything()
+            .then(function (userData) {
+            res.locals.userData = userData;
+            res.locals.userDataForRender = JSON.stringify(userData);
             res.locals.email = req.session.user.email;
             res.locals.uuid = req.session.user.uuid;
+            console.log('**********************', res.locals);
             next();
         })
             .catch(function (err) {
             console.log(err);
-            res.locals.userState = 'n/a';
+            res.locals.userState = null;
             res.locals.permission = 'guest';
-            res.redirect('/log-out', { dbError: err });
+            res.render('error', { errMessage: err });
         });
     }
     else {
         res.locals.loggedIn = false;
         console.log('render state says im a guest');
+        console.log('ARE THESE CHANGES COMPILING');
         next();
     }
 }
