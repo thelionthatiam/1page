@@ -46,14 +46,18 @@ export default class QuerySvc {
       })
   }
 
-  getUserOrgData(values:[V.UUID]) {
+  getUserOrgsData(values:[V.UUID]) {
     const text = 'SELECT x.org_uuid, name, description, link, cause, active, img, org_sku, user_uuid FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)';
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
           throw new Error( 'Nothing in the database here...')
         } else {
-          return result.rows;
+          let validatedOrgs = []
+          for (let i = 0; i < result.rows.length; i++) {
+            validatedOrgs.push(R.UserOrgsJoin.fromJSON(result.rows[i]))
+          }
+          return validatedOrgs
         }
       })
   }
@@ -82,7 +86,18 @@ export default class QuerySvc {
 
   getOrgs(values:null[]) {
     const text = 'SELECT * FROM orgs'
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error ('Unable to retrieve orgs at this time. No orgs were present.')
+        } else {
+          let validatedOrgs = []
+          for (let i = 0; i < result.rows.length; i++) {
+            validatedOrgs.push(R.OrgsDB.fromJSON(result.rows[i]))
+          }
+          return validatedOrgs
+        }
+      })
   }
 
   getUserAlarms(values:V.UUID[]) {

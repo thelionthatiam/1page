@@ -4,26 +4,16 @@ import * as V from '../services/validation';
 
 
 
-// move to Validation file
-interface Org {
-    org_uuid:V.UUID;
-    org_sku:string;
-    name:string;
-    description:string;
-    cause:string;
-    link:string;
-    img:string;
-    active:boolean;    
-}
+// how to use types to create render objects without so much boilerplate
 
-interface OrgRender extends Org {
+interface OrgRender extends R.UserOrgsJoin {
     email?:V.Email;
     user_orgs?:boolean;
     loggedIn?:boolean;
 }
 
 
-interface ActiveOrgRender extends Org {
+interface ActiveOrgRender extends OrgRender {
     defaultSet:boolean;
 }
 
@@ -32,7 +22,7 @@ export default class OrgSvc {
     querySvc:QuerySvc;
     user: R.UserSession;
     org: V.UUID;
-    userOrgsData: Org[];
+    userOrgsData: R.UserOrgsJoin[];
     userOrgRenderObjs: OrgRender[];
     activeOrgRenderObj: ActiveOrgRender;
 
@@ -45,7 +35,7 @@ export default class OrgSvc {
         this.activeOrgRenderObj;
     }
 
-    canAddOrg(userOrgs:Org[]) {
+    canAddOrg(userOrgs:R.UserOrgsDB[]) {
         return new Promise (
             (resolve, reject) => {
                 for (let i = 0; i < userOrgs.length; i++) {
@@ -75,7 +65,7 @@ export default class OrgSvc {
             .catch((e) => e)
     }
 
-    activeOrgRender(ActiveOrg:Org) {
+    activeOrgRender(ActiveOrg:R.OrgsDB):ActiveOrgRender {
         return {
             defaultSet: true,
             active: true,
@@ -134,7 +124,7 @@ export default class OrgSvc {
 
     // separate out from can add?
 
-    alreadyAddedOrg(userOrgs:Org[]) {
+    alreadyAddedOrg(userOrgs:R.OrgsDB[]) {
         for (let i = 0;i < userOrgs.length; i++) {
             if (userOrgs[i].org_uuid === this.org) {
                 return true;
@@ -145,7 +135,7 @@ export default class OrgSvc {
 
     // separate out from can add?
 
-    isActiveOrg(userOrgs:Org[]) {
+    isActiveOrg(userOrgs:R.UserOrgsJoin[]) {
         for (let i = 0;i < userOrgs.length; i++) {
             if (userOrgs[i].org_uuid === this.org && userOrgs[i].active) {
                 return true;

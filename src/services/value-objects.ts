@@ -1,3 +1,4 @@
+//
 import {
   UserException,
   ValidationError,
@@ -26,7 +27,6 @@ class ValidationResult {
       }
     }
   }
-
   get isOkay() { return false; }
 }
 
@@ -86,7 +86,7 @@ class UserDB {
   readonly permission?: Permission;
   readonly      phone?: NumOnly;
   readonly       name?: CharOnly;
-  readonly   password?: String | string;
+  readonly   password?: string;
 
   private constructor(args:{ email?: Email; user_uuid?: UUID; permission?: Permission; phone?:NumOnly; name?: CharOnly; password?: String | string } = {}) {
     this.email      = args.email;
@@ -106,7 +106,7 @@ class UserDB {
         permission: Permission.create(args.permission),
         phone: NumOnly.create(args.phone),
         name: CharOnly.create(args.name),
-        password: String.create(args.password)
+        password: args.password
       })
       return res.toJSON();
     } else {
@@ -249,6 +249,7 @@ class OrgsDB {
   readonly description?: String;
   readonly cause?: CharOnly;
   readonly link?: String; // could add a link checker
+  readonly img?: string;
 
   private constructor(args:{
     org_uuid?: UUID;
@@ -257,6 +258,7 @@ class OrgsDB {
     description?: String;
     cause?: CharOnly;
     link?: String; // could add a link checker
+    img?: string;
   } = {}) {
     this.org_uuid = args.org_uuid;
     this.org_sku = args.org_sku;
@@ -264,6 +266,7 @@ class OrgsDB {
     this.description = args.description;
     this.cause = args.cause;
     this.link = args.link;
+    this.img = args.img;
   }
 
   static fromJSON(args: {[key: string]: any}) : OrgsDB {
@@ -276,6 +279,7 @@ class OrgsDB {
         description: String.create(args.description),
         cause: CharOnly.create(args.cause),
         link: String.create(args.link),
+        img: args.img
       })
       return res.toJSON();
     } else {
@@ -291,6 +295,7 @@ class OrgsDB {
       description: String.validate(args.description),
       cause: CharOnly.validate(args.cause),
       link: String.validate(args.link),
+      img: args.img
     }
     ValidationResult.isValid(args, propValidation)
     return { isOkay: true };
@@ -304,10 +309,10 @@ class OrgsDB {
       description: this.description.toString(),
       cause: this.cause.toString(),
       link: this.link.toString(),
+      img: this.img.toString()
     };
   }
 }
-
 
 class UserSettings {
   readonly user_uuid?: UUID;
@@ -388,53 +393,97 @@ class UserSettings {
 }
 
 
-// NOT COMPLETED
-// class Transactions {
-//   readonly user_uuid?: UUID;
-//   recipient?: CharOnly;
-//   payment_uuid?: UUID;
-//   snoozes?: NumOnly;
-//   dismisses?: NumOnly;
-//   wakes?: NumOnly;
-//   total?: NumOnly;
-//
-//
-//   private constructor(args:{
-//     user_uuid?: UUID;
-//     org_uuid?: UUID;
-//     active?: Bool;
-//   } = {}) {
-//     this.user_uuid   = args.user_uuid;
-//     this.org_uuid  = args.org_uuid;
-//     this.active = args.active;
-//   }
-//
-//   static fromJSON(args: {[key: string]: any}) : Transactions {
-//     let res = Transactions.validate(args);
-//     if (res.isOkay) {
-//       let res = new Transactions({
-//         email: Email.create(args.email),
-//       })
-//       return res.toJSON();
-//     } else {
-//       throw new Error ('error happens at fromJSON');
-//     }
-//   }
-//
-//   static validate(args: {[key: string] : any}) : ValidationResult {
-//     let propValidation = {
-//       email: Email.validate(args.email),
-//     }
-//     ValidationResult.isValid(args, propValidation)
-//     return { isOkay: true };
-//   }
-//
-//   toJSON() : any {
-//     return {
-//       email: this.email.toString(),
-//     };
-//   }
-// }
+// THIS MAY HAVE BEEN USELESS 
+
+class UserOrgsJoin {
+  readonly org_uuid?: UUID;
+  readonly user_uuid?: UUID;
+  readonly org_sku?: string;
+  readonly name?: string;
+  readonly description?: string;
+  readonly cause?: string;
+  readonly link?: string; // link
+  readonly img?: string;
+  readonly active?: Bool;
+
+  private constructor(args : {
+    org_uuid?: UUID;
+    user_uuid?: UUID;
+    org_sku?: string;
+    name?: string;
+    description?: string;
+    cause?: string;
+    link?: string; // link
+    img?: string;
+    active?: Bool;
+  } = {}) {
+    this.org_uuid = args.org_uuid;
+    this.user_uuid = args.user_uuid;
+    this.org_sku = args.org_sku;
+    this.name = args.name;
+    this.description = args.description;
+    this.cause = args.cause;
+    this.link = args.link;
+    this.img = args.img;
+    this.active = args.active;
+  }
+
+  static fromJSON(args : {
+    [key : string]: any
+  }) : UserOrgsJoin {
+    let res = UserOrgsJoin.validate(args);
+    if (res.isOkay) {
+      let res = new UserOrgsJoin({
+        org_uuid: UUID.create(args.org_uuid),
+        user_uuid: UUID.create(args.user_uuid),
+        org_sku: args.org_sku,
+        name: args.name,
+        description: args.description,
+        cause: args.cause,
+        link: args.link,
+        img: args.img,
+        active: Bool.create(args.active)
+      })
+      return res.toJSON();
+    } else {
+      throw new Error('error happens at fromJSON');
+    }
+  }
+
+  static validate(args : {
+    [key : string]: any
+  }) : ValidationResult {
+    let propValidation = {
+      org_uuid: UUID.validate(args.org_uuid),
+        user_uuid: UUID.validate(args.user_uuid),
+        org_sku: args.org_sku,
+        name: args.name,
+        description: args.description,
+        cause: args.cause,
+        link: args.link,
+        img: args.img,
+        active: Bool.validate(args.active)
+    }
+    ValidationResult.isValid(args, propValidation)
+    return {isOkay: true};
+  }
+
+  toJSON() : any {
+    return {
+      user_uuid: this.user_uuid.toString(),
+      org_sku: this.org_sku.toString(),
+      name: this.name.toString(),
+      description: this.description.toString(),
+      cause: this.cause.toString(),
+      link: this.link.toString(),
+      img: this.img.toString(),
+      active: this.active.toString(),
+    };
+  }
+}
+
+
+
 
 // DUMMY COPY
 // class User {
@@ -483,7 +532,58 @@ export {
   UserSession,
   UserDB,
   UserOrgsDB,
+  UserOrgsJoin,
   CartDB,
   OrgsDB,
   UserSettings
 }
+
+
+
+// NOT COMPLETED
+// class Transactions {
+//   readonly user_uuid?: UUID;
+//   recipient?: CharOnly;
+//   payment_uuid?: UUID;
+//   snoozes?: NumOnly;
+//   dismisses?: NumOnly;
+//   wakes?: NumOnly;
+//   total?: NumOnly;
+//
+//
+//   private constructor(args:{
+//     user_uuid?: UUID;
+//     org_uuid?: UUID;
+//     active?: Bool;
+//   } = {}) {
+//     this.user_uuid   = args.user_uuid;
+//     this.org_uuid  = args.org_uuid;
+//     this.active = args.active;
+//   }
+//
+//   static fromJSON(args: {[key: string]: any}) : Transactions {
+//     let res = Transactions.validate(args);
+//     if (res.isOkay) {
+//       let res = new Transactions({
+//         email: Email.create(args.email),
+//       })
+//       return res.toJSON();
+//     } else {
+//       throw new Error ('error happens at fromJSON');
+//     }
+//   }
+//
+//   static validate(args: {[key: string] : any}) : ValidationResult {
+//     let propValidation = {
+//       email: Email.validate(args.email),
+//     }
+//     ValidationResult.isValid(args, propValidation)
+//     return { isOkay: true };
+//   }
+//
+//   toJSON() : any {
+//     return {
+//       email: this.email.toString(),
+//     };
+//   }
+// }

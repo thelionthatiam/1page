@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//
 var validation_1 = require("./validation");
 // THIS COULD LIVE SOMEWHERE ELSE
 var ValidationResult = /** @class */ (function () {
@@ -88,7 +89,7 @@ var UserDB = /** @class */ (function () {
                 permission: validation_1.Permission.create(args.permission),
                 phone: validation_1.NumOnly.create(args.phone),
                 name: validation_1.CharOnly.create(args.name),
-                password: validation_1.String.create(args.password)
+                password: args.password
             });
             return res_2.toJSON();
         }
@@ -213,6 +214,7 @@ var OrgsDB = /** @class */ (function () {
         this.description = args.description;
         this.cause = args.cause;
         this.link = args.link;
+        this.img = args.img;
     }
     OrgsDB.fromJSON = function (args) {
         var res = OrgsDB.validate(args);
@@ -224,6 +226,7 @@ var OrgsDB = /** @class */ (function () {
                 description: validation_1.String.create(args.description),
                 cause: validation_1.CharOnly.create(args.cause),
                 link: validation_1.String.create(args.link),
+                img: args.img
             });
             return res_5.toJSON();
         }
@@ -239,6 +242,7 @@ var OrgsDB = /** @class */ (function () {
             description: validation_1.String.validate(args.description),
             cause: validation_1.CharOnly.validate(args.cause),
             link: validation_1.String.validate(args.link),
+            img: args.img
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -251,6 +255,7 @@ var OrgsDB = /** @class */ (function () {
             description: this.description.toString(),
             cause: this.cause.toString(),
             link: this.link.toString(),
+            img: this.img.toString()
         };
     };
     return OrgsDB;
@@ -316,4 +321,115 @@ var UserSettings = /** @class */ (function () {
     return UserSettings;
 }());
 exports.UserSettings = UserSettings;
+// THIS MAY HAVE BEEN USELESS 
+var UserOrgsJoin = /** @class */ (function () {
+    function UserOrgsJoin(args) {
+        if (args === void 0) { args = {}; }
+        this.org_uuid = args.org_uuid;
+        this.user_uuid = args.user_uuid;
+        this.org_sku = args.org_sku;
+        this.name = args.name;
+        this.description = args.description;
+        this.cause = args.cause;
+        this.link = args.link;
+        this.img = args.img;
+        this.active = args.active;
+    }
+    UserOrgsJoin.fromJSON = function (args) {
+        var res = UserOrgsJoin.validate(args);
+        if (res.isOkay) {
+            var res_7 = new UserOrgsJoin({
+                org_uuid: validation_1.UUID.create(args.org_uuid),
+                user_uuid: validation_1.UUID.create(args.user_uuid),
+                org_sku: args.org_sku,
+                name: args.name,
+                description: args.description,
+                cause: args.cause,
+                link: args.link,
+                img: args.img,
+                active: validation_1.Bool.create(args.active)
+            });
+            return res_7.toJSON();
+        }
+        else {
+            throw new Error('error happens at fromJSON');
+        }
+    };
+    UserOrgsJoin.validate = function (args) {
+        var propValidation = {
+            org_uuid: validation_1.UUID.validate(args.org_uuid),
+            user_uuid: validation_1.UUID.validate(args.user_uuid),
+            org_sku: args.org_sku,
+            name: args.name,
+            description: args.description,
+            cause: args.cause,
+            link: args.link,
+            img: args.img,
+            active: validation_1.Bool.validate(args.active)
+        };
+        ValidationResult.isValid(args, propValidation);
+        return { isOkay: true };
+    };
+    UserOrgsJoin.prototype.toJSON = function () {
+        return {
+            user_uuid: this.user_uuid.toString(),
+            org_sku: this.org_sku.toString(),
+            name: this.name.toString(),
+            description: this.description.toString(),
+            cause: this.cause.toString(),
+            link: this.link.toString(),
+            img: this.img.toString(),
+            active: this.active.toString(),
+        };
+    };
+    return UserOrgsJoin;
+}());
+exports.UserOrgsJoin = UserOrgsJoin;
+// NOT COMPLETED
+// class Transactions {
+//   readonly user_uuid?: UUID;
+//   recipient?: CharOnly;
+//   payment_uuid?: UUID;
+//   snoozes?: NumOnly;
+//   dismisses?: NumOnly;
+//   wakes?: NumOnly;
+//   total?: NumOnly;
+//
+//
+//   private constructor(args:{
+//     user_uuid?: UUID;
+//     org_uuid?: UUID;
+//     active?: Bool;
+//   } = {}) {
+//     this.user_uuid   = args.user_uuid;
+//     this.org_uuid  = args.org_uuid;
+//     this.active = args.active;
+//   }
+//
+//   static fromJSON(args: {[key: string]: any}) : Transactions {
+//     let res = Transactions.validate(args);
+//     if (res.isOkay) {
+//       let res = new Transactions({
+//         email: Email.create(args.email),
+//       })
+//       return res.toJSON();
+//     } else {
+//       throw new Error ('error happens at fromJSON');
+//     }
+//   }
+//
+//   static validate(args: {[key: string] : any}) : ValidationResult {
+//     let propValidation = {
+//       email: Email.validate(args.email),
+//     }
+//     ValidationResult.isValid(args, propValidation)
+//     return { isOkay: true };
+//   }
+//
+//   toJSON() : any {
+//     return {
+//       email: this.email.toString(),
+//     };
+//   }
+// } 
 //# sourceMappingURL=value-objects.js.map

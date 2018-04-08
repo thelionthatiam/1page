@@ -42,7 +42,7 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
-    QuerySvc.prototype.getUserOrgData = function (values) {
+    QuerySvc.prototype.getUserOrgsData = function (values) {
         var text = 'SELECT x.org_uuid, name, description, link, cause, active, img, org_sku, user_uuid FROM orgs x INNER JOIN user_orgs y ON x.org_uuid = y.org_uuid AND (user_uuid = $1)';
         return this.conn.query(text, values)
             .then(function (result) {
@@ -50,7 +50,11 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('Nothing in the database here...');
             }
             else {
-                return result.rows;
+                var validatedOrgs = [];
+                for (var i = 0; i < result.rows.length; i++) {
+                    validatedOrgs.push(R.UserOrgsJoin.fromJSON(result.rows[i]));
+                }
+                return validatedOrgs;
             }
         });
     };
@@ -76,7 +80,19 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.getOrgs = function (values) {
         var text = 'SELECT * FROM orgs';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Unable to retrieve orgs at this time. No orgs were present.');
+            }
+            else {
+                var validatedOrgs = [];
+                for (var i = 0; i < result.rows.length; i++) {
+                    validatedOrgs.push(R.OrgsDB.fromJSON(result.rows[i]));
+                }
+                return validatedOrgs;
+            }
+        });
     };
     QuerySvc.prototype.getUserAlarms = function (values) {
         var text = 'SELECT * FROM alarms WHERE user_uuid = $1';
