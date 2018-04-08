@@ -41,7 +41,7 @@ export default class QuerySvc {
         if (result.rowCount === 0) {
           throw new Error( 'Nothing in the database here...')
         } else {
-          return result.rows;
+          return result;
         }
       })
   }
@@ -85,15 +85,12 @@ export default class QuerySvc {
     return this.conn.query(text, values);
   }
 
-  getUserAlarms(values:V.UUID[]) {
+  getAlarms(values:V.UUID[]) {
     const text = 'SELECT * FROM alarms WHERE user_uuid = $1'
     return this.conn.query(text, values)
-      .then(result => {
-        return result.rows
-      })
   }
 
-  getUserAlarm(values:[V.UUID, V.UUID]) {
+  getAlarm(values:[V.UUID, V.UUID]) {
     const text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2'
     return this.conn.query(text, values)
       .then(result => result.rows[0])

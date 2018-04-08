@@ -3,6 +3,43 @@ import * as ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
 import { populate } from './actions/user-data'
 
+
+const Test = ({userData, populate}) => {
+    console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate)
+    return (
+        <div>
+            <p>THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX</p>    
+            <div><pre>{JSON.stringify(userData, null, 2) }</pre></div>
+            <button onClick = {populate} className = 'button dark-button'>get user data</button>
+        </div>
+    )
+}
+
+const mapStateToProps = state => {
+console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state)
+    return {
+        userData: state.userData
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', populate)
+    return {
+        populate: (userData) => dispatch(populate(userData))
+    }
+}
+
+const TestApp = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Test)
+
+
+
+export { TestApp };
+
+
+
 // class Tester extends React.Component {
 //     user: any;
 //     props: any;
@@ -24,36 +61,3 @@ import { populate } from './actions/user-data'
 //     }
 // }
 // <div><pre>{JSON.stringify({userData}, null, 2)}</pre></div>
-const Test = ({userData, populate}) => {
-    console.log('test component', userData, populate)
-    return (
-        <div>
-            <p>THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX</p>    
-            <p>{userData}</p>
-            <button onClick = {populate}>get user data</button>
-        </div>
-    )
-}
-
-const mapStateToProps = state => {
-    console.log('map state to porps')
-    return {
-        userData: state.populateUserData.userData
-    }
-}
-
-const mapDispatchToProps = dispatch => {
-    console.log('map dispatch')
-    return {
-        populate: () => dispatch(populate())
-    }
-}
-
-const TestApp = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Test)
-
-
-
-export { TestApp };

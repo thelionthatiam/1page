@@ -38,7 +38,7 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('Nothing in the database here...');
             }
             else {
-                return result.rows;
+                return result;
             }
         });
     };
@@ -78,14 +78,11 @@ var QuerySvc = /** @class */ (function () {
         var text = 'SELECT * FROM orgs';
         return this.conn.query(text, values);
     };
-    QuerySvc.prototype.getUserAlarms = function (values) {
+    QuerySvc.prototype.getAlarms = function (values) {
         var text = 'SELECT * FROM alarms WHERE user_uuid = $1';
-        return this.conn.query(text, values)
-            .then(function (result) {
-            return result.rows;
-        });
+        return this.conn.query(text, values);
     };
-    QuerySvc.prototype.getUserAlarm = function (values) {
+    QuerySvc.prototype.getAlarm = function (values) {
         var text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2';
         return this.conn.query(text, values)
             .then(function (result) { return result.rows[0]; });
@@ -401,4 +398,4 @@ var QuerySvc = /** @class */ (function () {
 }());
 exports.default = QuerySvc;
 ;
-//# sourceMappingURL=queries.js.map
+//# sourceMappingURL=le-old-queries.js.map

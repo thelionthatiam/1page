@@ -2,16 +2,85 @@
 // import newAccount from './new-account';
 // import login, { Login } from './login'
 // import home from './home'
+// import appReducers from './reducers/app-reducers';
 import { TestApp } from './test';
-import { populate } from './actions/user-data';
-import appReducers from './reducers/app-reducers';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { POPULATE, populate } from './actions/user-data'
+
+
+let initialState = {userData: 'foo'}
+
+
+// runs multiple times for checking purposes
+// store calls the reducer which updates the state based on the actions
+
+function reducer(state = initialState, action) {
+    console.log('~~~~~~~~~~~~~~~~~~~~1. reducer, populate user data', action, state)
+    switch (action.type) {
+        case POPULATE:
+            console.log('reducer POPULATE', action.userData)
+            return Object.assign({}, state, { userData:action.userData }) 
+        default:
+            console.log('~~~~~~~~~~~~~~~~~~~~2. reducer default')
+            return state;
+    }
+}  
+
+let store = createStore(reducer, composeWithDevTools(
+    applyMiddleware(
+        thunkMiddleware,
+    )
+))
+
+console.log('~~~~~~~~~~~~~~~~~~~~ 3. store', store)
+function app() {
+  ReactDOM.render(
+    <Provider store = { store }>
+        <TestApp/>
+    </Provider>,
+  document.getElementById('app')
+);
+}
+
+
+
+export { app, store, populate };
+
+
+
+
+// const preloadedState = window.__PRELOADED_STATE__
+//  
+// // Allow the passed state to be garbage-collected
+// delete window.__PRELOADED_STATE__
+//  
+// // Create Redux store with initial state
+
+//  
+// // ReactDOM.render(
+// //   <Provider store={store}>
+// //     <TestApp />
+// //   </Provider>,
+// //   document.getElementById('app')
+// // )
+
+
+// const Thing = <Provider store = {store}><TestApp/></Provider>
+
+
+// ReactDOM.hydrate(
+//   <Provider store={store}>
+//     <TestApp />
+//   </Provider>,
+//   document.getElementById('app')
+// )
+
 
 
 
@@ -46,49 +115,3 @@ import { createStore, applyMiddleware } from 'redux';
 //       document.getElementById(elID)
 //   ); 
 // }
-
-const store = createStore(appReducers, composeWithDevTools(
-    applyMiddleware(
-        thunkMiddleware,
-    )
-))
-function app() {
-    console.log('store', store)
-    return ReactDOM.render(
-        <Provider store = { store }>
-            <TestApp/>
-        </Provider>,
-      document.getElementById('app')
-    );
-}
-
-
-// const preloadedState = window.__PRELOADED_STATE__
-//  
-// // Allow the passed state to be garbage-collected
-// delete window.__PRELOADED_STATE__
-//  
-// // Create Redux store with initial state
-
-//  
-// // ReactDOM.render(
-// //   <Provider store={store}>
-// //     <TestApp />
-// //   </Provider>,
-// //   document.getElementById('app')
-// // )
-
-
-// const Thing = <Provider store = {store}><TestApp/></Provider>
-
-
-// ReactDOM.hydrate(
-//   <Provider store={store}>
-//     <TestApp />
-//   </Provider>,
-//   document.getElementById('app')
-// )
-
-
-
-export { populate, app };

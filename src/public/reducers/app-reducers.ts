@@ -1,9 +1,15 @@
-import { combineReducers } from 'redux';
+
+import {combineReducers} from 'redux';
 import { REQ_PERMISSIONS, RECEIVE_PERMISSIONS } from '../actions/permissions';
 import { REQ_ALARMS, RECEIVE_ALARMS } from '../actions/alarms';
+import {POPULATE} from '../actions/user-data'
 // import { REQ_USER, RECEIVE_USER } from '../actions/user-data'
 // import { settings } from 'cluster';
-import { POPULATE } from '../actions/user-data'
+
+
+// export default appReducers;
+
+
 
 // let initialState = {
 //     permission: 'guest',
@@ -78,26 +84,3 @@ import { POPULATE } from '../actions/user-data'
 //             return state
 //     }
 // }
-
-let initialState = { userData: 'nothing populated, click below to see whats up' }
-
-const populateUserData = (state = initialState, action) => {
-    console.log('reducer, populate user data')
-    switch (action.type) {
-        case POPULATE:
-            console.log('reducer POPULATE', action.data)
-            return Object.assign({}, state, { userData: 'whatever' }) // where are you, user data?
-        default:
-            console.log('reducer default')
-            return state;
-    }
-}
-
-
-const appReducers = combineReducers({
-    populateUserData
-})
-
-export default appReducers;
-
-

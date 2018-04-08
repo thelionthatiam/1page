@@ -3,6 +3,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_redux_1 = require("react-redux");
 var user_data_1 = require("./actions/user-data");
+var Test = function (_a) {
+    var userData = _a.userData, populate = _a.populate;
+    console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate);
+    return (React.createElement("div", null,
+        React.createElement("p", null, "THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX"),
+        React.createElement("div", null,
+            React.createElement("pre", null, JSON.stringify(userData, null, 2))),
+        React.createElement("button", { onClick: populate, className: 'button dark-button' }, "get user data")));
+};
+var mapStateToProps = function (state) {
+    console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state);
+    return {
+        userData: state.userData
+    };
+};
+var mapDispatchToProps = function (dispatch) {
+    console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', user_data_1.populate);
+    return {
+        populate: function (userData) { return dispatch(user_data_1.populate(userData)); }
+    };
+};
+var TestApp = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Test);
+exports.TestApp = TestApp;
 // class Tester extends React.Component {
 //     user: any;
 //     props: any;
@@ -20,27 +43,5 @@ var user_data_1 = require("./actions/user-data");
 //         )
 //     }
 // }
-// <div><pre>{JSON.stringify({userData}, null, 2)}</pre></div>
-var Test = function (_a) {
-    var userData = _a.userData, populate = _a.populate;
-    console.log('test component', userData, populate);
-    return (React.createElement("div", null,
-        React.createElement("p", null, "THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX"),
-        React.createElement("p", null, userData),
-        React.createElement("button", { onClick: populate }, "get user data")));
-};
-var mapStateToProps = function (state) {
-    console.log('map state to porps');
-    return {
-        userData: state.populateUserData.userData
-    };
-};
-var mapDispatchToProps = function (dispatch) {
-    console.log('map dispatch');
-    return {
-        populate: function () { return dispatch(user_data_1.populate()); }
-    };
-};
-var TestApp = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Test);
-exports.TestApp = TestApp;
+// <div><pre>{JSON.stringify({userData}, null, 2)}</pre></div> 
 //# sourceMappingURL=test.js.map

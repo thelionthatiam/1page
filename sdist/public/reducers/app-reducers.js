@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var redux_1 = require("redux");
 // import { REQ_USER, RECEIVE_USER } from '../actions/user-data'
 // import { settings } from 'cluster';
-var user_data_1 = require("../actions/user-data");
+// export default appReducers;
 // let initialState = {
 //     permission: 'guest',
 // }
@@ -70,22 +69,5 @@ var user_data_1 = require("../actions/user-data");
 //         default:
 //             return state
 //     }
-// }
-var initialState = { userData: 'nothing populated, click below to see whats up' };
-var populateUserData = function (state, action) {
-    if (state === void 0) { state = initialState; }
-    console.log('reducer, populate user data');
-    switch (action.type) {
-        case user_data_1.POPULATE:
-            console.log('reducer POPULATE', action.data);
-            return Object.assign({}, state, { userData: 'whatever' }); // where are you, user data?
-        default:
-            console.log('reducer default');
-            return state;
-    }
-};
-var appReducers = redux_1.combineReducers({
-    populateUserData: populateUserData
-});
-exports.default = appReducers;
+// } 
 //# sourceMappingURL=app-reducers.js.map

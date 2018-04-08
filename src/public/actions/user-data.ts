@@ -1,9 +1,18 @@
+// action
 export const POPULATE = 'POPULATE';
 
-export const populate = () => {
-    console.log('action populate dispatcher run, type populate')
+
+// action creator
+// export const populate = userData => ({
+//     type: POPULATE,
+//     userData
+// })
+
+export function populate (userData) {
+    console.log('~~~~~~~~~~~~~~~~~~.6 userData', userData)
     return {
-        type: POPULATE
+        type: POPULATE,
+        userData
     }
 }
 

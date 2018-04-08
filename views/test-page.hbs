@@ -3,7 +3,9 @@
 
 <script src='./rollup/bundle.js'></script>
 <script>
-    {{!-- a.render('root', { userData: {{{ userState }}}}); --}}
+    let initialState = {{{userDataForRender}}}
+    console.log('!!!!!!!!!!', a.store)
+    console.log('!!!!!!!!!!', a.store.dispatch)
     a.app()
-
+    a.store.dispatch(a.populate(initialState))
 </script>

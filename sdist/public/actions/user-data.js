@@ -1,12 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// action
 exports.POPULATE = 'POPULATE';
-exports.populate = function () {
-    console.log('action populate dispatcher run, type populate');
+// action creator
+// export const populate = userData => ({
+//     type: POPULATE,
+//     userData
+// })
+function populate(userData) {
+    console.log('~~~~~~~~~~~~~~~~~~.6 userData', userData);
     return {
-        type: exports.POPULATE
+        type: exports.POPULATE,
+        userData: userData
     };
-};
+}
+exports.populate = populate;
 // export const REQ_USER = 'REQ_USER';
 // const reqUserData = () => {
 //     return {type: REQ_USER}
