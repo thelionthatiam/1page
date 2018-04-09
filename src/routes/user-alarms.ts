@@ -3,6 +3,12 @@ import { db } from '../middleware/database';
 import AlarmSvc from '../logic/logic-alarms';
 const alarms = express.Router();
 
+// YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+import * as url from 'url';
+import * as qs from 'querystring';
+
+import * as React from 'react';
+// YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 
 // random helper that will go with logic for alarms
 
@@ -96,7 +102,10 @@ alarms.route('/:title')
         })
         .catch((err) => {
           console.log(err.stack)
-          res.render('account/alarms/edit-alarm', { dbError: err.stack });
+          // put info into sessions
+          // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+          res.redirect('/app/account/alarms/edit-alarm?' + qs.stringify({ dbError: err.stack })); // change route to make route
+          // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
         });
     })
     .delete((req, res) => {
