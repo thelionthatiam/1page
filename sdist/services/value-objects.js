@@ -70,6 +70,50 @@ var UserSession = /** @class */ (function () {
     return UserSession;
 }());
 exports.UserSession = UserSession;
+var UserInputs = /** @class */ (function () {
+    function UserInputs(args) {
+        if (args === void 0) { args = {}; }
+        this.email = args.email;
+        this.phone = args.phone;
+        this.name = args.name;
+        this.password = args.password;
+    }
+    UserInputs.fromJSON = function (args) {
+        var res = UserInputs.validate(args);
+        if (res.isOkay) {
+            var res_2 = new UserInputs({
+                email: validation_1.Email.create(args.email),
+                phone: validation_1.NumOnly.create(args.phone),
+                name: validation_1.CharOnly.create(args.name),
+                password: args.password
+            });
+            return res_2.toJSON();
+        }
+        else {
+            throw new Error('error happens at fromJSON');
+        }
+    };
+    UserInputs.validate = function (args) {
+        var propValidation = {
+            email: validation_1.Email.validate(args.email),
+            phone: validation_1.NumOnly.validate(args.phone),
+            name: validation_1.CharOnly.validate(args.name),
+            password: validation_1.String.validate(args.password)
+        };
+        ValidationResult.isValid(args, propValidation);
+        return { isOkay: true };
+    };
+    UserInputs.prototype.toJSON = function () {
+        return {
+            email: this.email.toString(),
+            phone: this.phone.toString(),
+            name: this.name.toString(),
+            password: this.password.toString()
+        };
+    };
+    return UserInputs;
+}());
+exports.UserInputs = UserInputs;
 var UserDB = /** @class */ (function () {
     function UserDB(args) {
         if (args === void 0) { args = {}; }
@@ -83,7 +127,7 @@ var UserDB = /** @class */ (function () {
     UserDB.fromJSON = function (args) {
         var res = UserDB.validate(args);
         if (res.isOkay) {
-            var res_2 = new UserDB({
+            var res_3 = new UserDB({
                 email: validation_1.Email.create(args.email),
                 user_uuid: validation_1.UUID.create(args.user_uuid),
                 permission: validation_1.Permission.create(args.permission),
@@ -91,7 +135,7 @@ var UserDB = /** @class */ (function () {
                 name: validation_1.CharOnly.create(args.name),
                 password: args.password
             });
-            return res_2.toJSON();
+            return res_3.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -135,12 +179,12 @@ var UserOrgsDB = /** @class */ (function () {
     UserOrgsDB.fromJSON = function (args) {
         var res = UserOrgsDB.validate(args);
         if (res.isOkay) {
-            var res_3 = new UserOrgsDB({
+            var res_4 = new UserOrgsDB({
                 user_uuid: validation_1.UUID.create(args.user_uuid),
                 org_uuid: validation_1.UUID.create(args.org_uuid),
                 active: validation_1.Bool.create(args.active),
             });
-            return res_3.toJSON();
+            return res_4.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -175,12 +219,12 @@ var CartDB = /** @class */ (function () {
     CartDB.fromJSON = function (args) {
         var res = CartDB.validate(args);
         if (res.isOkay) {
-            var res_4 = new CartDB({
+            var res_5 = new CartDB({
                 user_uuid: validation_1.UUID.create(args.user_uuid),
                 cart_uuid: validation_1.UUID.create(args.cart_uuid),
                 card_number: validation_1.NumOnly.create(args.card_number),
             });
-            return res_4.toJSON();
+            return res_5.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -219,7 +263,7 @@ var OrgsDB = /** @class */ (function () {
     OrgsDB.fromJSON = function (args) {
         var res = OrgsDB.validate(args);
         if (res.isOkay) {
-            var res_5 = new OrgsDB({
+            var res_6 = new OrgsDB({
                 org_uuid: validation_1.UUID.create(args.org_uuid),
                 org_sku: validation_1.String.create(args.org_sku),
                 name: validation_1.CharOnly.create(args.name),
@@ -228,7 +272,7 @@ var OrgsDB = /** @class */ (function () {
                 link: validation_1.String.create(args.link),
                 img: args.img
             });
-            return res_5.toJSON();
+            return res_6.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -276,7 +320,7 @@ var UserSettings = /** @class */ (function () {
     UserSettings.fromJSON = function (args) {
         var res = UserSettings.validate(args);
         if (res.isOkay) {
-            var res_6 = new UserSettings({
+            var res_7 = new UserSettings({
                 user_uuid: validation_1.UUID.create(args.user_uuid),
                 payment_scheme: validation_1.String.create(args.payment_scheme),
                 snooze_price: validation_1.NumOnly.create(args.snooze_price),
@@ -286,7 +330,7 @@ var UserSettings = /** @class */ (function () {
                 snooze_max: validation_1.NumOnly.create(args.snooze_max),
                 active_payment: validation_1.UUID.create(args.active_payment)
             });
-            return res_6.toJSON();
+            return res_7.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -338,7 +382,7 @@ var UserOrgsJoin = /** @class */ (function () {
     UserOrgsJoin.fromJSON = function (args) {
         var res = UserOrgsJoin.validate(args);
         if (res.isOkay) {
-            var res_7 = new UserOrgsJoin({
+            var res_8 = new UserOrgsJoin({
                 org_uuid: validation_1.UUID.create(args.org_uuid),
                 user_uuid: validation_1.UUID.create(args.user_uuid),
                 org_sku: args.org_sku,
@@ -349,7 +393,7 @@ var UserOrgsJoin = /** @class */ (function () {
                 img: args.img,
                 active: validation_1.Bool.create(args.active)
             });
-            return res_7.toJSON();
+            return res_8.toJSON();
         }
         else {
             throw new Error('error happens at fromJSON');
@@ -385,51 +429,4 @@ var UserOrgsJoin = /** @class */ (function () {
     return UserOrgsJoin;
 }());
 exports.UserOrgsJoin = UserOrgsJoin;
-// NOT COMPLETED
-// class Transactions {
-//   readonly user_uuid?: UUID;
-//   recipient?: CharOnly;
-//   payment_uuid?: UUID;
-//   snoozes?: NumOnly;
-//   dismisses?: NumOnly;
-//   wakes?: NumOnly;
-//   total?: NumOnly;
-//
-//
-//   private constructor(args:{
-//     user_uuid?: UUID;
-//     org_uuid?: UUID;
-//     active?: Bool;
-//   } = {}) {
-//     this.user_uuid   = args.user_uuid;
-//     this.org_uuid  = args.org_uuid;
-//     this.active = args.active;
-//   }
-//
-//   static fromJSON(args: {[key: string]: any}) : Transactions {
-//     let res = Transactions.validate(args);
-//     if (res.isOkay) {
-//       let res = new Transactions({
-//         email: Email.create(args.email),
-//       })
-//       return res.toJSON();
-//     } else {
-//       throw new Error ('error happens at fromJSON');
-//     }
-//   }
-//
-//   static validate(args: {[key: string] : any}) : ValidationResult {
-//     let propValidation = {
-//       email: Email.validate(args.email),
-//     }
-//     ValidationResult.isValid(args, propValidation)
-//     return { isOkay: true };
-//   }
-//
-//   toJSON() : any {
-//     return {
-//       email: this.email.toString(),
-//     };
-//   }
-// } 
 //# sourceMappingURL=value-objects.js.map

@@ -194,7 +194,7 @@ var QuerySvc = /** @class */ (function () {
     };
     // insert
     QuerySvc.prototype.insertUser = function (values) {
-        var text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
+        var text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
         return this.conn.query(text, values)
             .then(function (result) { return result.rows[0]; });
     };

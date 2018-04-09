@@ -208,8 +208,8 @@ export default class QuerySvc {
   }
 
   // insert
-  insertUser(values:[V.Email, V.NumOnly, V.String, V.CharOnly, V.String]) {
-    const text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
+  insertUser(values: [V.Email, V.NumOnly, V.CharOnly, V.String, V.String]) {
+    const text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(text, values)
       .then(result => result.rows[0])
   }

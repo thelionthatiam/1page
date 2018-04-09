@@ -80,6 +80,57 @@ class UserSession {
   }
 }
 
+
+class UserInputs {
+  readonly email?: Email;
+  readonly phone?: NumOnly;
+  readonly name?: CharOnly;
+  readonly password?: string;
+
+  private constructor(args: { email?: Email; phone?: NumOnly; name?: CharOnly; password?: string } = {}) {
+    this.email = args.email;
+    this.phone = args.phone;
+    this.name = args.name;
+    this.password = args.password;
+  }
+
+  static fromJSON(args: { [key: string]: any }): UserDB {
+    let res = UserInputs.validate(args);
+    if (res.isOkay) {
+      let res = new UserInputs({
+        email: Email.create(args.email),
+        phone: NumOnly.create(args.phone),
+        name: CharOnly.create(args.name),
+        password: args.password
+      })
+      return res.toJSON();
+    } else {
+      throw new Error('error happens at fromJSON');
+    }
+  }
+
+  static validate(args: { [key: string]: any }): ValidationResult {
+    let propValidation = {
+      email: Email.validate(args.email),
+      phone: NumOnly.validate(args.phone),
+      name: CharOnly.validate(args.name),
+      password: String.validate(args.password)
+    }
+    ValidationResult.isValid(args, propValidation)
+    return { isOkay: true };
+  }
+
+  toJSON(): any {
+    return {
+      email: this.email.toString(),
+      phone: this.phone.toString(),
+      name: this.name.toString(),
+      password: this.password.toString()
+    };
+  }
+}
+
+
 class UserDB {
   readonly      email?: Email;
   readonly  user_uuid?: UUID;
@@ -529,61 +580,13 @@ class UserOrgsJoin {
 // }
 
 export {
-  UserSession,
+  UserInputs,
   UserDB,
+  UserSession,
+  OrgsDB,
   UserOrgsDB,
   UserOrgsJoin,
-  CartDB,
-  OrgsDB,
-  UserSettings
+  CartDB,  
+  UserSettings,
 }
 
-
-
-// NOT COMPLETED
-// class Transactions {
-//   readonly user_uuid?: UUID;
-//   recipient?: CharOnly;
-//   payment_uuid?: UUID;
-//   snoozes?: NumOnly;
-//   dismisses?: NumOnly;
-//   wakes?: NumOnly;
-//   total?: NumOnly;
-//
-//
-//   private constructor(args:{
-//     user_uuid?: UUID;
-//     org_uuid?: UUID;
-//     active?: Bool;
-//   } = {}) {
-//     this.user_uuid   = args.user_uuid;
-//     this.org_uuid  = args.org_uuid;
-//     this.active = args.active;
-//   }
-//
-//   static fromJSON(args: {[key: string]: any}) : Transactions {
-//     let res = Transactions.validate(args);
-//     if (res.isOkay) {
-//       let res = new Transactions({
-//         email: Email.create(args.email),
-//       })
-//       return res.toJSON();
-//     } else {
-//       throw new Error ('error happens at fromJSON');
-//     }
-//   }
-//
-//   static validate(args: {[key: string] : any}) : ValidationResult {
-//     let propValidation = {
-//       email: Email.validate(args.email),
-//     }
-//     ValidationResult.isValid(args, propValidation)
-//     return { isOkay: true };
-//   }
-//
-//   toJSON() : any {
-//     return {
-//       email: this.email.toString(),
-//     };
-//   }
-// }
