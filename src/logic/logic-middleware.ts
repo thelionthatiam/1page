@@ -12,10 +12,12 @@ export class SessionCheckSvc {
     }
 
     getPermissions() {
-        return this
-            .querySvc
-            .getSessionID([this.user.uuid])
-            .then(result => this.querySvc.getUser([this.user.uuid]))
+        return this.querySvc.getSessionID([this.user.uuid])
+            .then(result => {
+                console.log('result of get session', result)
+                console.log('user uuid', this.user.uuid)
+                return this.querySvc.getUser([this.user.uuid])
+            })
             .then(result => result.permission)
     }
 }

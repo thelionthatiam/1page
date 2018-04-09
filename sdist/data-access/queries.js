@@ -23,9 +23,10 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error("Your session does not match the saved sesesion. Try to log in again");
+                throw new Error("Could not find your Your session does not match the saved session. Try to log in again.");
             }
             else {
+                console.log('get session id', result.rows);
                 return result.rows[0].sessionid;
             }
         });
@@ -63,10 +64,11 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('Nothing in the database here...');
+                throw new Error('No user with that in the database, sorry.');
             }
             else {
-                return R.UserDB.fromJSON(result.rows[0]);
+                console.log('get user result', result.rows);
+                return result.rows[0];
             }
         });
     };
@@ -191,28 +193,20 @@ var QuerySvc = /** @class */ (function () {
         });
     };
     // insert
-    // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertUser = function (values) {
         var text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
         return this.conn.query(text, values)
-            .then(function (result) { return R.UserDB.fromJSON({
-            email: result.rows[0].email,
-            user_uuid: result.rows[0].user_uuid,
-            permission: result.rows[0].permission,
-            phone: result.rows[0].phone,
-            name: result.rows[0].name,
-            password: result.rows[0].password
-        }); });
+            .then(function (result) { return result.rows[0]; });
     };
     QuerySvc.prototype.insertNonce = function (values) {
-        var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+        var text = 'INSERT INTO nonce (user_uuid, nonce) VALUES ($1, $2)';
         return this.conn.query(text, values)
             .then(function (result) { return result; });
     };
     QuerySvc.prototype.insertSession = function (values) {
         var text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
         return this.conn.query(text, values)
-            .then(function (result) { return null; });
+            .then(function (result) { return result.rows[0]; });
     };
     QuerySvc.prototype.insertSettings = function (values) {
         var text = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';

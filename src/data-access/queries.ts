@@ -1,6 +1,8 @@
 import * as V from '../services/validation';
 import * as R from '../services/value-objects';
 import * as pg from 'pg';
+
+import * as acccounts from './queries-accounts';
  
 export default class QuerySvc {
   conn:pg.Client;
@@ -27,8 +29,9 @@ export default class QuerySvc {
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
-          throw new Error( "Your session does not match the saved sesesion. Try to log in again")
+          throw new Error( "Could not find your Your session does not match the saved session. Try to log in again.")
         } else {
+          console.log('get session id', result.rows)
           return result.rows[0].sessionid;
         }
       })
@@ -62,14 +65,16 @@ export default class QuerySvc {
       })
   }
 
+
   getUser(values:V.UUID[]) {
     const text = "SELECT * FROM users WHERE user_uuid = $1";
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
-          throw new Error( 'Nothing in the database here...')
+          throw new Error( 'No user with that in the database, sorry.')
         } else {
-          return R.UserDB.fromJSON(result.rows[0]);
+          console.log('get user result', result.rows)
+          return result.rows[0];
         }
       })
   }
@@ -203,25 +208,14 @@ export default class QuerySvc {
   }
 
   // insert
-
-
-  // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
   insertUser(values:[V.Email, V.NumOnly, V.String, V.CharOnly, V.String]) {
     const text = 'INSERT INTO users(email, phone, password, name, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(text, values)
-      .then(result => R.UserDB.fromJSON({
-                        email:result.rows[0].email,
-                        user_uuid:result.rows[0].user_uuid,
-                        permission:result.rows[0].permission,
-                        phone:result.rows[0].phone,
-                        name:result.rows[0].name,
-                        password:result.rows[0].password
-                      })
-      )
+      .then(result => result.rows[0])
   }
 
   insertNonce(values:[V.UUID, string]) {
-    const text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
+    const text = 'INSERT INTO nonce (user_uuid, nonce) VALUES ($1, $2)';
     return this.conn.query(text, values)
       .then(result => result)
   }
@@ -229,7 +223,7 @@ export default class QuerySvc {
   insertSession(values:[V.UUID, string]) {
     const text = 'INSERT INTO session (user_uuid, sessionID) VALUES ($1, $2)';
     return this.conn.query(text, values)
-      .then(result => null)
+      .then(result => result.rows[0])
   }
 
   insertSettings(values:V.UUID[]) {

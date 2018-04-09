@@ -1,14 +1,12 @@
 import CreateAcctSvc from '../logic/logic-accounts';
+import { dbErrTranslator } from '../services/error-handling';
 import * as express from 'express';
 const accts = express.Router();
 
 //to sign up page
-accts.get('/new-account', function(req, res, next) {
-  res.locals.something = 'test';
-  res.render('new-account');
-});
+accts.get('/new-account', (req, res) => res.render('new-account'));
 
-
+// this seems to do nothing
 accts.post('/delete', function (req, res, next) {
   res.render('login', {
     accountDelete:true
@@ -17,7 +15,7 @@ accts.post('/delete', function (req, res, next) {
 
 accts.route('/accounts')
   .post((req,res) => {
-    let inputs = {
+    let inputs = { // ADD VALIDATION ONCE CREATE ACCOUNT WORKS
       email: req.body.email,
       phone: req.body.phone,
       password:req.body.password,
@@ -31,9 +29,10 @@ accts.route('/accounts')
         res.render('login');
       })
       .catch((err) => {
-        console.log(err)
+        let stack = new Error().stack
+        console.log('error', err, 'stack', stack)
         res.render('new-account', {
-          dbError:err
+          dbError:dbErrTranslator(err)
         })
       })
   })

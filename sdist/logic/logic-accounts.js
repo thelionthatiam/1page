@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var bcrypt = require("bcrypt");
+var E = require("../services/error-handling");
 var CreateAcctSvc = /** @class */ (function () {
     function CreateAcctSvc(querySvc, inputs, sessionID) {
         this.querySvc = querySvc;
         this.inputs = inputs;
-        this.userInputValues = [this.inputs.email, this.inputs.phone, this.inputs.password, this.inputs.name, 'user'];
         this.sessionID = sessionID;
         this.user;
         this.hash = this.hash.bind(this);
@@ -15,10 +15,10 @@ var CreateAcctSvc = /** @class */ (function () {
         var _this = this;
         return bcrypt.hash(this.inputs.password, 10)
             .then(function (hash) {
-            _this.userInputValues[2] = hash;
+            console.log('hashed completed,', hash);
+            _this.inputs.hashedPassword = hash;
             return null;
-        })
-            .catch(function (e) { return e; });
+        });
     };
     CreateAcctSvc.prototype.randomString = function () {
         return new Promise(function (resolve, reject) {
@@ -32,23 +32,39 @@ var CreateAcctSvc = /** @class */ (function () {
                 console.log('err', err);
                 reject(err);
             }
-            console.log(string);
+            console.log('random string completed,', string);
             resolve(string);
         });
     };
     CreateAcctSvc.prototype.createAcct = function () {
         var _this = this;
-        return this.hash()
-            .then(function () { return _this.querySvc.insertUser(_this.userInputValues); })
+        return E.passChecker(this.inputs.password)
+            .then(function () { return _this.hash(); })
+            .then(function () { return _this.querySvc.insertUser([
+            _this.inputs.email,
+            _this.inputs.phone,
+            _this.inputs.hashedPassword,
+            _this.inputs.name,
+            'user'
+        ]); })
             .then(function (user) {
+            console.log('user inserted', user);
             _this.user = user;
             return _this.randomString();
         })
-            .then(function (nonce) { return _this.querySvc.insertNonce(nonce); })
-            .then(function () { return _this.querySvc.insertSession([_this.user.user_uuid, _this.sessionID]); })
-            .then(function () { return _this.querySvc.insertSettings([_this.user.user_uuid]); })
-            .then(function () { return null; })
-            .catch(function (e) { return e; });
+            .then(function (nonce) {
+            console.log('nonce created', nonce);
+            _this.querySvc.insertNonce([_this.user.user_uuid, nonce]);
+        })
+            .then(function () {
+            console.log('nonce inserted');
+            console.log('session inputs', _this.user.user_uuid, _this.sessionID);
+            _this.querySvc.insertSession([_this.user.user_uuid, _this.sessionID]);
+        })
+            .then(function (sessionInDB) {
+            console.log('insert session completed', sessionInDB);
+            _this.querySvc.insertSettings([_this.user.user_uuid]);
+        });
     };
     return CreateAcctSvc;
 }());

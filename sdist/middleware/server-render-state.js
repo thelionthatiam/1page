@@ -7,9 +7,7 @@ function renderState(req, res, next) {
     if (res.locals.permission === 'user') {
         res.locals.loggedIn = true;
         req.RenderStateSvc = new logic_middleware_1.RenderStateSvc(req.querySvc, req.session.user);
-        req
-            .RenderStateSvc
-            .getEverything()
+        req.RenderStateSvc.getEverything()
             .then(function (userData) {
             res.locals.userData = userData;
             res.locals.userDataForRender = JSON.stringify(userData);
@@ -28,7 +26,6 @@ function renderState(req, res, next) {
     else {
         res.locals.loggedIn = false;
         console.log('render state says im a guest');
-        console.log('ARE THESE CHANGES COMPILING');
         next();
     }
 }

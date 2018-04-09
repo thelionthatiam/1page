@@ -9,7 +9,6 @@ var methodOverride = require("method-override");
 var cors = require("cors");
 var db_connect_config_1 = require("./services/db-connect-config");
 var database_1 = require("./middleware/database");
-var server_render_state_1 = require("./middleware/server-render-state");
 var session_check_1 = require("./middleware/session-check");
 var e = require("./services/error-handling");
 var app = express(); //
@@ -41,7 +40,7 @@ app.use(session({
     },
 }));
 app.use(session_check_1.default);
-app.use(server_render_state_1.default);
+// app.use(renderState);
 // app.use(handleRender);
 app.use('/', require('./index'));
 // ERROR STUFF

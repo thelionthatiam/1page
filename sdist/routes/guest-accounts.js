@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var logic_accounts_1 = require("../logic/logic-accounts");
+var error_handling_1 = require("../services/error-handling");
 var express = require("express");
 var accts = express.Router();
 //to sign up page
-accts.get('/new-account', function (req, res, next) {
-    res.locals.something = 'test';
-    res.render('new-account');
-});
+accts.get('/new-account', function (req, res) { return res.render('new-account'); });
+// this seems to do nothing
 accts.post('/delete', function (req, res, next) {
     res.render('login', {
         accountDelete: true
@@ -27,9 +26,10 @@ accts.route('/accounts')
         res.render('login');
     })
         .catch(function (err) {
-        console.log(err);
+        var stack = new Error().stack;
+        console.log('error', err, 'stack', stack);
         res.render('new-account', {
-            dbError: err
+            dbError: error_handling_1.dbErrTranslator(err)
         });
     });
 });

@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import * as E from '../services/error-handling';
 import * as R from '../services/value-objects';
 import * as V from '../services/validation';
 import QuerySvc from '../data-access/queries';
@@ -9,8 +10,8 @@ export default class CreateAcctSvc {
         phone:V.NumOnly;
         password:V.String;
         name:V.CharOnly;
+        hashedPassword?:string;
     };
-    userInputValues:[V.Email, V.NumOnly, V.String, V.CharOnly, V.String]
     querySvc:QuerySvc;
     user:R.UserDB;
     sessionID:string;
@@ -19,7 +20,6 @@ export default class CreateAcctSvc {
     constructor(querySvc, inputs, sessionID) {
         this.querySvc = querySvc;
         this.inputs = inputs;
-        this.userInputValues = [this.inputs.email, this.inputs.phone, this.inputs.password, this.inputs.name, 'user']
         this.sessionID = sessionID;
         this.user;
 
@@ -30,11 +30,10 @@ export default class CreateAcctSvc {
     hash() {
         return bcrypt.hash(this.inputs.password, 10)
             .then(hash => {
-                this.userInputValues[2] = hash
+                console.log('hashed completed,', hash)
+                this.inputs.hashedPassword = hash
                 return null;
             })
-            .catch(e => e)
-
     }
 
     randomString() {
@@ -50,24 +49,40 @@ export default class CreateAcctSvc {
                     console.log('err', err)
                     reject(err)
                 }
-                console.log(string)
+                console.log('random string completed,', string)
                 resolve(string);
             }
         )
     }
 
     createAcct() {
-        return this.hash()
-            .then(() => this.querySvc.insertUser(this.userInputValues))
+        return E.passChecker(this.inputs.password)
+            .then(() => this.hash())
+            .then(() => this.querySvc.insertUser([
+                this.inputs.email,
+                this.inputs.phone,
+                this.inputs.hashedPassword, 
+                this.inputs.name,
+                'user'])
+            ) 
             .then((user) => {
+                console.log('user inserted', user)
                 this.user = user;
                 return this.randomString()
             })
-            .then((nonce) => this.querySvc.insertNonce(nonce))
-            .then(() => this.querySvc.insertSession([this.user.user_uuid, this.sessionID]))
-            .then(() => this.querySvc.insertSettings([this.user.user_uuid]))
-            .then(() => null)
-            .catch(e => e)
+            .then((nonce) => {
+                console.log('nonce created', nonce)
+                this.querySvc.insertNonce([this.user.user_uuid, nonce])
+            })
+            .then(() => {
+                console.log('nonce inserted')
+                console.log('session inputs', this.user.user_uuid, this.sessionID)
+                this.querySvc.insertSession([this.user.user_uuid, this.sessionID])
+            })
+            .then((sessionInDB) => {
+                console.log('insert session completed', sessionInDB)
+                this.querySvc.insertSettings([this.user.user_uuid])
+            })
     }
 }
 

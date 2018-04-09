@@ -7,10 +7,12 @@ var SessionCheckSvc = /** @class */ (function () {
     }
     SessionCheckSvc.prototype.getPermissions = function () {
         var _this = this;
-        return this
-            .querySvc
-            .getSessionID([this.user.uuid])
-            .then(function (result) { return _this.querySvc.getUser([_this.user.uuid]); })
+        return this.querySvc.getSessionID([this.user.uuid])
+            .then(function (result) {
+            console.log('result of get session', result);
+            console.log('user uuid', _this.user.uuid);
+            return _this.querySvc.getUser([_this.user.uuid]);
+        })
             .then(function (result) { return result.permission; });
     };
     return SessionCheckSvc;
