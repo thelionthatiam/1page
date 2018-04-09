@@ -11,7 +11,7 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('Nothing in the database here...');
+                throw new Error('Submitted email did not match anything in the database!');
             }
             else {
                 return R.UserDB.fromJSON(result.rows[0]);

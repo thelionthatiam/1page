@@ -10,30 +10,24 @@ export default class AuthSvc {
     querySvc: QuerySvc;
     sessionID: string;
     user: R.UserDB;
-    inputs: { email: V.Email, password: String };
-    req: Request;
+    inputs: R.AuthInputs;
     
     constructor(querySvc, inputs, sessionID) {
         this.sessionID = sessionID;
         this.querySvc = querySvc;
-        this.inputs = inputs;
+        this.inputs = R.AuthInputs.fromJSON(inputs);
         this.user;
-
-        this.checkPassword = this.checkPassword.bind(this);
-        this.defineSessionData = this.defineSessionData.bind(this);
-        this.doAuth = this.doAuth.bind(this);
     }
 
     checkPassword() {
-        bcrypt.compare(this.inputs.password, this.user.password) 
+        return bcrypt.compare(this.inputs.password, this.user.password) 
             .then((result : boolean) => {
-                if (result === false) {
-                    throw new Error('Password incorrect');
+                if (!result) {
+                    throw new Error('Password doesn\'t match our records, try again');
                 } else {
                     return result;
                 }
             })
-            .catch(err => err);
     }
 
     defineSessionData() {
@@ -51,14 +45,13 @@ export default class AuthSvc {
         return this.querySvc.getUserViaEmail([this.inputs.email])
             .then((result) => {
                 this.user = result;
-                return this.checkPassword();
+                return this.checkPassword()
             })
             .then(() => this.querySvc.updateSessionID([this.sessionID, this.user.user_uuid]))
             .then(() => {
                 let userDataForSession = this.defineSessionData();
                 return userDataForSession;
             })
-            .catch(err => err)
     }
 }
 

@@ -20,7 +20,8 @@ auth.post('/authorized', (req, res) => {
     })
     .catch((err:Error) => {
       console.log(err)
-      res.render('login', {dbError:err})
+      console.log('the final erro', err)
+      res.render('login', { dbError:err })
     })
 })
 

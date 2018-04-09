@@ -190,9 +190,44 @@ class UserDB {
   }
 }
 
-// user_uuid
-// org_uuid
-// active
+class AuthInputs {
+  readonly email?: Email;
+  readonly password?: string;
+
+  private constructor(args: { email?: Email; password?: string } = {}) {
+    this.email = args.email;
+    this.password = args.password;
+  }
+
+  static fromJSON(args: { [key: string]: any }): UserDB {
+    let res = AuthInputs.validate(args);
+    if (res.isOkay) {
+      let res = new AuthInputs({
+        email: Email.create(args.email),
+        password: args.password
+      })
+      return res.toJSON();
+    } else {
+      throw new Error('error happens at fromJSON');
+    }
+  }
+
+  static validate(args: { [key: string]: any }): ValidationResult {
+    let propValidation = {
+      email: Email.validate(args.email),
+      password: String.validate(args.password)
+    }
+    ValidationResult.isValid(args, propValidation)
+    return { isOkay: true };
+  }
+
+  toJSON(): any {
+    return {
+      email: this.email.toString(),
+      password: this.password.toString()
+    };
+  }
+}
 
 
 class UserOrgsDB {
@@ -583,6 +618,7 @@ export {
   UserInputs,
   UserDB,
   UserSession,
+  AuthInputs,
   OrgsDB,
   UserOrgsDB,
   UserOrgsJoin,

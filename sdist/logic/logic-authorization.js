@@ -8,23 +8,19 @@ var AuthSvc = /** @class */ (function () {
     function AuthSvc(querySvc, inputs, sessionID) {
         this.sessionID = sessionID;
         this.querySvc = querySvc;
-        this.inputs = inputs;
+        this.inputs = R.AuthInputs.fromJSON(inputs);
         this.user;
-        this.checkPassword = this.checkPassword.bind(this);
-        this.defineSessionData = this.defineSessionData.bind(this);
-        this.doAuth = this.doAuth.bind(this);
     }
     AuthSvc.prototype.checkPassword = function () {
-        bcrypt.compare(this.inputs.password, this.user.password)
+        return bcrypt.compare(this.inputs.password, this.user.password)
             .then(function (result) {
-            if (result === false) {
-                throw new Error('Password incorrect');
+            if (!result) {
+                throw new Error('Password doesn\'t match our records, try again');
             }
             else {
                 return result;
             }
-        })
-            .catch(function (err) { return err; });
+        });
     };
     AuthSvc.prototype.defineSessionData = function () {
         var session = R.UserSession.fromJSON({
@@ -46,8 +42,7 @@ var AuthSvc = /** @class */ (function () {
             .then(function () {
             var userDataForSession = _this.defineSessionData();
             return userDataForSession;
-        })
-            .catch(function (err) { return err; });
+        });
     };
     return AuthSvc;
 }());
