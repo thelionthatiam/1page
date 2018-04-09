@@ -55,9 +55,14 @@ CREATE TRIGGER revenue_update_timestamp
 ALTER TABLE alarms ADD COLUMN triggered boolean default FALSE;
 
 -- reset transaction db changes
-DELETE FROM org_transactions;
+DELETE FROM org_transactions;ß
 DELETE FROM revenue;
 DELETE FROM transactions;
 UPDATE snoozes SET paid = false;
 UPDATE dismisses SET paid = false;
 UPDATE wakes SET paid = false;
+
+-- when users are deleted, they are also removed from user_settings which had a foreign key to user_uuid
+
+ALTER TABLE user_settings DROP CONSTRAINT user_settings_user_uuid_fkey;
+ALTER TABLE user_settings ADD CONSTRAINT user_settings_user_uuid_fkey FOREIGN KEY (user_uuid) REFERENCES users(user_uuid) ON DELETE CASCADE;
