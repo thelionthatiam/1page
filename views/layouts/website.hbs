@@ -29,7 +29,7 @@
             </div>
             <div class="home-navigation-wrapper">
                 <ul class="home-navigation-list">
-                    <a href="#features-section">
+                    {{!-- <a href="#features-section">
                         <li class="home-navigation-item">features</li>
                     </a>
                     <a href="#about-section">
@@ -37,7 +37,7 @@
                     </a>
                     <a href="/dummy-route">
                         <li class="home-navigation-item">pricing</li>
-                    </a>
+                    </a> --}}
                     {{#if loggedIn}}
                     <form action='/log-out' method="POST">
                         <input class="home-navigation-item" type="submit" value="log out">
@@ -74,7 +74,7 @@
     <div class="home-try-alarm-wrapper" id="features-section">
         <h1>Add Alarm trial</h1>
     </div>
-    <div class="home-about-wrapper" id="about-section">
+    {{!-- <div class="home-about-wrapper" id="about-section">
         <h1>About section</h1>
         <div class="home-about-wrapper-center">
             <div class="home-about-wrapper-square"></div>
@@ -91,7 +91,7 @@
             <img class="icon" src="/icons/white/forward-1.svg" />
             <img class="icon" src="/icons/white/forward-1.svg" />
         </div>
-    </div>
+    </div> --}}
 </div>
 </div>
 {{!--<script src='./rollup/bundle.js'></script> --}}
