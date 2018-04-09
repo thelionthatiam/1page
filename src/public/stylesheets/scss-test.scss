@@ -597,10 +597,6 @@ button:focus {
   justify-content: center;
   align-items: center;
   background-color: $darkGrey;
-
-  .icon {
-    transform: rotate(90deg)
-  }
 }
 
 .home-try {
@@ -735,6 +731,7 @@ button:focus {
 .app-content {
   overflow:scroll;
   height:100vh;
+  width:100%;
 }
 
 .contentWrapper {

@@ -26,30 +26,30 @@
                     {{/if}}
                 </li>
     
-                <li class='app-menu-li'>
+                {{!-- <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/orgs" class='app-menu-text '>organizations</a>
                     {{else}}
                     <a href="/app/orgs/all" class='app-menu-text '>organizations</a>
                     {{/if}}
-                </li>
+                </li> --}}
     
-                <li class='app-menu-li'>
+                {{!-- <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/insights" class='app-menu-text'>insights</a>
                     {{else}}
                     <a href="/app/guest/insights" class='app-menu-text-disabled disabled-a'>insights</a>
                     {{/if}}
-                </li>
+                </li> --}}
     
                 <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/user-fem.svg' />
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}" class='app-menu-text'>profile</a>
                     {{else}}
-                    <a href="/app/guest/profile" class='app-menu-text-disabled disabled-a'>profile</a>
+                    <a class='app-menu-text-disabled disabled-a'>profile</a>
                     {{/if}}
                 </li>
                 <li class='app-menu-li'>
@@ -57,29 +57,29 @@
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/settings" class='app-menu-text'>settings</a>
                     {{else}}
-                    <a href="/app/guest/settings" class='app-menu-text-disabled disabled-a'>settings</a>
+                    <a class='app-menu-text-disabled disabled-a'>settings</a>
                     {{/if}}
                 </li>
                 {{#if loggedIn}}                
                 {{else}}
-                <li class='app-menu-li' id='logout'>
+                <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/heart.svg' />
                     <form action="/to-login" method="get">
                         <button type="submit" class="app-menu-text">log in</button>
                     </form>
                 </li>
                 {{/if}}
-    
+                {{#if loggedIn}}
                 <li class='app-menu-li' id='logout'>
                     <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
                     <form action="/log-out" method="post">
-                        {{#if loggedIn}}
+                       
                         <button type="submit" class="app-menu-text">logout</button>
-                        {{else}}
-                        <button type="submit" class="app-menu-text-disabled disabled-a">logout</button>
-                        {{/if}}
+
+                        
                     </form>
                 </li>
+                {{/if}}
                 <li>
                     <p> You're a {{permission}}.</p>
                 </li>

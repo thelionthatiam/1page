@@ -421,8 +421,6 @@ button:focus {
   justify-content: center;
   align-items: center;
   background-color: #282828; }
-  .home-tryit-wrapper .icon {
-    transform: rotate(90deg); }
 
 .home-try {
   text-transform: uppercase;
@@ -522,7 +520,8 @@ button:focus {
 
 .app-content {
   overflow: scroll;
-  height: 100vh; }
+  height: 100vh;
+  width: 100%; }
 
 .listWrapper {
   display: flex;

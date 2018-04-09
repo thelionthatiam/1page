@@ -4,6 +4,8 @@ var express = require("express");
 var database_1 = require("../middleware/database");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
+var qs = require("querystring");
+// YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 // random helper that will go with logic for alarms
 function compare(a, b) {
     var awakeA = parseInt(a.awake);
@@ -88,7 +90,10 @@ alarms.route('/:title')
     })
         .catch(function (err) {
         console.log(err.stack);
-        res.render('account/alarms/edit-alarm', { dbError: err.stack });
+        // put info into sessions
+        // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+        res.redirect('/app/account/alarms/edit-alarm?' + qs.stringify({ dbError: err.stack })); // change route to make route
+        // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
     });
 })
     .delete(function (req, res) {
