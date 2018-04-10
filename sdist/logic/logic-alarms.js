@@ -40,6 +40,9 @@ var AlarmsSvc = /** @class */ (function () {
         return this.querySvc.updateAlarmTitle([this.inputs.title, this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.toggleActiveAlarm = function () {
+        var state;
+        this.inputs.active === "true" ? state = false : state = true;
+        return this.querySvc.updateAlarmToggleActive([state, this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.weekObjToQueryValues = function () {
         return [

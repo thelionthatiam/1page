@@ -75,7 +75,6 @@ export default class AlarmsSvc {
     getAlarm() {
         return this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid])
     }
-
    
     updateAlarmTime() {
         return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid])
@@ -86,7 +85,9 @@ export default class AlarmsSvc {
     }
 
     toggleActiveAlarm() {
-
+        let state
+        this.inputs.active === "true" ? state = false : state = true;
+        return this.querySvc.updateAlarmToggleActive([state, this.inputs.alarm_uuid, this.user.uuid])
     }
 
     weekObjToQueryValues() {

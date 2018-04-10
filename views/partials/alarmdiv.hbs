@@ -14,12 +14,16 @@
         </form>
         <div class='toggle-active-wrapper'>
           {{#if active}}
-          <form action='put' method='POST'>
-            <button class="button light-button">disable</button>
+          <form action='/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/active?_method=PUT' method='POST'>
+            <button type = 'submit' class="button light-button">disable</button>
+            <input name = "alarm_uuid" type = "hidden" value = {{alarm_uuid}}>
+            <input name = "active" type = 'hidden' value = {{active}}>
           </form>
           {{else}}
-          <form action='put' method='POST'>
-            <button class="button dark-button">enable</button>
+          <form action='/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/active?_method=PUT' method='POST'>
+            <button type = 'submit' class="button dark-button">enable</button>
+            <input name = "alarm_uuid" type = "hidden" value = {{alarm_uuid}}>
+            <input name = "active" type = 'hidden' value = {{active}}>
           </form>
           {{/if}}
         </div>

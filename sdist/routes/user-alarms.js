@@ -104,6 +104,17 @@ alarms.route('/:alarm_uuid/title')
         res.render('error', { error: e });
     });
 });
+// TOGGLE ACTIVE
+alarms.route('/:alarm_uuid/active').put(function (req, res) {
+    console.log('change active', req.body);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.toggleActiveAlarm()
+        .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+});
 // CHANGE DAYS OF WEEK SECTION
 alarms.route('/:alarm_uuid/days-of-week')
     .get(function (req, res) {

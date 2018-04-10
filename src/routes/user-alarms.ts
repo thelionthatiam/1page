@@ -96,6 +96,7 @@ alarms.route('/:alarm_uuid/time')
         })
     })
 
+
 // CHANGE TITLE
 
 alarms.route('/:alarm_uuid/title')
@@ -123,13 +124,26 @@ alarms.route('/:alarm_uuid/title')
         })
     })
 
+// TOGGLE ACTIVE
+
+alarms.route('/:alarm_uuid/active').put((req, res) => {
+  console.log('change active', req.body)
+  req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+  req.AlarmSvc.toggleActiveAlarm()
+    .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+    .catch(e => {
+      console.log(e)
+      res.render('error', { error: e })
+    })
+})
+
+
 // CHANGE DAYS OF WEEK SECTION
 
 alarms.route('/:alarm_uuid/days-of-week')
     .get((req, res) => {
       console.log(req.query)
-      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)
-
+      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)      
       req.AlarmSvc.getAlarm()
         .then(alarm => res.render('account/alarms/days-of-week', alarm))
         .catch(e => {
