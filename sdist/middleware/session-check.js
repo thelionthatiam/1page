@@ -2,10 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var logic_middleware_1 = require("../logic/logic-middleware");
 function sessionCheck(req, res, next) {
-    console.log('session check running. user is:', req.session.user);
     if (req.session.user && req.sessionID) {
         if (req.session.user.permission === 'user') {
-            console.log('user and session id exist', req.session.user, req.sessionID);
             req.SessionCheckSvc = new logic_middleware_1.SessionCheckSvc(req.querySvc, req.session.user);
             req.SessionCheckSvc.getPermissions()
                 .then(function (permission) {

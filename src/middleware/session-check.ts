@@ -4,11 +4,8 @@ import * as express from "express";
 
 
 function sessionCheck(req:Express.Request, res, next:Function) {
-  console.log('session check running. user is:', req.session.user)
-
   if (req.session.user && req.sessionID) {
     if (req.session.user.permission === 'user') {
-      console.log('user and session id exist', req.session.user, req.sessionID)
       req.SessionCheckSvc = new SessionCheckSvc(req.querySvc, req.session.user)
 
       req.SessionCheckSvc.getPermissions()

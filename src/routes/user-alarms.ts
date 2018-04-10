@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { dbErrTranslator } from '../services/error-handling';
 import { db } from '../middleware/database';
 import AlarmSvc from '../logic/logic-alarms';
 const alarms = express.Router();
@@ -25,20 +26,37 @@ function compare(a : any, b : any) {
   return comp;
 }
 
+function isMilitaryTime(time) {
+  return new Promise (
+    (resolve, reject) => {
+      console.log('miliatry time', time)
+      let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+      if (militaryRe.test(time)) {
+        resolve(time)
+      } else {
+        reject('alarms time')
+      }
+    }
+  )
+}
+
 
 alarms.route('/')
   .post((req, res) => {
     let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
     let input = [req.session.user.uuid, req.body.title, req.body.time];
 
-    db.query(query, input)
+    isMilitaryTime(req.body.time) 
+      .then(() => {
+        console.log('somehow passed ismilitary time without returning anything')
+        return db.query(query, input)
+      })  
       .then((result) => {
         res.redirect('alarms');
       })
       .catch((err) => {
-        console.log(err);
-        let userError = (err.message)
-        res.render('account/alarms/new-alarm', { dbError: userError });
+        console.log(err)
+        res.render('account/alarms/new-alarm', { dbError: dbErrTranslator(err) });
       });
   })
   .get((req, res) => {

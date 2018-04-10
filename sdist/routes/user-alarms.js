@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
+var error_handling_1 = require("../services/error-handling");
 var database_1 = require("../middleware/database");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
@@ -18,18 +19,33 @@ function compare(a, b) {
     }
     return comp;
 }
+function isMilitaryTime(time) {
+    return new Promise(function (resolve, reject) {
+        console.log('miliatry time', time);
+        var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+        if (militaryRe.test(time)) {
+            resolve(time);
+        }
+        else {
+            reject('alarms time');
+        }
+    });
+}
 alarms.route('/')
     .post(function (req, res) {
     var query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
     var input = [req.session.user.uuid, req.body.title, req.body.time];
-    database_1.db.query(query, input)
+    isMilitaryTime(req.body.time)
+        .then(function () {
+        console.log('somehow passed ismilitary time without returning anything');
+        return database_1.db.query(query, input);
+    })
         .then(function (result) {
         res.redirect('alarms');
     })
         .catch(function (err) {
         console.log(err);
-        var userError = (err.message);
-        res.render('account/alarms/new-alarm', { dbError: userError });
+        res.render('account/alarms/new-alarm', { dbError: error_handling_1.dbErrTranslator(err) });
     });
 })
     .get(function (req, res) {

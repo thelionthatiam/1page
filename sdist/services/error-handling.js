@@ -13,7 +13,7 @@ function dbErrTranslator(error) {
     var passChecker = /(password)/g;
     var lengthChecker = /(value too long)/g;
     var alarms = /(alarms)/g;
-    var awake = /(awake)/g;
+    var time = /(time)/g;
     var title = /(title)/g;
     if (emailChecker.test(error)) {
         if (keyChecker.test(error)) {
@@ -41,13 +41,11 @@ function dbErrTranslator(error) {
         return "You typed in something over 100 characters. Keep things a shorter and try again.";
     }
     else if (alarms.test(error)) {
-        if (awake.test(error)) {
-            return "You need to use military time. If the it is before 10:00, use leading zeros like" +
-                " this 06:00.";
+        if (time.test(error)) {
+            return "You need to use military time. If the it is before 10:00, use leading zeros like this 06:00.";
         }
         else if (title.test(error)) {
-            return "Keep your title withing 15 characters. Other than that, you should be able to do" +
-                " whatever you want.";
+            return "Keep your title withing 25 characters. Other than that, you should be able to do whatever you want. Title is not mandatory.";
         }
     }
     else {
