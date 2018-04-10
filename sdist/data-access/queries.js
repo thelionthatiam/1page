@@ -26,7 +26,6 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error("Could not find your Your session does not match the saved session. Try to log in again.");
             }
             else {
-                console.log('get session id', result.rows);
                 return result.rows[0].sessionid;
             }
         });
@@ -67,7 +66,6 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('No user with that in the database, sorry.');
             }
             else {
-                console.log('get user result', result.rows);
                 return result.rows[0];
             }
         });
@@ -390,12 +388,37 @@ var QuerySvc = /** @class */ (function () {
         var text = 'UPDATE org_transactions SET sent = $1 WHERE recipient = $2';
         return this.conn.query(text, values);
     };
+    QuerySvc.prototype.updateAlarmTime = function (values) {
+        var text = 'UPDATE alarms SET time = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('That alarm no longer exists.');
+            }
+            else {
+                return result.rows[0];
+            }
+        });
+    };
+    QuerySvc.prototype.updateAlarmTitle = function (values) {
+        var text = 'UPDATE alarms SET title = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('That alarm no longer exists.');
+            }
+            else {
+                console.log(result.rows[0]);
+                return result.rows[0];
+            }
+        });
+    };
     QuerySvc.prototype.updateDaysOfWeek = function (values) {
         var text = "UPDATE alarms SET (mon, tues, wed, thur, fri, sat, sun) = ($1,$2,$3,$4,$5,$6,$7) WHERE user_uuid = $8 AND alarm_uuid = $9";
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('Something was missing from the DB');
+                throw new Error('Cannot update days of week because there was nothing in the database in that alarm.');
             }
             else {
                 return null;

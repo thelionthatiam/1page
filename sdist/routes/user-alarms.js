@@ -6,19 +6,6 @@ var database_1 = require("../middleware/database");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-// random helper that will go with logic for alarms
-function compare(a, b) {
-    var awakeA = parseInt(a.awake);
-    var awakeB = parseInt(b.awake);
-    var comp = 0;
-    if (awakeA > awakeB) {
-        comp = 1;
-    }
-    else if (awakeB > awakeA) {
-        comp = -1;
-    }
-    return comp;
-}
 function isMilitaryTime(time) {
     return new Promise(function (resolve, reject) {
         console.log('miliatry time', time);
@@ -50,14 +37,11 @@ alarms.route('/')
 })
     .get(function (req, res) {
     console.log('alarms get route');
-    database_1.db.query("SELECT * FROM alarms WHERE user_uuid = $1", [req.session.user.uuid])
-        .then(function (result) {
-        console.log(res.locals.user);
-        console.log(req.session.user.email);
-        var alarmContent = result.rows;
-        var sortedAlarms = alarmContent.sort(compare);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
+    req.AlarmSvc.getUserAlarms()
+        .then(function (alarms) {
         res.render('account/alarms/alarms', {
-            alarmContent: sortedAlarms,
+            alarmContent: alarms,
             email: req.session.user.email
         });
     })
@@ -72,25 +56,61 @@ alarms.route('/')
 alarms.get('/new-alarm', function (req, res, next) {
     res.render('account/alarms/new-alarm');
 });
-alarms.route('/:title')
-    .delete(function (req, res) {
-    var alarm_uuid = req.body.alarm_uuid;
-    database_1.db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
-        .then(function (result) {
-        res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-    })
-        .catch(function (err) {
-        console.log(err.stack);
-        res.render('accoount/alarms/edit-alarm', { dbError: err.stack });
-    });
-});
-// NEW DAYS OF WEEK SECTION
-alarms.route('/:title/days-of-week')
+// CHANGE TIME
+alarms.route('/:alarm_uuid/time')
     .get(function (req, res) {
     console.log(req.query);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
-        .then(function (daysOfWeek) { return res.render('account/alarms/days-of-week', daysOfWeek); })
+        .then(function (alarm) {
+        res.render('account/alarms/time', alarm);
+    })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+})
+    .put(function (req, res) {
+    console.log('REQ BOD FOR CHANGE TIME', req.body);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.updateAlarmTime()
+        .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+});
+// CHANGE TITLE
+alarms.route('/:alarm_uuid/title')
+    .get(function (req, res) {
+    console.log(req.query);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
+    req.AlarmSvc.getAlarm()
+        .then(function (alarm) {
+        res.render('account/alarms/title', alarm);
+    })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+})
+    .put(function (req, res) {
+    console.log('REQ BOD FOR CHANGE TITLE', req.body);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.updateAlarmTitle()
+        .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
+    });
+});
+// CHANGE DAYS OF WEEK SECTION
+alarms.route('/:alarm_uuid/days-of-week')
+    .get(function (req, res) {
+    console.log(req.query);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
+    req.AlarmSvc.getAlarm()
+        .then(function (alarm) { return res.render('account/alarms/days-of-week', alarm); })
         .catch(function (e) {
         console.log(e);
         res.render('error', { error: e });
@@ -104,6 +124,18 @@ alarms.route('/:title/days-of-week')
         .catch(function (e) {
         console.log(e);
         res.render('error', { error: e });
+    });
+});
+alarms.route('/:alarm_uuid')
+    .delete(function (req, res) {
+    var alarm_uuid = req.body.alarm_uuid;
+    database_1.db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
+        .then(function (result) {
+        res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+    })
+        .catch(function (err) {
+        console.log(err.stack);
+        res.render('accoount/alarms/edit-alarm', { dbError: err.stack });
     });
 });
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality

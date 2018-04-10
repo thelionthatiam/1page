@@ -54,11 +54,11 @@ body {
   border-radius: 4px;
   padding: 1px; }
 
-.one-item-spacing, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
+.one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
 
-.formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row {
+.big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row {
   margin-left: 0vw;
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
@@ -98,6 +98,11 @@ form {
 .generic-form {
   display: flex;
   flex-direction: column; }
+
+.big-form-item {
+  border-bottom: 1px solid #282828;
+  font-size: 36px;
+  font-weight: 600; }
 
 input {
   border: none;
@@ -564,6 +569,16 @@ button:focus {
 .alarm-title {
   font-weight: 400; }
 
+.alarm-time {
+  font-size: 36px;
+  font-weight: 600; }
+
+.alarm-time-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%; }
+
 .clock > h1 {
   font-size: 8vw;
   font-weight: 400; }
@@ -595,9 +610,13 @@ button:focus {
 .time-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; }
+  justify-content: flex-start;
+  width: 100%; }
 
-.alarm-title-wrapper {
+.alarm-title {
+  align-self: flex-start; }
+
+.toggle-active-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between; }

@@ -1,0 +1,9 @@
+<div class=' column centerColumn full-width'>
+
+    <form action='/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/time?_method=PUT' method='POST'>
+        <p class='left-text'>change time</p>
+        <input type='text' class = 'big-form-item' name='time' value = '{{time}}'>
+        <button type='submit'class = 'button dark-button' value="{{time}}">submit</button>
+        <input type='hidden' name = 'alarm_uuid' value={{alarm_uuid}}>
+    </form>
+</div>

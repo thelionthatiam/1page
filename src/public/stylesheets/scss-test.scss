@@ -182,6 +182,14 @@ form {
   flex-direction:column;
 }
 
+.big-form-item {
+  @extend %one-item-spacing;
+  @extend %one-item-spacing-col;
+  border-bottom:1px solid $darkGrey;
+  font-size:36px;
+  font-weight:600;
+}
+
 .formTitle {
   @extend %one-item-spacing-col;
 }
@@ -791,6 +799,18 @@ button:focus {
   font-weight:400;
 }
 
+.alarm-time {
+  font-size:36px;
+  font-weight:600;
+}
+
+.alarm-time-row {
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  width:100%;
+}
+
 .clock > h1 {
   font-size:8vw;
   font-weight:400;
@@ -828,10 +848,14 @@ button:focus {
   display:flex;
   flex-direction:column;
   justify-content: flex-start;
-  // align-items:center;
+  width:100%;
 }
 
-.alarm-title-wrapper {
+.alarm-title {
+  align-self:flex-start;
+}
+
+.toggle-active-wrapper {
   display:flex;
   align-items: center;
   justify-content: space-between;
