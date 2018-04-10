@@ -5,6 +5,20 @@
   // border:.25px solid lightgrey;
 }
 
+// FONTS
+$miniFont: 10px;
+// COLORS
+$darkGreen: #068721;
+$darkRed:#9f2121;
+$darkGrey:#282828;
+$justGrey:#756F6F;
+$lightGrey:lightGrey;
+$lightBlue:#325872;
+$almostBlack:#211A08;
+$yellow:#E5CC61;
+$white: #fff;
+
+
 h1,h2,h3,h4,h5,h6,p,li,a,button,input,label {
   font-family:"Roboto", sans-serif;
 }
@@ -33,29 +47,30 @@ li {
     font-size:12px
 }
 
-.small-text {
-    padding-bottom:2px;
-    margin-bottom:2px;
+.small-text {    
     font-size:12px
+}
+
+.mini-text {
+  font-size:$miniFont;
+}
+
+.link-text {
+  padding:2px;
+  margin:2px;
+  transition:100ms;
+}
+
+.link-text:hover {
+  background-color:$lightGrey;
+  border-radius:4px;
+  transition:100ms;
 }
 
 body{
     border:0;
     margin:0
 }
-
-// FONTS
-$miniFont: 10px;
-// COLORS
-$darkGreen: #068721;
-$darkRed:#9f2121;
-$darkGrey:#282828;
-$justGrey:#756F6F;
-$lightGrey:lightGrey;
-$lightBlue:#325872;
-$almostBlack:#211A08;
-$yellow:#E5CC61;
-$white: #fff;
 
 .link {
   color: $darkGreen;
@@ -227,14 +242,16 @@ button:focus {
 
 .light-button {
   @extend %one-item-spacing;
-  border-bottom:1px solid transparent;
-  transition:300ms;
+  border:1px solid $darkGrey;
+  border-radius:4px;
+  transition:200ms;
   box-shadow:none;
 }
 
 .light-button:hover {
-  border-bottom:1px solid $darkGrey;
-  transition:300ms;
+  background-color:$lightGrey;
+  border:1px solid $lightGrey;
+  transition:200ms;
 }
 
 .dark-button {
@@ -243,12 +260,12 @@ button:focus {
   color:$white;
   border-bottom:1px solid transparent;
   border-radius:4px;
-  transition:300ms;
+  transition:200ms;
 }
 
 .dark-button:hover {
-  border-bottom:1px solid $darkGrey;
-  transition:300ms;
+  background-color:$justGrey;
+  transition:200ms;
 }
 
 .full-page {
@@ -770,8 +787,8 @@ button:focus {
 }
 
 .alarm-title {
-  width:120px;
-  text-transform:uppercase;
+  // text-transform:uppercase;
+  font-weight:400;
 }
 
 .clock > h1 {
@@ -806,11 +823,18 @@ button:focus {
   display:flex;
   justify-content: space-between;
 }
+
 .time-wrapper {
+  display:flex;
+  flex-direction:column;
+  justify-content: flex-start;
+  // align-items:center;
+}
+
+.alarm-title-wrapper {
   display:flex;
   align-items: center;
   justify-content: space-between;
-  width:120px;
 }
 
 .alarmForm {

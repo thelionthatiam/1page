@@ -26,9 +26,20 @@ li {
   font-size: 12px; }
 
 .small-text {
-  padding-bottom: 2px;
-  margin-bottom: 2px;
   font-size: 12px; }
+
+.mini-text {
+  font-size: 10px; }
+
+.link-text {
+  padding: 2px;
+  margin: 2px;
+  transition: 100ms; }
+
+.link-text:hover {
+  background-color: lightGrey;
+  border-radius: 4px;
+  transition: 100ms; }
 
 body {
   border: 0;
@@ -130,24 +141,26 @@ button:focus {
   outline: 0; }
 
 .light-button {
-  border-bottom: 1px solid transparent;
-  transition: 300ms;
+  border: 1px solid #282828;
+  border-radius: 4px;
+  transition: 200ms;
   box-shadow: none; }
 
 .light-button:hover {
-  border-bottom: 1px solid #282828;
-  transition: 300ms; }
+  background-color: lightGrey;
+  border: 1px solid lightGrey;
+  transition: 200ms; }
 
 .dark-button {
   background-color: #282828;
   color: #fff;
   border-bottom: 1px solid transparent;
   border-radius: 4px;
-  transition: 300ms; }
+  transition: 200ms; }
 
 .dark-button:hover {
-  border-bottom: 1px solid #282828;
-  transition: 300ms; }
+  background-color: #756F6F;
+  transition: 200ms; }
 
 .full-page {
   width: 80vw;
@@ -549,8 +562,7 @@ button:focus {
   color: #282828; }
 
 .alarm-title {
-  width: 120px;
-  text-transform: uppercase; }
+  font-weight: 400; }
 
 .clock > h1 {
   font-size: 8vw;
@@ -582,9 +594,13 @@ button:focus {
 
 .time-wrapper {
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start; }
+
+.alarm-title-wrapper {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 120px; }
+  justify-content: space-between; }
 
 .alarmForm {
   margin-top: 10px;

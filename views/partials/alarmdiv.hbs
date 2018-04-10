@@ -1,6 +1,27 @@
 <div class="column contentWrapper">
   <div class="alarm-row">
-    <h4 class = "alarm-title">{{title}}</h4>
+    <div class = 'time-wrapper'>
+      <a href="" class = "small-text link-text">{{title}}</a>
+      <h1><a href="" class = "link-text">{{time}}</a></h1>
+    </div>
+
+    <div class = 'alarm-title-wrapper'> 
+      {{#if active}}
+        <form action = 'put' method = 'POST'>
+          <button class="button light-button">disable</button>
+        </form>
+      {{else}}
+        <form action='put' method='POST'>
+          <button class="button dark-button">enable</button>
+        </form>
+      {{/if}}     
+    </div>
+    
+  </div>
+  <div class="alarm-row">
+    <a class='link-img' href ="">
+      <img class='icon fadeIn' src='/icons/black/gear.svg'>
+    </a>
     <ul class = "week-list">
       <li class = "day-of-week {{#if mon}}dark-button{{/if}}">mon</li>
       <li class = "day-of-week {{#if tues}}dark-button{{/if}}">tues</li>
@@ -17,28 +38,6 @@
         </form>
       </li>
     </ul>
-    <div class = 'time-wrapper'>
-      <h4>{{time}}</h4>
-      <a class = 'link-img'>
-        <img class='icon fadeIn' src='/icons/black/gear.svg'>
-      </a>
-    </div>
-    
-  </div>
-  <div class="alarm-row">
-    {{#if active}}
-      <p>
-        on
-      </p>
-    {{else}}
-      <p>
-        off
-      </p>
-    {{/if}}
-    <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}" method="get">
-        <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/pencil.svg">
-        <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-    </form> 
     <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}?_method=DELETE" method="post">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
         <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
