@@ -66,3 +66,11 @@ UPDATE wakes SET paid = false;
 
 ALTER TABLE user_settings DROP CONSTRAINT user_settings_user_uuid_fkey;
 ALTER TABLE user_settings ADD CONSTRAINT user_settings_user_uuid_fkey FOREIGN KEY (user_uuid) REFERENCES users(user_uuid) ON DELETE CASCADE;
+
+ALTER TABLE alarms DROP CONSTRAINT alarms_title_check;
+ALTER TABLE alarms ADD CONSTRAINT alarms_title_check CHECK (title::text ~ '^[ 0-9a-zA-Z!@#$%^&*()_+]{0,25}$'::text);
+
+ALTER TABLE alarms ALTER COLUMN title SET DEFAULT '';
+
+ALTER TABLE alarms ALTER COLUMN title DROP NOT NULL;
+ALTER TABLE alarms DROP CONSTRAINT alarms_title_key;

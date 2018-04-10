@@ -37,7 +37,7 @@ alarms.route('/')
       })
       .catch((err) => {
         console.log(err);
-        let userError = dbErrTranslator(err.message)
+        let userError = (err.message)
         res.render('account/alarms/new-alarm', { dbError: userError });
       });
   })
@@ -69,49 +69,49 @@ alarms.get('/new-alarm', (req, res, next) => {
 })
 
 alarms.route('/:title')
-  .get((req, res) => {
-    let title = req.query.title;
+  // .get((req, res) => {
+  //   let title = req.query.title;
 
-    db.query("SELECT * FROM alarms WHERE title = $1 AND user_uuid = $2", [title, req.session.user.uuid])
-      .then((result) => {
-        res.render('account/alarms/edit-alarm', {
-          title:result.rows[0].title,
-          time:result.rows[0].time,
-          active:result.rows[0].active,
-          email:req.session.user.email
-        })
-      })
-      .catch((err) => {
-        console.log(err.stack);
-        res.render('/:title', { dbError: err.stack });
-      });
-    })
-    .put((req, res) => {
-      let inputs = {
-        prevTitle:req.body.prevTitle, // should be an id
-        title:req.body.title,
-        time:req.body.time,
-        active:req.body.active
-      }
-      console.log(inputs)
-      let query = 'UPDATE alarms SET (title, time, active) = ($1, $2, $3) WHERE title = $4';
-      let input = [inputs.title, inputs.time, inputs.active, inputs.prevTitle];
-      db.query(query, input)
-        .then((result) => {
-          res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-        })
-        .catch((err) => {
-          console.log(err.stack)
-          // put info into sessions
-          // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-          res.redirect('/app/account/alarms/edit-alarm?' + qs.stringify({ dbError: err.stack })); // change route to make route
-          // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-        });
-    })
+  //   db.query("SELECT * FROM alarms WHERE title = $1 AND user_uuid = $2", [title, req.session.user.uuid])
+  //     .then((result) => {
+  //       res.render('account/alarms/edit-alarm', {
+  //         title:result.rows[0].title,
+  //         time:result.rows[0].time,
+  //         active:result.rows[0].active,
+  //         email:req.session.user.email
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.stack);
+  //       res.render('/:title', { dbError: err.stack });
+  //     });
+  //   })
+    // .put((req, res) => {
+    //   let inputs = {
+    //     prevTitle:req.body.prevTitle, // should be an id
+    //     title:req.body.title,
+    //     time:req.body.time,
+    //     active:req.body.active
+    //   }
+    //   console.log(inputs)
+    //   let query = 'UPDATE alarms SET (title, time, active) = ($1, $2, $3) WHERE title = $4';
+    //   let input = [inputs.title, inputs.time, inputs.active, inputs.prevTitle];
+    //   db.query(query, input)
+    //     .then((result) => {
+    //       res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+    //     })
+    //     .catch((err) => {
+    //       console.log(err.stack)
+    //       // put info into sessions
+    //       // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+    //       res.redirect('/app/account/alarms/edit-alarm?' + qs.stringify({ dbError: err.stack })); // change route to make route
+    //       // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+    //     });
+    // })
     .delete((req, res) => {
 
-      let title = req.body.title
-      db.query('DELETE FROM alarms WHERE title = $1', [title])
+      let alarm_uuid = req.body.alarm_uuid
+      db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
         .then((result) => {
           res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
         })

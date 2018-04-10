@@ -4,7 +4,6 @@ var express = require("express");
 var database_1 = require("../middleware/database");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
-var qs = require("querystring");
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 // random helper that will go with logic for alarms
 function compare(a, b) {
@@ -29,7 +28,7 @@ alarms.route('/')
     })
         .catch(function (err) {
         console.log(err);
-        var userError = dbErrTranslator(err.message);
+        var userError = (err.message);
         res.render('account/alarms/new-alarm', { dbError: userError });
     });
 })
@@ -58,47 +57,9 @@ alarms.get('/new-alarm', function (req, res, next) {
     res.render('account/alarms/new-alarm');
 });
 alarms.route('/:title')
-    .get(function (req, res) {
-    var title = req.query.title;
-    database_1.db.query("SELECT * FROM alarms WHERE title = $1 AND user_uuid = $2", [title, req.session.user.uuid])
-        .then(function (result) {
-        res.render('account/alarms/edit-alarm', {
-            title: result.rows[0].title,
-            time: result.rows[0].time,
-            active: result.rows[0].active,
-            email: req.session.user.email
-        });
-    })
-        .catch(function (err) {
-        console.log(err.stack);
-        res.render('/:title', { dbError: err.stack });
-    });
-})
-    .put(function (req, res) {
-    var inputs = {
-        prevTitle: req.body.prevTitle,
-        title: req.body.title,
-        time: req.body.time,
-        active: req.body.active
-    };
-    console.log(inputs);
-    var query = 'UPDATE alarms SET (title, time, active) = ($1, $2, $3) WHERE title = $4';
-    var input = [inputs.title, inputs.time, inputs.active, inputs.prevTitle];
-    database_1.db.query(query, input)
-        .then(function (result) {
-        res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-    })
-        .catch(function (err) {
-        console.log(err.stack);
-        // put info into sessions
-        // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-        res.redirect('/app/account/alarms/edit-alarm?' + qs.stringify({ dbError: err.stack })); // change route to make route
-        // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-    });
-})
     .delete(function (req, res) {
-    var title = req.body.title;
-    database_1.db.query('DELETE FROM alarms WHERE title = $1', [title])
+    var alarm_uuid = req.body.alarm_uuid;
+    database_1.db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
         .then(function (result) {
         res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
     })
