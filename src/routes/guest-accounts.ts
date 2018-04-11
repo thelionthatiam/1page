@@ -7,11 +7,6 @@ const accts = express.Router();
 accts.get('/new-account', (req, res) => res.render('new-account'));
 
 // this seems to do nothing
-accts.post('/delete', function (req, res, next) {
-  res.render('login', {
-    accountDelete:true
-  });
-});
 
 accts.route('/accounts')
   .post((req,res) => {

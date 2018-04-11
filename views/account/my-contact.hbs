@@ -12,9 +12,11 @@
       
       <form action="/app/accounts/:{{ user.profile.email}}/contact?_method=PUT" method="post">
         <h3 class="left-text formTitle">change contact information</h3>
+        <p><b>name: </b>{{  user.profile.name }}</p>
+        <input name="name" class="big-form-item" type="text" value= {{ user.profile.name}}>
+
         <p><b>email: </b>{{  user.profile.email }}</p>
-        <input id="email" name="email" class="big-form-item" type="text" value= {{ user.profile.email}}>
-        <p class="formErrorReport" ></p>
+        <input name="email" class="big-form-item" type="text" value= {{ user.profile.email}}>
 
         <p><b>phone: </b>{{ user.profile.phone }}</p>
         <input id="phone" name="phone" class="big-form-item numericOnly" type="text" value= {{ user.profile.phone }}>

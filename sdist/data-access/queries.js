@@ -306,12 +306,24 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.updateContactInformation = function (values) {
+        var text = 'UPDATE users SET (name, email, phone) = ($1,$2,$3) WHERE user_uuid = $4';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Could not update contact info. No user with that id in the database.');
+            }
+            else {
+                return null;
+            }
+        });
+    };
     QuerySvc.prototype.updatePassword = function (values) {
         var text = 'UPDATE users SET password = $1 WHERE user_uuid = $2';
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('No user with that id in the database.');
+                throw new Error('Could not update password. No user with that id in the database.');
             }
             else {
                 return null;
@@ -491,6 +503,13 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.deleteUserAlarms = function (values) {
         var text = 'DELETE FROM alarms WHERE user_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (res) {
+            return null;
+        });
+    };
+    QuerySvc.prototype.deleteAccount = function (values) {
+        var text = 'DELETE FROM users WHERE user_uuid = $1';
         return this.conn.query(text, values)
             .then(function (res) {
             return null;

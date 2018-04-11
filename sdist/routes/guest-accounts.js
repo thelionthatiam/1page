@@ -7,11 +7,6 @@ var accts = express.Router();
 //to sign up page
 accts.get('/new-account', function (req, res) { return res.render('new-account'); });
 // this seems to do nothing
-accts.post('/delete', function (req, res, next) {
-    res.render('login', {
-        accountDelete: true
-    });
-});
 accts.route('/accounts')
     .post(function (req, res) {
     var inputs = {

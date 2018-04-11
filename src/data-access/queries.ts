@@ -334,12 +334,26 @@ export default class QuerySvc {
       })
   }
   
+  updateContactInformation(values: [string, V.Email, V.NumOnly, V.UUID]): Promise<void> {
+    const text = 'UPDATE users SET (name, email, phone) = ($1,$2,$3) WHERE user_uuid = $4';
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Could not update contact info. No user with that id in the database.')
+        } else {
+          return null;
+        }
+      })
+  }
+
+
+
   updatePassword(values: [string, V.UUID]):Promise<void> {
     const text = 'UPDATE users SET password = $1 WHERE user_uuid = $2';
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
-          throw new Error('No user with that id in the database.')
+          throw new Error('Could not update password. No user with that id in the database.')
         } else {
           return null;
         }
@@ -530,6 +544,14 @@ export default class QuerySvc {
 
   deleteUserAlarms(values: [V.UUID]) : Promise<void>{
     const text = 'DELETE FROM alarms WHERE user_uuid = $1'
+    return this.conn.query(text, values)
+      .then(res => {
+        return null;
+      })
+  }
+
+  deleteAccount(values: [V.UUID]): Promise<void> {
+    const text = 'DELETE FROM users WHERE user_uuid = $1'
     return this.conn.query(text, values)
       .then(res => {
         return null;
