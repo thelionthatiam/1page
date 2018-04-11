@@ -90,3 +90,6 @@ INSERT INTO orgs (org_sku, name, description, cause) VALUES ('UNIC-L-INTD-8168',
 INSERT INTO orgs (org_sku, name, description, cause) VALUES ('MOMA-M-LIT0-6485', 'Museum of Modern Art', 'At The Museum of Modern Art and MoMA PS1, we celebrate creativity, openness, tolerance, and generosity. We aim to be inclusive places—both onsite and online—where diverse cultural, artistic, social, and political positions are welcome. We’re committed to sharing the most thought-provoking modern and contemporary art, and hope you will join us in exploring the art, ideas, and issues of our time.',
   'literacy');
 INSERT INTO orgs (org_sku, name, description, cause) VALUES ('RNC0-M-POL0-8645', 'Republican National Committee', 'We believe that our: Country is exceptional, Constitution should be honored, valued, and upheld, Leaders should serve people, not special interests, Families and communities should be strong and free from government intrusion, Institution of traditional marriage is the foundation of society, Government should be smaller, smarter and more efficient, Health care decisions should be made by us and our doctors, Paychecks should not be wasted on poorly run government programs and more...', 'literacy');
+
+
+ALTER TABLE alarms ADD COLUMN repeate BOOLEAN DEFAULT false;

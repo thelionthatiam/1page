@@ -19,6 +19,12 @@ var AlarmsSvc = /** @class */ (function () {
         }
         return comp;
     };
+    AlarmsSvc.prototype.alarmObjectToQueryValues = function () {
+        return [];
+    };
+    AlarmsSvc.prototype.addAlarm = function () {
+        return this.querySvc.addAlarm(this.alarmObjectToQueryValues());
+    };
     AlarmsSvc.prototype.getUserAlarms = function () {
         var _this = this;
         return this.querySvc.getUserAlarms([this.user.uuid])
@@ -58,7 +64,27 @@ var AlarmsSvc = /** @class */ (function () {
         ];
     };
     AlarmsSvc.prototype.updateDaysOfWeek = function () {
-        return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues());
+        var _this = this;
+        return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues())
+            .then(function () { return _this.querySvc.getUserAlarm([_this.inputs.alarm_uuid, _this.user.uuid]); })
+            .then(function (alarm) {
+            console.log(alarm);
+            console.log(typeof alarm.mon);
+            if (alarm.sun === true ||
+                alarm.mon === true ||
+                alarm.tues === true ||
+                alarm.wed === true ||
+                alarm.thur === true ||
+                alarm.fri === true ||
+                alarm.sat === true) {
+                console.log('at least one day was true');
+                return _this.querySvc.updateAlarmRepeat([true, _this.inputs.alarm_uuid, _this.user.uuid]);
+            }
+            else {
+                console.log('none of the days were true');
+                return _this.querySvc.updateAlarmRepeat([false, _this.inputs.alarm_uuid, _this.user.uuid]);
+            }
+        });
     };
     AlarmsSvc.prototype.deleteAlarm = function () {
         return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid]);

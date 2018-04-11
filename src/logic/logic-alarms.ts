@@ -60,6 +60,16 @@ export default class AlarmsSvc {
         return comp;
     }
 
+    alarmObjectToQueryValues() {
+        return [
+            
+        ]
+    }
+
+    addAlarm() {
+        return this.querySvc.addAlarm(this.alarmObjectToQueryValues())
+    }
+
     getUserAlarms() {
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(alarms => {
@@ -104,9 +114,30 @@ export default class AlarmsSvc {
         ]
     }
 
+
+
     updateDaysOfWeek(){
         return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues())
-    }
+            .then(() => this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid]))
+            .then(alarm => {
+                console.log(alarm)
+                console.log(typeof alarm.mon)
+                if (alarm.sun === true ||
+                    alarm.mon === true ||
+                    alarm.tues === true ||
+                    alarm.wed === true ||
+                    alarm.thur === true ||
+                    alarm.fri === true ||
+                    alarm.sat === true) 
+                {
+                    console.log('at least one day was true')
+                    return this.querySvc.updateAlarmRepeat([true, this.inputs.alarm_uuid, this.user.uuid])
+                } else {
+                    console.log('none of the days were true')
+                    return this.querySvc.updateAlarmRepeat([false, this.inputs.alarm_uuid, this.user.uuid])
+                }
+            })
+        }
 
     deleteAlarm() {
         return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid])

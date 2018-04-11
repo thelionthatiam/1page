@@ -1,27 +1,25 @@
 <div class="full-page">
   <div class="flex column add-alarm-form">
-    <h3 class="formTitle">add alarm</h3>
+    <h3>add alarm</h3>
     <form action="/app/accounts/{{email}}/alarms" method="post">
+      <p>time</p>
+        <input
+        name="time"
+        class="big-form-item"
+        type="text"
+        placeholder="06:00"
+        value="06:00"
+        />
       <p>alarm title</p>
       <input
-       id="title"
-       name="title"
-       class="userFormItem"
-       type="text"
-       placeholder="work week"
-       />
-      <p class="formErrorReport" id="titleError"></p>
+        name="title"
+        class="big-form-item"
+        type="text"
+        placeholder="work week"
+        value="work week"
+        />
 
-      <p>time</p>
-      <input
-       id="awake"
-       name="time"
-       class="userFormItem"
-       type="text"
-       placeholder="6:00"
-       />
-      <p class="formErrorReport" id="timeError"></p>
-     <button id="formSubmitter" class="unavailable submit" type="submit"> add </button>
+     <button class="button dark-button" type="submit"> submit </button>
    </form>
   <p class="formErrorReport">{{ dbError }}</p>
   </div>

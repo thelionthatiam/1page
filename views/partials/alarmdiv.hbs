@@ -15,13 +15,13 @@
         <div class='toggle-active-wrapper'>
           {{#if active}}
           <form action='/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/active?_method=PUT' method='POST'>
-            <button type = 'submit' class="button light-button">disable</button>
+            <button type = 'submit' class="button dark-button">disable</button>
             <input name = "alarm_uuid" type = "hidden" value = {{alarm_uuid}}>
             <input name = "active" type = 'hidden' value = {{active}}>
           </form>
           {{else}}
           <form action='/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/active?_method=PUT' method='POST'>
-            <button type = 'submit' class="button dark-button">enable</button>
+            <button type = 'submit' class="button light-button">enable</button>
             <input name = "alarm_uuid" type = "hidden" value = {{alarm_uuid}}>
             <input name = "active" type = 'hidden' value = {{active}}>
           </form>
@@ -35,6 +35,7 @@
     <a href='/app/accounts/{{user_uuid}}/settings'>
       <img class='icon fadeIn' src='/icons/black/gear.svg'>
     </a>
+    {{#if repeat}}
     <ul class = "week-list">
       <li class = "day-of-week {{#if mon}}dark-button{{/if}}">mon</li>
       <li class = "day-of-week {{#if tues}}dark-button{{/if}}">tues</li>
@@ -51,6 +52,17 @@
         </form>
       </li>
     </ul>
+    {{else}}
+    <ul class = "week-list">
+      <li>
+        <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/days-of-week" method="PUT">
+            <input class = "button light-button" type="submit" value="repeat">
+            <input name= "repeat" type="hidden" value="{{ repeat }}">
+            <input name= "alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+        </form>
+      </li>
+    </ul>
+    {{/if}}
     <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}?_method=DELETE" method="POST">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
         <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">

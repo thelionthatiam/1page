@@ -414,11 +414,23 @@ var QuerySvc = /** @class */ (function () {
         });
     };
     QuerySvc.prototype.updateAlarmToggleActive = function (values) {
-        console.log(values);
         var text = 'UPDATE alarms SET active = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
         return this.conn.query(text, values)
             .then(function (result) {
-            console.log('togggle active', result.rows);
+            if (result.rowCount === 0) {
+                throw new Error('That alarm no longer exists.');
+            }
+            else {
+                console.log('result');
+                console.log(result.rows[0]);
+                return result.rows[0];
+            }
+        });
+    };
+    QuerySvc.prototype.updateAlarmRepeat = function (values) {
+        var text = 'UPDATE alarms SET repeat = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
+        return this.conn.query(text, values)
+            .then(function (result) {
             if (result.rowCount === 0) {
                 throw new Error('That alarm no longer exists.');
             }
