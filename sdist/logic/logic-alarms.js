@@ -19,13 +19,24 @@ var AlarmsSvc = /** @class */ (function () {
         }
         return comp;
     };
-    // NOT CURRENTLY IN USE
-    AlarmsSvc.prototype.alarmObjectToQueryValues = function () {
-        return [];
+    AlarmsSvc.prototype.isMilitaryTime = function (time) {
+        return new Promise(function (resolve, reject) {
+            console.log('miliatry time', time);
+            var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+            if (militaryRe.test(time)) {
+                resolve(time);
+            }
+            else {
+                reject('alarms time');
+            }
+        });
     };
-    // NOT CURRENTLY IN USE
     AlarmsSvc.prototype.addAlarm = function () {
-        return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues());
+        var _this = this;
+        return this.isMilitaryTime(this.inputs.time)
+            .then(function () {
+            return _this.querySvc.insertAlarm([_this.user.uuid, _this.inputs.title, _this.inputs.time]);
+        });
     };
     AlarmsSvc.prototype.addNextAlarm = function (sortedAlarms) {
         console.log('add next alarm running ');
@@ -54,7 +65,11 @@ var AlarmsSvc = /** @class */ (function () {
         return this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.updateAlarmTime = function () {
-        return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid]);
+        var _this = this;
+        return this.isMilitaryTime(this.inputs.time)
+            .then(function () {
+            return _this.querySvc.updateAlarmTime([_this.inputs.time, _this.inputs.alarm_uuid, _this.user.uuid]);
+        });
     };
     AlarmsSvc.prototype.updateAlarmTitle = function () {
         return this.querySvc.updateAlarmTitle([this.inputs.title, this.inputs.alarm_uuid, this.user.uuid]);

@@ -211,6 +211,10 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) { return null; });
     };
+    QuerySvc.prototype.insertAlarm = function (values) {
+        var text = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
+        return this.conn.query(text, values);
+    };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertSnooze = function (values) {
         var text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';

@@ -60,15 +60,28 @@ export default class AlarmsSvc {
         }
         return comp;
     }
-    // NOT CURRENTLY IN USE
-    alarmObjectToQueryValues() {
-        return [
-            
-        ]
+
+    isMilitaryTime(time) {
+        return new Promise(
+            (resolve, reject) => {
+                console.log('miliatry time', time)
+                let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
+                if (militaryRe.test(time)) {
+                    resolve(time)
+                } else {
+                    reject('alarms time')
+                }
+            }
+        )
     }
-    // NOT CURRENTLY IN USE
+
     addAlarm() {
-        return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues())
+        return this.isMilitaryTime(this.inputs.time)
+            .then(() => {
+                return this.querySvc.insertAlarm([this.user.uuid, this.inputs.title, this.inputs.time])
+            })
+        
+            
     }
 
     addNextAlarm(sortedAlarms) {
@@ -103,7 +116,10 @@ export default class AlarmsSvc {
     }
    
     updateAlarmTime() {
-        return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid])
+        return this.isMilitaryTime(this.inputs.time) 
+            .then(() => {
+                return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid])
+            })        
     }
 
     updateAlarmTitle() {

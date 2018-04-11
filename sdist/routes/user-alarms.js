@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var error_handling_1 = require("../services/error-handling");
-var database_1 = require("../middleware/database");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
@@ -18,17 +17,14 @@ function isMilitaryTime(time) {
         }
     });
 }
-// wtf is all this
 alarms.route('/')
     .post(function (req, res) {
-    var query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
-    var input = [req.session.user.uuid, req.body.title, req.body.time];
-    isMilitaryTime(req.body.time)
-        .then(function () {
-        console.log('somehow passed ismilitary time without returning anything');
-        return database_1.db.query(query, input);
-    })
-        .then(function (result) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+    // let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
+    // let input = [req.session.user.uuid, req.body.title, req.body.time];
+    // isMilitaryTime(req.body.time) 
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.addAlarm()
+        .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (err) {
         console.log(err);
         res.render('account/alarms/new-alarm', { dbError: error_handling_1.dbErrTranslator(err) });
@@ -86,7 +82,7 @@ alarms.route('/:alarm_uuid/time')
         .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: error_handling_1.dbErrTranslator(e) });
     });
 });
 // CHANGE TITLE

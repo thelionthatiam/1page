@@ -203,9 +203,10 @@ export default class QuerySvc {
           }
         }
       })
-  }
-
+    }
   // insert
+
+
   insertUser(values: [V.Email, V.NumOnly, V.CharOnly, V.String, V.String]) {
     const text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(text, values)
@@ -228,6 +229,11 @@ export default class QuerySvc {
     const text = 'INSERT INTO user_settings(user_uuid) VALUES ($1)';
     return this.conn.query(text, values)
       .then(result => null)
+  }
+
+  insertAlarm(values: [V.UUID, string, string]) {
+    const text = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
+    return this.conn.query(text, values);
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?

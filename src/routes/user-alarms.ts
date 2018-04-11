@@ -26,18 +26,21 @@ function isMilitaryTime(time) {
   )
 }
 
-// wtf is all this
 alarms.route('/')
   .post((req, res) => {
-    let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
-    let input = [req.session.user.uuid, req.body.title, req.body.time];
+    // let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
+    // let input = [req.session.user.uuid, req.body.title, req.body.time];
 
-    isMilitaryTime(req.body.time) 
-      .then(() => {
-        console.log('somehow passed ismilitary time without returning anything')
-        return db.query(query, input)
-      })
-      .then(result => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+    // isMilitaryTime(req.body.time) 
+
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+
+    req.AlarmSvc.addAlarm()
+      // .then(() => {
+      //   console.log('somehow passed ismilitary time without returning anything')
+      //   return db.query(query, input)
+      // })
+      .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
       .catch((err) => {
         console.log(err)
         res.render('account/alarms/new-alarm', { dbError: dbErrTranslator(err) });
@@ -101,7 +104,7 @@ alarms.route('/:alarm_uuid/time')
         .then(time => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
         .catch(e => {
           console.log(e)
-          res.render('error', {error:e})
+          res.render('error', { errMessage: dbErrTranslator(e) })
         })
     })
 
