@@ -103,18 +103,24 @@ export default class QuerySvc {
       })
   }
 
-  getUserAlarms(values:V.UUID[]) {
+  getUserAlarms(values:V.UUID[]):Promise<R.AlarmDB[]> {
     const text = 'SELECT * FROM alarms WHERE user_uuid = $1'
     return this.conn.query(text, values)
       .then(result => {
+        for(let i = 0; i < result.rows.length; i++) {
+          R.AlarmDB.fromJSON(result.rows[i])
+        }
         return result.rows
       })
   }
 
-  getUserAlarm(values:[V.UUID, V.UUID]) {
+  getUserAlarm(values:[V.UUID, V.UUID]):Promise<R.AlarmDB> {
     const text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2'
     return this.conn.query(text, values)
-      .then(result => result.rows[0])
+      .then(result => {
+        R.AlarmDB.fromJSON(result.rows[0])
+        return result.rows[0]
+      })
   }
 
   getUnpaidSnoozes(values : [V.UUID, boolean]) {
@@ -423,19 +429,19 @@ export default class QuerySvc {
     return this.conn.query(text, values);
   }
 
-  updateAlarmTime(values: [string, V.UUID, V.UUID]) {
+  updateAlarmTime(values: [string, V.UUID, V.UUID]): Promise<void>{
     const text = 'UPDATE alarms SET time = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
           throw new Error ('That alarm no longer exists.')
         } else {
-          return result.rows[0]
+          return null;
         }      
       })
   }
 
-  updateAlarmTitle(values: [string, V.UUID, V.UUID]) {
+  updateAlarmTitle(values: [string, V.UUID, V.UUID]):Promise<void> {
     const text = 'UPDATE alarms SET title = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
     return this.conn.query(text,values)
       .then(result => {
@@ -443,12 +449,12 @@ export default class QuerySvc {
           throw new Error ('That alarm no longer exists.')
         } else {
           console.log(result.rows[0])
-          return result.rows[0]
+          return null
         }      
       })
   }
 
-  updateAlarmToggleActive(values: [boolean, V.UUID, V.UUID]) {
+  updateAlarmToggleActive(values: [boolean, V.UUID, V.UUID]):Promise<void> {
     const text = 'UPDATE alarms SET active = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
     return this.conn.query(text, values)
       .then(result => {
@@ -457,12 +463,12 @@ export default class QuerySvc {
         } else {
           console.log('result')
           console.log(result.rows[0])
-          return result.rows[0]
+          return null;
         }      
       })
     }
 
-  updateAlarmRepeat(values: [boolean, V.UUID, V.UUID]) {
+  updateAlarmRepeat(values: [boolean, V.UUID, V.UUID]):Promise<void> {
     const text = 'UPDATE alarms SET repeat = $1 WHERE alarm_uuid = $2 AND user_uuid = $3';
     return this.conn.query(text, values)
       .then(result => {
@@ -470,13 +476,12 @@ export default class QuerySvc {
           throw new Error ('That alarm no longer exists.')
         } else {
           console.log('result')
-          console.log(result.rows[0])
-          return result.rows[0]
+          return null;
         }      
       })
     }
 
-  updateDaysOfWeek(values:(boolean|V.UUID)[]) {
+  updateDaysOfWeek(values:(boolean|V.UUID)[]):Promise<void> {
     const text = "UPDATE alarms SET (mon, tues, wed, thur, fri, sat, sun) = ($1,$2,$3,$4,$5,$6,$7) WHERE user_uuid = $8 AND alarm_uuid = $9";
     return this.conn.query(text, values)
       .then(result => {
@@ -492,19 +497,28 @@ export default class QuerySvc {
   // delete
 
 
-  deleteFormOfPayement(values:[V.UUID, string]){
+  deleteFormOfPayement(values:[V.UUID, string]) : Promise<void>{
     const text = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2'
     return this.conn.query(text, values)
+      .then(res => {
+        return null;
+      })
   }
 
-  deleteUserAlarm(values:[V.UUID, V.UUID]) {
+  deleteUserAlarm(values:[V.UUID, V.UUID]) : Promise<void> {
     const text = 'DELETE FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2'
     return this.conn.query(text, values)
+      .then(res => {
+        return null;
+      })
   }
 
-  deleteUserAlarms(values: [V.UUID]){
+  deleteUserAlarms(values: [V.UUID]) : Promise<void>{
     const text = 'DELETE FROM alarms WHERE user_uuid = $1'
     return this.conn.query(text, values)
+      .then(res => {
+        return null;
+      })
   }
 
 };

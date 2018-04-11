@@ -236,4 +236,56 @@ var String = /** @class */ (function (_super) {
     return String;
 }(ValueScalar));
 exports.String = String;
+var MilitaryTime = /** @class */ (function (_super) {
+    __extends(MilitaryTime, _super);
+    function MilitaryTime() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MilitaryTime.fromJSON = function (value) {
+        return MilitaryTime.create(value);
+    };
+    MilitaryTime.create = function (value) {
+        var res = MilitaryTime.validate(value);
+        if (!res.isOkay)
+            throw res;
+        return new MilitaryTime(value);
+    };
+    MilitaryTime.validate = function (militaryTime) {
+        var re = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
+        if (re.test(militaryTime)) {
+            return { isOkay: true };
+        }
+        else {
+            throw new ValidationError('invalid type', 'This value -- ' + militaryTime + ' -- is not military time.');
+        }
+    };
+    return MilitaryTime;
+}(ValueScalar));
+exports.MilitaryTime = MilitaryTime;
+var AlarmState = /** @class */ (function (_super) {
+    __extends(AlarmState, _super);
+    function AlarmState() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    AlarmState.fromJSON = function (value) {
+        return AlarmState.create(value);
+    };
+    AlarmState.create = function (value) {
+        var res = AlarmState.validate(value);
+        if (!res.isOkay)
+            throw res;
+        return new AlarmState(value);
+    };
+    AlarmState.validate = function (alarmState) {
+        var re = /(snoozing|dismissed|woke|pending)/;
+        if (re.test(alarmState)) {
+            return { isOkay: true };
+        }
+        else {
+            throw new ValidationError('invalid type', 'This value -- ' + alarmState + ' -- is not a valid alarm state.');
+        }
+    };
+    return AlarmState;
+}(ValueScalar));
+exports.AlarmState = AlarmState;
 //# sourceMappingURL=validation.js.map

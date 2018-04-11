@@ -9,7 +9,9 @@ import {
   NumOnly,
   UUID,
   Bool,
-  String
+  String,
+  MilitaryTime,
+  AlarmState
 } from './validation'
 
 
@@ -186,6 +188,167 @@ class UserDB {
       phone: this.phone.toString(),
       name: this.name.toString(),
       password: this.password.toString()
+    };
+  }
+}
+
+class AlarmInputs {
+  readonly title?: (string | null);
+  readonly time?: MilitaryTime;
+  // readonly user_uuid?: UUID;
+
+  private constructor(args: { title?:(string|null), time?:MilitaryTime } = {}) {
+    this.title = args.title,
+    this.time = args.time
+    // this.user_uuid = args.user_uuid
+  }
+
+  static fromJSON(args: { [key: string]: any }): AlarmInputs {
+    let res = AlarmInputs.validate(args);
+    if (res.isOkay) {
+      let res = new AlarmInputs({
+        title: args.title,
+        time: MilitaryTime.create(args.time),
+        // user_uuid: UUID.create(args.user_uuid), 
+      })
+      return res.toJSON();
+    } else {
+      throw new Error('error happens at fromJSON');
+    }
+  }
+
+  static validate(args: { [key: string]: any }): ValidationResult {
+    let propValidation = {
+      title: args.title,
+      time: MilitaryTime.validate(args.time),
+      // user_uuid: UUID.validate(args.user_uuid)
+    }
+    ValidationResult.isValid(args, propValidation)
+    return { isOkay: true };
+  }
+
+  toJSON(): any {
+    return {
+      title: this.title.toString(),
+      time: this.time.toString(),
+      // user_uuid: this.user_uuid.toString(),
+    };
+  }
+}
+
+
+
+class AlarmDB {
+  readonly title?: (string | null);
+  readonly time?: MilitaryTime;
+  readonly user_uuid?: UUID;
+  readonly active?:Bool;
+  readonly state?:AlarmState;
+  readonly mon?:Bool;
+  readonly tues?: Bool;
+  readonly wed?: Bool;
+  readonly thur?: Bool;
+  readonly fri?: Bool;
+  readonly sat?: Bool;
+  readonly sun?: Bool;
+  readonly triggered?: Bool;
+  readonly repeat?: Bool;
+
+
+  private constructor(args: { 
+    title?: (string | null),
+    time?: MilitaryTime,
+    user_uuid?: UUID,
+    active?: Bool,
+    state?: AlarmState, 
+    mon?: Bool,
+    tues?: Bool,
+    wed?: Bool,
+    thur?: Bool,
+    fri?: Bool,
+    sat?: Bool,
+    sun?: Bool,
+    triggered?: Bool,
+    repeat?: Bool,
+  } = {}) {
+    this.title =  args.title,
+    this.time =  args.time,
+    this.user_uuid =  args.user_uuid,
+    this.active =  args.active,
+    this.state =  args.state,
+    this.mon =  args.mon,
+    this.tues =  args.tues,
+    this.wed =  args.wed,
+    this.thur =  args.thur,
+    this.fri =  args.fri,
+    this.sat =  args.sat,
+    this.sun =  args.sun,
+    this.triggered =  args.triggered,
+    this.repeat =  args.repeat
+  }
+
+  static fromJSON(args: { [key: string]: any }): AlarmDB {
+    let res = AlarmDB.validate(args);
+    if (res.isOkay) {
+      let res = new AlarmDB({
+        title: args.title,
+        time: MilitaryTime.create(args.time),
+        user_uuid: UUID.create(args.user_uuid),
+        active: Bool.create(args.active),
+        state: AlarmState.create(args.state), // make this
+        mon: Bool.create(args.mon),
+        tues: Bool.create(args.tues),
+        wed: Bool.create(args.wed),
+        thur: Bool.create(args.thur),
+        fri: Bool.create(args.fri),
+        sat: Bool.create(args.sat),
+        sun: Bool.create(args.sun),
+        triggered: Bool.create(args.triggered),
+        repeat: Bool.create(args.repeat),
+      })
+      return res.toJSON();
+    } else {
+      throw new Error('error happens at fromJSON');
+    }
+  }
+
+  static validate(args: { [key: string]: any }): ValidationResult {
+    let propValidation = {
+        title: args.title,
+        time: MilitaryTime.validate(args.time),
+        user_uuid: UUID.validate(args.user_uuid),
+        active: Bool.validate(args.active),
+        state: AlarmState.validate(args.state), // make this
+        mon: Bool.validate(args.mon),
+        tues: Bool.validate(args.tues),
+        wed: Bool.validate(args.wed),
+        thur: Bool.validate(args.thur),
+        fri: Bool.validate(args.fri),
+        sat: Bool.validate(args.sat),
+        sun: Bool.validate(args.sun),
+        triggered: Bool.validate(args.triggered),
+        repeat: Bool.validate(args.repeat),
+    }
+    ValidationResult.isValid(args, propValidation)
+    return { isOkay: true };
+  }
+
+  toJSON(): any {
+    return {
+      title: this.title.toString(),
+      time: this.time.toString(),
+      user_uuid: this.user_uuid.toString(),
+      active: this.active.toString(),
+      state: this.state.toString(),
+      mon: this.mon.toString(),
+      tues: this.tues.toString(),
+      wed: this.wed.toString(),
+      thur: this.thur.toString(),
+      fri: this.fri.toString(),
+      sat: this.sat.toString(),
+      sun: this.sun.toString(),
+      triggered: this.triggered.toString(),
+      repeat: this.repeat.toString(),
     };
   }
 }
@@ -618,11 +781,14 @@ export {
   UserInputs,
   UserDB,
   UserSession,
+  AlarmInputs,
+  AlarmDB,
   AuthInputs,
   OrgsDB,
   UserOrgsDB,
   UserOrgsJoin,
   CartDB,  
   UserSettings,
+
 }
 

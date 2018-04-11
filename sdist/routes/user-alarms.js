@@ -5,23 +5,9 @@ var error_handling_1 = require("../services/error-handling");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-function isMilitaryTime(time) {
-    return new Promise(function (resolve, reject) {
-        console.log('miliatry time', time);
-        var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-        if (militaryRe.test(time)) {
-            resolve(time);
-        }
-        else {
-            reject('alarms time');
-        }
-    });
-}
 alarms.route('/')
     .post(function (req, res) {
-    // let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
-    // let input = [req.session.user.uuid, req.body.title, req.body.time];
-    // isMilitaryTime(req.body.time) 
+    console.log('ALARMS POST', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.addAlarm()
         .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
@@ -31,11 +17,9 @@ alarms.route('/')
     });
 })
     .get(function (req, res) {
-    console.log('alarms get route');
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
     req.AlarmSvc.getUserAlarms()
         .then(function (alarms) {
-        console.log(alarms);
         res.render('account/alarms/alarms', {
             alarmContent: alarms,
             email: req.session.user.email
@@ -64,7 +48,6 @@ alarms.get('/new-alarm', function (req, res, next) {
 // CHANGE TIME
 alarms.route('/:alarm_uuid/time')
     .get(function (req, res) {
-    console.log(req.query);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
         .then(function (alarm) {
@@ -76,7 +59,6 @@ alarms.route('/:alarm_uuid/time')
     });
 })
     .put(function (req, res) {
-    console.log('REQ BOD FOR CHANGE TIME', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateAlarmTime()
         .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
@@ -88,7 +70,6 @@ alarms.route('/:alarm_uuid/time')
 // CHANGE TITLE
 alarms.route('/:alarm_uuid/title')
     .get(function (req, res) {
-    console.log(req.query);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
         .then(function (alarm) {
@@ -96,40 +77,37 @@ alarms.route('/:alarm_uuid/title')
     })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 })
     .put(function (req, res) {
-    console.log('REQ BOD FOR CHANGE TITLE', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateAlarmTitle()
         .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 });
 // TOGGLE ACTIVE
 alarms.route('/:alarm_uuid/active').put(function (req, res) {
-    console.log('change active', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.toggleActiveAlarm()
         .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 });
 // CHANGE DAYS OF WEEK SECTION
 alarms.route('/:alarm_uuid/days-of-week')
     .get(function (req, res) {
-    console.log(req.query);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
         .then(function (alarm) { return res.render('account/alarms/days-of-week', alarm); })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 })
     .put(function (req, res) {
@@ -138,7 +116,7 @@ alarms.route('/:alarm_uuid/days-of-week')
         .then(function (daysOfWeek) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 });
 alarms.route('/:alarm_uuid')
@@ -150,7 +128,7 @@ alarms.route('/:alarm_uuid')
     })
         .catch(function (e) {
         console.log(e);
-        res.render('error', { error: e });
+        res.render('error', { errMessage: e });
     });
 });
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality

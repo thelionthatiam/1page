@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var R = require("../services/value-objects");
 var AlarmsSvc = /** @class */ (function () {
     function AlarmsSvc(querySvc, user, inputs) {
         this.alarm;
@@ -7,55 +8,32 @@ var AlarmsSvc = /** @class */ (function () {
         this.user = user;
         this.querySvc = querySvc;
     }
-    AlarmsSvc.prototype.orderTimes = function (a, b) {
-        var timeA = parseInt(a.time);
-        var timeB = parseInt(b.time);
-        var comp = 0;
-        if (timeA > timeB) {
-            comp = 1;
-        }
-        else if (timeB > timeA) {
-            comp = -1;
-        }
-        return comp;
-    };
-    AlarmsSvc.prototype.isMilitaryTime = function (time) {
-        return new Promise(function (resolve, reject) {
-            console.log('miliatry time', time);
-            var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-            if (militaryRe.test(time)) {
-                resolve(time);
-            }
-            else {
-                reject('alarms time');
-            }
-        });
-    };
     AlarmsSvc.prototype.addAlarm = function () {
         var _this = this;
-        return this.isMilitaryTime(this.inputs.time)
+        return TimeHelpers.isMilitaryTime(this.inputs.time)
             .then(function () {
+            R.AlarmInputs.fromJSON(_this.inputs); // <-- this is where I'm doing validation again??
             return _this.querySvc.insertAlarm([_this.user.uuid, _this.inputs.title, _this.inputs.time]);
         });
     };
-    AlarmsSvc.prototype.addNextAlarm = function (sortedAlarms) {
-        console.log('add next alarm running ');
+    AlarmsSvc.prototype.addTodayOrTomorrowIndicator = function (sortedAlarms) {
         var helper = new TimeHelpers();
         for (var i = 0; i < sortedAlarms.length; i++) {
-            console.log(sortedAlarms);
-            sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time);
-            console.log(sortedAlarms);
+            if (sortedAlarms[i].repeat) {
+                sortedAlarms[i].nextAlarm = 'schedule below';
+            }
+            else {
+                sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time);
+            }
         }
-        console.log('before return on add next alarm', sortedAlarms);
         return sortedAlarms;
     };
     AlarmsSvc.prototype.getUserAlarms = function () {
         var _this = this;
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(function (alarms) {
-            var sortedAlarms = alarms.sort(_this.orderTimes);
-            console.log('get alarms now adding next');
-            return _this.addNextAlarm(sortedAlarms);
+            var sortedAlarms = alarms.sort(TimeHelpers.orderTimes);
+            return _this.addTodayOrTomorrowIndicator(sortedAlarms);
         });
     };
     AlarmsSvc.prototype.getDaysOfWeek = function () {
@@ -66,7 +44,7 @@ var AlarmsSvc = /** @class */ (function () {
     };
     AlarmsSvc.prototype.updateAlarmTime = function () {
         var _this = this;
-        return this.isMilitaryTime(this.inputs.time)
+        return TimeHelpers.isMilitaryTime(this.inputs.time)
             .then(function () {
             return _this.querySvc.updateAlarmTime([_this.inputs.time, _this.inputs.alarm_uuid, _this.user.uuid]);
         });
@@ -97,8 +75,6 @@ var AlarmsSvc = /** @class */ (function () {
         return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues())
             .then(function () { return _this.querySvc.getUserAlarm([_this.inputs.alarm_uuid, _this.user.uuid]); })
             .then(function (alarm) {
-            console.log(alarm);
-            console.log(typeof alarm.mon);
             if (alarm.sun === true ||
                 alarm.mon === true ||
                 alarm.tues === true ||
@@ -106,11 +82,9 @@ var AlarmsSvc = /** @class */ (function () {
                 alarm.thur === true ||
                 alarm.fri === true ||
                 alarm.sat === true) {
-                console.log('at least one day was true');
                 return _this.querySvc.updateAlarmRepeat([true, _this.inputs.alarm_uuid, _this.user.uuid]);
             }
             else {
-                console.log('none of the days were true');
                 return _this.querySvc.updateAlarmRepeat([false, _this.inputs.alarm_uuid, _this.user.uuid]);
             }
         });
@@ -131,38 +105,10 @@ var TimeHelpers = /** @class */ (function () {
         this.hour = this.date.getHours();
         this.min = this.date.getMinutes();
     }
-    // CURRENTLY NOT CORRECT FUNCTION
-    TimeHelpers.prototype.dayOfTheWeek = function (time) {
-        var timeArr = time.split(':');
-        var timeH = parseInt(timeArr[0]);
-        var timeM = parseInt(timeArr[1]);
-        console.log('time', timeH, 'h', this.hour);
-        var dayNum;
-        if (timeH < this.hour) {
-            dayNum = this.day + 1;
-        }
-        else if (timeH > this.hour) {
-            dayNum = this.day;
-        }
-        else if (timeH === this.hour) {
-            if (timeM < this.min) {
-                dayNum = this.day + 1;
-            }
-            else if (timeM > this.min) {
-                dayNum = this.day;
-            }
-            else {
-                dayNum = this.day + 1;
-            }
-        }
-        return TimeHelpers.dayNumToString(dayNum);
-    };
     TimeHelpers.prototype.todayOrTomorrow = function (time) {
-        console.log('today or tomorrow running');
-        var timeArr = time.split(':');
+        var timeArr = time.split(':'); // Question out
         var timeH = parseInt(timeArr[0]);
         var timeM = parseInt(timeArr[1]);
-        console.log('time', timeH, 'h', this.hour);
         if (timeH < this.hour) {
             return "tomorrow";
         }
@@ -184,8 +130,60 @@ var TimeHelpers = /** @class */ (function () {
             throw new Error('Something was unaccounted for when determining the next time this alarm goes off!');
         }
     };
+    TimeHelpers.isMilitaryTime = function (time) {
+        return new Promise(function (resolve, reject) {
+            console.log('miliatry time', time);
+            var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
+            if (militaryRe.test(time)) {
+                resolve(time);
+            }
+            else {
+                reject('alarms time');
+            }
+        });
+    };
+    TimeHelpers.orderTimes = function (a, b) {
+        console.log('$$$$$$$$$$$$$$$order times', a, b);
+        var timeA = a.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
+        var timeB = b.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
+        var comp = 0;
+        if (timeA > timeB) {
+            console.log('a is larger than b');
+            comp = 1;
+        }
+        else if (timeB > timeA) {
+            console.log('b is larger than a');
+            comp = -1;
+        }
+        console.log('return value comp');
+        return comp;
+    };
+    // WHAT DAY OF THE WEEK IS COMING NEXT? CURRENTLY NOT IN USE, BUT MAY BE USEFUL LATER
+    TimeHelpers.prototype.dayOfTheWeek = function (time) {
+        var timeArr = time.split(':');
+        var timeH = parseInt(timeArr[0]);
+        var timeM = parseInt(timeArr[1]);
+        var dayNum;
+        if (timeH < this.hour) {
+            dayNum = this.day + 1;
+        }
+        else if (timeH > this.hour) {
+            dayNum = this.day;
+        }
+        else if (timeH === this.hour) {
+            if (timeM < this.min) {
+                dayNum = this.day + 1;
+            }
+            else if (timeM > this.min) {
+                dayNum = this.day;
+            }
+            else {
+                dayNum = this.day + 1;
+            }
+        }
+        return TimeHelpers.dayNumToString(dayNum);
+    };
     TimeHelpers.dayNumToString = function (dayNum) {
-        console.log('running');
         switch (dayNum) {
             case 0:
                 day = "Sunday";

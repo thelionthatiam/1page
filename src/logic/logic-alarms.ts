@@ -48,91 +48,61 @@ export default class AlarmsSvc {
         this.querySvc = querySvc;
     }
 
-    orderTimes(a,b) {
-        const timeA = parseInt(a.time);
-        const timeB = parseInt(b.time);
-
-        let comp = 0;
-        if (timeA > timeB) {
-            comp = 1;
-        } else if (timeB > timeA) {
-            comp = -1;
-        }
-        return comp;
-    }
-
-    isMilitaryTime(time) {
-        return new Promise(
-            (resolve, reject) => {
-                console.log('miliatry time', time)
-                let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d)$/;
-                if (militaryRe.test(time)) {
-                    resolve(time)
-                } else {
-                    reject('alarms time')
-                }
-            }
-        )
-    }
-
-    addAlarm() {
-        return this.isMilitaryTime(this.inputs.time)
+    addAlarm():Promise<void> {
+        return TimeHelpers.isMilitaryTime(this.inputs.time)
             .then(() => {
+                R.AlarmInputs.fromJSON(this.inputs) // <-- this is where I'm doing validation again??
                 return this.querySvc.insertAlarm([this.user.uuid, this.inputs.title, this.inputs.time])
             })
-        
-            
     }
 
-    addNextAlarm(sortedAlarms) {
-        console.log('add next alarm running ')
+    addTodayOrTomorrowIndicator(sortedAlarms):Alarm[] {
         let helper = new TimeHelpers()
-
         for (let i = 0; i < sortedAlarms.length; i++) {
-            console.log(sortedAlarms)
-            sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time)
-            console.log(sortedAlarms)
+            if (sortedAlarms[i].repeat) {
+                sortedAlarms[i].nextAlarm = 'schedule below'
+            } else {
+                sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time)
+            }
+            
         }
-
-        console.log('before return on add next alarm', sortedAlarms)
         return sortedAlarms
     }
 
-    getUserAlarms() {
+    getUserAlarms():Promise<Alarm[]> {
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(alarms => {
-                let sortedAlarms = alarms.sort(this.orderTimes)
-                console.log('get alarms now adding next')
-                return this.addNextAlarm(sortedAlarms);
+                let sortedAlarms = alarms.sort(TimeHelpers.orderTimes)
+                return this.addTodayOrTomorrowIndicator(sortedAlarms);
             })
     }
 
-    getDaysOfWeek() {
+    getDaysOfWeek():Promise<DaysOfWeek> {
         return this.querySvc.getDaysOfWeek([this.inputs.alarm_uuid, this.user.uuid])
     }
 
-    getAlarm() {
+    getAlarm():Promise<R.AlarmDB> {
         return this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid])
     }
    
-    updateAlarmTime() {
-        return this.isMilitaryTime(this.inputs.time) 
+    updateAlarmTime():Promise<void> {
+        return TimeHelpers.isMilitaryTime(this.inputs.time) 
             .then(() => {
                 return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid])
             })        
     }
 
-    updateAlarmTitle() {
+    updateAlarmTitle(): Promise<void>  {
         return this.querySvc.updateAlarmTitle([this.inputs.title, this.inputs.alarm_uuid, this.user.uuid])
     }
 
-    toggleActiveAlarm() {
+    toggleActiveAlarm():Promise<void> {
         let state
         this.inputs.active === "true" ? state = false : state = true;
         return this.querySvc.updateAlarmToggleActive([state, this.inputs.alarm_uuid, this.user.uuid])
     }
 
-    weekObjToQueryValues() {
+    weekObjToQueryValues():(string|V.UUID)[] {
         return [
             this.inputs.mon,
             this.inputs.tues,
@@ -148,12 +118,10 @@ export default class AlarmsSvc {
 
 
 
-    updateDaysOfWeek(){
+    updateDaysOfWeek():Promise<void>{
         return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues())
             .then(() => this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid]))
             .then(alarm => {
-                console.log(alarm)
-                console.log(typeof alarm.mon)
                 if (alarm.sun === true ||
                     alarm.mon === true ||
                     alarm.tues === true ||
@@ -162,20 +130,18 @@ export default class AlarmsSvc {
                     alarm.fri === true ||
                     alarm.sat === true) 
                 {
-                    console.log('at least one day was true')
                     return this.querySvc.updateAlarmRepeat([true, this.inputs.alarm_uuid, this.user.uuid])
                 } else {
-                    console.log('none of the days were true')
                     return this.querySvc.updateAlarmRepeat([false, this.inputs.alarm_uuid, this.user.uuid])
                 }
             })
         }
 
-    deleteAlarm() {
+    deleteAlarm():Promise<void> {
         return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid])
     }
 
-    deleteAllAlarms() {
+    deleteAllAlarms():Promise<void> {
         return this.querySvc.deleteUserAlarms([this.user.uuid])
     }
 } 
@@ -195,14 +161,65 @@ class TimeHelpers {
         this.min = this.date.getMinutes();
     }
 
+    todayOrTomorrow(time:V.MilitaryTime):string {
+        let timeArr = time.split(':') // Question out
+        let timeH = parseInt(timeArr[0])
+        let timeM = parseInt(timeArr[1])
 
-    // CURRENTLY NOT CORRECT FUNCTION
+        if (timeH < this.hour) {
+            return "tomorrow";
+        } else if (timeH > this.hour) {
+            return "today";
+        } else if (timeH === this.hour) {
+            if (timeM < this.min) {
+                return "tomorrow";
+            } else if (timeM > this.min) {
+                return "today";
+            } else {
+                return "tomorrow";
+            }
+        } else {
+            throw new Error('Something was unaccounted for when determining the next time this alarm goes off!')
+        }
+    }
+
+    static isMilitaryTime(time) {
+        return new Promise(
+            (resolve, reject) => {
+                console.log('miliatry time', time)
+                let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
+                if (militaryRe.test(time)) {
+                    resolve(time)
+                } else {
+                    reject('alarms time')
+                }
+            }
+        )
+    }
+
+    static orderTimes(a, b) {
+        console.log('$$$$$$$$$$$$$$$order times', a, b)
+        const timeA = a.time.split(':').reduce((acc, time) => (60 * acc) + +time);
+        const timeB = b.time.split(':').reduce((acc, time) => (60 * acc) + +time);
+
+        let comp = 0;
+        if (timeA > timeB) {
+            console.log('a is larger than b')
+            comp = 1;
+        } else if (timeB > timeA) {
+            console.log('b is larger than a')
+            comp = -1;
+        }
+        console.log('return value comp')
+        return comp;
+    }
+
+    // WHAT DAY OF THE WEEK IS COMING NEXT? CURRENTLY NOT IN USE, BUT MAY BE USEFUL LATER
     dayOfTheWeek(time) {
         let timeArr = time.split(':')
         let timeH = parseInt(timeArr[0])
         let timeM = parseInt(timeArr[1])
 
-        console.log('time', timeH, 'h', this.hour)
         let dayNum;
 
         if (timeH < this.hour) {
@@ -222,32 +239,7 @@ class TimeHelpers {
         return TimeHelpers.dayNumToString(dayNum)
     }
 
-    todayOrTomorrow(time) {
-        console.log('today or tomorrow running')
-        let timeArr = time.split(':')
-        let timeH = parseInt(timeArr[0])
-        let timeM = parseInt(timeArr[1])
-        console.log('time', timeH, 'h', this.hour)
-
-        if (timeH < this.hour) {
-            return "tomorrow";
-        } else if (timeH > this.hour) {
-            return "today";
-        } else if (timeH === this.hour) {
-            if (timeM < this.min) {
-                return "tomorrow";
-            } else if (timeM > this.min) {
-                return "today";
-            } else {
-                return "tomorrow";
-            }
-        } else {
-            throw new Error ('Something was unaccounted for when determining the next time this alarm goes off!')
-        }
-    }
-
     static dayNumToString(dayNum) {
-        console.log('running')
         switch (dayNum) {
             case 0:
                 day = "Sunday";

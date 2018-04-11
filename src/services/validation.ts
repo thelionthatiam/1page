@@ -206,6 +206,54 @@ class String extends ValueScalar {
   }
 }
 
+class MilitaryTime extends ValueScalar {
+  static fromJSON(value: string): MilitaryTime {
+    return MilitaryTime.create(value)
+  }
+  static create(value:string): MilitaryTime {
+    let res = MilitaryTime.validate(value)
+
+    if (!res.isOkay)
+      throw res;
+    return new MilitaryTime(value)
+  }
+
+  static validate(militaryTime:string): ValidationResult {
+    let re = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/
+    if(re.test(militaryTime)) {
+      return {isOkay:true}
+    } else {
+      throw new ValidationError('invalid type', 'This value -- ' + militaryTime + ' -- is not military time.')
+    }
+  }
+}
+
+
+class AlarmState extends ValueScalar {
+  static fromJSON(value: string): AlarmState {
+    return AlarmState.create(value)
+  }
+  static create(value: string): AlarmState {
+    let res = AlarmState.validate(value)
+
+    if (!res.isOkay)
+      throw res;
+    return new AlarmState(value)
+  }
+
+  static validate(alarmState: string): ValidationResult {
+    let re = /(snoozing|dismissed|woke|pending)/
+    if (re.test(alarmState)) {
+      return { isOkay: true }
+    } else {
+      throw new ValidationError('invalid type', 'This value -- ' + alarmState + ' -- is not a valid alarm state.')
+    }
+  }
+
+}
+
+
+
 interface PaymentCredit {
   user_uuid:UUID;
   card_number:string;
@@ -232,5 +280,7 @@ export {
   UUID,
   Bool,
   String,
-  PaymentCredit
+  PaymentCredit,
+  MilitaryTime,
+  AlarmState
 }
