@@ -63,7 +63,7 @@ body {
   padding: .4vw;
   margin: .3vw; }
 
-.big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row {
+.big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row, .day-title, .days-radio-wrapper {
   margin-left: 0vw;
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
@@ -157,7 +157,8 @@ button:focus {
   border: 1px solid #282828;
   border-radius: 4px;
   transition: 200ms;
-  box-shadow: none; }
+  box-shadow: none;
+  align-self: center; }
 
 .light-button:hover {
   background-color: lightGrey;
@@ -169,7 +170,8 @@ button:focus {
   color: #fff;
   border-bottom: 1px solid transparent;
   border-radius: 4px;
-  transition: 200ms; }
+  transition: 200ms;
+  align-self: center; }
 
 .dark-button:hover {
   background-color: #756F6F;
@@ -546,8 +548,7 @@ button:focus {
 
 .app-content {
   overflow: scroll;
-  height: 100vh;
-  width: 100%; }
+  height: 100vh; }
 
 .listWrapper {
   display: flex;
@@ -608,9 +609,18 @@ button:focus {
   justify-content: center;
   width: 40px; }
 
+.days-form-wrapper {
+  width: 40vw; }
+
+.day-title {
+  width: 100%;
+  border-bottom: 1px solid #282828; }
+
 .days-radio-wrapper {
   display: flex;
-  justify-content: space-between; }
+  align-items: center;
+  justify-content: space-around;
+  align-content: flex-start; }
 
 .time-wrapper {
   display: flex;

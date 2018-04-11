@@ -1,5 +1,5 @@
 <div class='app-content'>
-  <div class='profile-wrapper full-width'>
+  {{!-- <div class='profile-wrapper full-width'>
     <div class='top-row-wrapper'>
       <div class='top-row-search-bar'>
       </div>
@@ -7,25 +7,26 @@
         <p class='top-row-time-text small-text'>5:50:00AM</p>
         <p class='top-row-time-text small-text'>Monday, April 2, 2018</p>
       </div>
-    </div>
-    <div class ="column centerColumn full-width">
-      
-      <form action="/app/accounts/:{{ user.profile.email}}/contact?_method=PUT" method="post">
-        <h3 class="left-text formTitle">change contact information</h3>
-        <p><b>name: </b>{{  user.profile.name }}</p>
-        <input name="name" class="big-form-item" type="text" value= {{ user.profile.name}}>
+    </div> --}}
+    <div class = 'full-page'>
+      <div class ="flex column add-alarm-form">
+        
+        <form action="/app/accounts/:{{ user.profile.email}}/contact?_method=PUT" method="post">
+          <p><b>name: </b>{{  user.profile.name }}</p>
+          <input name="name" class="big-form-item" type="text" value= {{ user.profile.name}}>
 
-        <p><b>email: </b>{{  user.profile.email }}</p>
-        <input name="email" class="big-form-item" type="text" value= {{ user.profile.email}}>
+          <p><b>email: </b>{{  user.profile.email }}</p>
+          <input name="email" class="big-form-item" type="text" value= {{ user.profile.email}}>
 
-        <p><b>phone: </b>{{ user.profile.phone }}</p>
-        <input id="phone" name="phone" class="big-form-item numericOnly" type="text" value= {{ user.profile.phone }}>
-        <p class="formErrorReport" id="phoneError"></p>
-        <input type="hidden" name="prevTitle" value="{{ title }}" />
-        <p class="formErrorReport" id="awakeError"></p>
-        <button class="button light-button" type="submit"> submit </button>
-      </form>
-      <p class="formErrorReport">{{ dbError }}</p>
+          <p><b>phone: </b>{{ user.profile.phone }}</p>
+          <input id="phone" name="phone" class="big-form-item numericOnly" type="text" value= {{ user.profile.phone }}>
+          <p class="formErrorReport" id="phoneError"></p>
+          <input type="hidden" name="prevTitle" value="{{ title }}" />
+          <p class="formErrorReport" id="awakeError"></p>
+          <button class="button light-button" type="submit"> submit </button>
+        </form>
+        <p class="formErrorReport">{{ dbError }}</p>
+      </div>
     </div>
   </div>
 </div>

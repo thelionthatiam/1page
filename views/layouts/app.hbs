@@ -13,10 +13,12 @@
     <div id='app'>
         <div class='app-wrapper'>
             <ul class="app-menu">
-                <div class='app-menu-title-wrapper'>
-                    <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
-                    <h1 class='app-menu-title'>s.y.l.</h1>
-                </div>
+                <a href = '/'>
+                    <div class='app-menu-title-wrapper'>
+                        <img class='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
+                        <h1 class='app-menu-title'>s.y.l.</h1>
+                    </div>
+                </a>
                 <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
                     {{#if loggedIn}}
@@ -52,14 +54,14 @@
                     <a class='app-menu-text-disabled disabled-a'>profile</a>
                     {{/if}}
                 </li>
-                <li class='app-menu-li'>
+                {{!-- <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/mixer.svg' />
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/settings" class='app-menu-text'>settings</a>
                     {{else}}
                     <a class='app-menu-text-disabled disabled-a'>settings</a>
                     {{/if}}
-                </li>
+                </li> --}}
                 {{#if loggedIn}}                
                 {{else}}
                 <li class='app-menu-li'>
@@ -83,7 +85,6 @@
                 <li>
                     <p> You're a {{permission}}.</p>
                 </li>
-    
             </ul>
             {{{body}}}
         </div>

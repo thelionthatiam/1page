@@ -264,6 +264,8 @@ button:focus {
   border-radius:4px;
   transition:200ms;
   box-shadow:none;
+  // max-width:100px;
+  align-self:center;
 }
 
 .light-button:hover {
@@ -279,6 +281,8 @@ button:focus {
   border-bottom:1px solid transparent;
   border-radius:4px;
   transition:200ms;
+  // max-width:100px;
+  align-self:center;
 }
 
 .dark-button:hover {
@@ -750,7 +754,6 @@ button:focus {
 .app-menu-text-disabled:hover {
   cursor:default;
   background-color:transparent;
-
 }
 
 #logout {
@@ -766,7 +769,7 @@ button:focus {
 .app-content {
   overflow:scroll;
   height:100vh;
-  width:100%;
+  // width:100%;
 }
 
 .contentWrapper {
@@ -819,8 +822,8 @@ button:focus {
 .clock > h1 {
   font-size:8vw;
   font-weight:400;
-}
 
+}
 .week-wrapper {
   display:flex;
   max-width:30vw;
@@ -844,9 +847,23 @@ button:focus {
   width:40px;
 }
 
+.days-form-wrapper {
+  width:40vw;
+}
+
+.day-title {
+  @extend %one-item-spacing-col;
+  width:100%;
+  border-bottom:1px solid $darkGrey;
+
+}
+
 .days-radio-wrapper {
+  @extend %one-item-spacing-col;
   display:flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;
+  align-content: flex-start;
 }
 
 .time-wrapper {
