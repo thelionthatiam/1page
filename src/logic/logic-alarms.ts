@@ -109,11 +109,11 @@ export default class AlarmsSvc {
     }
 
     deleteAlarm() {
-
+        return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid])
     }
 
     deleteAllAlarms() {
-        
+        return this.querySvc.deleteUserAlarms([this.user.uuid])
     }
 } 
 
@@ -124,9 +124,6 @@ class TimeHelpers {
     day: number;
     hour: number;
     min: number;
-
-
-
 
     constructor() {
         this.date = new Date();

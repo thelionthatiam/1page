@@ -479,4 +479,14 @@ export default class QuerySvc {
     return this.conn.query(text, values)
   }
 
+  deleteUserAlarm(values:[V.UUID, V.UUID]) {
+    const text = 'DELETE FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2'
+    return this.conn.query(text, values)
+  }
+
+  deleteUserAlarms(values: [V.UUID]){
+    const text = 'DELETE FROM alarms WHERE user_uuid = $1'
+    return this.conn.query(text, values)
+  }
+
 };

@@ -61,8 +61,10 @@ var AlarmsSvc = /** @class */ (function () {
         return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues());
     };
     AlarmsSvc.prototype.deleteAlarm = function () {
+        return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.deleteAllAlarms = function () {
+        return this.querySvc.deleteUserAlarms([this.user.uuid]);
     };
     return AlarmsSvc;
 }());

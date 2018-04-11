@@ -51,7 +51,7 @@
         </form>
       </li>
     </ul>
-    <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}?_method=DELETE" method="post">
+    <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}?_method=DELETE" method="POST">
         <input class = "icon" type="image" width="20px" height="20px" src="/icons/black/x.svg">
         <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>

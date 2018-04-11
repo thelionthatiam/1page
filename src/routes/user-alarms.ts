@@ -26,7 +26,7 @@ function isMilitaryTime(time) {
   )
 }
 
-
+// wtf is all this
 alarms.route('/')
   .post((req, res) => {
     let query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
@@ -36,10 +36,8 @@ alarms.route('/')
       .then(() => {
         console.log('somehow passed ismilitary time without returning anything')
         return db.query(query, input)
-      })  
-      .then((result) => {
-        res.redirect('alarms');
       })
+      .then(result => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
       .catch((err) => {
         console.log(err)
         res.render('account/alarms/new-alarm', { dbError: dbErrTranslator(err) });
@@ -63,6 +61,16 @@ alarms.route('/')
           errMessage: null
         });
       });
+  })
+  .delete((req, res) => {
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, null)
+
+    req.AlarmSvc.deleteAllAlarms()
+      .then(time => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+      .catch(e => {
+        console.log(e)
+        res.render('error', { error: e })
+      })
   })
 
 alarms.get('/new-alarm', (req, res, next) => {
@@ -152,7 +160,6 @@ alarms.route('/:alarm_uuid/days-of-week')
         })
     })
     .put((req, res) => {
-      console.log('REQ BODY', req.body)
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
       req.AlarmSvc.updateDaysOfWeek()
         .then(daysOfWeek => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
@@ -162,17 +169,19 @@ alarms.route('/:alarm_uuid/days-of-week')
         })
     })
 
+
 alarms.route('/:alarm_uuid')
   .delete((req, res) => {
-    let alarm_uuid = req.body.alarm_uuid
-    db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+
+    req.AlarmSvc.deleteAlarm()
       .then((result) => {
         res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
       })
-      .catch((err) => {
-        console.log(err.stack)
-        res.render('accoount/alarms/edit-alarm', { dbError: err.stack });
-      });
+      .catch(e => {
+        console.log(e)
+        res.render('error', { error:e })
+      })
   })
 
 

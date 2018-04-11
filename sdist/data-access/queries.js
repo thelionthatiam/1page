@@ -446,6 +446,14 @@ var QuerySvc = /** @class */ (function () {
         var text = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2';
         return this.conn.query(text, values);
     };
+    QuerySvc.prototype.deleteUserAlarm = function (values) {
+        var text = 'DELETE FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2';
+        return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.deleteUserAlarms = function (values) {
+        var text = 'DELETE FROM alarms WHERE user_uuid = $1';
+        return this.conn.query(text, values);
+    };
     return QuerySvc;
 }());
 exports.default = QuerySvc;

@@ -18,6 +18,7 @@ function isMilitaryTime(time) {
         }
     });
 }
+// wtf is all this
 alarms.route('/')
     .post(function (req, res) {
     var query = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
@@ -27,9 +28,7 @@ alarms.route('/')
         console.log('somehow passed ismilitary time without returning anything');
         return database_1.db.query(query, input);
     })
-        .then(function (result) {
-        res.redirect('alarms');
-    })
+        .then(function (result) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (err) {
         console.log(err);
         res.render('account/alarms/new-alarm', { dbError: error_handling_1.dbErrTranslator(err) });
@@ -51,6 +50,15 @@ alarms.route('/')
             errName: err.message,
             errMessage: null
         });
+    });
+})
+    .delete(function (req, res) {
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
+    req.AlarmSvc.deleteAllAlarms()
+        .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
     });
 });
 alarms.get('/new-alarm', function (req, res, next) {
@@ -128,7 +136,6 @@ alarms.route('/:alarm_uuid/days-of-week')
     });
 })
     .put(function (req, res) {
-    console.log('REQ BODY', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateDaysOfWeek()
         .then(function (daysOfWeek) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
@@ -139,14 +146,14 @@ alarms.route('/:alarm_uuid/days-of-week')
 });
 alarms.route('/:alarm_uuid')
     .delete(function (req, res) {
-    var alarm_uuid = req.body.alarm_uuid;
-    database_1.db.query('DELETE FROM alarms WHERE alarm_uuid = $1', [alarm_uuid])
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.deleteAlarm()
         .then(function (result) {
         res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
     })
-        .catch(function (err) {
-        console.log(err.stack);
-        res.render('accoount/alarms/edit-alarm', { dbError: err.stack });
+        .catch(function (e) {
+        console.log(e);
+        res.render('error', { error: e });
     });
 });
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality
