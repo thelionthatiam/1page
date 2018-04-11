@@ -19,24 +19,32 @@ var AlarmsSvc = /** @class */ (function () {
         }
         return comp;
     };
+    // NOT CURRENTLY IN USE
     AlarmsSvc.prototype.alarmObjectToQueryValues = function () {
         return [];
     };
+    // NOT CURRENTLY IN USE
     AlarmsSvc.prototype.addAlarm = function () {
         return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues());
     };
     AlarmsSvc.prototype.addNextAlarm = function (sortedAlarms) {
+        console.log('add next alarm running ');
         var helper = new TimeHelpers();
-        for (var i = 0; i < sortedAlarms; i++) {
-            sortedAlarms.nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time);
+        for (var i = 0; i < sortedAlarms.length; i++) {
+            console.log(sortedAlarms);
+            sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time);
+            console.log(sortedAlarms);
         }
+        console.log('before return on add next alarm', sortedAlarms);
+        return sortedAlarms;
     };
     AlarmsSvc.prototype.getUserAlarms = function () {
         var _this = this;
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(function (alarms) {
             var sortedAlarms = alarms.sort(_this.orderTimes);
-            return sortedAlarms;
+            console.log('get alarms now adding next');
+            return _this.addNextAlarm(sortedAlarms);
         });
     };
     AlarmsSvc.prototype.getDaysOfWeek = function () {

@@ -49,6 +49,7 @@ alarms.route('/')
 
     req.AlarmSvc.getUserAlarms()
       .then((alarms) => {
+        console.log(alarms)
         res.render('account/alarms/alarms', {
           alarmContent:alarms,
           email:req.session.user.email

@@ -39,6 +39,7 @@ alarms.route('/')
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
     req.AlarmSvc.getUserAlarms()
         .then(function (alarms) {
+        console.log(alarms);
         res.render('account/alarms/alarms', {
             alarmContent: alarms,
             email: req.session.user.email

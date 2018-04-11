@@ -2,6 +2,7 @@ import QuerySvc from '../data-access/queries';
 import { deepMerge } from '../services/merge'
 import * as R from '../services/value-objects';
 import * as V from '../services/validation';
+import { StorageGateway } from 'aws-sdk';
 
 interface Alarm {
     user_uuid:V.UUID;
@@ -59,30 +60,37 @@ export default class AlarmsSvc {
         }
         return comp;
     }
-
+    // NOT CURRENTLY IN USE
     alarmObjectToQueryValues() {
         return [
             
         ]
     }
-
+    // NOT CURRENTLY IN USE
     addAlarm() {
         return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues())
     }
 
     addNextAlarm(sortedAlarms) {
+        console.log('add next alarm running ')
         let helper = new TimeHelpers()
 
-        for (let i = 0; i < sortedAlarms; i++) {
-            sortedAlarms.nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time)
+        for (let i = 0; i < sortedAlarms.length; i++) {
+            console.log(sortedAlarms)
+            sortedAlarms[i].nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time)
+            console.log(sortedAlarms)
         }
+
+        console.log('before return on add next alarm', sortedAlarms)
+        return sortedAlarms
     }
 
     getUserAlarms() {
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(alarms => {
                 let sortedAlarms = alarms.sort(this.orderTimes)
-                return sortedAlarms;
+                console.log('get alarms now adding next')
+                return this.addNextAlarm(sortedAlarms);
             })
     }
 
