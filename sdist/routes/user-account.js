@@ -7,7 +7,7 @@ var profile = express.Router();
 profile.route('/')
     .get(function (req, res) {
     console.log('get my acount');
-    res.render('account/account/my-account', {
+    res.render('account/my-account', {
         email: req.session.user.email,
     });
 })
@@ -20,12 +20,12 @@ profile.route('/')
     })
         .catch(function (err) {
         console.log(err.stack);
-        res.render('account/account/my-account', { dbError: err.stack });
+        res.render('account/my-account', { dbError: err.stack });
     });
 });
 profile.route('/contact')
     .get(function (req, res) {
-    res.render('account/account/my-contact', {
+    res.render('account/my-contact', {
         email: req.session.user.email,
         phone: req.session.user.phone
     });
@@ -39,19 +39,19 @@ profile.route('/contact')
         .then(function (result) {
         req.session.user.email = email;
         req.session.user.phone = phone;
-        res.render('account/account/my-account', {
+        res.render('account/my-account', {
             title: "account updated",
             email: req.session.user.email
         });
     })
         .catch(function (err) {
         console.log(err.stack);
-        res.render('account/account/my-account', { dbError: err.stack });
+        res.render('account/my-account', { dbError: err.stack });
     });
 });
 profile.route('/password')
     .get(function (req, res) {
-    res.render('account/account/new-password', {
+    res.render('account/new-password', {
         email: req.session.user.email
     });
 })
@@ -80,14 +80,14 @@ profile.route('/password')
         return database_1.db.query(query, input);
     })
         .then(function (result) {
-        res.render('account/account/new-password', {
+        res.render('account/new-password', {
             success: true,
             email: req.session.user.email
         });
     })
         .catch(function (error) {
         console.log(error);
-        res.render('account/account/new-password', { dbError: error });
+        res.render('account/new-password', { dbError: error });
     });
 });
 exports.default = profile;

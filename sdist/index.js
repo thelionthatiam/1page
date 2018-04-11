@@ -47,7 +47,7 @@ router.get('/app/guest', function (req, res) {
     res.render('guest/app');
 });
 router.get('/app/account', function (req, res) {
-    req.session.user ? res.render('account/app') : res.redirect('/app/guest');
+    req.session.user ? res.render('app') : res.redirect('/app/guest');
 });
 // NO JS ALARMS
 router.get('/app/guest/alarms', function (req, res) {

@@ -12,13 +12,13 @@ payment.route('/')
     req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, null)
     req.PaymentsSvc.getFormsOfPayment()
       .then((paymentContent) => {
-        res.render('account/payment/payments', {
+        res.render('payment/payments', {
           paymentContent:paymentContent,
         })
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {dbError:error,})
+        res.render('payment/payments', {dbError:error,})
       })
   })
   .post((req, res) => {
@@ -30,11 +30,11 @@ payment.route('/')
       )
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/new-payment', {dbError:error})
+        res.render('payment/new-payment', {dbError:error})
       })
   })
 
-payment.get('/new-payment', (req, res) => res.render('account/payment/new-payment'))
+payment.get('/new-payment', (req, res) => res.render('payment/new-payment'))
 
 payment.route('/active-payment')
   .put((req, res) => {
@@ -44,7 +44,7 @@ payment.route('/active-payment')
       .then((result) => res.redirect('/app/accounts/' + req.session.user.email + '/payment'))
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {dbError:error})
+        res.render('payment/payments', {dbError:error})
       })
   })
 
@@ -55,10 +55,10 @@ payment.route('/:card_number')
     req.PaymentsSvc = new PaymentsSvc(req.querySvc, req.session.user, req.query)
 
     req.PaymentsSvc.getFormOfPayement()
-      .then(result => res.render('account/payment/edit-payment', result))
+      .then(result => res.render('payment/edit-payment', result))
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {dbError:error})
+        res.render('payment/payments', {dbError:error})
       })
   })
   .put((req, res) => {
@@ -70,7 +70,7 @@ payment.route('/:card_number')
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {dbError:error})
+        res.render('payment/payments', {dbError:error})
       })
   })
   .delete((req, res) => {
@@ -82,7 +82,7 @@ payment.route('/:card_number')
       })
       .catch((error) => {
         console.log(error)
-        res.render('account/payment/payments', {dbError:error})
+        res.render('payment/payments', {dbError:error})
       })
   })
 

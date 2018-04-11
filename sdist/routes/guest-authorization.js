@@ -19,7 +19,6 @@ auth.post('/authorized', function (req, res) {
     })
         .catch(function (err) {
         console.log(err);
-        console.log('the final erro', err);
         res.render('login', { dbError: err });
     });
 });

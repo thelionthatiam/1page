@@ -27,7 +27,7 @@ alarms.route('/')
 
     req.AlarmSvc.getUserAlarms()
       .then((alarms) => {
-        res.render('account/alarms/alarms', {
+        res.render('alarms/alarms', {
           alarmContent:alarms,
           email:req.session.user.email
         })
@@ -52,7 +52,7 @@ alarms.route('/')
   })
 
 alarms.get('/new-alarm', (req, res, next) => {
-  res.render('account/alarms/new-alarm')
+  res.render('alarms/new-alarm')
 })
 
 // CHANGE TIME
@@ -63,7 +63,7 @@ alarms.route('/:alarm_uuid/time')
 
       req.AlarmSvc.getAlarm()
         .then(alarm => {
-          res.render('account/alarms/time', alarm)
+          res.render('alarms/time', alarm)
         })
         .catch(e => {
           console.log(e)
@@ -89,7 +89,7 @@ alarms.route('/:alarm_uuid/title')
 
       req.AlarmSvc.getAlarm()
         .then(alarm => {
-          res.render('account/alarms/title', alarm)
+          res.render('alarms/title', alarm)
         })
         .catch(e => {
           console.log(e)
@@ -125,7 +125,7 @@ alarms.route('/:alarm_uuid/days-of-week')
     .get((req, res) => {
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)      
       req.AlarmSvc.getAlarm()
-        .then(alarm => res.render('account/alarms/days-of-week', alarm))
+        .then(alarm => res.render('alarms/days-of-week', alarm))
         .catch(e => {
           console.log(e)
           res.render('error', {errMessage:e})

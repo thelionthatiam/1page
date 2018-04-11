@@ -9,7 +9,7 @@ settings.route('/')
     req.SettingsSvc = new logic_settings_1.default(req.querySvc, req.session.user, null);
     req.SettingsSvc.getUserSettingsAndRender()
         .then(function (renderObj) {
-        res.render('account/settings', renderObj);
+        res.render('settings', renderObj);
     })
         .catch(function (error) {
         console.log(error);

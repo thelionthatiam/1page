@@ -14,7 +14,7 @@ orgs.route('/')
       })
       .catch((error) => {
         console.log(error);
-        res.render('account/organizations', error)
+        res.render('organizations', error)
       })
   })
   .get((req, res) => {
@@ -23,11 +23,11 @@ orgs.route('/')
 
       req.OrgSvc.getUserOrgsAndActiveOrg()
         .then((userOrgDataForRender) => {
-          res.render('account/organizations', userOrgDataForRender)
+          res.render('organizations', userOrgDataForRender)
       })
       .catch((err) => {
         console.log(err);
-        res.render('account/organizations', { dbError: err });
+        res.render('organizations', { dbError: err });
       });
   })
 
@@ -53,7 +53,7 @@ orgs.route('/:sku')
     })
     .catch((error) => {
       console.log(error)
-      res.render('accounts/organizations', {error:error, dbError:'try refreshing the page'})
+      res.render('organizations', {error:error, dbError:'try refreshing the page'})
     })
   })
 

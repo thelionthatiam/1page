@@ -20,7 +20,7 @@ allOrgs.route('/all')
           organizationContent[i].loggedIn = res.locals.loggedIn;
           organizationContent[i].email = email;
         }
-        res.render('account/all-organizations', {
+        res.render('all-organizations', {
           organizationContent:organizationContent,
           loggedIn:res.locals.loggedIn
           
@@ -28,7 +28,7 @@ allOrgs.route('/all')
       })
       .catch((err) => {
         console.log(err);
-        res.render('account/all-organizations', { dbError: err });
+        res.render('all-organizations', { dbError: err });
       });
   })
 

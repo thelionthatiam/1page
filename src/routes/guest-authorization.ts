@@ -1,5 +1,4 @@
 import AuthSvc, { regenerateSession, updateToInactiveSessionID, destroySession } from '../logic/logic-authorization';
-
 import * as express from 'express';
 const auth = express.Router();
 
@@ -20,7 +19,6 @@ auth.post('/authorized', (req, res) => {
     })
     .catch((err:Error) => {
       console.log(err)
-      console.log('the final erro', err)
       res.render('login', { dbError:err })
     })
 })

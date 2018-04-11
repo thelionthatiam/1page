@@ -8,7 +8,7 @@ settings.route('/')
     req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null) 
     req.SettingsSvc.getUserSettingsAndRender()
       .then((renderObj) => {
-        res.render('account/settings', renderObj)
+        res.render('settings', renderObj)
       })
       .catch((error) => {
         console.log(error)

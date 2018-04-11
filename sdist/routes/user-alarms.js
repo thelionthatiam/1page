@@ -20,7 +20,7 @@ alarms.route('/')
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
     req.AlarmSvc.getUserAlarms()
         .then(function (alarms) {
-        res.render('account/alarms/alarms', {
+        res.render('alarms/alarms', {
             alarmContent: alarms,
             email: req.session.user.email
         });
@@ -43,7 +43,7 @@ alarms.route('/')
     });
 });
 alarms.get('/new-alarm', function (req, res, next) {
-    res.render('account/alarms/new-alarm');
+    res.render('alarms/new-alarm');
 });
 // CHANGE TIME
 alarms.route('/:alarm_uuid/time')
@@ -51,7 +51,7 @@ alarms.route('/:alarm_uuid/time')
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
         .then(function (alarm) {
-        res.render('account/alarms/time', alarm);
+        res.render('alarms/time', alarm);
     })
         .catch(function (e) {
         console.log(e);
@@ -73,7 +73,7 @@ alarms.route('/:alarm_uuid/title')
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
         .then(function (alarm) {
-        res.render('account/alarms/title', alarm);
+        res.render('alarms/title', alarm);
     })
         .catch(function (e) {
         console.log(e);
@@ -104,7 +104,7 @@ alarms.route('/:alarm_uuid/days-of-week')
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
-        .then(function (alarm) { return res.render('account/alarms/days-of-week', alarm); })
+        .then(function (alarm) { return res.render('alarms/days-of-week', alarm); })
         .catch(function (e) {
         console.log(e);
         res.render('error', { errMessage: e });

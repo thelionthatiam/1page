@@ -15,7 +15,7 @@ orgs.route('/')
     })
         .catch(function (error) {
         console.log(error);
-        res.render('account/organizations', error);
+        res.render('organizations', error);
     });
 })
     .get(function (req, res) {
@@ -23,11 +23,11 @@ orgs.route('/')
     req.OrgSvc = new logic_organizations_1.default(req.querySvc, R.UserSession.fromJSON(req.session.user), null);
     req.OrgSvc.getUserOrgsAndActiveOrg()
         .then(function (userOrgDataForRender) {
-        res.render('account/organizations', userOrgDataForRender);
+        res.render('organizations', userOrgDataForRender);
     })
         .catch(function (err) {
         console.log(err);
-        res.render('account/organizations', { dbError: err });
+        res.render('organizations', { dbError: err });
     });
 });
 orgs.route('/:sku')
@@ -50,7 +50,7 @@ orgs.route('/:sku')
     })
         .catch(function (error) {
         console.log(error);
-        res.render('accounts/organizations', { error: error, dbError: 'try refreshing the page' });
+        res.render('organizations', { error: error, dbError: 'try refreshing the page' });
     });
 });
 orgs.route('/:sku/remove-default')

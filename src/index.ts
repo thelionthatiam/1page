@@ -59,7 +59,7 @@ router.get('/app/guest', (req, res) => {
 })
 
 router.get('/app/account', (req, res) => {
-    req.session.user ? res.render('account/app') : res.redirect('/app/guest')
+    req.session.user ? res.render('app') : res.redirect('/app/guest')
 })
 
 // NO JS ALARMS
