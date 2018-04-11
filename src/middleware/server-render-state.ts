@@ -8,12 +8,9 @@ function renderState(req, res, next) {
         req.RenderStateSvc = new RenderStateSvc(req.querySvc, req.session.user)
 
         req.RenderStateSvc.getEverything()
-            .then(userData => {
-                res.locals.userData = userData;
-                res.locals.userDataForRender = JSON.stringify(userData)
-                res.locals.email = req.session.user.email
-                res.locals.uuid = req.session.user.uuid
-                console.log('**********************', res.locals)
+            .then(user => {
+                res.locals.user = user
+                console.log('**********************\n', res.locals.user, '\n**********************\n')
                 next();
             })
             .catch(err => {

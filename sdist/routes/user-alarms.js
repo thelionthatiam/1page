@@ -13,7 +13,7 @@ alarms.route('/')
         .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
         .catch(function (err) {
         console.log(err);
-        res.render('account/alarms/new-alarm', { dbError: error_handling_1.dbErrTranslator(err) });
+        res.render('alarms/new-alarm', { dbError: error_handling_1.dbErrTranslator(err) });
     });
 })
     .get(function (req, res) {

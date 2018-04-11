@@ -19,8 +19,8 @@ export default class AuthSvc {
         this.user;
     }
 
-    checkPassword() {
-        return bcrypt.compare(this.inputs.password, this.user.password) 
+    static checkPassword(inputPass:string, savedPass:string):Promise<boolean> {
+        return bcrypt.compare(inputPass, savedPass) 
             .then((result : boolean) => {
                 if (!result) {
                     throw new Error('Password doesn\'t match our records, try again');
@@ -45,7 +45,7 @@ export default class AuthSvc {
         return this.querySvc.getUserViaEmail([this.inputs.email])
             .then((result) => {
                 this.user = result;
-                return this.checkPassword()
+                return AuthSvc.checkPassword(this.inputs.password, this.user.password)
             })
             .then(() => this.querySvc.updateSessionID([this.sessionID, this.user.user_uuid]))
             .then(() => {

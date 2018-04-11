@@ -17,52 +17,51 @@ var SessionCheckSvc = /** @class */ (function () {
 }());
 exports.SessionCheckSvc = SessionCheckSvc;
 var RenderStateSvc = /** @class */ (function () {
-    function RenderStateSvc(querySvc, user) {
+    function RenderStateSvc(querySvc, sessionUser) {
         this.querySvc = querySvc;
-        this.user = user;
-        this.userData = {};
+        this.sessionUser = sessionUser;
+        this.user = {};
     }
     RenderStateSvc.prototype.getEverything = function () {
         var _this = this;
         console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this);
-        return this
-            .querySvc
-            .getUser([this.user.uuid])
-            .then(function (result) {
-            _this.userData.user = result;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', _this.userData);
-            return _this
-                .querySvc
-                .getUserFormsOfPayment([_this.user.uuid]);
+        return this.querySvc.getUser([this.sessionUser.uuid])
+            .then(function (profile) {
+            _this.user.profile = profile;
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', _this.user);
+            return _this.querySvc.getUserAlarms([_this.sessionUser.uuid]);
         })
-            .then(function (result) {
-            _this.userData.formsOfPayment = result;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%two', _this.userData);
-            return _this
-                .querySvc
-                .getUserSettings([_this.user.uuid]);
-        })
-            .then(function (result) {
-            _this.userData.settings = result;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%three', _this.userData);
-            return _this
-                .querySvc
-                .getUserOrgs([_this.user.uuid]);
-        })
-            .then(function (result) {
-            _this.userData.orgs = result;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%four', _this.userData);
-            return _this
-                .querySvc
-                .getUserAlarms([_this.user.uuid]);
-        })
-            .then(function (result) {
-            _this.userData.alarms = result;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', _this.userData);
-            return _this.userData;
+            .then(function (alarms) {
+            _this.user.alarms = alarms;
+            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', _this.user);
+            return _this.user;
         });
     };
     return RenderStateSvc;
 }());
 exports.RenderStateSvc = RenderStateSvc;
+// NOT CURRENTLY USING THIS CONCEPT
+// .then(result => {
+//     this.userData.formsOfPayment = result
+//     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%two', this.userData)
+//     return this
+//         .querySvc
+//         .getUserSettings([this.user.uuid])
+// })
+// NOT CURRENLTY USING THIS CONCEPT
+// .then(result => {
+//     this.userData.settings = result;
+//     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%three', this.userData)
+//     return this
+//         .querySvc
+//         .getUserOrgs([this.user.uuid])
+// })
+// NOT CURRENTLY USING THIS CONCEPT
+// .then(result => {
+//     this.userData.orgs = result
+//     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%four', this.userData)
+//     return this
+//         .querySvc
+//         .getUserAlarms([this.user.uuid]) // wrong
+// })
 //# sourceMappingURL=logic-middleware.js.map

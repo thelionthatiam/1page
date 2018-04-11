@@ -19,7 +19,7 @@ alarms.route('/')
       .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
       .catch((err) => {
         console.log(err)
-        res.render('account/alarms/new-alarm', { dbError: dbErrTranslator(err) });
+        res.render('alarms/new-alarm', { dbError: dbErrTranslator(err) });
       });
   })
   .get((req, res) => {

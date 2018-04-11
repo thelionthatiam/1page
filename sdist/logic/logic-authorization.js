@@ -11,8 +11,8 @@ var AuthSvc = /** @class */ (function () {
         this.inputs = R.AuthInputs.fromJSON(inputs);
         this.user;
     }
-    AuthSvc.prototype.checkPassword = function () {
-        return bcrypt.compare(this.inputs.password, this.user.password)
+    AuthSvc.checkPassword = function (inputPass, savedPass) {
+        return bcrypt.compare(inputPass, savedPass)
             .then(function (result) {
             if (!result) {
                 throw new Error('Password doesn\'t match our records, try again');
@@ -36,7 +36,7 @@ var AuthSvc = /** @class */ (function () {
         return this.querySvc.getUserViaEmail([this.inputs.email])
             .then(function (result) {
             _this.user = result;
-            return _this.checkPassword();
+            return AuthSvc.checkPassword(_this.inputs.password, _this.user.password);
         })
             .then(function () { return _this.querySvc.updateSessionID([_this.sessionID, _this.user.user_uuid]); })
             .then(function () {

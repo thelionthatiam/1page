@@ -94,7 +94,7 @@ function scorer(password) {
 }
 
 
-export function passChecker(password){
+export function passChecker(password:string) : Promise<void>{
     return new Promise (
         (resolve, reject) => {
             let score = scorer(password)

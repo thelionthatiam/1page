@@ -8,17 +8,22 @@
         <p class='top-row-time-text small-text'>Monday, April 2, 2018</p>
       </div>
     </div>
-    <form action="/app/accounts/:{{email}}/contact?_method=PUT" method="post">
-      <p><b>email: </b>{{ email }}</p>
-      <input id="email" name="email" class="userFormItem" type="text" value= {{email}}>
-      <p class="formErrorReport" id="emailError"></p>
+    <div class ="column centerColumn full-width">
+      
+      <form action="/app/accounts/:{{ user.profile.email}}/contact?_method=PUT" method="post">
+        <h3 class="left-text formTitle">change contact information</h3>
+        <p><b>email: </b>{{  user.profile.email }}</p>
+        <input id="email" name="email" class="big-form-item" type="text" value= {{ user.profile.email}}>
+        <p class="formErrorReport" ></p>
 
-      <p><b>phone: </b>{{ phone }}</p>
-      <input id="phone" name="phone" class="userFormItem numericOnly" type="text" value= {{phone}}>
-      <p class="formErrorReport" id="phoneError"></p>
-      <input type="hidden" name="prevTitle" value="{{title}}" />
-      <p class="formErrorReport" id="awakeError"></p>
-      <button id="formSubmitter" class="button light-button" type="submit"> change </button>
-    </form>
+        <p><b>phone: </b>{{ user.profile.phone }}</p>
+        <input id="phone" name="phone" class="big-form-item numericOnly" type="text" value= {{ user.profile.phone }}>
+        <p class="formErrorReport" id="phoneError"></p>
+        <input type="hidden" name="prevTitle" value="{{ title }}" />
+        <p class="formErrorReport" id="awakeError"></p>
+        <button class="button light-button" type="submit"> submit </button>
+      </form>
+      <p class="formErrorReport">{{ dbError }}</p>
+    </div>
   </div>
 </div>

@@ -6,6 +6,7 @@ import AuthSvc from '../src/logic/logic-authorization';
 import CreateAcctSvc from '../src/logic/logic-accounts';
 import SettingsSvc from '../src/logic/logic-settings';
 import PaymentsSvc from '../src/logic/logic-payments';
+import ProfileSvc from '../src/logic/logic-profile';
 import AlarmSvc from '../src/logic/logic-alarms';
 import { SessionCheckSvc } from '../src/logic/logic-middleware';
 import QuerySvc from '../src/data-access/queries';
@@ -40,6 +41,7 @@ declare global {
       SessionCheckSvc:SessionCheckSvc;
       PaymentsSvc:PaymentsSvc;
       AlarmSvc:AlarmSvc;
+      ProfileSvc:ProfileSvc;
     }
   } 
 }

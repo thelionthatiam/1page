@@ -20,63 +20,66 @@ export class SessionCheckSvc {
     }
 }
 
-// validation missing!!
+// THIS IS OLD AND TERRIBLE
 interface Everything {
-    alarms?: Alarm[];
-    formsOfPayment?: FormsOfPayment[];
-    settings?: Settings[];
-    orgs?: Orgs[];
-    user?: R.UserDB;
+    alarms?: R.AlarmDB[];
+    formsOfPayment?: FormsOfPayment[]; // still require real validation
+    settings?: Settings[]; // still require real validation
+    orgs?: Orgs[]; // still require real validation
+    profile?: R.UserDB;
 }
 
 export class RenderStateSvc {
     querySvc : QuerySvc;
-    user : R.UserSession;
-    userData : Everything;
+    sessionUser : R.UserSession;
+    user: Everything;
 
-    constructor(querySvc, user) {
+    constructor(querySvc, sessionUser) {
         this.querySvc = querySvc;
-        this.user = user;
-        this.userData = {};
+        this.sessionUser = sessionUser;
+        this.user = {};
     }
     getEverything() {
         console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
-        return this
-            .querySvc
-            .getUser([this.user.uuid])
-            .then(result => {
-                this.userData.user = result;
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.userData)
-                return this
-                    .querySvc
-                    .getUserFormsOfPayment([this.user.uuid])
+        return this.querySvc.getUser([this.sessionUser.uuid])
+            .then(profile => {
+                this.user.profile = profile
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
+                return this.querySvc.getUserAlarms([this.sessionUser.uuid])
             })
-            .then(result => {
-                this.userData.formsOfPayment = result
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%two', this.userData)
-                return this
-                    .querySvc
-                    .getUserSettings([this.user.uuid])
-            })
-            .then(result => {
-                this.userData.settings = result;
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%three', this.userData)
-                return this
-                    .querySvc
-                    .getUserOrgs([this.user.uuid])
-            })
-            .then(result => {
-                this.userData.orgs = result
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%four', this.userData)
-                return this
-                    .querySvc
-                    .getUserAlarms([this.user.uuid])
-            })
-            .then(result => {
-                this.userData.alarms = result
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.userData)
-                return this.userData
+            .then(alarms => {
+                this.user.alarms = alarms
+                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
+                return this.user
             })
     }
 
 }
+
+
+            // NOT CURRENTLY USING THIS CONCEPT
+            // .then(result => {
+            //     this.userData.formsOfPayment = result
+            //     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%two', this.userData)
+            //     return this
+            //         .querySvc
+            //         .getUserSettings([this.user.uuid])
+            // })
+
+            // NOT CURRENLTY USING THIS CONCEPT
+            // .then(result => {
+            //     this.userData.settings = result;
+            //     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%three', this.userData)
+            //     return this
+            //         .querySvc
+            //         .getUserOrgs([this.user.uuid])
+            // })
+
+            // NOT CURRENTLY USING THIS CONCEPT
+            // .then(result => {
+            //     this.userData.orgs = result
+            //     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%four', this.userData)
+            //     return this
+            //         .querySvc
+            //         .getUserAlarms([this.user.uuid]) // wrong
+            // })
