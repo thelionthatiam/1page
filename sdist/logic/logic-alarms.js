@@ -23,7 +23,13 @@ var AlarmsSvc = /** @class */ (function () {
         return [];
     };
     AlarmsSvc.prototype.addAlarm = function () {
-        return this.querySvc.addAlarm(this.alarmObjectToQueryValues());
+        return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues());
+    };
+    AlarmsSvc.prototype.addNextAlarm = function (sortedAlarms) {
+        var helper = new TimeHelpers();
+        for (var i = 0; i < sortedAlarms; i++) {
+            sortedAlarms.nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time);
+        }
     };
     AlarmsSvc.prototype.getUserAlarms = function () {
         var _this = this;
@@ -102,7 +108,8 @@ var TimeHelpers = /** @class */ (function () {
         this.hour = this.date.getHours();
         this.min = this.date.getMinutes();
     }
-    TimeHelpers.prototype.nextActiveAlarm = function (time) {
+    // CURRENTLY NOT CORRECT FUNCTION
+    TimeHelpers.prototype.dayOfTheWeek = function (time) {
         var timeArr = time.split(':');
         var timeH = parseInt(timeArr[0]);
         var timeM = parseInt(timeArr[1]);
@@ -126,6 +133,33 @@ var TimeHelpers = /** @class */ (function () {
             }
         }
         return TimeHelpers.dayNumToString(dayNum);
+    };
+    TimeHelpers.prototype.todayOrTomorrow = function (time) {
+        console.log('today or tomorrow running');
+        var timeArr = time.split(':');
+        var timeH = parseInt(timeArr[0]);
+        var timeM = parseInt(timeArr[1]);
+        console.log('time', timeH, 'h', this.hour);
+        if (timeH < this.hour) {
+            return "tomorrow";
+        }
+        else if (timeH > this.hour) {
+            return "today";
+        }
+        else if (timeH === this.hour) {
+            if (timeM < this.min) {
+                return "tomorrow";
+            }
+            else if (timeM > this.min) {
+                return "today";
+            }
+            else {
+                return "tomorrow";
+            }
+        }
+        else {
+            throw new Error('Something was unaccounted for when determining the next time this alarm goes off!');
+        }
     };
     TimeHelpers.dayNumToString = function (dayNum) {
         console.log('running');

@@ -31,10 +31,15 @@ li {
 .mini-text {
   font-size: 10px; }
 
+.centered-text {
+  padding: 2px;
+  margin: 2px; }
+
 .link-text {
   padding: 2px;
   margin: 2px;
-  transition: 100ms; }
+  transition: 100ms;
+  cursor: pointer; }
 
 .link-text:hover {
   background-color: lightGrey;
@@ -94,6 +99,9 @@ label {
 form {
   display: flex;
   flex-direction: column; }
+
+.form-row {
+  flex-direction: row; }
 
 .generic-form {
   display: flex;
@@ -566,9 +574,6 @@ button:focus {
   width: 80vw;
   color: #282828; }
 
-.alarm-title {
-  font-weight: 400; }
-
 .alarm-time {
   font-size: 36px;
   font-weight: 600; }
@@ -614,6 +619,7 @@ button:focus {
   width: 100%; }
 
 .alarm-title {
+  font-weight: 400;
   align-self: flex-start; }
 
 .toggle-active-wrapper {

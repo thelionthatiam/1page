@@ -67,7 +67,15 @@ export default class AlarmsSvc {
     }
 
     addAlarm() {
-        return this.querySvc.addAlarm(this.alarmObjectToQueryValues())
+        return this.querySvc.addUserAlarm(this.alarmObjectToQueryValues())
+    }
+
+    addNextAlarm(sortedAlarms) {
+        let helper = new TimeHelpers()
+
+        for (let i = 0; i < sortedAlarms; i++) {
+            sortedAlarms.nextAlarm = helper.todayOrTomorrow(sortedAlarms[i].time)
+        }
     }
 
     getUserAlarms() {
@@ -163,7 +171,9 @@ class TimeHelpers {
         this.min = this.date.getMinutes();
     }
 
-    nextActiveAlarm(time) {
+
+    // CURRENTLY NOT CORRECT FUNCTION
+    dayOfTheWeek(time) {
         let timeArr = time.split(':')
         let timeH = parseInt(timeArr[0])
         let timeM = parseInt(timeArr[1])
@@ -186,6 +196,30 @@ class TimeHelpers {
         }
 
         return TimeHelpers.dayNumToString(dayNum)
+    }
+
+    todayOrTomorrow(time) {
+        console.log('today or tomorrow running')
+        let timeArr = time.split(':')
+        let timeH = parseInt(timeArr[0])
+        let timeM = parseInt(timeArr[1])
+        console.log('time', timeH, 'h', this.hour)
+
+        if (timeH < this.hour) {
+            return "tomorrow";
+        } else if (timeH > this.hour) {
+            return "today";
+        } else if (timeH === this.hour) {
+            if (timeM < this.min) {
+                return "tomorrow";
+            } else if (timeM > this.min) {
+                return "today";
+            } else {
+                return "tomorrow";
+            }
+        } else {
+            throw new Error ('Something was unaccounted for when determining the next time this alarm goes off!')
+        }
     }
 
     static dayNumToString(dayNum) {

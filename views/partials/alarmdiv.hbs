@@ -1,8 +1,10 @@
 <div class="column contentWrapper">
   <div class="alarm-row">
     <div class = 'time-wrapper'>
-      <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/title" method='get'>
+      <form class = 'form-row' action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/title" method='get'>
         <input type='submit' class = "alarm-title small-text link-text" value="{{title}}">
+        <p class = "small-text centered-text">&#8226</p>
+        <p class = "small-text centered-text">{{nextAlarm}}</p>
         <input name="alarm_uuid" type="hidden" value="{{alarm_uuid}}">
         <input name="title" type='hidden' value="{{title}}">
       </form>

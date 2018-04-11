@@ -55,10 +55,16 @@ li {
   font-size:$miniFont;
 }
 
+.centered-text {
+  padding:2px;
+  margin:2px;
+}
+
 .link-text {
   padding:2px;
   margin:2px;
   transition:100ms;
+  cursor:pointer;
 }
 
 .link-text:hover {
@@ -174,6 +180,10 @@ label {
 form {
   display: flex;
   flex-direction:column;
+}
+
+.form-row {
+  flex-direction:row;
 }
 
 .generic-form {
@@ -794,11 +804,6 @@ button:focus {
   color:$darkGrey;
 }
 
-.alarm-title {
-  // text-transform:uppercase;
-  font-weight:400;
-}
-
 .alarm-time {
   font-size:36px;
   font-weight:600;
@@ -852,6 +857,7 @@ button:focus {
 }
 
 .alarm-title {
+  font-weight:400;
   align-self:flex-start;
 }
 
