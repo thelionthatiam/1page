@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import { compare } from '../../routes/functions/helpers';
 import {
   Route,
@@ -14,7 +14,7 @@ interface AlarmClockProps {
 }
 
 
-class AlarmClock extends Component {
+export default class AlarmClock extends React.Component {
   props : AlarmClockProps
 
   constructor (props) {
@@ -152,5 +152,3 @@ function SavedAlarms(props) {
   )
 }
 
-
-export default AlarmClock;

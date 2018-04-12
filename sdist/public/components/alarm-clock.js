@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = require("react");
+var React = require("react");
 var AlarmClock = /** @class */ (function (_super) {
     __extends(AlarmClock, _super);
     function AlarmClock(props) {
@@ -59,23 +59,24 @@ var AlarmClock = /** @class */ (function (_super) {
     };
     AlarmClock.prototype.render = function () {
         console.log('|||||||||ALARM COMPONENT', this.props);
-        return (react_1.default.createElement("div", { className: 'app-alarm-wrapper' },
-            react_1.default.createElement(Clock, { time: this.state.date.toLocaleTimeString() }),
-            react_1.default.createElement(AlarmForm, { formSubmit: this.handleSubmit, time: this.state.time, inputChange: this.handleChange }),
-            react_1.default.createElement(Alarms, { savedTimes: this.state.savedTimes })));
+        return (React.createElement("div", { className: 'app-alarm-wrapper' },
+            React.createElement(Clock, { time: this.state.date.toLocaleTimeString() }),
+            React.createElement(AlarmForm, { formSubmit: this.handleSubmit, time: this.state.time, inputChange: this.handleChange }),
+            React.createElement(Alarms, { savedTimes: this.state.savedTimes })));
     };
     return AlarmClock;
-}(react_1.Component));
+}(React.Component));
+exports.default = AlarmClock;
 function Clock(props) {
-    return (react_1.default.createElement("div", { className: 'clock' },
-        react_1.default.createElement("h1", null, props.time)));
+    return (React.createElement("div", { className: 'clock' },
+        React.createElement("h1", null, props.time)));
 }
 function AlarmForm(props) {
-    return (react_1.default.createElement("div", { className: 'alarmForm' },
-        react_1.default.createElement("h4", null, "create a new alarm"),
-        react_1.default.createElement("form", { onSubmit: props.formSubmit },
-            react_1.default.createElement("input", { type: 'time', time: props.time, onChange: props.inputChange }),
-            react_1.default.createElement("button", null, "add"))));
+    return (React.createElement("div", { className: 'alarmForm' },
+        React.createElement("h4", null, "create a new alarm"),
+        React.createElement("form", { onSubmit: props.formSubmit },
+            React.createElement("input", { type: 'time', time: props.time, onChange: props.inputChange }),
+            React.createElement("button", null, "add"))));
 }
 var Alarms = /** @class */ (function (_super) {
     __extends(Alarms, _super);
@@ -85,27 +86,26 @@ var Alarms = /** @class */ (function (_super) {
         return _this;
     }
     Alarms.prototype.render = function () {
-        return (react_1.default.createElement("div", { className: 'alarms' },
-            react_1.default.createElement(SavedAlarmsTitle, { alarms: this.alarms }),
-            react_1.default.createElement(SavedAlarms, { alarms: this.alarms })));
+        return (React.createElement("div", { className: 'alarms' },
+            React.createElement(SavedAlarmsTitle, { alarms: this.alarms }),
+            React.createElement(SavedAlarms, { alarms: this.alarms })));
     };
     return Alarms;
-}(react_1.Component));
+}(Component));
 function SavedAlarmsTitle(props) {
     var alarms = props.alarms;
     if (alarms.length < 1) {
-        return react_1.default.createElement("p", null, "start adding alarms to see them here!");
+        return React.createElement("p", null, "start adding alarms to see them here!");
     }
     else {
-        return react_1.default.createElement("p", null, "saved alarms");
+        return React.createElement("p", null, "saved alarms");
     }
 }
 function SavedAlarms(props) {
     var alarms = props.alarms;
     var savedAlarms = alarms.map(function (alarm) {
-        return react_1.default.createElement("li", { key: alarm }, alarm);
+        return React.createElement("li", { key: alarm }, alarm);
     });
-    return (react_1.default.createElement("ul", null, savedAlarms));
+    return (React.createElement("ul", null, savedAlarms));
 }
-exports.default = AlarmClock;
 //# sourceMappingURL=alarm-clock.js.map
