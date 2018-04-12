@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // import appReducers from './reducers/app-reducers';
 var test_1 = require("./test");
 var alarm_clock_1 = require("./components/alarm-clock");
-exports.AlarmClock = alarm_clock_1.default;
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
@@ -41,6 +40,7 @@ exports.app = app;
 function alarmClock() {
     ReactDOM.render(React.createElement(alarm_clock_1.default, null), document.getElementById('alarm'));
 }
+exports.alarmClock = alarmClock;
 // const preloadedState = window.__PRELOADED_STATE__
 //  
 // // Allow the passed state to be garbage-collected

@@ -56,7 +56,7 @@ function alarmClock() {
 }
 
 
-export { app, store, populate, AlarmClock };
+export { app, store, populate, alarmClock };
 
 
 
