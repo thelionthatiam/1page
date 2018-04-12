@@ -5,7 +5,7 @@ import { populate } from './actions/user-data'
 
 
 const Test = ({userData, populate}) => {
-    console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate)
+    // console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate)
     return (
         <div>
             <h1>profile</h1>
@@ -26,14 +26,14 @@ const Test = ({userData, populate}) => {
 }
 
 const mapStateToProps = state => {
-console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state)
+// console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state)
     return {
         userData: state.userData
     }
 }
 
 const mapDispatchToProps = dispatch => {
-    console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', populate)
+    // console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', populate)
     return {
         populate: (userData) => dispatch(populate(userData))
     }

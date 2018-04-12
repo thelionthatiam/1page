@@ -5,7 +5,7 @@ var react_redux_1 = require("react-redux");
 var user_data_1 = require("./actions/user-data");
 var Test = function (_a) {
     var userData = _a.userData, populate = _a.populate;
-    console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate);
+    // console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate)
     return (React.createElement("div", null,
         React.createElement("h1", null, "profile"),
         React.createElement("p", null, userData.profile.name),
@@ -21,13 +21,13 @@ var Test = function (_a) {
         React.createElement("button", { onClick: populate, className: 'button dark-button' }, "get user data")));
 };
 var mapStateToProps = function (state) {
-    console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state);
+    // console.log(' ~~~~~~~~~~~~~~~~~~~~ 4. map state to prop', state)
     return {
         userData: state.userData
     };
 };
 var mapDispatchToProps = function (dispatch) {
-    console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', user_data_1.populate);
+    // console.log('~~~~~~~~~~~~~~~~~~~~ 6. map dispatch', populate)
     return {
         populate: function (userData) { return dispatch(user_data_1.populate(userData)); }
     };
