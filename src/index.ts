@@ -89,9 +89,7 @@ let dummy = {
 }
 
 router.get('/test', (req, res) => {
-    res.render('test-page', {
-        dummy: JSON.stringify(dummy)
-    })
+    res.render('test-page')
 })
 
 

@@ -73,9 +73,7 @@ var dummy = {
     ]
 };
 router.get('/test', function (req, res) {
-    res.render('test-page', {
-        dummy: JSON.stringify(dummy)
-    });
+    res.render('test-page');
 });
 router.get('/dummy-route', function (req, res) {
     res.render('dummy');

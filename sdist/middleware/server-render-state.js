@@ -10,7 +10,9 @@ function renderState(req, res, next) {
         req.RenderStateSvc.getEverything()
             .then(function (user) {
             res.locals.user = user;
+            res.locals.stringUser = JSON.stringify(user);
             console.log('**********************\n', res.locals.user, '\n**********************\n');
+            console.log('**********************\n', res.locals.stringUser, '\n**********************\n');
             next();
         })
             .catch(function (err) {
@@ -26,5 +28,6 @@ function renderState(req, res, next) {
         next();
     }
 }
+//
 exports.default = renderState;
 //# sourceMappingURL=server-render-state.js.map

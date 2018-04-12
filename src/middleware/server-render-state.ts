@@ -10,7 +10,9 @@ function renderState(req, res, next) {
         req.RenderStateSvc.getEverything()
             .then(user => {
                 res.locals.user = user
+                res.locals.stringUser = JSON.stringify(user)
                 console.log('**********************\n', res.locals.user, '\n**********************\n')
+                console.log('**********************\n', res.locals.stringUser, '\n**********************\n')
                 next();
             })
             .catch(err => {
@@ -25,5 +27,5 @@ function renderState(req, res, next) {
         next();
     }
 }
-
+//
 export default renderState;

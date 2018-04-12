@@ -51,7 +51,6 @@ app.use(session({
 
 app.use(sessionCheck);
 app.use(renderState);
-// app.use(handleRender);
 app.use('/', require('./index'))
 
 

@@ -8,8 +8,18 @@ const Test = ({userData, populate}) => {
     console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate)
     return (
         <div>
-            <p>THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX</p>    
-            <div><pre>{JSON.stringify(userData, null, 2) }</pre></div>
+            <h1>profile</h1>
+                <p>{userData.profile.name}</p>
+                <p>{userData.profile.email}</p>
+                <p>{userData.profile.phone}</p>
+                <p>{userData.profile.permission}</p>
+            <h1>alarms</h1>
+                <h4>{userData.alarms[0].title}</h4>
+                    <p>{userData.alarms[0].time}</p>
+                    <p>{userData.alarms[0].user_uuid}</p>
+                    <p>{userData.alarms[0].state}</p>
+                    <p>{userData.alarms[0].repeat}</p>
+
             <button onClick = {populate} className = 'button dark-button'>get user data</button>
         </div>
     )

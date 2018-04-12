@@ -7,9 +7,17 @@ var Test = function (_a) {
     var userData = _a.userData, populate = _a.populate;
     console.log('~~~~~~~~~~~~~~~~~~~~ 7. test component', userData, populate);
     return (React.createElement("div", null,
-        React.createElement("p", null, "THIS IS A TEST TO SEE IF STATE CAN COME FROM REDUX"),
-        React.createElement("div", null,
-            React.createElement("pre", null, JSON.stringify(userData, null, 2))),
+        React.createElement("h1", null, "profile"),
+        React.createElement("p", null, userData.profile.name),
+        React.createElement("p", null, userData.profile.email),
+        React.createElement("p", null, userData.profile.phone),
+        React.createElement("p", null, userData.profile.permission),
+        React.createElement("h1", null, "alarms"),
+        React.createElement("h4", null, userData.alarms[0].title),
+        React.createElement("p", null, userData.alarms[0].time),
+        React.createElement("p", null, userData.alarms[0].user_uuid),
+        React.createElement("p", null, userData.alarms[0].state),
+        React.createElement("p", null, userData.alarms[0].repeat),
         React.createElement("button", { onClick: populate, className: 'button dark-button' }, "get user data")));
 };
 var mapStateToProps = function (state) {
