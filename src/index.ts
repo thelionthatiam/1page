@@ -11,27 +11,27 @@ import orgs from './routes/user-organizations';
 import settings from './routes/user-settings';
 import payment from './routes/user-payment';
 
-const router = express.Router();
+const index = express.Router();
 
 
-router.use('/', auth);
-router.use('/', accts);
+index.use('/', auth);
+index.use('/', accts);
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
 
-router.use('/app*', appLayout)
-router.use('/app/orgs', allOrgs);
+index.use('/app*', appLayout)
+index.use('/app/orgs', allOrgs);
 
 // router.use('/admin', require('./admin/products'));
 // router.use('/admin', require('./admin/coupons'));
 // router.use('/admin', require('./admin/accounts'));
 
-router.use('/app/accounts/:email', profile)
-router.use('/app/accounts/:email', allUserData)
-router.use('/app/accounts/:email/alarms', alarms);
-router.use('/app/accounts/:email/orgs', orgs);
-router.use('/app/accounts/:email/settings', settings);
-router.use('/app/accounts/:email/payment', payment);
+index.use('/app/accounts/:email', profile)
+index.use('/app/accounts/:email', allUserData)
+index.use('/app/accounts/:email/alarms', alarms);
+index.use('/app/accounts/:email/orgs', orgs);
+index.use('/app/accounts/:email/settings', settings);
+index.use('/app/accounts/:email/payment', payment);
 // router.use('/accounts/:email', require('./account/cart'));
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
@@ -40,31 +40,31 @@ router.use('/app/accounts/:email/payment', payment);
 
 // HOME
 
-router.get('/', function (req, res) {
+index.get('/', function (req, res) {
     res.render('home', {home:true})
 })
 
 // TO LOGIN PAGE
-router.get('/to-login', (req, res) => {
+index.get('/to-login', (req, res) => {
     res.render('login');
 })
 
 // APP
-router.get('/app', (req, res) => 
+index.get('/app', (req, res) => 
     req.session.user ? res.redirect('app/account') : res.redirect('app/guest')
 )
 
-router.get('/app/guest', (req, res) => {
+index.get('/app/guest', (req, res) => {
   res.render('guest/app')
 })
 
-router.get('/app/account', (req, res) => {
+index.get('/app/account', (req, res) => {
     req.session.user ? res.render('app') : res.redirect('/app/guest')
 })
 
 // NO JS ALARMS
 
-router.get('/app/guest/alarms', (req, res) => {
+index.get('/app/guest/alarms', (req, res) => {
     res.render('guest/alarms');
 })
 
@@ -88,13 +88,13 @@ let dummy = {
     ]
 }
 
-router.get('/test', (req, res) => {
+index.get('/test', (req, res) => {
     res.render('test-page')
 })
 
 
-router.get('/dummy-route', (req, res) => {
+index.get('/dummy-route', (req, res) => {
   res.render('dummy');
 })
 
-module.exports = router;
+export default index;

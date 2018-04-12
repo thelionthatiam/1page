@@ -114,7 +114,7 @@ function AlarmForm(props) {
 }
 
 
-class Alarms extends Component {
+class Alarms extends React.Component {
   constructor(props) {
     super(props);
     this.alarms = props.savedTimes;

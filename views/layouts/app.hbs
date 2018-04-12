@@ -6,6 +6,10 @@
     <title>FORM APP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/stylesheets/styles.css" />
+    <script src='../rollup/bundle.js'></script>
+    <script>
+        a.store.dispatch(a.populate({{{ stringUser }}}))
+    </script>
 </head>
 
 <body>
@@ -26,7 +30,7 @@
                     <a href="/app/guest/alarms" class='app-menu-text'>alarms</a>
                     {{/if}}
                 </li>
-    
+
                 {{!-- <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
                     {{#if loggedIn}}

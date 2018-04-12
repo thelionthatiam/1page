@@ -91,7 +91,7 @@ var Alarms = /** @class */ (function (_super) {
             React.createElement(SavedAlarms, { alarms: this.alarms })));
     };
     return Alarms;
-}(Component));
+}(React.Component));
 function SavedAlarmsTitle(props) {
     var alarms = props.alarms;
     if (alarms.length < 1) {

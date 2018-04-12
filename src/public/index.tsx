@@ -4,6 +4,7 @@
 // import home from './home'
 // import appReducers from './reducers/app-reducers';
 import { TestApp } from './test';
+import AlarmClock from './components/alarm-clock'
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -38,19 +39,24 @@ let store = createStore(reducer, composeWithDevTools(
     )
 ))
 
-console.log('~~~~~~~~~~~~~~~~~~~~ 3. store', store)
+
 function app() {
   ReactDOM.render(
     <Provider store = { store }>
         <TestApp/>
     </Provider>,
-  document.getElementById('app')
-);
+  document.getElementById('test'));
 }
 
 
+function alarmClock() {
+    ReactDOM.render(
+        <AlarmClock/>,
+    document.getElementById('alarm'))
+}
 
-export { app, store, populate };
+
+export { app, store, populate, AlarmClock };
 
 
 

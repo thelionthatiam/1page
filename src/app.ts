@@ -7,15 +7,15 @@ import * as hbs from "express-handlebars";
 import * as path from "path";
 import * as session from "express-session";
 import * as methodOverride from 'method-override';
-import * as cors from 'cors'
+import * as cors from 'cors';
+import index from './index'
 import { dbConfig } from "./services/db-connect-config";
 import { init } from './middleware/database'
 import renderState from './middleware/server-render-state';
 import sessionCheck from "./middleware/session-check";
-import handleRender from './middleware/init-render-test'
-import * as e from './services/error-handling'
+import * as e from './services/error-handling';
 
-const app = express();//
+const app = express();
 
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())
@@ -51,7 +51,7 @@ app.use(session({
 
 app.use(sessionCheck);
 app.use(renderState);
-app.use('/', require('./index'))
+app.use('/', index)
 
 
 
