@@ -1,12 +1,5 @@
 import * as React from 'react';
 import { compare } from '../../routes/functions/helpers';
-import {
-  Route,
-  Link,
-  BrowserRouter,
-  Redirect,
-  Switch
-} from 'react-router-dom';
 
 interface AlarmClockProps {
   alarmGetter : () => void;

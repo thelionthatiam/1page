@@ -1,0 +1,25 @@
+<button class = 'button dark-button' onclick="giveLast()">Start computation</button>
+
+<script>
+console.log(window.navigator)
+
+
+// example of error event
+function onError(e) {
+  console.log('Line: ' + e.lineno);
+  console.log('In: ' + e.filename);
+  console.log('Message: ' + e.message);
+}
+
+worker.addEventListener('error', onError, false);
+
+
+function longArray() {
+    let arr = [];
+    for (let i = 0; i < 1000000; i++) {
+        arr.push(i)
+    }
+    return arr
+}
+
+</script>
