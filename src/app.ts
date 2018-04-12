@@ -17,6 +17,8 @@ import * as e from './services/error-handling';
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, './public/rollup')));
+
 app.use(methodOverride('_method'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true,limit:'50kb'}));
@@ -29,6 +31,8 @@ app.engine('hbs', hbs({
 }));
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
+
+
 app.set('trust proxy', 1);
 
 app.use(init(dbConfig));
