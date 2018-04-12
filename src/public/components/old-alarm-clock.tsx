@@ -72,7 +72,6 @@ export default class AlarmClock extends React.Component {
  }
 
   render() {
-    console.log('|||||||||ALARM COMPONENT', this.props)
     return (
       <div className = 'app-alarm-wrapper'>
         <Clock time={this.state.date.toLocaleTimeString()} />

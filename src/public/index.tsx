@@ -4,7 +4,7 @@
 // import home from './home'
 // import appReducers from './reducers/app-reducers';
 import { TestApp } from './test';
-import AlarmClock from './components/alarm-clock'
+import { AlarmClock } from './alarm-clock'
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -15,6 +15,30 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './actions/user-data'
 
 
+// wrap around erroring component 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  componentDidCatch(error, info) {
+    // Display fallback UI
+    this.setState({ hasError: true });
+    // You can also log the error to an error reporting service
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+    return this.props.children;
+  }
+}
+
+
+
 let initialState = {userData: 'foo'}
 
 
@@ -22,13 +46,10 @@ let initialState = {userData: 'foo'}
 // store calls the reducer which updates the state based on the actions
 
 function reducer(state = initialState, action) {
-    console.log('~~~~~~~~~~~~~~~~~~~~1. reducer, populate user data', action, state)
     switch (action.type) {
         case POPULATE:
-            console.log('reducer POPULATE', action.userData)
             return Object.assign({}, state, { userData:action.userData }) 
         default:
-            console.log('~~~~~~~~~~~~~~~~~~~~2. reducer default')
             return state;
     }
 }  
@@ -51,7 +72,9 @@ function app() {
 
 function alarmClock() {
     ReactDOM.render(
-        <AlarmClock/>,
+    <Provider store = {store}>
+        <AlarmClock/>
+    </Provider>,
     document.getElementById('alarm'))
 }
 
