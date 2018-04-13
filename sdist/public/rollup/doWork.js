@@ -1,25 +1,34 @@
-function calculateAverage(arr) {
-    return (arr.reduce((a, current) => a + current) / arr.length)
-}
+var CACHE_NAME = 'my-web-app-cache';
+var urlsToCache = [
+    './bundle.js',
+    './stylesheets/styles.css'
+
+];
 
 
-function giveLast() {
-    // let arr = [1,2,3,4,5,6,7]
-    let arr = [];
-    for (let i = 0; i < 1000000; i++) {
-        arr.push(i)
+self.addEventListener('install', function (event) {
+    // event.waitUntil takes a promise to know how
+    // long the installation takes, and whether it 
+    // succeeded or not.
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function (cache) {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    );
+});
+
+self.addEventListener('push', function (event) {
+    if (event.data) {
+        console.log('This push event has data: ', event.data.text());
+        console.log('This push event has json: ', event.data.json());
+        console.log('This push event has blob: ', event.data.blob());
+        console.log('This push event has arrayBuffer: ', event.data.arrayBuffer()); 
+        const promiseChain = self.registration.showNotification('Hello, World.');
+
+        event.waitUntil(promiseChain);
+    } else {
+        console.log('This push event has no data.');
     }
-    return arr
-}
-
-this.addEventListener('message', function (e) {
-    var data = e.data;
-    switch (data.cmd) {
-        case 'average':
-            var result = giveLast(); // Some function that calculates the average from the numeric array.
-            self.postMessage(result);
-            break;
-        default:
-            self.postMessage('Unknown command');
-    }
-}, false);
+});

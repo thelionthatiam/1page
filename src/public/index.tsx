@@ -5,7 +5,7 @@
 // import appReducers from './reducers/app-reducers';
 import { TestApp } from './test';
 import { AlarmClock } from './alarm-clock'
-
+import * as wp from 'web-push';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,6 +13,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './actions/user-data'
+import { WSAEPFNOSUPPORT } from 'constants';
 
 
 // wrap around erroring component 
@@ -77,7 +78,6 @@ function alarmClock() {
     </Provider>,
     document.getElementById('alarm'))
 }
-
 
 export { app, store, populate, alarmClock };
 

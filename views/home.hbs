@@ -1,25 +1,88 @@
-<button class = 'button dark-button' onclick="giveLast()">Start computation</button>
-
+<form action = '/push-test' method = 'POST'>
+    <button>send test notification</button>
+</form>
 <script>
-console.log(window.navigator)
+function askPermission() {
+    return new Promise(function (resolve, reject) {
+        const permissionResult = Notification.requestPermission(function (result) {
+            resolve(result);
+        });
 
-
-// example of error event
-function onError(e) {
-  console.log('Line: ' + e.lineno);
-  console.log('In: ' + e.filename);
-  console.log('Message: ' + e.message);
+        if (permissionResult) {
+            permissionResult.then(resolve, reject);
+        }
+    })
+        .then(function (permissionResult) {
+            if (permissionResult !== 'granted') {
+                throw new Error('We weren\'t granted permission.');
+            }
+        });
 }
 
-worker.addEventListener('error', onError, false);
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
 
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
 
-function longArray() {
-    let arr = [];
-    for (let i = 0; i < 1000000; i++) {
-        arr.push(i)
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
     }
-    return arr
+    return outputArray;
 }
+
+
+
+function subscribeUserToPush() {
+    return navigator.serviceWorker.register('/doWork.js')
+        .then(function (registration) {
+            const subscribeOptions = {
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(
+                    'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
+                )
+            };
+
+            return registration.pushManager.subscribe(subscribeOptions);
+        })
+        .then(function (pushSubscription) {
+            return sendSubscriptionToBackEnd(pushSubscription)
+        })
+
+}
+
+function sendSubscriptionToBackEnd(subscription) {
+    return fetch('/subscribe', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify(subscription)
+    })
+    .then(function (response) {
+        if (!response.ok) {
+            console.log(response)
+            throw new Error('Bad status code from server.', response);
+        }
+
+        return response.json();
+    })
+    .then(function (responseData) {
+        if (!(responseData.data && responseData.data.success)) {
+            console.log(responseData)
+            throw new Error('Bad response from server.');
+        }
+    })
+    .catch(e => console.log(e))
+}
+
+askPermission()
+subscribeUserToPush()
+
 
 </script>
+

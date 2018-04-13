@@ -57,6 +57,7 @@
     "runtime": "^0.14.1",
     "strict-mode": "^1.1.2",
     "uuid": "^3.1.0",
+    "web-push": "^3.3.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {

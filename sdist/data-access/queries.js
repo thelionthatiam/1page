@@ -196,6 +196,13 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.getPushSubscriptions = function (values) {
+        var text = 'SELECT * FROM push_subs';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            return result.rows;
+        });
+    };
     // insert
     QuerySvc.prototype.insertUser = function (values) {
         var text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';
@@ -256,6 +263,14 @@ var QuerySvc = /** @class */ (function () {
     QuerySvc.prototype.insertCardToCart = function (values) {
         var text = 'INSERT INTO cart (card_number, user_uuid) VALUES ($1, $2)';
         return this.conn.query(text, values);
+    };
+    QuerySvc.prototype.insertPushSubs = function (values) {
+        var text = 'INSERT INTO push_subs (user_uuid, p256dh, auth, expiration_time, endpoint) VALUES ($1, $2, $3, $4, $5) RETURNING *';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            console.log(result);
+            return null;
+        });
     };
     // update
     QuerySvc.prototype.updateSessionID = function (values) {
@@ -514,6 +529,11 @@ var QuerySvc = /** @class */ (function () {
             .then(function (res) {
             return null;
         });
+    };
+    QuerySvc.prototype.deletePushSub = function (values) {
+        var text = 'DELETE FROM push_subs WHERE user_uuiid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) { return null; });
     };
     return QuerySvc;
 }());

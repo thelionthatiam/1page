@@ -210,6 +210,15 @@ export default class QuerySvc {
         }
       })
     }
+
+
+  getPushSubscriptions(values:void[]):Promise<Subs[]> {
+    const text = 'SELECT * FROM push_subs'
+    return this.conn.query(text, values)
+      .then(result => {
+        return result.rows
+      })
+  }
   // insert
 
 
@@ -285,6 +294,15 @@ export default class QuerySvc {
     return this.conn.query(text, values)
   }
 
+
+  insertPushSubs(values:string[]):Promise<void> {
+    const text = 'INSERT INTO push_subs (user_uuid, p256dh, auth, expiration_time, endpoint) VALUES ($1, $2, $3, $4, $5) RETURNING *'
+    return this.conn.query(text, values)
+      .then(result => {
+        console.log(result)
+        return null
+      })
+  }
   // update
   updateSessionID(values:V.UUID[]):Promise<void> {
     const text = 'UPDATE session SET sessionid = $1 WHERE user_uuid = $2';
@@ -557,5 +575,12 @@ export default class QuerySvc {
         return null;
       })
   }
+
+  deletePushSub(values:[V.UUID]):Promise<void> {
+    const text = 'DELETE FROM push_subs WHERE user_uuiid = $1'
+    return this.conn.query(text, values)
+      .then(result => null)
+  }
+
 
 };

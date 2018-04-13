@@ -10,12 +10,15 @@ import alarms from './routes/user-alarms';
 import orgs from './routes/user-organizations';
 import settings from './routes/user-settings';
 import payment from './routes/user-payment';
+import pusher from './routes/push-notifications';
+
 
 const index = express.Router();
 
 
 index.use('/', auth);
 index.use('/', accts);
+index.use('/', pusher);
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
 
@@ -38,10 +41,47 @@ index.use('/app/accounts/:email/payment', payment);
 // router.use('/accounts/:email', require('./account/transactions'));
 
 
+// subscribe to push
+
+
+index.post('/subscribe', (req, res) => {
+    console.log(req.body)
+    // if (!req.body || !req.body.endpoint || !req.body.keys.p256dh || req.body.keys.auth) {
+    //     // Not a valid subscription.
+    //     res.status(400);
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.send(JSON.stringify({
+    //         error: {
+    //             id: 'no-endpoint-p256dh-auth',
+    //             message: 'Subscription must have an endpoint, p256dh, and auth key.'
+    //         }
+    //     }));
+    //     return false;
+    // }
+    req.querySvc.insertPushSubs(['58354c53-18cf-4f36-bdea-571d5e9d59df', req.body.keys.p256dh, req.body.keys.auth, req.body.expirationTime, req.body.endpoint])
+        .then(() => {
+            res.setHeader('Content-Type', 'applications/json')
+            res.send(JSON.stringify({ data: { success: true } }))
+        })
+        .catch(e => {
+            console.log(e)
+            res.status(500)
+            res.setHeader('Content-Type', 'application/json')
+            res.send(JSON.stringify({
+                error: {
+                    id: 'unable-to-save-subscription',
+                    message: 'The subscription was recieved but we were unable to save it to our database.',
+                    e: e
+                }
+            }))
+        })
+})
+
+
 // HOME
 
-index.get('/', function (req, res) {
-    res.render('home', {home:true})
+index.get('/', (req, res) => {
+    res.render('home', { home:true })
 })
 
 // TO LOGIN PAGE

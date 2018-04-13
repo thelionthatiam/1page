@@ -74,3 +74,15 @@ ALTER TABLE alarms ALTER COLUMN title SET DEFAULT '';
 
 ALTER TABLE alarms ALTER COLUMN title DROP NOT NULL;
 ALTER TABLE alarms DROP CONSTRAINT alarms_title_key;
+
+
+CREATE TABLE push_subs (
+  id BIGSERIAL PRIMARY KEY NOT NULL,
+  user_uuid UUID NOT NULL REFERENCES users(user_uuid),
+  p256dh varchar(300) NOT NULL,
+  auth varchar(200) NOT NULL,
+  expiration_time varchar(100) default null,
+  endpoint varchar(300) NOT NULL,
+  create_timestamp timestamptz NOT NULL DEFAULT now(),
+  updated_timestamp timestamptz NOT NULL DEFAULT now()
+);

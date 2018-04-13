@@ -11,9 +11,11 @@ var user_alarms_1 = require("./routes/user-alarms");
 var user_organizations_1 = require("./routes/user-organizations");
 var user_settings_1 = require("./routes/user-settings");
 var user_payment_1 = require("./routes/user-payment");
+var push_notifications_1 = require("./routes/push-notifications");
 var index = express.Router();
 index.use('/', guest_authorization_1.default);
 index.use('/', guest_accounts_1.default);
+index.use('/', push_notifications_1.default);
 // router.use('/', require('./guest/email'));
 // router.use('/guest', require('./guest/shopping'));
 index.use('/app*', choose_layout_1.default);
@@ -31,6 +33,39 @@ index.use('/app/accounts/:email/payment', user_payment_1.default);
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
 // router.use('/accounts/:email', require('./account/transactions'));
+// subscribe to push
+index.post('/subscribe', function (req, res) {
+    console.log(req.body);
+    // if (!req.body || !req.body.endpoint || !req.body.keys.p256dh || req.body.keys.auth) {
+    //     // Not a valid subscription.
+    //     res.status(400);
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.send(JSON.stringify({
+    //         error: {
+    //             id: 'no-endpoint-p256dh-auth',
+    //             message: 'Subscription must have an endpoint, p256dh, and auth key.'
+    //         }
+    //     }));
+    //     return false;
+    // }
+    req.querySvc.insertPushSubs(['58354c53-18cf-4f36-bdea-571d5e9d59df', req.body.keys.p256dh, req.body.keys.auth, req.body.expirationTime, req.body.endpoint])
+        .then(function () {
+        res.setHeader('Content-Type', 'applications/json');
+        res.send(JSON.stringify({ data: { success: true } }));
+    })
+        .catch(function (e) {
+        console.log(e);
+        res.status(500);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            error: {
+                id: 'unable-to-save-subscription',
+                message: 'The subscription was recieved but we were unable to save it to our database.',
+                e: e
+            }
+        }));
+    });
+});
 // HOME
 index.get('/', function (req, res) {
     res.render('home', { home: true });
