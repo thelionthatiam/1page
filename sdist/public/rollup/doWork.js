@@ -22,10 +22,13 @@ self.addEventListener('install', function (event) {
 self.addEventListener('push', function (event) {
     if (event.data) {
         console.log('This push event has data: ', event.data.text());
-        console.log('This push event has json: ', event.data.json());
-        console.log('This push event has blob: ', event.data.blob());
-        console.log('This push event has arrayBuffer: ', event.data.arrayBuffer()); 
-        const promiseChain = self.registration.showNotification('Hello, World.');
+        console.log('General event object:', event)
+        const title = 'Require Interaction Notification';
+        const options = {
+            body: 'With "requireInteraction: \'true\'".',
+            requireInteraction: true
+        };
+        const promiseChain = self.registration.showNotification(title, options);
 
         event.waitUntil(promiseChain);
     } else {
