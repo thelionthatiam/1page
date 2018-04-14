@@ -3,12 +3,15 @@
 </form>
 <script>
 function askPermission() {
+    {{!-- console.log('inside ask permission') --}}
     return new Promise(function (resolve, reject) {
         const permissionResult = Notification.requestPermission(function (result) {
+            {{!-- console.log('ask permission', result) --}}
             resolve(result);
         });
 
         if (permissionResult) {
+            {{!-- console.log(permissionResult) --}}
             permissionResult.then(resolve, reject);
         }
     })
@@ -45,16 +48,18 @@ function subscribeUserToPush() {
                     'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U'
                 )
             };
-
+            
             return registration.pushManager.subscribe(subscribeOptions);
         })
         .then(function (pushSubscription) {
+            console.log('1SUBSCRIBEU USER TO PUSH', pushSubscription)
             return sendSubscriptionToBackEnd(pushSubscription)
         })
 
 }
 
 function sendSubscriptionToBackEnd(subscription) {
+    console.log('2send subscribe to back end', subscription)
     return fetch('/subscribe', {
         method: 'POST',
         headers: {
@@ -80,7 +85,7 @@ function sendSubscriptionToBackEnd(subscription) {
     .catch(e => console.log(e))
 }
 
-askPermission()
+{{!-- askPermission() --}}
 subscribeUserToPush()
 
 

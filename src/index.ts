@@ -45,36 +45,31 @@ index.use('/app/accounts/:email/payment', payment);
 
 
 index.post('/subscribe', (req, res) => {
-    console.log(req.body)
-    // if (!req.body || !req.body.endpoint || !req.body.keys.p256dh || req.body.keys.auth) {
-    //     // Not a valid subscription.
-    //     res.status(400);
-    //     res.setHeader('Content-Type', 'application/json');
-    //     res.send(JSON.stringify({
-    //         error: {
-    //             id: 'no-endpoint-p256dh-auth',
-    //             message: 'Subscription must have an endpoint, p256dh, and auth key.'
-    //         }
-    //     }));
-    //     return false;
+    console.log('this is from the subscribe route', req.body)
+    res.setHeader('Content-Type', 'applications/json')
+    res.send(JSON.stringify({ data: { success: true } }))
+   
+    // let uuid = '58354c53-18cf-4f36-bdea-571d5e9d59df'
+    // if (req.session.user.uuid === 'user') {
+    //     uuid = req.session.user.uuid
     // }
-    req.querySvc.insertPushSubs(['58354c53-18cf-4f36-bdea-571d5e9d59df', req.body.keys.p256dh, req.body.keys.auth, req.body.expirationTime, req.body.endpoint])
-        .then(() => {
-            res.setHeader('Content-Type', 'applications/json')
-            res.send(JSON.stringify({ data: { success: true } }))
-        })
-        .catch(e => {
-            console.log(e)
-            res.status(500)
-            res.setHeader('Content-Type', 'application/json')
-            res.send(JSON.stringify({
-                error: {
-                    id: 'unable-to-save-subscription',
-                    message: 'The subscription was recieved but we were unable to save it to our database.',
-                    e: e
-                }
-            }))
-        })
+    // req.querySvc.insertPushSubs([uuid, req.body.keys.p256dh, req.body.keys.auth, req.body.expirationTime, req.body.endpoint])
+    //     .then(() => {
+    //         res.setHeader('Content-Type', 'applications/json')
+    //         res.send(JSON.stringify({ data: { success: true } }))
+    //     })
+    //     .catch(e => {
+    //         console.log(e)
+    //         res.status(500)
+    //         res.setHeader('Content-Type', 'application/json')
+    //         res.send(JSON.stringify({
+    //             error: {
+    //                 id: 'unable-to-save-subscription',
+    //                 message: 'The subscription was recieved but we were unable to save it to our database.',
+    //                 e: e
+    //             }
+    //         }))
+    //     })
 })
 
 
