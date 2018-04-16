@@ -21,15 +21,51 @@ var AlarmClock = /** @class */ (function () {
             return e;
         });
     };
-    AlarmClock.prototype.printActiveUserAlarms = function () {
-        return this.querySvc.getAllActiveAlarms([])
-            .then(function (res) {
-            var alarmTitles = [];
-            for (var i = 0; i < res.length; i++) {
-                alarmTitles.push(res[i].time);
+    AlarmClock.prototype.getUserAlarms = function () {
+        return this.querySvc.getAllActiveAlarms([]);
+    };
+    AlarmClock.prototype.matchTime = function (alarms) {
+        for (var i = 0; i < alarms.length; i++) {
+            var time = alarms[i].time, state = alarms[i].state;
+            console.log(time, this.now());
+            if (time === this.now()) {
+                if (state === 'pending') {
+                    console.log('-----STARTS RINGING!!!------');
+                    // eventEmitter.emit('ring', triggerAlarm(alarm, user))
+                    // eventEmitter.emit('ringingCountdown', ringing(alarm, user))
+                }
+                else if (state === 'ringing') {
+                    console.log('-----aRINGING!!!------');
+                }
+                else if (state === 'snoozing') {
+                    console.log('-----aSNOOZING------');
+                }
+                else if (state === 'dismissed') {
+                    console.log('-----aDISMISSED------');
+                }
+                else if (state === 'woke') {
+                    console.log('-----aWAITING TO RESET------');
+                }
             }
-            return alarmTitles;
-        });
+            else {
+                if (state === 'woke') {
+                    console.log('-----bWOKE AND RESET------');
+                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
+                }
+                else if (state === 'dismissed') {
+                    console.log('-----bDISMISSED AND RESET------');
+                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
+                }
+                else if (state === 'snoozing') {
+                    console.log('-----bSNOOZING------');
+                }
+                else if (state === 'ringing') {
+                    console.log('-----bRINGING!!!------');
+                }
+                else {
+                }
+            }
+        }
     };
     AlarmClock.prototype.now = function () {
         var date = new Date();
@@ -39,14 +75,12 @@ var AlarmClock = /** @class */ (function () {
         var _this = this;
         this.init();
         setInterval(function () {
-            _this.printActiveUserAlarms()
-                .then(function (res) { return console.log(res); })
-                .then(function () { return console.log(typeof _this.now()); })
+            _this.getUserAlarms()
+                .then(function (alarms) { return _this.matchTime(alarms); })
                 .catch(function (e) { return console.log(e); });
         }, 3000);
     };
     return AlarmClock;
 }());
 exports.default = AlarmClock;
-// EXAMPLE FUNCTION CALL 
 //# sourceMappingURL=alarm.js.map

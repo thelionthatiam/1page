@@ -31,15 +31,53 @@ export default class AlarmClock {
             })
     }
 
-    printActiveUserAlarms() {
+    getUserAlarms() {
         return this.querySvc.getAllActiveAlarms([])
-            .then(res => {
-                let alarmTitles = []
-                for (let i = 0; i < res.length;i ++) {
-                    alarmTitles.push(res[i].time)
+    }
+
+    matchTime(alarms:R.AlarmDB[]) {
+        for (let i = 0; i < alarms.length; i++) {
+            let time = alarms[i].time,
+                state = alarms[i].state;
+            console.log(time, this.now())
+            if (time === this.now()) {
+                if (state === 'pending') {
+                    console.log('-----STARTS RINGING!!!------')
+                    // eventEmitter.emit('ring', triggerAlarm(alarm, user))
+                    // eventEmitter.emit('ringingCountdown', ringing(alarm, user))
+
+                } else if (state === 'ringing') {
+                    console.log('-----aRINGING!!!------')
+
+                } else if (state === 'snoozing') {
+                    console.log('-----aSNOOZING------')
+
+                } else if (state === 'dismissed') {
+                    console.log('-----aDISMISSED------')
+
+                } else if (state === 'woke') {
+                    console.log('-----aWAITING TO RESET------')
+
                 }
-                return alarmTitles
-            })
+            } else {
+                if (state === 'woke') {
+                    console.log('-----bWOKE AND RESET------')
+                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
+
+                } else if (state === 'dismissed') {
+                    console.log('-----bDISMISSED AND RESET------')
+                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
+
+                } else if (state === 'snoozing') {
+                    console.log('-----bSNOOZING------')
+
+                } else if (state === 'ringing') {
+                    console.log('-----bRINGING!!!------')
+                } else {
+
+                }
+            }
+        }
     }
 
     now() {
@@ -50,14 +88,9 @@ export default class AlarmClock {
     start() {
         this.init()
         setInterval(() => {
-            this.printActiveUserAlarms()
-                .then(res => console.log(res))
-                .then(() => console.log(typeof this.now()))
+            this.getUserAlarms()
+                .then(alarms => this.matchTime(alarms))
                 .catch(e => console.log(e))
         }, 3000)
     }
 }
-
-
-
-// EXAMPLE FUNCTION CALL
