@@ -6,6 +6,11 @@ var QuerySvc = /** @class */ (function () {
         this.conn = conn;
     }
     // select
+    QuerySvc.prototype.getAllUsers = function (values) {
+        var text = 'SELECT * FROM users';
+        return this.conn.query(text, values)
+            .then(function (result) { return result.rows; });
+    };
     QuerySvc.prototype.getUserViaEmail = function (values) {
         var text = "SELECT * FROM users WHERE email = $1";
         return this.conn.query(text, values)

@@ -5,13 +5,21 @@ import * as pg from 'pg';
 import * as accounts from './queries-accounts';
  
 export default class QuerySvc {
-  conn:pg.Client;
+  conn:pg.PoolClient;
 
-  constructor(conn : pg.Client) {
+  constructor(conn : pg.PoolClient) {
     this.conn = conn;
   }
 
   // select
+  getAllUsers(values:[any]):Promise<R.UserDB[]> {
+    const text = 'SELECT * FROM users'
+    return this.conn.query(text, values)
+      .then(result => result.rows)
+  }
+
+
+
   getUserViaEmail(values:V.Email[]) : Promise<R.UserDB> {
     const text = "SELECT * FROM users WHERE email = $1"
     return this.conn.query(text, values)

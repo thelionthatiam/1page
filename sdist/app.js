@@ -10,6 +10,7 @@ var cors = require("cors");
 var index_1 = require("./index");
 var db_connect_config_1 = require("./services/db-connect-config");
 var database_1 = require("./middleware/database");
+var alarm_1 = require("./services/alarm");
 var server_render_state_1 = require("./middleware/server-render-state");
 var session_check_1 = require("./middleware/session-check");
 var e = require("./services/error-handling");
@@ -29,6 +30,7 @@ app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
 app.use(database_1.init(db_connect_config_1.dbConfig));
+// for cross origin fetch
 app.options('*', cors());
 app.use(cors());
 //session using memory storage for now. Will not be the case in production. see readme session stores
@@ -45,6 +47,9 @@ app.use(session({
 app.use(session_check_1.default);
 app.use(server_render_state_1.default);
 app.use('/', index_1.default);
+// AUTONOMOUS DB/SERVER ALARM
+var alarmClock = new alarm_1.default(db_connect_config_1.dbConfig);
+alarmClock.start();
 // ERROR STUFF
 app.use(function (req, res, next) {
     res.status(404);

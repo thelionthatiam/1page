@@ -1,21 +1,14 @@
-import { Pool } from 'pg';
-import { dbConfig } from "../services/db-connect-config";
-import { Client } from '../../typings/typings'
+import * as pg from 'pg';
 import QuerySvc  from '../data-access/queries'
-import * as express from "express";
 
-const pool = new Pool(dbConfig);
-let db = {
-    query: (text : string, params : any[]) => pool.query(text, params)
-}
+function init(databaseInformation:pg.ConnectionConfig) {
+    const pool = new pg.Pool(databaseInformation);
 
-function init(databaseInformation) {
-    const pool = new Pool(databaseInformation);
     return (req, res, next) => {
-        let client: Client;
+        let client: pg.PoolClient;
 
         pool.connect()
-            .then((client : Client) => {
+            .then((client: pg.PoolClient) => {
                 req.on('abort', () => {
                     client.release();
                     req.querySvc = null;
@@ -35,10 +28,9 @@ function init(databaseInformation) {
                 next();
             })
             .catch((err) => {
-                client.release();
                 return console.error('Error executing query', err.stack);
             })
     };
 }
 
-export { db, init };
+export { init };

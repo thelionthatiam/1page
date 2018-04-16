@@ -1,15 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var pg_1 = require("pg");
-var db_connect_config_1 = require("../services/db-connect-config");
+var pg = require("pg");
 var queries_1 = require("../data-access/queries");
-var pool = new pg_1.Pool(db_connect_config_1.dbConfig);
-var db = {
-    query: function (text, params) { return pool.query(text, params); }
-};
-exports.db = db;
 function init(databaseInformation) {
-    var pool = new pg_1.Pool(databaseInformation);
+    var pool = new pg.Pool(databaseInformation);
     return function (req, res, next) {
         var client;
         pool.connect()
@@ -33,7 +27,6 @@ function init(databaseInformation) {
             next();
         })
             .catch(function (err) {
-            client.release();
             return console.error('Error executing query', err.stack);
         });
     };
