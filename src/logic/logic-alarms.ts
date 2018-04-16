@@ -70,10 +70,21 @@ export default class AlarmsSvc {
         return sortedAlarms
     }
 
+    removeArchived(alarms:R.AlarmDB[]) {
+        let currentAlarms = []
+        for (let i = 0; i < alarms.length; i++) {
+            if (!alarms[i].archive) {
+                currentAlarms.push(alarms[i])
+            }
+        }
+        return currentAlarms;
+    }
+
     getUserAlarms():Promise<Alarm[]> {
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(alarms => {
-                let sortedAlarms = alarms.sort(TimeHelpers.orderTimes)
+                let currentAlarms = this.removeArchived(alarms)
+                let sortedAlarms = currentAlarms.sort(TimeHelpers.orderTimes)
                 return this.addTodayOrTomorrowIndicator(sortedAlarms);
             })
     }
@@ -137,6 +148,11 @@ export default class AlarmsSvc {
                 }
             })
         }
+
+    archiveAlarm():Promise<void> {
+        console.log('archive alarm', this.inputs.alarm_uuid, this.user.uuid)
+        return this.querySvc.updateAlarmArchived([true, this.inputs.alarm_uuid, this.user.uuid])
+    }
 
     deleteAlarm():Promise<void> {
         return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid])

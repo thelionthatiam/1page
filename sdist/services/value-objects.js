@@ -220,7 +220,8 @@ var AlarmDB = /** @class */ (function () {
             this.sat = args.sat,
             this.sun = args.sun,
             this.triggered = args.triggered,
-            this.repeat = args.repeat;
+            this.repeat = args.repeat,
+            this.archive = args.archive;
     }
     AlarmDB.fromJSON = function (args) {
         var res = AlarmDB.validate(args);
@@ -240,6 +241,7 @@ var AlarmDB = /** @class */ (function () {
                 sun: validation_1.Bool.create(args.sun),
                 triggered: validation_1.Bool.create(args.triggered),
                 repeat: validation_1.Bool.create(args.repeat),
+                archive: validation_1.Bool.create(args.archive)
             });
             return res_5.toJSON();
         }
@@ -263,6 +265,7 @@ var AlarmDB = /** @class */ (function () {
             sun: validation_1.Bool.validate(args.sun),
             triggered: validation_1.Bool.validate(args.triggered),
             repeat: validation_1.Bool.validate(args.repeat),
+            archive: validation_1.Bool.validate(args.archive)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -283,6 +286,7 @@ var AlarmDB = /** @class */ (function () {
             sun: this.sun.toString(),
             triggered: this.triggered.toString(),
             repeat: this.repeat.toString(),
+            archive: this.archive.toString()
         };
     };
     return AlarmDB;

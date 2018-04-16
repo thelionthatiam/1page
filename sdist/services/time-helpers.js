@@ -7,6 +7,8 @@ var TimeHelpers = /** @class */ (function () {
         this.hour = this.date.getHours();
         this.min = this.date.getMinutes();
     }
+    TimeHelpers.militaryTimeString = function () {
+    };
     TimeHelpers.prototype.todayOrTomorrow = function (time) {
         var timeArr = time.split(':'); // Question out
         var timeH = parseInt(timeArr[0]);

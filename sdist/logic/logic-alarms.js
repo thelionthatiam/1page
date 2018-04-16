@@ -29,11 +29,21 @@ var AlarmsSvc = /** @class */ (function () {
         }
         return sortedAlarms;
     };
+    AlarmsSvc.prototype.removeArchived = function (alarms) {
+        var currentAlarms = [];
+        for (var i = 0; i < alarms.length; i++) {
+            if (!alarms[i].archive) {
+                currentAlarms.push(alarms[i]);
+            }
+        }
+        return currentAlarms;
+    };
     AlarmsSvc.prototype.getUserAlarms = function () {
         var _this = this;
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(function (alarms) {
-            var sortedAlarms = alarms.sort(time_helpers_1.default.orderTimes);
+            var currentAlarms = _this.removeArchived(alarms);
+            var sortedAlarms = currentAlarms.sort(time_helpers_1.default.orderTimes);
             return _this.addTodayOrTomorrowIndicator(sortedAlarms);
         });
     };
@@ -89,6 +99,10 @@ var AlarmsSvc = /** @class */ (function () {
                 return _this.querySvc.updateAlarmRepeat([false, _this.inputs.alarm_uuid, _this.user.uuid]);
             }
         });
+    };
+    AlarmsSvc.prototype.archiveAlarm = function () {
+        console.log('archive alarm', this.inputs.alarm_uuid, this.user.uuid);
+        return this.querySvc.updateAlarmArchived([true, this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.deleteAlarm = function () {
         return this.querySvc.deleteUserAlarm([this.inputs.alarm_uuid, this.user.uuid]);

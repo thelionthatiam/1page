@@ -86,3 +86,5 @@ CREATE TABLE push_subs (
   create_timestamp timestamptz NOT NULL DEFAULT now(),
   updated_timestamp timestamptz NOT NULL DEFAULT now()
 );
+
+ALTER TABLE alarms ADD COLUMN archive BOOLEAN NOT NULL default false;

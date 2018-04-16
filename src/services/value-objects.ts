@@ -253,6 +253,7 @@ class AlarmDB {
   readonly sun?: Bool;
   readonly triggered?: Bool;
   readonly repeat?: Bool;
+  readonly archive?: Bool;
 
 
   private constructor(args: { 
@@ -270,6 +271,7 @@ class AlarmDB {
     sun?: Bool,
     triggered?: Bool,
     repeat?: Bool,
+    archive?: Bool
   } = {}) {
     this.title =  args.title,
     this.time =  args.time,
@@ -284,7 +286,8 @@ class AlarmDB {
     this.sat =  args.sat,
     this.sun =  args.sun,
     this.triggered =  args.triggered,
-    this.repeat =  args.repeat
+    this.repeat =  args.repeat,
+    this.archive = args.archive
   }
 
   static fromJSON(args: { [key: string]: any }): AlarmDB {
@@ -305,6 +308,7 @@ class AlarmDB {
         sun: Bool.create(args.sun),
         triggered: Bool.create(args.triggered),
         repeat: Bool.create(args.repeat),
+        archive: Bool.create(args.archive)
       })
       return res.toJSON();
     } else {
@@ -328,6 +332,7 @@ class AlarmDB {
         sun: Bool.validate(args.sun),
         triggered: Bool.validate(args.triggered),
         repeat: Bool.validate(args.repeat),
+        archive: Bool.validate(args.archive)
     }
     ValidationResult.isValid(args, propValidation)
     return { isOkay: true };
@@ -349,6 +354,7 @@ class AlarmDB {
       sun: this.sun.toString(),
       triggered: this.triggered.toString(),
       repeat: this.repeat.toString(),
+      archive: this.archive.toString()
     };
   }
 }

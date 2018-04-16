@@ -142,11 +142,13 @@ alarms.route('/:alarm_uuid/days-of-week')
     })
 
 
+// ARCHIVE ALARM
+
 alarms.route('/:alarm_uuid')
   .delete((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
-    req.AlarmSvc.deleteAlarm()
+    req.AlarmSvc.archiveAlarm()
       .then((result) => {
         res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
       })

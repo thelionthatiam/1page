@@ -119,10 +119,11 @@ alarms.route('/:alarm_uuid/days-of-week')
         res.render('error', { errMessage: e });
     });
 });
+// ARCHIVE ALARM
 alarms.route('/:alarm_uuid')
     .delete(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
-    req.AlarmSvc.deleteAlarm()
+    req.AlarmSvc.archiveAlarm()
         .then(function (result) {
         res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
     })

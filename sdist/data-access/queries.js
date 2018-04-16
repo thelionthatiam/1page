@@ -523,6 +523,22 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.updateAlarmArchived = function (values) {
+        var _this = this;
+        var text = "UPDATE alarms SET archive = $1 WHERE alarm_uuid = $2 AND user_uuid = $3";
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Cannot update archive because there was nothing in the database under that alarm or user.');
+            }
+            else {
+                return null;
+            }
+        })
+            .then(function () {
+            return _this.updateAlarmToggleActive([false, values[1], values[2]]);
+        });
+    };
     // delete
     QuerySvc.prototype.deleteFormOfPayement = function (values) {
         var text = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2';
