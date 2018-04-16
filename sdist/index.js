@@ -33,11 +33,37 @@ index.use('/app/accounts/:email/payment', user_payment_1.default);
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
 // router.use('/accounts/:email', require('./account/transactions'));
-// subscribe to push
+// subscribe to push this is working poorly
 index.post('/subscribe', function (req, res) {
-    console.log('this is from the subscribe route', req.body);
-    res.setHeader('Content-Type', 'applications/json');
-    res.send(JSON.stringify({ data: { success: true } }));
+    console.log('this is from the subscribe route', req.body, req.session.user);
+    req.querySvc.checkUserSubscriptions([req.session.user.uuid])
+        .then(function (boolean) {
+        if (boolean) {
+            console.log('no record of this users subscription');
+            res.setHeader('Content-Type', 'applications/json');
+            res.send(JSON.stringify({ data: { success: true, inDB: false } }));
+        }
+        else {
+            console.log('this user is already subscribed');
+            res.setHeader('Content-Type', 'applications/json');
+            res.send(JSON.stringify({ data: { success: true, inDB: true } }));
+        }
+    })
+        .catch(function (e) {
+        console.log(e);
+        res.status(500);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({
+            error: {
+                id: 'unable-to-save-subscription',
+                message: 'The subscription was recieved but we were unable to save it to our database.',
+                e: e
+            }
+        }));
+    });
+    // check if user already has subscription
+    // if not, add 
+    // else move on to check
     // let uuid = '58354c53-18cf-4f36-bdea-571d5e9d59df'
     // if (req.session.user.uuid === 'user') {
     //     uuid = req.session.user.uuid

@@ -277,7 +277,7 @@ var AlarmState = /** @class */ (function (_super) {
         return new AlarmState(value);
     };
     AlarmState.validate = function (alarmState) {
-        var re = /(snoozing|dismissed|woke|pending)/;
+        var re = /(snoozing|dismissed|woke|pending|ringing)/;
         if (re.test(alarmState)) {
             return { isOkay: true };
         }

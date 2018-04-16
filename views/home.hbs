@@ -84,9 +84,12 @@ function sendSubscriptionToBackEnd(subscription) {
     })
     .catch(e => console.log(e))
 }
-
-{{!-- askPermission() --}}
-subscribeUserToPush()
+if ({{loggedIn}}) {
+    askPermission()
+    subscribeUserToPush()
+} else {
+    console.log('GUEST: cannot subscribe to push notfications as guest')
+}
 
 
 </script>

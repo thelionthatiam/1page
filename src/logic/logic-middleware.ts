@@ -40,16 +40,16 @@ export class RenderStateSvc {
         this.user = {};
     }
     getEverything() {
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
+        // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
         return this.querySvc.getUser([this.sessionUser.uuid])
             .then(profile => {
                 this.user.profile = profile
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
+                // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
                 return this.querySvc.getUserAlarms([this.sessionUser.uuid])
             })
             .then(alarms => {
                 this.user.alarms = alarms
-                console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
+                // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
                 return this.user
             })
     }

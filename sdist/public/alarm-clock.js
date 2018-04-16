@@ -35,7 +35,7 @@ var Clock = /** @class */ (function (_super) {
         var now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
         // console.log(now)
         for (var i = 0; i < this.state.savedTimes.length; i++) {
-            // console.log(now, this.state.savedTimes[i])
+            console.log(now, this.state.savedTimes[i]);
             if (now === this.state.savedTimes[i]) {
                 alert('your alarm at ' + this.state.savedTimes[i] + ' just happend. go do something about it!');
             }

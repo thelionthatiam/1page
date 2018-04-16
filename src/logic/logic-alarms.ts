@@ -97,7 +97,7 @@ export default class AlarmsSvc {
     }
 
     toggleActiveAlarm():Promise<void> {
-        let state
+        let state;
         this.inputs.active === "true" ? state = false : state = true;
         return this.querySvc.updateAlarmToggleActive([state, this.inputs.alarm_uuid, this.user.uuid])
     }
@@ -148,7 +148,7 @@ export default class AlarmsSvc {
 
 
 
-class TimeHelpers {
+export class TimeHelpers {
     date: Date;
     day: number;
     hour: number;
@@ -198,19 +198,15 @@ class TimeHelpers {
     }
 
     static orderTimes(a, b) {
-        console.log('$$$$$$$$$$$$$$$order times', a, b)
         const timeA = a.time.split(':').reduce((acc, time) => (60 * acc) + +time);
         const timeB = b.time.split(':').reduce((acc, time) => (60 * acc) + +time);
 
         let comp = 0;
         if (timeA > timeB) {
-            console.log('a is larger than b')
             comp = 1;
         } else if (timeB > timeA) {
-            console.log('b is larger than a')
             comp = -1;
         }
-        console.log('return value comp')
         return comp;
     }
 

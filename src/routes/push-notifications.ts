@@ -9,7 +9,7 @@ const vapidKeys = {
 };
  
 webpush.setVapidDetails(
-    'mailto:web-push-book@gauntface.com',
+    'mailto:juliantheberge@gmail.com',
     vapidKeys.publicKey,
     vapidKeys.privateKey
 );

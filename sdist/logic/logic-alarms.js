@@ -143,19 +143,15 @@ var TimeHelpers = /** @class */ (function () {
         });
     };
     TimeHelpers.orderTimes = function (a, b) {
-        console.log('$$$$$$$$$$$$$$$order times', a, b);
         var timeA = a.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
         var timeB = b.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
         var comp = 0;
         if (timeA > timeB) {
-            console.log('a is larger than b');
             comp = 1;
         }
         else if (timeB > timeA) {
-            console.log('b is larger than a');
             comp = -1;
         }
-        console.log('return value comp');
         return comp;
     };
     // WHAT DAY OF THE WEEK IS COMING NEXT? CURRENTLY NOT IN USE, BUT MAY BE USEFUL LATER
@@ -212,4 +208,5 @@ var TimeHelpers = /** @class */ (function () {
     };
     return TimeHelpers;
 }());
+exports.TimeHelpers = TimeHelpers;
 //# sourceMappingURL=logic-alarms.js.map

@@ -1,8 +1,8 @@
 import {RenderStateSvc} from '../logic/logic-middleware';
 
 function renderState(req, res, next) {
-    console.log('render state running')
-    console.log(res.locals)
+    // console.log('render state running')
+    // console.log(res.locals)
     if (res.locals.permission === 'user') {
         res.locals.loggedIn = true;
         req.RenderStateSvc = new RenderStateSvc(req.querySvc, req.session.user)
@@ -11,8 +11,8 @@ function renderState(req, res, next) {
             .then(user => {
                 res.locals.user = user
                 res.locals.stringUser = JSON.stringify(user)
-                console.log('**********************\n', res.locals.user, '\n**********************\n')
-                console.log('**********************\n', res.locals.stringUser, '\n**********************\n')
+                // console.log('**********************\n', res.locals.user, '\n**********************\n')
+                // console.log('**********************\n', res.locals.stringUser, '\n**********************\n')
                 next();
             })
             .catch(err => {

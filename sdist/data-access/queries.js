@@ -203,6 +203,18 @@ var QuerySvc = /** @class */ (function () {
             return result.rows;
         });
     };
+    QuerySvc.prototype.checkUserSubscriptions = function (values) {
+        var text = 'SELECT * FROM push_subs WHERE user_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+    };
     // insert
     QuerySvc.prototype.insertUser = function (values) {
         var text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';

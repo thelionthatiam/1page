@@ -92,9 +92,7 @@ app.use(function (err, req, res, next) {
 // production
 // app.listen(8000, '172.31.31.153')
 // localhost
-app.listen(8000, 'localhost', function () {
-    console.log('app is running');
-});
+app.listen(8000, 'localhost');
 // // easy switch to https
 // http.createServer({
 //    key: fs.readFileSync('key.pem'),

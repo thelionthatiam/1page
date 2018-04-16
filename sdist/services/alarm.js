@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var webpush = require("web-push");
 var database_1 = require("../middleware/database");
 var EventEmitter = require('events').EventEmitter;
 function addLeadingZeros(number) {
@@ -77,7 +78,7 @@ function snoozing(alarm, user) {
     var thing = setInterval(function () {
         var timeLeft = endTime - Date.now();
         console.log('timeleft', timeLeft);
-        database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+        database_1.db.query('SELECT state FROM alarms ELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
             .then(function (result) {
             var state = result.rows[0].state;
             console.log(state);
@@ -99,13 +100,45 @@ function snoozing(alarm, user) {
         });
     }, 1000);
 }
+function triggerPushMsg(subscription, dataToSend, user) {
+    return webpush.sendNotification(subscription, dataToSend, null)
+        .catch(function (err) {
+        if (err.statusCode === 410) {
+            return database_1.db.query('delete from push_subs where user_uuid = $1', [user.uuid]);
+        }
+        else {
+            console.log('Subscription is no longer valid: ', err);
+        }
+    });
+}
+;
+function getSubs(user) {
+    return database_1.db.query('select * from push_subs where user_uuid = $1', [user.uuid])
+        .then(function (subs) {
+        console.log('%%%%%%%% RETURN FROM GET PUSH SUBS', subs);
+        var subscription = {
+            endpoint: subs.rows[0].endpoint,
+            keys: {
+                p256dh: subs.rows[0].p256dh,
+                auth: subs.rows[0].auth
+            }
+        };
+        console.log(subscription);
+        return triggerPushMsg(subscription, 'Hi guys, this is from the alarm!', user);
+    })
+        .catch(function (e) {
+        console.log('something didn\'t work out:\n');
+        console.log(e);
+    });
+}
 function ringing(alarm, user) {
     var currentTime = Date.now();
     var endTime = currentTime + 6000;
     var thing = setInterval(function () {
         var timeLeft = endTime - Date.now();
         console.log('timeleft', timeLeft);
-        database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+        getSubs(user)
+            .then(function () { return database_1.db.query('SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm]); })
             .then(function (result) {
             var state = result.rows[0].state;
             console.log(state);
@@ -128,6 +161,10 @@ function ringing(alarm, user) {
                 addWake(alarm, user);
             }
         });
+        // .catch(e => {
+        //   console.log('something didn\'t work out:\n')
+        //   console.log(e)
+        // })
     }, 1000);
 }
 function watchUserAlarms(user) {
@@ -183,5 +220,5 @@ function watchUserAlarms(user) {
 function watchAlarms(user) {
     setInterval(function () { watchUserAlarms(user); }, 1000);
 }
-exports.watchAlarms = watchAlarms;
+exports.default = watchAlarms;
 //# sourceMappingURL=alarm.js.map

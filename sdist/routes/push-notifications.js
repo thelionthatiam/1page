@@ -7,7 +7,7 @@ var vapidKeys = {
     publicKey: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U',
     privateKey: 'UUxI4O8-FbRouAevSmBQ6o18hgE4nSG3qwvJTfKc-ls'
 };
-webpush.setVapidDetails('mailto:web-push-book@gauntface.com', vapidKeys.publicKey, vapidKeys.privateKey);
+webpush.setVapidDetails('mailto:juliantheberge@gmail.com', vapidKeys.publicKey, vapidKeys.privateKey);
 pusher.post('/push-test', function (req, res) {
     function triggerPushMsg(subscription, dataToSend) {
         return webpush.sendNotification(subscription, dataToSend, null)

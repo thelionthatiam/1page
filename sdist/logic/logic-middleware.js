@@ -24,16 +24,16 @@ var RenderStateSvc = /** @class */ (function () {
     }
     RenderStateSvc.prototype.getEverything = function () {
         var _this = this;
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this);
+        // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
         return this.querySvc.getUser([this.sessionUser.uuid])
             .then(function (profile) {
             _this.user.profile = profile;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', _this.user);
+            // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
             return _this.querySvc.getUserAlarms([_this.sessionUser.uuid]);
         })
             .then(function (alarms) {
             _this.user.alarms = alarms;
-            console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', _this.user);
+            // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
             return _this.user;
         });
     };

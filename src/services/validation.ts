@@ -242,7 +242,7 @@ class AlarmState extends ValueScalar {
   }
 
   static validate(alarmState: string): ValidationResult {
-    let re = /(snoozing|dismissed|woke|pending)/
+    let re = /(snoozing|dismissed|woke|pending|ringing)/
     if (re.test(alarmState)) {
       return { isOkay: true }
     } else {

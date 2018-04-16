@@ -219,6 +219,19 @@ export default class QuerySvc {
         return result.rows
       })
   }
+
+  checkUserSubscriptions(values:[V.UUID]):Promise<boolean> {
+    const text = 'SELECT * FROM push_subs WHERE user_uuid = $1'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          return false
+        } else {
+          return true
+        }
+      })
+  }
+
   // insert
 
 
