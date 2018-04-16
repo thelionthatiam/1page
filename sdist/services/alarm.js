@@ -21,21 +21,32 @@ var AlarmClock = /** @class */ (function () {
             return e;
         });
     };
-    AlarmClock.prototype.printUsers = function () {
-        return this.querySvc.getAllUsers([]);
+    AlarmClock.prototype.printActiveUserAlarms = function () {
+        return this.querySvc.getAllActiveAlarms([])
+            .then(function (res) {
+            var alarmTitles = [];
+            for (var i = 0; i < res.length; i++) {
+                alarmTitles.push(res[i].time);
+            }
+            return alarmTitles;
+        });
+    };
+    AlarmClock.prototype.now = function () {
+        var date = new Date();
+        return date.toLocaleTimeString('en-Ud', { hour12: false });
     };
     AlarmClock.prototype.start = function () {
         var _this = this;
         this.init();
         setInterval(function () {
-            _this.printUsers()
+            _this.printActiveUserAlarms()
                 .then(function (res) { return console.log(res); })
+                .then(function () { return console.log(typeof _this.now()); })
                 .catch(function (e) { return console.log(e); });
-        }, 2000);
+        }, 3000);
     };
     return AlarmClock;
 }());
 exports.default = AlarmClock;
-// EXAMPLE FUNCTION CALL
-// const alarmClock = new AlarmClock(dbConfig) 
+// EXAMPLE FUNCTION CALL 
 //# sourceMappingURL=alarm.js.map

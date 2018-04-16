@@ -99,6 +99,17 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.getAllActiveAlarms = function (values) {
+        var text = 'SELECT * FROM alarms WHERE active = $1';
+        values = [true];
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('No alarms for any user');
+            }
+            return result.rows;
+        });
+    };
     QuerySvc.prototype.getUserAlarms = function (values) {
         var text = 'SELECT * FROM alarms WHERE user_uuid = $1';
         return this.conn.query(text, values)

@@ -12,7 +12,7 @@ export default class QuerySvc {
   }
 
   // select
-  getAllUsers(values:[any]):Promise<R.UserDB[]> {
+  getAllUsers(values:any):Promise<R.UserDB[]> {
     const text = 'SELECT * FROM users'
     return this.conn.query(text, values)
       .then(result => result.rows)
@@ -108,6 +108,18 @@ export default class QuerySvc {
           }
           return validatedOrgs
         }
+      })
+  }
+
+  getAllActiveAlarms(values:any):Promise<R.AlarmDB[]> {
+    const text = 'SELECT * FROM alarms WHERE active = $1'
+    values = [true]
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0){
+          console.log('No alarms for any user')
+        }
+        return result.rows
       })
   }
 

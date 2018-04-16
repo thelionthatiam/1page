@@ -4,14 +4,17 @@ import * as R from '../services/value-objects';
 // DATABASE
 import * as pg from 'pg';
 import QuerySvc from '../data-access/queries'
-
+// HELPERS
+import TimeHelpers from '../services/time-helpers'
 
 export default class AlarmClock {
     querySvc:QuerySvc;
     dbInfo: pg.ConnectionConfig;
+    date:Date;
+    timeString:V.MilitaryTime;
 
     constructor(dbInfo) {
-        this.dbInfo = dbInfo
+        this.dbInfo = dbInfo;
     }
 
     init():Promise<QuerySvc> {
@@ -28,21 +31,33 @@ export default class AlarmClock {
             })
     }
 
-    printUsers() {
-        return this.querySvc.getAllUsers([])
+    printActiveUserAlarms() {
+        return this.querySvc.getAllActiveAlarms([])
+            .then(res => {
+                let alarmTitles = []
+                for (let i = 0; i < res.length;i ++) {
+                    alarmTitles.push(res[i].time)
+                }
+                return alarmTitles
+            })
+    }
+
+    now() {
+        let date = new Date();
+        return date.toLocaleTimeString('en-Ud', { hour12: false });
     }
 
     start() {
         this.init()
         setInterval(() => {
-            this.printUsers()
+            this.printActiveUserAlarms()
                 .then(res => console.log(res))
+                .then(() => console.log(typeof this.now()))
                 .catch(e => console.log(e))
-        }, 2000)
+        }, 3000)
     }
 }
 
 
 
 // EXAMPLE FUNCTION CALL
-// const alarmClock = new AlarmClock(dbConfig)
