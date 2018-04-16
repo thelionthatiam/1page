@@ -186,7 +186,6 @@ export class TimeHelpers {
     static isMilitaryTime(time) {
         return new Promise(
             (resolve, reject) => {
-                console.log('miliatry time', time)
                 let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
                 if (militaryRe.test(time)) {
                     resolve(time)

@@ -132,7 +132,6 @@ var TimeHelpers = /** @class */ (function () {
     };
     TimeHelpers.isMilitaryTime = function (time) {
         return new Promise(function (resolve, reject) {
-            console.log('miliatry time', time);
             var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
             if (militaryRe.test(time)) {
                 resolve(time);

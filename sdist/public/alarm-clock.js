@@ -35,7 +35,7 @@ var Clock = /** @class */ (function (_super) {
         var now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
         // console.log(now)
         for (var i = 0; i < this.state.savedTimes.length; i++) {
-            console.log(now, this.state.savedTimes[i]);
+            //    console.log(now, this.state.savedTimes[i])
             if (now === this.state.savedTimes[i]) {
                 alert('your alarm at ' + this.state.savedTimes[i] + ' just happend. go do something about it!');
             }
@@ -59,13 +59,13 @@ var Clock = /** @class */ (function (_super) {
 }(React.Component));
 exports.AlarmList = function (_a) {
     var alarms = _a.alarms;
-    console.log('this is for the alarm:', alarms);
+    // console.log('this is for the alarm:', alarms)
     function alarmTimesToArr() {
         var arr = [];
         for (var i = 0; i < alarms.length; i++) {
             arr.push(alarms[i].time);
         }
-        console.log(arr);
+        // console.log(arr)
         return arr;
     }
     return (React.createElement("div", null,
@@ -73,7 +73,7 @@ exports.AlarmList = function (_a) {
         React.createElement("ul", null, alarms.map(function (alarm) { return React.createElement("li", { key: alarm.id }, alarm.time); }))));
 };
 var mapStateToProps = function (state) {
-    console.log('mapping for alarmlist', state);
+    // console.log('mapping for alarmlist', state)
     return {
         alarms: state.userData.alarms
     };

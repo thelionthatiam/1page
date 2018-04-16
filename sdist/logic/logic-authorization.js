@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var alarm_1 = require("../services/alarm");
 var bcrypt = require("bcrypt");
 var R = require("../services/value-objects");
 var uuidv4 = require("uuid/v4");
@@ -41,8 +40,6 @@ var AuthSvc = /** @class */ (function () {
         })
             .then(function () { return _this.querySvc.updateSessionID([_this.sessionID, _this.user.user_uuid]); })
             .then(function () {
-            var legacyUser = { uuid: _this.user.user_uuid };
-            alarm_1.default(legacyUser);
             var userDataForSession = _this.defineSessionData();
             return userDataForSession;
         });

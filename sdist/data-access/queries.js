@@ -261,7 +261,6 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values);
     };
     QuerySvc.prototype.insertUserOrg = function (values) {
-        console.log('inseruser orgs');
         var text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2) RETURNING *';
         return this.conn.query(text, values)
             .then(function (result) {
@@ -280,7 +279,6 @@ var QuerySvc = /** @class */ (function () {
         var text = 'INSERT INTO push_subs (user_uuid, p256dh, auth, expiration_time, endpoint) VALUES ($1, $2, $3, $4, $5) RETURNING *';
         return this.conn.query(text, values)
             .then(function (result) {
-            console.log(result);
             return null;
         });
     };
@@ -469,7 +467,6 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('That alarm no longer exists.');
             }
             else {
-                console.log(result.rows[0]);
                 return null;
             }
         });
@@ -482,8 +479,6 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('That alarm no longer exists.');
             }
             else {
-                console.log('result');
-                console.log(result.rows[0]);
                 return null;
             }
         });
@@ -496,7 +491,6 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('That alarm no longer exists.');
             }
             else {
-                console.log('result');
                 return null;
             }
         });

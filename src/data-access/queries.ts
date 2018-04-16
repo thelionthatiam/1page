@@ -2,7 +2,7 @@ import * as V from '../services/validation';
 import * as R from '../services/value-objects';
 import * as pg from 'pg';
 
-import * as acccounts from './queries-accounts';
+import * as accounts from './queries-accounts';
  
 export default class QuerySvc {
   conn:pg.Client;
@@ -289,7 +289,6 @@ export default class QuerySvc {
   }
 
   insertUserOrg(values:V.UUID[]) {
-    console.log('inseruser orgs')
     const text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2) RETURNING *'
     return this.conn.query(text, values)
       .then(result => {
@@ -312,7 +311,6 @@ export default class QuerySvc {
     const text = 'INSERT INTO push_subs (user_uuid, p256dh, auth, expiration_time, endpoint) VALUES ($1, $2, $3, $4, $5) RETURNING *'
     return this.conn.query(text, values)
       .then(result => {
-        console.log(result)
         return null
       })
   }
@@ -508,7 +506,6 @@ export default class QuerySvc {
         if (result.rowCount === 0) {
           throw new Error ('That alarm no longer exists.')
         } else {
-          console.log(result.rows[0])
           return null
         }      
       })
@@ -521,8 +518,6 @@ export default class QuerySvc {
         if (result.rowCount === 0) {
           throw new Error ('That alarm no longer exists.')
         } else {
-          console.log('result')
-          console.log(result.rows[0])
           return null;
         }      
       })
@@ -535,7 +530,6 @@ export default class QuerySvc {
         if (result.rowCount === 0) {
           throw new Error ('That alarm no longer exists.')
         } else {
-          console.log('result')
           return null;
         }      
       })

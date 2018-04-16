@@ -45,7 +45,7 @@ index.use('/app/accounts/:email/payment', payment);
 
 
 index.post('/subscribe', (req, res) => {
-    console.log('this is from the subscribe route', req.body, req.session.user)
+    // console.log('this is from the subscribe route', req.body, req.session.user)
 
     req.querySvc.checkUserSubscriptions([req.session.user.uuid])
         .then(boolean => {

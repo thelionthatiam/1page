@@ -31,7 +31,6 @@ function init(databaseInformation) {
                     client.release();
                     req.querySvc = null;
                 })
-                console.log('database running')
                 req.querySvc = new QuerySvc(client)
                 next();
             })

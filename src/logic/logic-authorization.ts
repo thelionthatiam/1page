@@ -1,4 +1,3 @@
-import watchAlarms from '../services/alarm'
 import QuerySvc from '../data-access/queries';
 import * as bcrypt from 'bcrypt';
 import * as R from '../services/value-objects';
@@ -50,9 +49,6 @@ export default class AuthSvc {
             })
             .then(() => this.querySvc.updateSessionID([this.sessionID, this.user.user_uuid]))
             .then(() => {
-
-                let legacyUser = {uuid:this.user.user_uuid}
-                watchAlarms(legacyUser)
                 let userDataForSession = this.defineSessionData();
                 return userDataForSession;
             })

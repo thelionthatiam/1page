@@ -35,7 +35,7 @@ index.use('/app/accounts/:email/payment', user_payment_1.default);
 // router.use('/accounts/:email', require('./account/transactions'));
 // subscribe to push this is working poorly
 index.post('/subscribe', function (req, res) {
-    console.log('this is from the subscribe route', req.body, req.session.user);
+    // console.log('this is from the subscribe route', req.body, req.session.user)
     req.querySvc.checkUserSubscriptions([req.session.user.uuid])
         .then(function (boolean) {
         if (boolean) {
