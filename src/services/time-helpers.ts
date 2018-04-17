@@ -50,9 +50,12 @@ export default class TimeHelpers {
         )
     }
 
-    static orderTimes(a, b) {
-        const timeA = a.time.split(':').reduce((acc, time) => (60 * acc) + +time);
-        const timeB = b.time.split(':').reduce((acc, time) => (60 * acc) + +time);
+    static parseStringTime(time) {
+        return time.split(':').reduce((acc, time) => (60 * acc) + +time)
+    }
+    static orderTimes(a, b) { // updated but haven't tested parse string time
+        const timeA = TimeHelpers.parseStringTime(a.time);
+        const timeB = TimeHelpers.parseStringTime(b.time);
 
         let comp = 0;
         if (timeA > timeB) {

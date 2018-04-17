@@ -242,6 +242,7 @@ class AlarmDB {
   readonly title?: (string | null);
   readonly time?: MilitaryTime;
   readonly user_uuid?: UUID;
+  readonly alarm_uuid?: UUID;
   readonly active?:Bool;
   readonly state?:AlarmState;
   readonly mon?:Bool;
@@ -251,15 +252,17 @@ class AlarmDB {
   readonly fri?: Bool;
   readonly sat?: Bool;
   readonly sun?: Bool;
-  readonly triggered?: Bool;
+  // readonly triggered?: Bool;
   readonly repeat?: Bool;
   readonly archive?: Bool;
+  readonly snooze_tally?: NumOnly;
 
 
   private constructor(args: { 
     title?: (string | null),
     time?: MilitaryTime,
     user_uuid?: UUID,
+    alarm_uuid?: UUID,
     active?: Bool,
     state?: AlarmState, 
     mon?: Bool,
@@ -269,13 +272,15 @@ class AlarmDB {
     fri?: Bool,
     sat?: Bool,
     sun?: Bool,
-    triggered?: Bool,
+    // triggered?: Bool,
     repeat?: Bool,
-    archive?: Bool
+    archive?: Bool,
+    snooze_tally?: NumOnly
   } = {}) {
     this.title =  args.title,
     this.time =  args.time,
     this.user_uuid =  args.user_uuid,
+    this.alarm_uuid = args.alarm_uuid,
     this.active =  args.active,
     this.state =  args.state,
     this.mon =  args.mon,
@@ -285,9 +290,10 @@ class AlarmDB {
     this.fri =  args.fri,
     this.sat =  args.sat,
     this.sun =  args.sun,
-    this.triggered =  args.triggered,
+    // this.triggered =  args.triggered,
     this.repeat =  args.repeat,
-    this.archive = args.archive
+    this.archive = args.archive,
+    this.snooze_tally = args.snooze_tally
   }
 
   static fromJSON(args: { [key: string]: any }): AlarmDB {
@@ -297,6 +303,7 @@ class AlarmDB {
         title: args.title,
         time: MilitaryTime.create(args.time),
         user_uuid: UUID.create(args.user_uuid),
+        alarm_uuid: UUID.create(args.alarm_uuid),
         active: Bool.create(args.active),
         state: AlarmState.create(args.state), // make this
         mon: Bool.create(args.mon),
@@ -306,9 +313,10 @@ class AlarmDB {
         fri: Bool.create(args.fri),
         sat: Bool.create(args.sat),
         sun: Bool.create(args.sun),
-        triggered: Bool.create(args.triggered),
+        // triggered: Bool.create(args.triggered),
         repeat: Bool.create(args.repeat),
-        archive: Bool.create(args.archive)
+        archive: Bool.create(args.archive),
+        snooze_tally: NumOnly.create(args.snooze_tally)
       })
       return res.toJSON();
     } else {
@@ -321,6 +329,7 @@ class AlarmDB {
         title: args.title,
         time: MilitaryTime.validate(args.time),
         user_uuid: UUID.validate(args.user_uuid),
+        alarm_uuid: UUID.validate(args.alarm_uuid),
         active: Bool.validate(args.active),
         state: AlarmState.validate(args.state), // make this
         mon: Bool.validate(args.mon),
@@ -330,9 +339,10 @@ class AlarmDB {
         fri: Bool.validate(args.fri),
         sat: Bool.validate(args.sat),
         sun: Bool.validate(args.sun),
-        triggered: Bool.validate(args.triggered),
+        // triggered: Bool.validate(args.triggered),
         repeat: Bool.validate(args.repeat),
-        archive: Bool.validate(args.archive)
+        archive: Bool.validate(args.archive),
+        snooze_tally: NumOnly.validate(args.snooze_tally)
     }
     ValidationResult.isValid(args, propValidation)
     return { isOkay: true };
@@ -343,6 +353,7 @@ class AlarmDB {
       title: this.title.toString(),
       time: this.time.toString(),
       user_uuid: this.user_uuid.toString(),
+      alarm_uuid: this.alarm_uuid.toString(),
       active: this.active.toString(),
       state: this.state.toString(),
       mon: this.mon.toString(),
@@ -352,9 +363,10 @@ class AlarmDB {
       fri: this.fri.toString(),
       sat: this.sat.toString(),
       sun: this.sun.toString(),
-      triggered: this.triggered.toString(),
+      // triggered: this.triggered.toString(),
       repeat: this.repeat.toString(),
-      archive: this.archive.toString()
+      archive: this.archive.toString(),
+      snooze_tally: this.snooze_tally.toString()
     };
   }
 }

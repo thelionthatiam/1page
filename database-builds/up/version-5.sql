@@ -88,3 +88,9 @@ CREATE TABLE push_subs (
 );
 
 ALTER TABLE alarms ADD COLUMN archive BOOLEAN NOT NULL default false;
+
+ALTER TABLE alarms DROP COLUMN triggered;
+ALTER TABLE alarms ADD COLUMN snooze_tally numeric(10,2) NOT NULL DEFAULT 0;
+
+ALTER TABLE user_settings ADD COLUMN queit_after numeric(10,2) NOT NULL DEFAULT 60; --60 seconds for production
+ALTER TABLE user_settings ADD COLUMN snooze_length numeric(10,2) NOT NULL DEFAULT 30; --30 seconds for production

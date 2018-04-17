@@ -70,101 +70,25 @@
         <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>
   </div>
-  {{!-- <div class="alarm-row">
-    <form class = 'flex center' action="/accounts/{{user_uuid}}/alarms/{{title}}/snooze" method="post">
-      <button class="yes med-margin" type="submit">snooze</button>
+  <div class = "alarm-row">
+    <p>alarm management</p>
+    <form action = "/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/snooze" method = "POST">
+      <input class="button dark-button" type = 'submit' value = 'snooze'>
+      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
+      <input name="snooze_tally" type="hidden" value="{{ snooze_tally }}">
+    </form>
+    <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/dismiss" method="POST">
+      <input class="button dark-button" type='submit' value='dismiss'>
       <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>
-    <form action="/accounts/{{user_uuid}}/alarms/{{title}}/dismiss" method="post">
-      <button class="no med-margin" type="submit">dismiss</button>
+    <form action="/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/wake" method="POST">
+      <input class="button dark-button" type='submit' value='wake'>
       <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>
-    <form action='/accounts/{{user_uuid}}/alarms/{{title}}/wake' method='post'>
-      <button type='submit' class='no med-margin'>wake</button>
-      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-    </form>
-   
-  </div> --}}
+  </div>
   <p class="noMarginsPassing preInputMimic">{{ message }}</p>
   <p class="formErrorReport">{{ dbError }}</p>
   <h1>
     {{ message }}
   </h1>
 </div>
-
-{{!-- <div class="column categoryWrapper">
-  <div class="row categoryTitle">
-    <h4>{{title}}</h4>
-    <div class="time-wrapper flex space-around ">
-      <p class="self right awakeTime">
-        {{time}}
-      </p>
-      <img class = "icon" src="https://png.icons8.com/ios/540/alarm-clock.png" />
-    </div>
-  </div>
-  <div class="box subCategoryWrapper none">
-    <div class="row subCategoryTitle">
-      <form action="/accounts/{{user_uuid}}/alarms" method="get">
-          <input type="image" width="20px" height="20px" src="https://maxcdn.icons8.com/Share/icon/Media_Controls//high_volume1600.png">
-      </form>
-      {{#if active}}
-        <p>
-          on
-        </p>
-      {{else}}
-        <p>
-          off
-        </p>
-      {{/if}}
-      {{#if permission}}
-      <h1>A.V.</h1>
-      <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}" method="get">
-          <input type="image" width="20px" height="20px" src="https://maxcdn.icons8.com/Share/icon/p1em/Editing//edit1600.png">
-          <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-          <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
-      </form>
-      <form action="/admin/accounts/:{{user_uuid}}/alarms/:{{alarm_uuid}}?_method=DELETE" method="post">
-          <input type="image" width="20px" height="20px" src="https://www.pngarts.com/files/1/X-Shape-PNG-High-Quality-Image.png">
-          <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-          <input name="user_uuid" type="hidden" value="{{ user_uuid }}">
-      </form>
-      {{else}}
-      <form action="/accounts/{{user_uuid}}/alarms/{{title}}" method="get">
-          <input type="image" width="20px" height="20px" src="https://maxcdn.icons8.com/Share/icon/p1em/Editing//edit1600.png">
-          <input name="title" type="hidden" value="{{ title }}">
-      </form>
-      <form action="/accounts/{{user_uuid}}/alarms/{{title}}?_method=DELETE" method="post">
-          <input type="image" width="20px" height="20px" src="https://www.pngarts.com/files/1/X-Shape-PNG-High-Quality-Image.png">
-          <input name="title" type="hidden" value="{{ title }}">
-      </form>
-      {{/if}}
-
-    </div>
-    <div class="row date-created">
-      <p class="thedate">
-        {{thedate}}
-      </p>
-    </div>
-  </div>
-  <div class="flex space-around med-margin">
-    <h1>
-      {{ message }}
-    </h1>
-    <form class = 'flex center' action="/accounts/{{user_uuid}}/alarms/{{title}}/snooze" method="post">
-      <button class="yes med-margin" type="submit">snooze</button>
-      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-    </form>
-    <form action="/accounts/{{user_uuid}}/alarms/{{title}}/dismiss" method="post">
-      <button class="no med-margin" type="submit">dismiss</button>
-      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-    </form>
-    <form action='/accounts/{{user_uuid}}/alarms/{{title}}/wake' method='post'>
-      <button type='submit' class='no med-margin'>wake</button>
-      <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
-    </form>
-
-
-    <p class="noMarginsPassing preInputMimic">{{ message }}</p>
-    <p class="formErrorReport">{{ dbError }}</p>
-  </div>
-</div> --}}

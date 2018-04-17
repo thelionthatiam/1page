@@ -161,4 +161,34 @@ export default class AlarmsSvc {
     deleteAllAlarms():Promise<void> {
         return this.querySvc.deleteUserAlarms([this.user.uuid])
     }
+
+    // ALARM STATE MANAGEMENT AND EVENT LOGGING
+
+    snooze():Promise<void> {
+        return this.querySvc.getUserSettings([this.user.uuid])
+        .then(settings => {
+            // update validation
+            console.log(this.inputs.snooze_tally, settings.snooze_max)
+            if (this.inputs.snooze_tally <= settings.snooze_max) {
+                return this.querySvc.insertSnooze([this.inputs.alarm_uuid, this.user.uuid])    
+                    .then(() => this.querySvc.updateAlarmState(['snoozing', this.inputs.alarm_uuid]))
+                    .then(() => this.querySvc.incrementSnoozeTally([this.inputs.alarm_uuid]))
+            } else {
+                return this.querySvc.insertDismiss([this.inputs.alarm_uuid, this.user.uuid])
+                    .then(()=> this.querySvc.updateAlarmState(['pending', this.inputs.alarm_uuid]))
+                    .then(() => this.querySvc.resetSnoozeTally([this.inputs.alarm_uuid]))
+            }
+        })
+    }
+
+    dismiss(): Promise<void> {
+        return this.querySvc.insertDismiss(['pending', this.inputs.alarm_uuid])
+            .then(result => this.querySvc.insertDismiss([this.inputs.alarm_uuid, this.user.uuid]))
+    }
+
+    wake(): Promise<void> {
+        return this.querySvc.insertWake(['pending', this.inputs.alarm_uuid])
+            .then(result => this.querySvc.insertWake([this.inputs.alarm_uuid, this.user.uuid]))
+    }
+
 } 

@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // DATABASE
 var pg = require("pg");
 var queries_1 = require("../data-access/queries");
+// HELPERS
+var time_helpers_1 = require("../services/time-helpers");
 var AlarmClock = /** @class */ (function () {
     function AlarmClock(dbInfo) {
         this.dbInfo = dbInfo;
+        this.maxRingTime = 10;
     }
     AlarmClock.prototype.init = function () {
         var _this = this;
@@ -21,18 +24,25 @@ var AlarmClock = /** @class */ (function () {
             return e;
         });
     };
-    AlarmClock.prototype.getUserAlarms = function () {
-        return this.querySvc.getAllActiveAlarms([]);
+    AlarmClock.prototype.snoozing = function (user_uuid, alarm_uuid) {
+        var _this = this;
+        return this.querySvc.getUserSettings([user_uuid])
+            .then(function (settings) {
+            setTimeout(function () { return _this.querySvc.updateAlarmState(['pending', alarm_uuid]); }, (settings.snooze_length * 1000));
+        })
+            .catch(function (e) {
+            console.log('error at snoozing in alarm clock', e);
+        });
     };
+    // pretty sure this for loop is blocking
     AlarmClock.prototype.matchTime = function (alarms) {
         for (var i = 0; i < alarms.length; i++) {
-            var time = alarms[i].time, state = alarms[i].state;
-            console.log(time, this.now());
+            // mostly for tracking purposes will probably change this
+            var time = alarms[i].time, state = alarms[i].state, title = alarms[i].title, alarm = alarms[i].alarm_uuid, user = alarms[i].user_uuid;
             if (time === this.now()) {
                 if (state === 'pending') {
                     console.log('-----STARTS RINGING!!!------');
-                    // eventEmitter.emit('ring', triggerAlarm(alarm, user))
-                    // eventEmitter.emit('ringingCountdown', ringing(alarm, user))
+                    this.querySvc.updateAlarmState(['ringing', alarm]);
                 }
                 else if (state === 'ringing') {
                     console.log('-----aRINGING!!!------');
@@ -47,22 +57,32 @@ var AlarmClock = /** @class */ (function () {
                     console.log('-----aWAITING TO RESET------');
                 }
             }
+            else if (state === 'ringing') {
+                console.log('------cRINGING------');
+                if (time_helpers_1.default.parseStringTime(this.now()) > time_helpers_1.default.parseStringTime(time) + this.maxRingTime) {
+                    // automatic dismiss with special notification for missed-ness
+                    console.log('--------MISSED ALARM---------');
+                    this.querySvc.insertDismiss([alarm, user]);
+                    this.querySvc.updateAlarmState(['pending', alarm]);
+                }
+            }
             else {
                 if (state === 'woke') {
                     console.log('-----bWOKE AND RESET------');
-                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
                 }
                 else if (state === 'dismissed') {
                     console.log('-----bDISMISSED AND RESET------');
-                    // eventEmitter.emit('alarmReset', alarmReset(alarm, user))
                 }
                 else if (state === 'snoozing') {
+                    console.log('state is snoozing', user, alarm);
+                    this.snoozing(user, alarm);
                     console.log('-----bSNOOZING------');
                 }
                 else if (state === 'ringing') {
                     console.log('-----bRINGING!!!------');
                 }
                 else {
+                    console.log('------pending------');
                 }
             }
         }
@@ -75,10 +95,10 @@ var AlarmClock = /** @class */ (function () {
         var _this = this;
         this.init();
         setInterval(function () {
-            _this.getUserAlarms()
+            _this.querySvc.getAllActiveAlarms([])
                 .then(function (alarms) { return _this.matchTime(alarms); })
                 .catch(function (e) { return console.log(e); });
-        }, 3000);
+        }, 1000);
     };
     return AlarmClock;
 }());

@@ -110,6 +110,35 @@ var AlarmsSvc = /** @class */ (function () {
     AlarmsSvc.prototype.deleteAllAlarms = function () {
         return this.querySvc.deleteUserAlarms([this.user.uuid]);
     };
+    // ALARM STATE MANAGEMENT AND EVENT LOGGING
+    AlarmsSvc.prototype.snooze = function () {
+        var _this = this;
+        return this.querySvc.getUserSettings([this.user.uuid])
+            .then(function (settings) {
+            // update validation
+            console.log(_this.inputs.snooze_tally, settings.snooze_max);
+            if (_this.inputs.snooze_tally <= settings.snooze_max) {
+                return _this.querySvc.insertSnooze([_this.inputs.alarm_uuid, _this.user.uuid])
+                    .then(function () { return _this.querySvc.updateAlarmState(['snoozing', _this.inputs.alarm_uuid]); })
+                    .then(function () { return _this.querySvc.incrementSnoozeTally([_this.inputs.alarm_uuid]); });
+            }
+            else {
+                return _this.querySvc.insertDismiss([_this.inputs.alarm_uuid, _this.user.uuid])
+                    .then(function () { return _this.querySvc.updateAlarmState(['pending', _this.inputs.alarm_uuid]); })
+                    .then(function () { return _this.querySvc.resetSnoozeTally([_this.inputs.alarm_uuid]); });
+            }
+        });
+    };
+    AlarmsSvc.prototype.dismiss = function () {
+        var _this = this;
+        return this.querySvc.insertDismiss(['pending', this.inputs.alarm_uuid])
+            .then(function (result) { return _this.querySvc.insertDismiss([_this.inputs.alarm_uuid, _this.user.uuid]); });
+    };
+    AlarmsSvc.prototype.wake = function () {
+        var _this = this;
+        return this.querySvc.insertWake(['pending', this.inputs.alarm_uuid])
+            .then(function (result) { return _this.querySvc.insertWake([_this.inputs.alarm_uuid, _this.user.uuid]); });
+    };
     return AlarmsSvc;
 }());
 exports.default = AlarmsSvc;

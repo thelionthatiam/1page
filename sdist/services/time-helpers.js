@@ -45,9 +45,12 @@ var TimeHelpers = /** @class */ (function () {
             }
         });
     };
+    TimeHelpers.parseStringTime = function (time) {
+        return time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
+    };
     TimeHelpers.orderTimes = function (a, b) {
-        var timeA = a.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
-        var timeB = b.time.split(':').reduce(function (acc, time) { return (60 * acc) + +time; });
+        var timeA = TimeHelpers.parseStringTime(a.time);
+        var timeB = TimeHelpers.parseStringTime(b.time);
         var comp = 0;
         if (timeA > timeB) {
             comp = 1;

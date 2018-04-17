@@ -161,42 +161,45 @@ alarms.route('/:alarm_uuid')
 
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality
 
-// router.post('/:title/snooze', (req, res) => {
-//   let alarm = req.body.alarm_uuid
-//   console.log(alarm)
-//   db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['snoozing', req.session.user.uuid, alarm])
-//   .then((result) =>{
-//     console.log(result)
-//     res.redirect('/accounts/' + req.session.user.uuid + '/alarms');
-//   })
-//   .catch((error) => {
-//     console.log(error)
-//   })
-// })
+alarms.post('/:alarm_uuid/snooze', (req, res) => {
+  console.log('snooze', req.body)
+  req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
-// router.post('/:title/dismiss', (req, res) => {
-//   let alarm = req.body.alarm_uuid
-//   db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['dismissed', req.session.user.uuid, alarm])
-//   .then((result) =>{
-//     console.log(result)
-//   res.redirect('/accounts/' + req.session.user.uuid + '/alarms');
-//   })
-//   .catch((error) => {
-//     console.log(error)
-//   })
-// })
+  req.AlarmSvc.snooze()
+    .then((result) => {
+      res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+    })
+    .catch(e => {
+      console.log(e)
+      res.render('error', { errMessage: e })
+    })
+})
 
-// router.post('/:title/wake', (req, res) => {
-//   let alarm = req.body.alarm_uuid
-//   db.query('UPDATE alarms SET state = $1 WHERE user_uuid = $2 AND alarm_uuid = $3', ['woke', req.session.user.uuid, alarm])
-//   .then((result) =>{
-//     console.log(result)
-//     res.redirect('/accounts/' + req.session.user.uuid + '/alarms');
-//   })
-//   .catch((error) => {
-//     console.log(error)
-//   })
-// })
+alarms.post('/:alarm_uuid/dismiss', (req, res) => {
+  req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+
+  req.AlarmSvc.dismiss()
+    .then((result) => {
+      res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+    })
+    .catch(e => {
+      console.log(e)
+      res.render('error', { errMessage: e })
+    })
+})
+
+alarms.post('/:alarm_uuid/wake', (req, res) => {
+  req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+
+  req.AlarmSvc.wake()
+    .then((result) => {
+      res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+    })
+    .catch(e => {
+      console.log(e)
+      res.render('error', { errMessage: e })
+    })
+})
 
 
 export default alarms;

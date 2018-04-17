@@ -210,6 +210,7 @@ var AlarmDB = /** @class */ (function () {
         this.title = args.title,
             this.time = args.time,
             this.user_uuid = args.user_uuid,
+            this.alarm_uuid = args.alarm_uuid,
             this.active = args.active,
             this.state = args.state,
             this.mon = args.mon,
@@ -219,9 +220,10 @@ var AlarmDB = /** @class */ (function () {
             this.fri = args.fri,
             this.sat = args.sat,
             this.sun = args.sun,
-            this.triggered = args.triggered,
+            // this.triggered =  args.triggered,
             this.repeat = args.repeat,
-            this.archive = args.archive;
+            this.archive = args.archive,
+            this.snooze_tally = args.snooze_tally;
     }
     AlarmDB.fromJSON = function (args) {
         var res = AlarmDB.validate(args);
@@ -230,6 +232,7 @@ var AlarmDB = /** @class */ (function () {
                 title: args.title,
                 time: validation_1.MilitaryTime.create(args.time),
                 user_uuid: validation_1.UUID.create(args.user_uuid),
+                alarm_uuid: validation_1.UUID.create(args.alarm_uuid),
                 active: validation_1.Bool.create(args.active),
                 state: validation_1.AlarmState.create(args.state),
                 mon: validation_1.Bool.create(args.mon),
@@ -239,9 +242,10 @@ var AlarmDB = /** @class */ (function () {
                 fri: validation_1.Bool.create(args.fri),
                 sat: validation_1.Bool.create(args.sat),
                 sun: validation_1.Bool.create(args.sun),
-                triggered: validation_1.Bool.create(args.triggered),
+                // triggered: Bool.create(args.triggered),
                 repeat: validation_1.Bool.create(args.repeat),
-                archive: validation_1.Bool.create(args.archive)
+                archive: validation_1.Bool.create(args.archive),
+                snooze_tally: validation_1.NumOnly.create(args.snooze_tally)
             });
             return res_5.toJSON();
         }
@@ -254,6 +258,7 @@ var AlarmDB = /** @class */ (function () {
             title: args.title,
             time: validation_1.MilitaryTime.validate(args.time),
             user_uuid: validation_1.UUID.validate(args.user_uuid),
+            alarm_uuid: validation_1.UUID.validate(args.alarm_uuid),
             active: validation_1.Bool.validate(args.active),
             state: validation_1.AlarmState.validate(args.state),
             mon: validation_1.Bool.validate(args.mon),
@@ -263,9 +268,10 @@ var AlarmDB = /** @class */ (function () {
             fri: validation_1.Bool.validate(args.fri),
             sat: validation_1.Bool.validate(args.sat),
             sun: validation_1.Bool.validate(args.sun),
-            triggered: validation_1.Bool.validate(args.triggered),
+            // triggered: Bool.validate(args.triggered),
             repeat: validation_1.Bool.validate(args.repeat),
-            archive: validation_1.Bool.validate(args.archive)
+            archive: validation_1.Bool.validate(args.archive),
+            snooze_tally: validation_1.NumOnly.validate(args.snooze_tally)
         };
         ValidationResult.isValid(args, propValidation);
         return { isOkay: true };
@@ -275,6 +281,7 @@ var AlarmDB = /** @class */ (function () {
             title: this.title.toString(),
             time: this.time.toString(),
             user_uuid: this.user_uuid.toString(),
+            alarm_uuid: this.alarm_uuid.toString(),
             active: this.active.toString(),
             state: this.state.toString(),
             mon: this.mon.toString(),
@@ -284,9 +291,10 @@ var AlarmDB = /** @class */ (function () {
             fri: this.fri.toString(),
             sat: this.sat.toString(),
             sun: this.sun.toString(),
-            triggered: this.triggered.toString(),
+            // triggered: this.triggered.toString(),
             repeat: this.repeat.toString(),
-            archive: this.archive.toString()
+            archive: this.archive.toString(),
+            snooze_tally: this.snooze_tally.toString()
         };
     };
     return AlarmDB;

@@ -285,10 +285,10 @@ export default class QuerySvc {
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertSnooze(values:string[]) {
-    const text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
-    return this.conn.query(text, values);
-  }
+  // insertSnooze(values:string[]) {
+  //   const text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
+  //   return this.conn.query(text, values);
+  // }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
   insertTransaction(values:string[]) {
@@ -334,6 +334,25 @@ export default class QuerySvc {
         return null
       })
   }
+
+  insertDismiss(values:V.UUID[]) {
+    const text = 'INSERT INTO dismisses (alarm_uuid, user_uuid) VALUES ($1, $2)'
+    return this.conn.query(text, values)
+      .then(result => null)
+  }
+
+  insertSnooze(values: V.UUID[]) {
+    const text = 'INSERT INTO snoozes (alarm_uuid, user_uuid) VALUES ($1, $2)'
+    return this.conn.query(text, values)
+      .then(result => null)
+  }
+
+  insertWake(values: V.UUID[]) {
+    const text = 'INSERT INTO wakes (alarm_uuid, user_uuid) VALUES ($1, $2)'
+    return this.conn.query(text, values)
+      .then(result => null)
+  }  
+
   // update
   updateSessionID(values:V.UUID[]):Promise<void> {
     const text = 'UPDATE session SET sessionid = $1 WHERE user_uuid = $2';
@@ -582,7 +601,41 @@ export default class QuerySvc {
       })
   }
 
+  updateAlarmState(values:[string, V.UUID]) {
+    const text = 'UPDATE alarms SET state = $1 WHERE alarm_uuid = $2';
+    return this.conn.query(text,values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Cannot update state because there was nothing in the database under that alarm.')
+        } else {
+          return null;
+        }
+      })
+  }
 
+  incrementSnoozeTally(values:[V.UUID]):Promise<void> {
+    const text = 'UPDATE alarms SET snooze_tally = snooze_tally + 1 WHERE alarm_uuid = $1';
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Cannot update snooze tally because there was nothing in the database under that alarm.')
+        } else {
+          return null;
+        }
+      })
+  }
+
+  resetSnoozeTally(values: [V.UUID]): Promise<void> {
+    const text = 'UPDATE alarms SET snooze_tally = 0 WHERE alarm_uuid = $1';
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Cannot update snooze tally because there was nothing in the database under that alarm.')
+        } else {
+          return null;
+        }
+      })
+  }
   // delete
   deleteFormOfPayement(values:[V.UUID, string]) : Promise<void>{
     const text = 'DELETE FROM payment_credit WHERE user_uuid = $1 AND card_number = $2'

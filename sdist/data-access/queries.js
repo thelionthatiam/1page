@@ -257,10 +257,10 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values);
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-    QuerySvc.prototype.insertSnooze = function (values) {
-        var text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
-        return this.conn.query(text, values);
-    };
+    // insertSnooze(values:string[]) {
+    //   const text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
+    //   return this.conn.query(text, values);
+    // }
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertTransaction = function (values) {
         var text = 'INSERT INTO transactions(user_uuid, recipient, payment_uuid, snoozes, dismisses, wakes, total) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
@@ -297,6 +297,21 @@ var QuerySvc = /** @class */ (function () {
             .then(function (result) {
             return null;
         });
+    };
+    QuerySvc.prototype.insertDismiss = function (values) {
+        var text = 'INSERT INTO dismisses (alarm_uuid, user_uuid) VALUES ($1, $2)';
+        return this.conn.query(text, values)
+            .then(function (result) { return null; });
+    };
+    QuerySvc.prototype.insertSnooze = function (values) {
+        var text = 'INSERT INTO snoozes (alarm_uuid, user_uuid) VALUES ($1, $2)';
+        return this.conn.query(text, values)
+            .then(function (result) { return null; });
+    };
+    QuerySvc.prototype.insertWake = function (values) {
+        var text = 'INSERT INTO wakes (alarm_uuid, user_uuid) VALUES ($1, $2)';
+        return this.conn.query(text, values)
+            .then(function (result) { return null; });
     };
     // update
     QuerySvc.prototype.updateSessionID = function (values) {
@@ -537,6 +552,42 @@ var QuerySvc = /** @class */ (function () {
         })
             .then(function () {
             return _this.updateAlarmToggleActive([false, values[1], values[2]]);
+        });
+    };
+    QuerySvc.prototype.updateAlarmState = function (values) {
+        var text = 'UPDATE alarms SET state = $1 WHERE alarm_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Cannot update state because there was nothing in the database under that alarm.');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.incrementSnoozeTally = function (values) {
+        var text = 'UPDATE alarms SET snooze_tally = snooze_tally + 1 WHERE alarm_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Cannot update snooze tally because there was nothing in the database under that alarm.');
+            }
+            else {
+                return null;
+            }
+        });
+    };
+    QuerySvc.prototype.resetSnoozeTally = function (values) {
+        var text = 'UPDATE alarms SET snooze_tally = 0 WHERE alarm_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Cannot update snooze tally because there was nothing in the database under that alarm.');
+            }
+            else {
+                return null;
+            }
         });
     };
     // delete
