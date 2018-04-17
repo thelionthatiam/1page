@@ -94,7 +94,7 @@ function snoozing(alarm:string, user:r.UserSession) {
     let timeLeft = endTime - Date.now()
     console.log('timeleft', timeLeft)
 
-    db.query('SELECT state FROM alarms ELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+    db.query('SELECT state FROM alarms SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
       .then((result) => {
         let state = result.rows[0].state;
         console.log(state)

@@ -11,10 +11,6 @@ export default class TimeHelpers {
         this.min = this.date.getMinutes();
     }
 
-    static militaryTimeString() {
-
-    }
-
     todayOrTomorrow(time:V.MilitaryTime):string {
         let timeArr = time.split(':') // Question out
         let timeH = parseInt(timeArr[0])

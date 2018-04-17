@@ -78,7 +78,7 @@ function snoozing(alarm, user) {
     var thing = setInterval(function () {
         var timeLeft = endTime - Date.now();
         console.log('timeleft', timeLeft);
-        database_1.db.query('SELECT state FROM alarms ELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
+        database_1.db.query('SELECT state FROM alarms SELECT state FROM alarms WHERE user_uuid = $1 AND alarm_uuid = $2', [user.uuid, alarm])
             .then(function (result) {
             var state = result.rows[0].state;
             console.log(state);
