@@ -503,6 +503,30 @@ export default class QuerySvc {
       })
   }
 
+  updateQuietAfter(values:[number, V.UUID]):Promise<void> {
+    const text = 'UPDATE user_settings SET quiet_after = $1 WHERE user_uuid = $2'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Couldn\'t set ring duration becuase that user does not exist in the databse.')
+        } else {
+          return null;
+        }
+      })
+  }
+
+  updateSnoozeLength(values: [number, V.UUID]): Promise<void> {
+    const text = 'UPDATE user_settings SET snooze_length = $1 WHERE user_uuid = $2'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Couldn\'t set snooze length becuase that user does not exist in the databse.')
+        } else {
+          return null;
+        }
+      })
+  }
+
   updateUserPaymentsToFalse(values:[boolean, V.UUID]) {
     const text = 'UPDATE payment_credit SET active = $1 WHERE user_uuid = $2'
     return this.conn.query(text, values)

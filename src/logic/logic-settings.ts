@@ -75,4 +75,20 @@ export default class SettingsSvc {
                 }
             })
     }
+
+
+    changeQuietAfter() {
+        console.log( 'anew route', this.inputs)
+        return this.querySvc.getUserSettings([this.user.uuid])
+            //validation
+            .then(result => this.querySvc.updateQuietAfter([this.inputs.quiet_after, this.user.uuid]))
+    }
+
+    changeSnoozeDuration() {
+        console.log( 'bnew route', this.inputs)
+        return this.querySvc.getUserSettings([this.user.uuid])
+            //validation
+            .then(result => this.querySvc.updateSnoozeLength([this.inputs.snooze_length, this.user.uuid]))
+    }
+
 }

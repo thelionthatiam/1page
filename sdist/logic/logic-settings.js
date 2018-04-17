@@ -55,6 +55,18 @@ var SettingsSvc = /** @class */ (function () {
             }
         });
     };
+    SettingsSvc.prototype.changeQuietAfter = function () {
+        var _this = this;
+        console.log('anew route', this.inputs);
+        return this.querySvc.getUserSettings([this.user.uuid])
+            .then(function (result) { return _this.querySvc.updateQuietAfter([_this.inputs.quiet_after, _this.user.uuid]); });
+    };
+    SettingsSvc.prototype.changeSnoozeDuration = function () {
+        var _this = this;
+        console.log('bnew route', this.inputs);
+        return this.querySvc.getUserSettings([this.user.uuid])
+            .then(function (result) { return _this.querySvc.updateSnoozeLength([_this.inputs.snooze_length, _this.user.uuid]); });
+    };
     return SettingsSvc;
 }());
 exports.default = SettingsSvc;

@@ -67,6 +67,27 @@ settings.put('/price-per-dismiss', (req, res) => {
     })
 })
 
+settings.put('/quiet-after', (req, res) => {
+  req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, req.body)
+
+  req.SettingsSvc.changeQuietAfter()
+    .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/settings'))
+    .catch((error) => {
+      console.log(error)
+      res.render('error', { errMessage: error })
+    })
+})
+
+settings.put('/snooze-length', (req, res) => {
+  req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, req.body)
+
+  req.SettingsSvc.changeSnoozeDuration()
+    .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/settings'))
+    .catch((error) => {
+      console.log(error)
+      res.render('error', { errMessage: error })
+    })
+})
 
 export default settings;
 

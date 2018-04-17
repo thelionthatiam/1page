@@ -58,5 +58,23 @@ settings.put('/price-per-dismiss', function (req, res) {
         res.render('error', { errMessage: error });
     });
 });
+settings.put('/quiet-after', function (req, res) {
+    req.SettingsSvc = new logic_settings_1.default(req.querySvc, req.session.user, req.body);
+    req.SettingsSvc.changeQuietAfter()
+        .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/settings'); })
+        .catch(function (error) {
+        console.log(error);
+        res.render('error', { errMessage: error });
+    });
+});
+settings.put('/snooze-length', function (req, res) {
+    req.SettingsSvc = new logic_settings_1.default(req.querySvc, req.session.user, req.body);
+    req.SettingsSvc.changeSnoozeDuration()
+        .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/settings'); })
+        .catch(function (error) {
+        console.log(error);
+        res.render('error', { errMessage: error });
+    });
+});
 exports.default = settings;
 //# sourceMappingURL=user-settings.js.map

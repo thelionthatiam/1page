@@ -1,4 +1,4 @@
-<div class='app-content'>
+{{!-- <div class='app-content'>
   <div class='profile-wrapper full-width'>
     <div class='top-row-wrapper'>
       <div class='top-row-search-bar'>
@@ -39,10 +39,7 @@
       </h4>
       <form action="/app/accounts/{{email}}/settings/monthly-max?_method=PUT" method="post">
         <div class = 'flex center'>
-          <p>
-            $
-          </p>
-          <input type = 'text' name="month_max" value = "{{month_max}}"/>
+          <input type = 'text' class = "big-form-item" name="month_max" value = "{{month_max}}"/>
         </div>
         <button class = "button dark-button" type="submit">set limit</button>
       </form>
@@ -53,15 +50,9 @@
       </h4>
       <form action="/app/accounts/{{email}}/settings/price-per-snooze?_method=PUT" method="post">
         <div class = 'flex center'>
-          <p>
-            $
-          </p>
-          <input type = 'text' name='snooze_price' value = "{{snooze_price}}"/>
+          <input type = 'text' class = "big-form-item" name='snooze_price' value = "{{snooze_price}}"/>
         </div>
         <button class = "button dark-button" type="submit">set snooze price</button>
-        <p class = 'button-titles mini'>
-          everytime you snooze, this amount will leave your account and go to the organization of choice
-        </p>
       </form>
     </div>
 
@@ -70,20 +61,56 @@
       </h4>
       <form action="/app/accounts/{{email}}/settings/price-per-dismiss?_method=PUT" method="post">
         <div class = 'flex center'>
-          <p>
-            $
-          </p>
-          <input type = 'text' name='dismiss_price' value = "{{dismiss_price}}"/>
+          <input type = 'text' class = "big-form-item" name='dismiss_price' value = "{{dismiss_price}}"/>
         </div>
         <button class = "button dark-button" type="submit">set dismiss price</button>
-        <p class = 'button-titles mini'>
-          everytime you dismiss an alarm, this amount will leave your account and go to the organization of choice
-        </p>
       </form>
     </div>
     <p class = "formErrorReport">
       {{ error }}
     </p>
   </div>
+</div> --}}
+
+
+<div class='full-page'>
+  <div class="flex column add-alarm-form">
+
+    <form action="/app/accounts/{{email}}/settings/price-per-snooze?_method=PUT" method="post">
+      <p><b>snooze price: </b>${{snooze_price}}</p>
+      <input name="snooze_price" class="big-form-item" type="text" value= {{snooze_price}}>
+
+      <button class="button light-button" type="submit"> set snooze price</button>
+    </form>
+
+    <form action="/app/accounts/{{email}}/settings/price-per-dismiss?_method=PUT" method="post">
+      <p><b>dismiss price: </b>${{ dismiss_price }}</p>
+      <input name="dismiss_price" class="big-form-item" type="text" value= {{ dismiss_price}}>
+
+      <button class="button light-button" type="submit"> set dismiss price</button>
+    </form>
+
+    <form action="/app/accounts/{{email}}/settings/price-per-wake?_method=PUT" method="post">
+      <p>
+        <b>wake price: </b>${{ wake_price }}</p>
+      <input name="wake_price" class="big-form-item" type="text" value={{ wake_price}}>
+    
+      <button class="button light-button" type="submit"> set wake price</button>
+    </form>
+    {{!-- quiet after --}}
+    <form action="/app/accounts/{{email}}/settings/quiet-after?_method=PUT" method="post">
+      <p><b>ring duration: </b>{{ quiet_after }}s</p>
+      <input name="quiet_after" class="big-form-item" type="text" value={{quiet_after}}>
+    
+      <button class="button light-button" type="submit"> set ring duration </button>
+    </form>
+    {{!-- snooze length --}}
+    <form action="/app/accounts/{{email}}/settings/snooze-length?_method=PUT" method="post">
+      <p><b>snooze duration: </b>{{ snooze_length }}s</p>
+      <input name="snooze_length" class="big-form-item" type="text" value={{ snooze_length }}>
+    
+      <button class="button light-button" type="submit"> submit </button>
+    </form>
+    <p class="formErrorReport">{{ dbError }}</p>
+  </div>
 </div>
-{{!-- <script src="/behavior/genericChangeForm.js"></script> --}}
