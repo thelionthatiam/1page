@@ -162,7 +162,6 @@ alarms.route('/:alarm_uuid')
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality
 
 alarms.post('/:alarm_uuid/snooze', (req, res) => {
-  console.log('snooze', req.body)
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
   req.AlarmSvc.snooze()

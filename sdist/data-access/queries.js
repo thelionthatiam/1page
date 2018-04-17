@@ -231,6 +231,18 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.getAlarmState = function (values) {
+        var text = 'SELECT state FROM alarms WHERE alarm_uuid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Could not find alarm with that id in the database.');
+            }
+            else {
+                return result.rows[0].state;
+            }
+        });
+    };
     // insert
     QuerySvc.prototype.insertUser = function (values) {
         var text = 'INSERT INTO users(email, phone, name, password, permission) VALUES($1, $2, $3, $4, $5) RETURNING *';

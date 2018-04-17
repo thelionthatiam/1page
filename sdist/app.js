@@ -10,7 +10,7 @@ var cors = require("cors");
 var index_1 = require("./index");
 var db_connect_config_1 = require("./services/db-connect-config");
 var database_1 = require("./middleware/database");
-var alarm_1 = require("./services/alarm");
+var alarm_trigger_1 = require("./services/alarm-trigger");
 var server_render_state_1 = require("./middleware/server-render-state");
 var session_check_1 = require("./middleware/session-check");
 var e = require("./services/error-handling");
@@ -48,8 +48,8 @@ app.use(session_check_1.default);
 app.use(server_render_state_1.default);
 app.use('/', index_1.default);
 // AUTONOMOUS DB/SERVER ALARM
-var alarmClock = new alarm_1.default(db_connect_config_1.dbConfig);
-alarmClock.start();
+var alarmTrigger = new alarm_trigger_1.default(db_connect_config_1.dbConfig);
+alarmTrigger.start();
 // ERROR STUFF
 app.use(function (req, res, next) {
     res.status(404);

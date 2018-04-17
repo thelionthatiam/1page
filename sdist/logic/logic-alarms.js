@@ -113,31 +113,57 @@ var AlarmsSvc = /** @class */ (function () {
     // ALARM STATE MANAGEMENT AND EVENT LOGGING
     AlarmsSvc.prototype.snooze = function () {
         var _this = this;
-        return this.querySvc.getUserSettings([this.user.uuid])
-            .then(function (settings) {
-            // update validation
-            console.log(_this.inputs.snooze_tally, settings.snooze_max);
-            if (_this.inputs.snooze_tally <= settings.snooze_max) {
+        return this.querySvc.getAlarmState([this.inputs.alarm_uuid])
+            .then(function (state) {
+            if (state === 'ringing') {
+                console.log('this is from the ringing condition inside the snooze');
                 return _this.querySvc.insertSnooze([_this.inputs.alarm_uuid, _this.user.uuid])
-                    .then(function () { return _this.querySvc.updateAlarmState(['snoozing', _this.inputs.alarm_uuid]); })
-                    .then(function () { return _this.querySvc.incrementSnoozeTally([_this.inputs.alarm_uuid]); });
+                    .then(function () { return _this.querySvc.updateAlarmState(['snoozing', _this.inputs.alarm_uuid]); });
+                // this.querySvc.getUserSettings([this.user.uuid])
+                //     .then(settings => {
+                //         // update validation
+                //         console.log(this.inputs.snooze_tally, settings.snooze_max)
+                //         if (this.inputs.snooze_tally <= settings.snooze_max) {
+                //             return this.querySvc.insertSnooze([this.inputs.alarm_uuid, this.user.uuid])
+                //                 .then(() => this.querySvc.updateAlarmState(['snoozing', this.inputs.alarm_uuid]))
+                //                 .then(() => this.querySvc.incrementSnoozeTally([this.inputs.alarm_uuid]))
+                //         } else {
+                //             return this.querySvc.insertDismiss([this.inputs.alarm_uuid, this.user.uuid])
+                //                 .then(() => this.querySvc.updateAlarmState(['pending', this.inputs.alarm_uuid]))
+                //                 .then(() => this.querySvc.resetSnoozeTally([this.inputs.alarm_uuid]))
+                //         }
+                //     })
             }
             else {
-                return _this.querySvc.insertDismiss([_this.inputs.alarm_uuid, _this.user.uuid])
-                    .then(function () { return _this.querySvc.updateAlarmState(['pending', _this.inputs.alarm_uuid]); })
-                    .then(function () { return _this.querySvc.resetSnoozeTally([_this.inputs.alarm_uuid]); });
+                throw new Error('No alarm is even ringing right now! Wait until it goes off.');
             }
         });
     };
     AlarmsSvc.prototype.dismiss = function () {
         var _this = this;
-        return this.querySvc.insertDismiss(['pending', this.inputs.alarm_uuid])
-            .then(function (result) { return _this.querySvc.insertDismiss([_this.inputs.alarm_uuid, _this.user.uuid]); });
+        return this.querySvc.getAlarmState([this.inputs.alarm_uuid])
+            .then(function (state) {
+            if (state === 'ringing' || state === 'snoozing') {
+                return _this.querySvc.updateAlarmState(['pending', _this.inputs.alarm_uuid])
+                    .then(function (result) { return _this.querySvc.insertDismiss([_this.inputs.alarm_uuid, _this.user.uuid]); });
+            }
+            else {
+                throw new Error('No alarm is even ringing right now! Wait until it goes off.');
+            }
+        });
     };
     AlarmsSvc.prototype.wake = function () {
         var _this = this;
-        return this.querySvc.insertWake(['pending', this.inputs.alarm_uuid])
-            .then(function (result) { return _this.querySvc.insertWake([_this.inputs.alarm_uuid, _this.user.uuid]); });
+        return this.querySvc.getAlarmState([this.inputs.alarm_uuid])
+            .then(function (state) {
+            if (state === 'ringing' || state === 'snoozing') {
+                return _this.querySvc.updateAlarmState(['pending', _this.inputs.alarm_uuid])
+                    .then(function (result) { return _this.querySvc.insertWake([_this.inputs.alarm_uuid, _this.user.uuid]); });
+            }
+            else {
+                throw new Error('No alarm is even ringing right now! Wait until it goes off.');
+            }
+        });
     };
     return AlarmsSvc;
 }());

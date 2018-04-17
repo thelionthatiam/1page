@@ -252,6 +252,18 @@ export default class QuerySvc {
       })
   }
 
+  getAlarmState(values:[V.UUID]):Promise<string> {
+    const text = 'SELECT state FROM alarms WHERE alarm_uuid = $1'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error ('Could not find alarm with that id in the database.')
+        } else {
+          return result.rows[0].state;
+        }
+      })
+  }
+
   // insert
 
 

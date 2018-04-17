@@ -134,7 +134,6 @@ alarms.route('/:alarm_uuid')
 });
 // //  THIS IS STILL IMPORTANT !!!! alarm functionality
 alarms.post('/:alarm_uuid/snooze', function (req, res) {
-    console.log('snooze', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.snooze()
         .then(function (result) {

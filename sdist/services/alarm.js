@@ -5,12 +5,12 @@ var pg = require("pg");
 var queries_1 = require("../data-access/queries");
 // HELPERS
 var time_helpers_1 = require("../services/time-helpers");
-var AlarmClock = /** @class */ (function () {
-    function AlarmClock(dbInfo) {
+var AlarmClockTrigger = /** @class */ (function () {
+    function AlarmClockTrigger(dbInfo) {
         this.dbInfo = dbInfo;
         this.maxRingTime = 10;
     }
-    AlarmClock.prototype.init = function () {
+    AlarmClockTrigger.prototype.init = function () {
         var _this = this;
         var pool = new pg.Pool(this.dbInfo);
         pool.connect()
@@ -24,18 +24,20 @@ var AlarmClock = /** @class */ (function () {
             return e;
         });
     };
-    AlarmClock.prototype.snoozing = function (user_uuid, alarm_uuid) {
+    AlarmClockTrigger.prototype.snoozing = function (user_uuid, alarm) {
         var _this = this;
         return this.querySvc.getUserSettings([user_uuid])
             .then(function (settings) {
-            setTimeout(function () { return _this.querySvc.updateAlarmState(['pending', alarm_uuid]); }, (settings.snooze_length * 1000));
+            setTimeout(function () {
+                _this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid]);
+            }, (settings.snooze_length * 1000));
         })
             .catch(function (e) {
             console.log('error at snoozing in alarm clock', e);
         });
     };
     // pretty sure this for loop is blocking
-    AlarmClock.prototype.matchTime = function (alarms) {
+    AlarmClockTrigger.prototype.matchTime = function (alarms) {
         for (var i = 0; i < alarms.length; i++) {
             // mostly for tracking purposes will probably change this
             var time = alarms[i].time, state = alarms[i].state, title = alarms[i].title, alarm = alarms[i].alarm_uuid, user = alarms[i].user_uuid;
@@ -75,8 +77,8 @@ var AlarmClock = /** @class */ (function () {
                 }
                 else if (state === 'snoozing') {
                     console.log('state is snoozing', user, alarm);
-                    this.snoozing(user, alarm);
-                    console.log('-----bSNOOZING------');
+                    if ()
+                        console.log('-----bSNOOZING------');
                 }
                 else if (state === 'ringing') {
                     console.log('-----bRINGING!!!------');
@@ -87,11 +89,11 @@ var AlarmClock = /** @class */ (function () {
             }
         }
     };
-    AlarmClock.prototype.now = function () {
+    AlarmClockTrigger.prototype.now = function () {
         var date = new Date();
         return date.toLocaleTimeString('en-Ud', { hour12: false });
     };
-    AlarmClock.prototype.start = function () {
+    AlarmClockTrigger.prototype.start = function () {
         var _this = this;
         this.init();
         setInterval(function () {
@@ -100,7 +102,7 @@ var AlarmClock = /** @class */ (function () {
                 .catch(function (e) { return console.log(e); });
         }, 1000);
     };
-    return AlarmClock;
+    return AlarmClockTrigger;
 }());
-exports.default = AlarmClock;
+exports.default = AlarmClockTrigger;
 //# sourceMappingURL=alarm.js.map

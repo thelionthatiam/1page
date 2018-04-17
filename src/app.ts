@@ -11,7 +11,7 @@ import * as cors from 'cors';
 import index from './index'
 import { dbConfig } from "./services/db-connect-config";
 import { init } from './middleware/database'
-import AlarmClock from './services/alarm'
+import AlarmTrigger from './services/alarm-trigger'
 import renderState from './middleware/server-render-state';
 import sessionCheck from "./middleware/session-check";
 import * as e from './services/error-handling';
@@ -59,8 +59,8 @@ app.use(renderState);
 app.use('/', index)
 
 // AUTONOMOUS DB/SERVER ALARM
-const alarmClock = new AlarmClock(dbConfig)
-alarmClock.start()
+const alarmTrigger = new AlarmTrigger(dbConfig)
+alarmTrigger.start()
 
 // ERROR STUFF
 
