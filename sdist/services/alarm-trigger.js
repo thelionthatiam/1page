@@ -28,67 +28,74 @@ var AlarmTrigger = /** @class */ (function () {
     AlarmTrigger.prototype.snoozing = function (alarm) {
         var _this = this;
         console.log('snoozing function called');
-        var snoozeStart = time_helpers_1.default.parseStringTime(this.now());
-        var snoozer = setInterval(function () {
-            _this.querySvc.getAlarmState([alarm.alarm_uuid])
-                .then(function (state) {
-                if (state === 'ringing') {
-                    console.log('snoozing, ringing');
-                    _this.ringing(alarm);
-                    clearInterval(snoozer);
-                }
-                else if (state === 'snoozing') {
-                    console.log('snoozing, snoozing');
-                    console.log('SNOOZE COUNTDOWN', (snoozeStart + _this.maxRingTime) - time_helpers_1.default.parseStringTime(_this.now()));
-                    if (snoozeStart + _this.maxSnoozeTime <= time_helpers_1.default.parseStringTime(_this.now())) {
-                        _this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid]);
+        return this.querySvc.getUserSettings([alarm.user_uuid])
+            .then(function (settings) {
+            var snoozeStart = time_helpers_1.default.parseStringTime(_this.now());
+            var snoozer = setInterval(function () {
+                _this.querySvc.getAlarmState([alarm.alarm_uuid])
+                    .then(function (state) {
+                    if (state === 'ringing') {
+                        console.log('snoozing, ringing');
                         _this.ringing(alarm);
                         clearInterval(snoozer);
                     }
-                }
-                else if (state === 'pending') {
-                    clearInterval(snoozer);
-                    console.log('snoozing, pending');
-                }
-                else {
-                    throw new Error('State is not correct');
-                }
-            })
-                .catch(function (e) { return console.log(e); });
-        }, 1000);
+                    else if (state === 'snoozing') {
+                        console.log('snoozing, snoozing');
+                        console.log('SNOOZE COUNTDOWN', (snoozeStart + Math.floor(settings.snooze_length)) - time_helpers_1.default.parseStringTime(_this.now()));
+                        if (snoozeStart + Math.floor(settings.snooze_length) <= time_helpers_1.default.parseStringTime(_this.now())) {
+                            _this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid]);
+                            _this.ringing(alarm);
+                            clearInterval(snoozer);
+                        }
+                    }
+                    else if (state === 'pending') {
+                        clearInterval(snoozer);
+                        console.log('snoozing, pending');
+                    }
+                    else {
+                        throw new Error('State is not correct');
+                    }
+                })
+                    .catch(function (e) { return console.log(e); });
+            }, 1000);
+        });
     };
     AlarmTrigger.prototype.ringing = function (alarm) {
         var _this = this;
         console.log('ringing function called');
-        var ringStart = time_helpers_1.default.parseStringTime(this.now()); // time in sec
-        var ringer = setInterval(function () {
-            _this.querySvc.getAlarmState([alarm.alarm_uuid])
-                .then(function (state) {
-                if (state === 'ringing') {
-                    console.log('ringing, ringing');
-                    console.log('RING COUNTDOWN', (ringStart + _this.maxRingTime) - time_helpers_1.default.parseStringTime(_this.now()));
-                    if (ringStart + _this.maxRingTime <= time_helpers_1.default.parseStringTime(_this.now())) {
-                        _this.querySvc.updateAlarmState(['pending', alarm.alarm_uuid])
-                            .then(function () { return _this.querySvc.insertDismiss([alarm.alarm_uuid, alarm.user_uuid]); })
-                            .then(function () { return clearInterval(ringer); })
-                            .catch(function (e) { return console.log(e); });
+        return this.querySvc.getUserSettings([alarm.user_uuid])
+            .then(function (settings) {
+            var ringStart = time_helpers_1.default.parseStringTime(_this.now());
+            var ringer = setInterval(function () {
+                _this.querySvc.getAlarmState([alarm.alarm_uuid])
+                    .then(function (state) {
+                    if (state === 'ringing') {
+                        console.log('ringing, ringing');
+                        console.log('RING COUNTDOWN', (ringStart + Math.floor(settings.quiet_after)) - time_helpers_1.default.parseStringTime(_this.now()));
+                        if (ringStart + Math.floor(settings.quiet_after) <= time_helpers_1.default.parseStringTime(_this.now())) {
+                            _this.querySvc.updateAlarmState(['pending', alarm.alarm_uuid])
+                                .then(function () { return _this.querySvc.insertDismiss([alarm.alarm_uuid, alarm.user_uuid]); })
+                                .then(function () { return clearInterval(ringer); })
+                                .catch(function (e) { return console.log(e); });
+                        }
                     }
-                }
-                else if (state === 'snoozing') {
-                    console.log('ringing, snoozing');
-                    _this.snoozing(alarm);
-                    clearInterval(ringer);
-                }
-                else if (state === 'pending') {
-                    console.log('ringing, pending');
-                    clearInterval(ringer);
-                }
-                else {
-                    throw new Error('State is not correct');
-                }
-            })
-                .catch(function (e) { return console.log(e); });
-        }, 1000);
+                    else if (state === 'snoozing') {
+                        console.log('ringing, snoozing');
+                        _this.snoozing(alarm);
+                        clearInterval(ringer);
+                    }
+                    else if (state === 'pending') {
+                        console.log('ringing, pending');
+                        clearInterval(ringer);
+                    }
+                    else {
+                        throw new Error('State is not correct');
+                    }
+                })
+                    .catch(function (e) { return console.log(e); });
+            }, 1000);
+        })
+            .catch(function (e) { return console.log(e); });
     };
     AlarmTrigger.prototype.matchTime = function (alarms) {
         var _this = this;
@@ -99,25 +106,9 @@ var AlarmTrigger = /** @class */ (function () {
                 this_1.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid])
                     .then(function () { return _this.snoozing(alarm); })
                     .catch(function (e) { return console.log(e); });
-                // } else if (state === 'ringing') {
-                //     console.log('------RINGING!!!!------')
-                //     if (TimeHelpers.parseStringTime(this.now()) > TimeHelpers.parseStringTime(time) + this.maxRingTime + delay) {
-                //         console.log('--------MISSED ALARM---------')
-                //         this.querySvc.insertDismiss([alarm, user])
-                //         this.querySvc.updateAlarmState(['pending', alarm])
-                //     }
-                // } else if (state === 'snoozing') {
-                //     console.log('--------SNOOZING---------')
-                //     if (TimeHelpers.parseStringTime(this.now()) > TimeHelpers.parseStringTime(time) + this.maxSnoozeTime + delay) {
-                //         console.log('--------SNOOZE OVER---------')
-                //         this.querySvc.updateAlarmState(['ringing', alarm])
-                //         console.log('before', this.maxRingTime)
-                //         this.maxRingTime = this.maxRingTime + this.maxRingTime
-                //         console.log('before', this.maxRingTime)
-                //     }
             }
             else {
-                console.log('waiting for match');
+                console.log('----------------------------');
             }
         };
         var this_1 = this;

@@ -42,64 +42,71 @@ export default class AlarmTrigger {
     }
 
 
-    snoozing(alarm) {
+    snoozing(alarm: R.AlarmDB) {
         console.log('snoozing function called')
-        let snoozeStart = TimeHelpers.parseStringTime(this.now())
-        let snoozer = setInterval(() => {
-            this.querySvc.getAlarmState([alarm.alarm_uuid])
-                .then((state) => {
-                    if (state === 'ringing') {
-                        console.log('snoozing, ringing')
-                        this.ringing(alarm)
-                        clearInterval(snoozer)                        
-                    } else if (state === 'snoozing') {
-                        console.log('snoozing, snoozing')
-                        console.log('SNOOZE COUNTDOWN', (snoozeStart + this.maxRingTime) - TimeHelpers.parseStringTime(this.now()))
-                        if (snoozeStart + this.maxSnoozeTime <= TimeHelpers.parseStringTime(this.now())) {
-                            this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid])
-                            this.ringing(alarm)
-                            clearInterval(snoozer)
-                        }
-                    } else if (state === 'pending') {
-                        clearInterval(snoozer)
-                        console.log('snoozing, pending')
-                    } else {    
-                        throw new Error('State is not correct')
-                    }
-                })
-                .catch(e => console.log(e))
-        }, 1000)
+        return this.querySvc.getUserSettings([alarm.user_uuid])
+            .then(settings => {
+                let snoozeStart = TimeHelpers.parseStringTime(this.now())
+                let snoozer = setInterval(() => {
+                    this.querySvc.getAlarmState([alarm.alarm_uuid])
+                        .then((state) => {
+                            if (state === 'ringing') {
+                                console.log('snoozing, ringing')
+                                this.ringing(alarm)
+                                clearInterval(snoozer)
+                            } else if (state === 'snoozing') {
+                                console.log('snoozing, snoozing')
+                                console.log('SNOOZE COUNTDOWN', (snoozeStart + Math.floor(settings.snooze_length)) - TimeHelpers.parseStringTime(this.now()))
+                                if (snoozeStart + Math.floor(settings.snooze_length)<= TimeHelpers.parseStringTime(this.now())) {
+                                    this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid])
+                                    this.ringing(alarm)
+                                    clearInterval(snoozer)
+                                }
+                            } else if (state === 'pending') {
+                                clearInterval(snoozer)
+                                console.log('snoozing, pending')
+                            } else {
+                                throw new Error('State is not correct')
+                            }
+                        })
+                        .catch(e => console.log(e))
+                }, 1000)
+            })
     }
 
 
-    ringing(alarm) {
+    ringing(alarm: R.AlarmDB) {
         console.log('ringing function called')
-        let ringStart = TimeHelpers.parseStringTime(this.now()) // time in sec
-        let ringer = setInterval(() => {
-            this.querySvc.getAlarmState([alarm.alarm_uuid])
-                .then((state) => {
-                    if (state === 'ringing') {
-                        console.log('ringing, ringing')
-                        console.log('RING COUNTDOWN', (ringStart + this.maxRingTime) - TimeHelpers.parseStringTime(this.now()))
-                        if (ringStart + this.maxRingTime <= TimeHelpers.parseStringTime(this.now())) {
-                            this.querySvc.updateAlarmState(['pending', alarm.alarm_uuid])
-                                .then(() => this.querySvc.insertDismiss([alarm.alarm_uuid, alarm.user_uuid]))
-                                .then(() => clearInterval(ringer))
-                                .catch(e => console.log(e))
-                        }
-                    } else if (state === 'snoozing') {
-                        console.log('ringing, snoozing')
-                        this.snoozing(alarm)
-                        clearInterval(ringer)
-                    } else if (state === 'pending') {
-                        console.log('ringing, pending')
-                        clearInterval(ringer)
-                    } else {
-                        throw new Error ('State is not correct')
-                    }
-                })
-                .catch(e => console.log(e))
-        }, 1000)
+        return this.querySvc.getUserSettings([alarm.user_uuid])
+            .then(settings => {
+                let ringStart = TimeHelpers.parseStringTime(this.now())
+                let ringer = setInterval(() => {
+                    this.querySvc.getAlarmState([alarm.alarm_uuid])
+                        .then((state) => {
+                            if (state === 'ringing') {
+                                console.log('ringing, ringing')
+                                console.log('RING COUNTDOWN', (ringStart + Math.floor(settings.quiet_after)) - TimeHelpers.parseStringTime(this.now()))
+                                if (ringStart + Math.floor(settings.quiet_after) <= TimeHelpers.parseStringTime(this.now())) {
+                                    this.querySvc.updateAlarmState(['pending', alarm.alarm_uuid])
+                                        .then(() => this.querySvc.insertDismiss([alarm.alarm_uuid, alarm.user_uuid]))
+                                        .then(() => clearInterval(ringer))
+                                        .catch(e => console.log(e))
+                                }
+                            } else if (state === 'snoozing') {
+                                console.log('ringing, snoozing')
+                                this.snoozing(alarm)
+                                clearInterval(ringer)
+                            } else if (state === 'pending') {
+                                console.log('ringing, pending')
+                                clearInterval(ringer)
+                            } else {
+                                throw new Error('State is not correct')
+                            }
+                        })
+                        .catch(e => console.log(e))
+                }, 1000)
+            })
+            .catch(e => console.log(e))
     }
 
 
@@ -110,42 +117,13 @@ export default class AlarmTrigger {
                 now = TimeHelpers.parseStringTime(this.now()),
                 alarm = alarms[i]
 
-
-
             if (time === now) {
                 console.log('-----STARTS RINGING!!!------')
-                
                 this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid])
                     .then(() => this.snoozing(alarm))
                     .catch(e => console.log(e))   
-                
-
-            // } else if (state === 'ringing') {
-
-
-            //     console.log('------RINGING!!!!------')
-            //     if (TimeHelpers.parseStringTime(this.now()) > TimeHelpers.parseStringTime(time) + this.maxRingTime + delay) {
-            //         console.log('--------MISSED ALARM---------')
-            //         this.querySvc.insertDismiss([alarm, user])
-            //         this.querySvc.updateAlarmState(['pending', alarm])
-            //     }
-
-
-            // } else if (state === 'snoozing') {
-
-
-            //     console.log('--------SNOOZING---------')
-            //     if (TimeHelpers.parseStringTime(this.now()) > TimeHelpers.parseStringTime(time) + this.maxSnoozeTime + delay) {
-            //         console.log('--------SNOOZE OVER---------')
-            //         this.querySvc.updateAlarmState(['ringing', alarm])
-            //         console.log('before', this.maxRingTime)
-            //         this.maxRingTime = this.maxRingTime + this.maxRingTime
-            //         console.log('before', this.maxRingTime)
-            //     }
-
-
             } else {
-                console.log('waiting for match')
+                console.log('----------------------------')
             }
         }
     }
