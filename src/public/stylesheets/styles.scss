@@ -89,6 +89,10 @@ body{
   padding:1px;
 }
 
+.none {
+  display:none;
+}
+
 @mixin centerColumn {
   display:flex;
   flex-direction:column;
@@ -660,10 +664,6 @@ button:focus {
   height:100vh;
   min-height: 300px;
   background-color: $white;
-
-  h1 {
-
-  }
 }
 
 .home-footer-wrapper {
@@ -774,6 +774,15 @@ button:focus {
 
 .contentWrapper {
    @extend %app-content-gutters;
+}
+
+// ALARM CONTROLLER
+
+.alarm-control-wrapper {
+  @extend %wrapper-spacing;
+  color:$white;
+  background-color:$darkRed;
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, .1);
 }
 
 // ALARM

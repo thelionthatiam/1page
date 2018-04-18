@@ -1,30 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // action
-export const POPULATE = 'POPULATE';
-
-
+exports.POPULATE = 'POPULATE';
 // action creator
 // export const populate = userData => ({
 //     type: POPULATE,
 //     userData
 // })
-
-export function populate (userData) {
-    console.log('~~~~~~~~~~~~~~~~~~.6 userData', userData)
+function populate(userData) {
+    console.log('~~~~~~~~~~~~~~~~~~.6 userData', userData);
     return {
-        type: POPULATE,
-        userData
-    }
+        type: exports.POPULATE,
+        userData: userData
+    };
 }
-
-
+exports.populate = populate;
 // export const REQ_USER = 'REQ_USER';
-
 // const reqUserData = () => {
 //     return {type: REQ_USER}
 // }
-
 // export const RECEIVE_USER = 'RECEIVE_USER'
-
 // function receiveUserData(json) {
 //     return {
 //         type: RECEIVE_USER,
@@ -35,17 +30,16 @@ export function populate (userData) {
 //         receivedAt: Date.now()
 //     }
 // }
-
 // // export function fetchUserData() {
 // //     return function (dispatch) {
 // //         dispatch(reqUserData())
-// //         return fetch("http://localhost:8000/user-data", {
-// //             method: "get",
-// //             credentials: 'same-origin',
-// //             headers: {
-// //                 "Accept": "application/json",
-// //                 "Content-Type": "application/json"
-// //             }
+// return fetch("http://localhost:8000/user-data", {
+//     method: "get",
+//     credentials: 'same-origin',
+//     headers: {
+//         "Accept": "application/json",
+//         "Content-Type": "application/json"
+//     }
 // //         }).then((res) => {
 // //             return res.json();
 // //         }).then((body) => {
@@ -56,7 +50,7 @@ export function populate (userData) {
 // //         })
 // //     }
 // // }
-
 // export function fetchUserData(userData) {
 //     return userData
-// }
+// } 
+//# sourceMappingURL=user-data.js.map

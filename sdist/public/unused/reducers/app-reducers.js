@@ -1,25 +1,15 @@
-
-import {combineReducers} from 'redux';
-import { REQ_PERMISSIONS, RECEIVE_PERMISSIONS } from '../actions/permissions';
-import { REQ_ALARMS, RECEIVE_ALARMS } from '../actions/alarms';
-import {POPULATE} from '../actions/user-data'
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // import { REQ_USER, RECEIVE_USER } from '../actions/user-data'
 // import { settings } from 'cluster';
-
-
 // export default appReducers;
-
-
-
 // let initialState = {
 //     permission: 'guest',
 // }
-
 // function getPermissions(state = initialState, action) {
 //     switch (action.type) {
 //         case REQ_PERMISSIONS:
 //             console.log('req_permission case')
-
 //             if (window.permission === 'guest') {
 //                 return state;
 //             } else if (window.permission === 'user') {
@@ -46,9 +36,6 @@ import {POPULATE} from '../actions/user-data'
 //             return state
 //     }
 // }
-
-
-
 // let user = window.userData;
 // let initialUserData;
 // if (window.permission === 'user') {
@@ -65,7 +52,6 @@ import {POPULATE} from '../actions/user-data'
 // } else {
 //     throw new Error('permissions never set.')
 // }
-
 // function getUserData(state = null, action) {
 //     switch (action.type) {
 //         case REQ_USER:
@@ -83,4 +69,5 @@ import {POPULATE} from '../actions/user-data'
 //         default:
 //             return state
 //     }
-// }
+// } 
+//# sourceMappingURL=app-reducers.js.map

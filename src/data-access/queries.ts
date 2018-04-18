@@ -426,7 +426,17 @@ export default class QuerySvc {
       })
   }
 
-
+  updateName(values: [string, V.UUID]): Promise<void> {
+    const text = 'UPDATE users SET name = $1 WHERE user_uuid = $2';
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Could not update contact info. No user with that id in the database.')
+        } else {
+          return null;
+        }
+      })
+  }
 
   updatePassword(values: [string, V.UUID]):Promise<void> {
     const text = 'UPDATE users SET password = $1 WHERE user_uuid = $2';

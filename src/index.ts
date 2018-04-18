@@ -100,6 +100,21 @@ index.post('/subscribe', (req, res) => {
 })
 
 
+// NEW NAME
+
+index.post('/new-name', (req, res) => {
+    if (!req.body) {
+        return res.status(400).send({ error: true, message: 'Please provide new name' });
+    }
+    req.querySvc.updateName([req.body.name, req.session.user.uuid])
+        .then(() => req.querySvc.getUser([req.session.user.uuid]))
+        .then(user => {
+            res.json(user.name)
+        })
+        .catch(e => console.log(e))
+    
+})
+
 // HOME
 
 index.get('/', (req, res) => {

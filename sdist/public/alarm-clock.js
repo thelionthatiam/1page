@@ -19,64 +19,74 @@ var Clock = /** @class */ (function (_super) {
         _this.state = {
             date: new Date(),
             time: '',
-            savedTimes: props.alarms
+            alarms: props.alarms,
+            showControls: false
         };
-        _this.handleChange = _this.handleChange.bind(_this);
         return _this;
     }
     Clock.prototype.componentDidMount = function () {
         var _this = this;
-        this.timerID = setInterval(function () { return _this.tick(); }, 1000);
+        this.timerID = setInterval(function () {
+            console.log('tick');
+            return _this.tick();
+        }, 1000);
     };
-    Clock.prototype.componentWillMount = function () {
-        clearInterval(this.timerID);
-    };
+    Clock.prototype.componentWillMount = function () { };
     Clock.prototype.tick = function () {
+        var _this = this;
         var now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
-        // console.log(now)
-        for (var i = 0; i < this.state.savedTimes.length; i++) {
-            //    console.log(now, this.state.savedTimes[i])
-            if (now === this.state.savedTimes[i]) {
-                alert('your alarm at ' + this.state.savedTimes[i] + ' just happend. go do something about it!');
+        for (var i = 0; i < this.state.alarms.length; i++) {
+            if (now === this.state.alarms[i]) {
+                this.setState({
+                    showControls: true
+                }, function () { return console.log(_this.state); });
             }
         }
         this.setState({
             date: new Date()
-        }, function () {
-            // console.log(this.state.date.toLocaleTimeString('en-US', { hour12: false }), this.state.savedTimes)
-        });
-    };
-    Clock.prototype.handleChange = function (event) {
-        this.setState({
-            time: event.target.value
         });
     };
     Clock.prototype.render = function () {
-        return (React.createElement("div", { className: 'clock' },
-            React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))));
+        return (React.createElement("div", null,
+            React.createElement("div", { className: 'clock' },
+                React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
+            React.createElement("pre", null, JSON.stringify(this.state.alarms, undefined, 2)),
+            React.createElement("div", { className: 'clock' },
+                React.createElement(AlarmController, { showControls: this.state.showControls }))));
     };
     return Clock;
 }(React.Component));
-exports.AlarmList = function (_a) {
-    var alarms = _a.alarms;
-    // console.log('this is for the alarm:', alarms)
-    function alarmTimesToArr() {
-        var arr = [];
-        for (var i = 0; i < alarms.length; i++) {
-            arr.push(alarms[i].time);
-        }
-        // console.log(arr)
-        return arr;
+var AlarmController = /** @class */ (function (_super) {
+    __extends(AlarmController, _super);
+    function AlarmController(props) {
+        var _this = _super.call(this, props) || this;
+        _this.style;
+        return _this;
     }
-    return (React.createElement("div", null,
-        React.createElement(Clock, { alarms: alarmTimesToArr() }),
-        React.createElement("ul", null, alarms.map(function (alarm) { return React.createElement("li", { key: alarm.id }, alarm.time); }))));
-};
+    AlarmController.prototype.render = function () {
+        if (this.props.showControls) {
+            this.style = 'alarm-control-wrapper';
+        }
+        else {
+            this.style = 'alarm-control-wrapper none';
+        }
+        return (React.createElement("div", { className: this.style },
+            React.createElement("h1", null, "state"),
+            React.createElement("p", null, "title"),
+            React.createElement("button", { className: 'button dark-button' }, "wake"),
+            React.createElement("button", { className: 'button dark-button' }, "snooze"),
+            React.createElement("button", { className: 'button dark-button' }, "dismiss")));
+    };
+    return AlarmController;
+}(React.Component));
 var mapStateToProps = function (state) {
     // console.log('mapping for alarmlist', state)
     return {
         alarms: state.userData.alarms
     };
 };
-exports.AlarmClock = react_redux_1.connect(mapStateToProps)(exports.AlarmList);
+var mapDispatchToProps = function (dispatch, ownProps) {
+    return {};
+};
+exports.AlarmClock = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Clock);
 //# sourceMappingURL=alarm-clock.js.map

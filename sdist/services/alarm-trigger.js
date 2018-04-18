@@ -107,9 +107,6 @@ var AlarmTrigger = /** @class */ (function () {
                     .then(function () { return _this.snoozing(alarm); })
                     .catch(function (e) { return console.log(e); });
             }
-            else {
-                console.log('----------------------------');
-            }
         };
         var this_1 = this;
         for (var i = 0; i < alarms.length; i++) {

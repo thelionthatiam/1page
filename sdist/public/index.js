@@ -23,8 +23,9 @@ var react_redux_1 = require("react-redux");
 var redux_devtools_extension_1 = require("redux-devtools-extension");
 var redux_thunk_1 = require("redux-thunk");
 var redux_1 = require("redux");
-var user_data_1 = require("./actions/user-data");
+var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
+var actions_1 = require("./actions");
 // wrap around erroring component 
 var ErrorBoundary = /** @class */ (function (_super) {
     __extends(ErrorBoundary, _super);
@@ -47,18 +48,37 @@ var ErrorBoundary = /** @class */ (function (_super) {
     };
     return ErrorBoundary;
 }(React.Component));
-var initialState = { userData: 'foo' };
-// runs multiple times for checking purposes
-// store calls the reducer which updates the state based on the actions
-function reducer(state, action) {
+var initialState = {};
+function userDataReducer(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case user_data_1.POPULATE:
-            return Object.assign({}, state, { userData: action.userData });
+            return Object.assign({}, state, {
+                profile: action.userData.profile,
+                alarms: action.userData.alarms
+            });
         default:
             return state;
     }
 }
+function nameReducer(state, action) {
+    if (state === void 0) { state = { newName: 'literally anything' }; }
+    switch (action.type) {
+        case actions_1.REQ_NAME_CHANGE:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_1.RES_NAME_CHANGE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                newName: action.newName
+            });
+        default:
+            return state;
+    }
+}
+var reducer = redux_1.combineReducers({
+    userData: userDataReducer,
+    name: nameReducer
+});
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;
 function app() {
@@ -71,51 +91,4 @@ function alarmClock() {
         React.createElement(alarm_clock_1.AlarmClock, null)), document.getElementById('alarm'));
 }
 exports.alarmClock = alarmClock;
-// const preloadedState = window.__PRELOADED_STATE__
-//  
-// // Allow the passed state to be garbage-collected
-// delete window.__PRELOADED_STATE__
-//  
-// // Create Redux store with initial state
-//  
-// // ReactDOM.render(
-// //   <Provider store={store}>
-// //     <TestApp />
-// //   </Provider>,
-// //   document.getElementById('app')
-// // )
-// const Thing = <Provider store = {store}><TestApp/></Provider>
-// ReactDOM.hydrate(
-//   <Provider store={store}>
-//     <TestApp />
-//   </Provider>,
-//   document.getElementById('app')
-// )
-// var allTags = document.body.getElementsByTagName('*');
-// var ids = [];
-// for (var tg = 0; tg< allTags.length; tg++) {
-//   var tag = allTags[tg];
-//   if (tag.id) {
-//           ids.push(tag.id);
-//     }
-// }
-// for (let i = 0; i < ids.length; i++) {
-//   if (ids[i] === 'new-user') {
-//     newAccount();
-//   } else if (ids[i] === 'login') {
-//     login();
-//   } else if (ids[i] === 'app') {
-//     app();
-//   } else if (ids[i] === 'home') {
-//     home();
-//   } else if (ids[i] === 'root') {
-//     console.log('index working')
-//   }
-// }
-// export function render( Component, props, elID ) {
-//   ReactDOM.render(
-//       React.createElement(Component, props, null),
-//       document.getElementById(elID)
-//   ); 
-// } 
 //# sourceMappingURL=index.js.map

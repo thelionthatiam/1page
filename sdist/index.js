@@ -86,6 +86,18 @@ index.post('/subscribe', function (req, res) {
     //         }))
     //     })
 });
+// NEW NAME
+index.post('/new-name', function (req, res) {
+    if (!req.body) {
+        return res.status(400).send({ error: true, message: 'Please provide new name' });
+    }
+    req.querySvc.updateName([req.body.name, req.session.user.uuid])
+        .then(function () { return req.querySvc.getUser([req.session.user.uuid]); })
+        .then(function (user) {
+        res.json(user.name);
+    })
+        .catch(function (e) { return console.log(e); });
+});
 // HOME
 index.get('/', function (req, res) {
     res.render('home', { home: true });

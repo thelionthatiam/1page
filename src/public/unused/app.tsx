@@ -1,4 +1,4 @@
-import AppWithActions from './containers/app-actions';
+import AppWithActions from './app-actions';
 import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';

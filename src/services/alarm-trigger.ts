@@ -17,9 +17,6 @@ export default class AlarmTrigger {
     maxRingTime: number;
     maxSnoozeTime: number;
 
-
-
-
     constructor(dbInfo) {
         this.dbInfo = dbInfo;
         this.maxRingTime = 10;
@@ -122,8 +119,6 @@ export default class AlarmTrigger {
                 this.querySvc.updateAlarmState(['ringing', alarm.alarm_uuid])
                     .then(() => this.snoozing(alarm))
                     .catch(e => console.log(e))   
-            } else {
-                console.log('----------------------------')
             }
         }
     }

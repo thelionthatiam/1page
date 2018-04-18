@@ -59,6 +59,9 @@ body {
   border-radius: 4px;
   padding: 1px; }
 
+.none {
+  display: none; }
+
 .one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
@@ -68,7 +71,7 @@ body {
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
 
-.generic-form {
+.generic-form, .alarm-control-wrapper {
   padding: .5vw;
   margin: 1vw; }
 
@@ -549,6 +552,11 @@ button:focus {
 .app-content {
   overflow: scroll;
   height: 100vh; }
+
+.alarm-control-wrapper {
+  color: #fff;
+  background-color: #9f2121;
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1); }
 
 .listWrapper {
   display: flex;

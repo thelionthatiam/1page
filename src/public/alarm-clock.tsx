@@ -3,95 +3,111 @@ import * as ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
 
 
-interface ClockState {
-    date:Date;
-    time:string;
-    savedTimes: string[];
-}
-
-
 class Clock extends React.Component {
-    state:ClockState;
-    
+    state: { 
+        date:Date;
+        time: string;
+        alarms: any;
+        showControls:boolean;
+    }
+    timerID: () => void;
 
     constructor(props) {
         super(props)
         this.state = {
             date: new Date(),
             time: '',
-            savedTimes:props.alarms
+            alarms: props.alarms,
+            showControls: false
         }
-        this.handleChange = this.handleChange.bind(this);
     }
     componentDidMount() {
         this.timerID = setInterval(
-            () => this.tick(),
+            () => {
+                console.log('tick')
+                return this.tick()
+            },
             1000
         )
     }
 
-    componentWillMount() {
-        clearInterval(this.timerID);
-    }
+    componentWillMount() {}
+
+
 
     tick() {
         let now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
-        // console.log(now)
-        for (let i = 0; i < this.state.savedTimes.length; i++) {
-        //    console.log(now, this.state.savedTimes[i])
-            if (now === this.state.savedTimes[i]) {
-                alert('your alarm at ' + this.state.savedTimes[i] + ' just happend. go do something about it!')
+        for (let i = 0; i < this.state.alarms.length; i++) {
+            if (now === this.state.alarms[i]) {
+                this.setState({
+                    showControls: true
+                }, () => console.log(this.state))
             }
         }
 
         this.setState({
             date: new Date()
-        }, () => {
-            // console.log(this.state.date.toLocaleTimeString('en-US', { hour12: false }), this.state.savedTimes)
         });
-    }
-    handleChange(event) {
-        this.setState({
-            time: event.target.value
-        })
     }
 
     render() {
         return (
-            <div className='clock'>
-                <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
+            <div>
+                <div className='clock'>
+                    <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
+                </div>
+                <pre>{JSON.stringify(this.state.alarms, undefined, 2)}</pre>
+                <div className='clock'>
+                    <AlarmController showControls={this.state.showControls} />
+                </div>
+            </div>
+        )
+    }
+}
+
+class AlarmController extends React.Component {
+    style: string;
+    props: {
+        showControls:boolean;
+    }
+
+    constructor(props) {
+        super(props)
+        this.style
+    }
+
+    render() {
+        if (this.props.showControls) {
+            this.style = 'alarm-control-wrapper'
+        } else {
+            this.style = 'alarm-control-wrapper none'
+        }
+        return (
+            <div className={this.style}>
+                <h1>state</h1>
+                <p>title</p>
+                <button className='button dark-button'>wake</button>
+                <button className='button dark-button'>snooze</button>
+                <button className='button dark-button'>dismiss</button>
             </div>
         )
     }
 }
 
 
-export const AlarmList = ({alarms}) => {
-    // console.log('this is for the alarm:', alarms)
-    function alarmTimesToArr() {
-        let arr = []
-        for (let i =0; i < alarms.length; i++) {
-            arr.push(alarms[i].time)
-        }
-        // console.log(arr)
-        return arr
-    }
-    return (
-        <div>
-            <Clock alarms = {alarmTimesToArr()}/>
-            <ul>
-                {alarms.map(alarm => <li key = {alarm.id}>{alarm.time}</li>)}
-            </ul>
-        </div>
-    )
-}
-        
-        
 const mapStateToProps = state => {
     // console.log('mapping for alarmlist', state)
     return {
-            alarms: state.userData.alarms
-        }
+        alarms: state.userData.alarms
+    }
 }
 
-export const AlarmClock = connect(mapStateToProps)(AlarmList)
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+
+    }
+}
+
+
+
+export const AlarmClock = connect(mapStateToProps, mapDispatchToProps)(Clock)
