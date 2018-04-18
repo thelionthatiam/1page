@@ -1,0 +1,19 @@
+<div class='full-page'>
+    <div class="flex column add-alarm-form">
+
+        <form action="/app/accounts/{{email}}/settings/alarm-prices?_method=PUT" method="post">
+            <p>snooze price($) {{!-- ${{snooze_price}} --}}
+            </p>
+            <input name="snooze_price" class="big-form-item" type="text" value="{{snooze_price}}">
+            <p>dismiss price($) {{!-- ${{ dismiss_price }} --}}
+            </p>
+            <input name="dismiss_price" class="big-form-item" type="text" value="{{ dismiss_price}}">
+            <p>wake price($) {{!-- ${{ wake_price }} --}}
+            </p>
+            <input name="wake_price" class="big-form-item" type="text" value="{{ wake_price}}">
+            <input name="month_max" type="hidden" value={{month_max}}>
+            <button class="button light-button" type="submit">set prices</button>
+        </form>
+        <p class="formErrorReport">{{ dbError }}</p>
+    </div>
+</div>

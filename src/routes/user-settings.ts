@@ -2,19 +2,77 @@ import * as express from 'express';
 import SettingsSvc from '../logic/logic-settings';
 const settings = express.Router();
 
-settings.route('/')
-  .get((req,res) => {
+
+// group routes
+settings.route('/alarm-prices')
+  .get((req, res) => {
     // validate user at session check
-    req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null) 
+    req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null)
+    req.SettingsSvc.getUserSettingsAndRender()
+      .then((renderObj) => {
+        res.render('settings/alarm-prices', renderObj)
+      })
+      .catch((error) => {
+        console.log(error)
+        res.render('error', { errMessage: error })
+      })
+    })
+  .put((req, res) => {
+  req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, req.body)
+
+  req.SettingsSvc.changeAlarmPrices()
+    .then(() => {
+      res.redirect('/app/accounts/' + req.session.user.email + '/settings/alarm-prices')
+    })
+    .catch((error) => {
+      console.log(error)
+      res.render('error', { errMessage: error })
+    })
+})
+
+settings.route('/alarm-setting')
+  .get((req, res) => {
+    // validate user at session check
+    req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null)
+    req.SettingsSvc.getUserSettingsAndRender()
+      .then((renderObj) => {
+        res.render('settings/alarm-settings', renderObj)
+      })
+      .catch((error) => {
+        console.log(error)
+        res.render('error', { errMessage: error })
+      })
+  })
+  .put((req, res) => {
+    req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, req.body)
+
+    req.SettingsSvc.changeAlarmSettings()
+      .then(() => {
+        res.redirect('/app/accounts/' + req.session.user.email + '/settings/alarm-settings')
+      })
+      .catch((error) => {
+        console.log(error)
+        res.render('error', { errMessage: error })
+      })
+  })
+
+
+// individual routes
+
+settings.route('/')
+  .get((req, res) => {
+    // validate user at session check
+    req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null)
     req.SettingsSvc.getUserSettingsAndRender()
       .then((renderObj) => {
         res.render('settings', renderObj)
       })
       .catch((error) => {
         console.log(error)
-        res.render('error', { errMessage:error })
+        res.render('error', { errMessage: error })
       })
   })
+
 
 settings.put('/payment-scheme', (req, res) => {
   let inputs = { payment_scheme:req.body.payment_scheme }

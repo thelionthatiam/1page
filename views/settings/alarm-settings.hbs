@@ -1,0 +1,15 @@
+<div class='full-page'>
+    <div class="flex column add-alarm-form">
+        <form action="/app/accounts/{{email}}/settings/alarm-settings?_method=PUT" method="post">
+            <p>ring duration(sec) {{!-- {{ quiet_after }}s --}}
+            </p>
+            <input name="quiet_after" class="big-form-item" type="text" value="{{quiet_after}}">
+            <p>snooze duration(sec) {{!-- {{ snooze_length }}s --}}
+            </p>
+            <input name="snooze_length" class="big-form-item" type="text" value="{{ snooze_length }}">
+
+            <button class="button light-button" type="submit"> set ring duration </button>
+        </form>
+        <p class="formErrorReport">{{ dbError }}</p>
+    </div>
+</div>

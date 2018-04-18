@@ -458,6 +458,18 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.updatePricePerWake = function (values) {
+        var text = 'UPDATE user_settings SET wake_price = $1 WHERE user_uuid = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Wake price doesnt exist for this user, or the user doesnt exists, thats not good at all');
+            }
+            else {
+                return null;
+            }
+        });
+    };
     QuerySvc.prototype.updateQuietAfter = function (values) {
         var text = 'UPDATE user_settings SET quiet_after = $1 WHERE user_uuid = $2';
         return this.conn.query(text, values)
