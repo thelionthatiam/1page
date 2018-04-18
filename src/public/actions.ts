@@ -8,11 +8,11 @@ export function reqNewName(v) {
 }
 
 
-function recieveNewName(name) {
-    console.log('RECIEVE NEW NAME', name)
+function recieveNewName(user) {
+    console.log('RECIEVE NEW NAME', user)
     return {
         type: RES_NAME_CHANGE,
-        newName: name
+        profile:user
     }
 }
 
@@ -33,9 +33,9 @@ export function fetchNewName(v) {
             console.log(res)
             return res.json();
         })
-        .then(name => {
-            console.log(name)
-            dispatch(recieveNewName(name))
+        .then(user => {
+            console.log(user)
+            dispatch(recieveNewName(user))
         })
         .catch(e => console.log(e))
     }

@@ -57,6 +57,14 @@ function userDataReducer(state, action) {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
             });
+        case actions_1.REQ_NAME_CHANGE:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_1.RES_NAME_CHANGE:
+            console.log('res name change', action);
+            return Object.assign({}, state, {
+                isFetching: false,
+                profile: action.profile
+            });
         default:
             return state;
     }
@@ -64,20 +72,19 @@ function userDataReducer(state, action) {
 function nameReducer(state, action) {
     if (state === void 0) { state = { newName: 'literally anything' }; }
     switch (action.type) {
-        case actions_1.REQ_NAME_CHANGE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_1.RES_NAME_CHANGE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                newName: action.newName
-            });
+        // case REQ_NAME_CHANGE:
+        //     return Object.assign({}, state, { isFetching: true })
+        // case RES_NAME_CHANGE:
+        //     return Object.assign({}, state, { 
+        //         isFetching: false,
+        //         newName: action.newName
+        //     })
         default:
             return state;
     }
 }
 var reducer = redux_1.combineReducers({
-    userData: userDataReducer,
-    name: nameReducer
+    userData: userDataReducer
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;

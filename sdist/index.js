@@ -94,7 +94,7 @@ index.post('/new-name', function (req, res) {
     req.querySvc.updateName([req.body.name, req.session.user.uuid])
         .then(function () { return req.querySvc.getUser([req.session.user.uuid]); })
         .then(function (user) {
-        res.json(user.name);
+        res.json(user);
     })
         .catch(function (e) { return console.log(e); });
 });

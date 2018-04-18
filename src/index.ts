@@ -109,7 +109,7 @@ index.post('/new-name', (req, res) => {
     req.querySvc.updateName([req.body.name, req.session.user.uuid])
         .then(() => req.querySvc.getUser([req.session.user.uuid]))
         .then(user => {
-            res.json(user.name)
+            res.json(user)
         })
         .catch(e => console.log(e))
     

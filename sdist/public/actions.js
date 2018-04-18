@@ -7,11 +7,11 @@ function reqNewName(v) {
     return { type: exports.REQ_NAME_CHANGE };
 }
 exports.reqNewName = reqNewName;
-function recieveNewName(name) {
-    console.log('RECIEVE NEW NAME', name);
+function recieveNewName(user) {
+    console.log('RECIEVE NEW NAME', user);
     return {
         type: exports.RES_NAME_CHANGE,
-        newName: name
+        profile: user
     };
 }
 function fetchNewName(v) {
@@ -31,9 +31,9 @@ function fetchNewName(v) {
             console.log(res);
             return res.json();
         })
-            .then(function (name) {
-            console.log(name);
-            dispatch(recieveNewName(name));
+            .then(function (user) {
+            console.log(user);
+            dispatch(recieveNewName(user));
         })
             .catch(function (e) { return console.log(e); });
     };

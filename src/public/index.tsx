@@ -47,6 +47,14 @@ function userDataReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 profile:action.userData.profile,
                 alarms:action.userData.alarms
+            })
+        case REQ_NAME_CHANGE:
+            return Object.assign({}, state, { isFetching: true })
+        case RES_NAME_CHANGE:
+            console.log('res name change', action)
+            return Object.assign({}, state, { 
+                isFetching: false,
+                profile: action.profile
             }) 
         default:
             return state;
@@ -55,21 +63,20 @@ function userDataReducer(state = initialState, action) {
 
 function nameReducer(state = {newName: 'literally anything'}, action) {
     switch(action.type) {
-        case REQ_NAME_CHANGE:
-            return Object.assign({}, state, { isFetching: true })
-        case RES_NAME_CHANGE:
-            return Object.assign({}, state, { 
-                isFetching: false,
-                newName: action.newName
-            })
+        // case REQ_NAME_CHANGE:
+        //     return Object.assign({}, state, { isFetching: true })
+        // case RES_NAME_CHANGE:
+        //     return Object.assign({}, state, { 
+        //         isFetching: false,
+        //         newName: action.newName
+        //     })
         default:
             return state
     }
 }
 
 let reducer = combineReducers({
-    userData: userDataReducer, 
-    name: nameReducer
+    userData: userDataReducer
 })
 
 let store = createStore(reducer, composeWithDevTools(
