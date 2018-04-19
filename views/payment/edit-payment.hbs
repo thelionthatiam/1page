@@ -1,51 +1,55 @@
-<div class="flex pageWrapper">
-  <div class="flex column userWrapper">
-
-    <h3 class="formTitle">edit a payment method</h3>
+<div class='app-content'>
+  <div class='long-page'>
+    <div class="flex column add-alarm-form">
       <form action="/app/accounts/{{ user_uuid }}/payment/{{card_number}}?_method=PUT" method="POST">
-        <p>name {{name}}</p>
-        <input id="name" name="name" class="userFormItem" type="text" placeholder="darth vader" value="{{name}}" />
+        <p>name:  </p>
+        <input id="name" name="name"  class = "big-form-item" type="text" placeholder="{{name}}" value="{{name}}" />
         <p class="formErrorReport" id="nameError"></p>
 
-        <p>card number {{card_number}}</p>
-        <input id="cardNumber" name="card_number" class="userFormItem numericOnly" type="text" placeholder="card_number" value="{{card_number}}" />
+        <p>card number:   </p>
+        <input id="cardNumber" name="card_number"   class = "big-form-item"type="text" placeholder="{{card_number}}" value="{{card_number}}" />
         <p class="formErrorReport" id="cardNumberError"></p>
 
-        <p>expiration {{exp_month}}-{{exp_date}}</p>
+        <p>expiration:  (mm/dd)</p>
         <div class="flex expirationWrapper">
-          <input id="expirationMonth" name="exp_month" class="userFormItem numericOnly shortField" type="text" placeholder="MM" maxlength="2" value = "{{exp_month}}"/>
+          <input id="expirationMonth" name="exp_month"   class = "big-form-item"type="text" placeholder="{{exp_month}}" maxlength="2" value = "{{exp_month}}"/>
           <p class="expirationSlash">  / </p>
-          <input id="expirationDay" name="exp_date" class="userFormItem numericOnly shortField" type="text" placeholder="DD" maxlength="2" value = "{{exp_date}}"/>
+          <input id="expirationDay" name="exp_date"  class = "big-form-item" type="text" placeholder="{{exp_date}}" maxlength="2" value = "{{exp_date}}"/>
         </div>
         <p class="formErrorReport" id="exiprationMonthError"></p>
         <p class="formErrorReport" id="exiprationDayError"></p>
 
-        <p>CVV {{cvv}}</p>
-        <input id="cvv" name="cvv" class="userFormItem" type="text" placeholder="number" value="{{cvv}}" />
+        <p>CVV:  </p>
+        <input id="cvv" name="cvv" class = "big-form-item" type="text" placeholder="{{cvv}}" value="{{cvv}}" />
         <p class="formErrorReport" id="cvvError"></p>
 
-        <p>address {{address_1}}</p>
-        <input id="address" name="address_1" class="userFormItem" type="text" placeholder="E Street South" value="{{address_1}}" />
+        <p>address:  </p>
+        <input id="address" name="address_1"   class = "big-form-item"type="text" placeholder="{{address_1}}" value="{{address_1}}" />
         <p class="formErrorReport" id="addressError"></p>
 
-        <p>city {{city}}</p>
-        <input id="city" name="city" class="userFormItem" type="text" placeholder="Juneau" value="{{city}}" />
+        <p>city:  </p>
+        <input id="city" name="city" class = "big-form-item"  type="text" placeholder="{{city}}" value="{{city}}" />
         <p class="formErrorReport" id="cityError"></p>
 
-        <p>state {{state}}</p>
-        <input id="state" name="state" class="userFormItem dropdownSearch" type="text" placeholder="AK" value="{{state}}" />
+        <p>state:  </p>
+        <input id="state" name="state"  class = "big-form-item" type="text" placeholder="{{state}}" value="{{state}}" />
         <p class="formErrorReport" id="stateError"></p>
         <div class="dropdownWrapper">
           <ul class="dropdownList"></ul>
         </div>
 
-        <p>ZIP code {{code}}</p>
-        <input id="zipCode" name="zip" class="userFormItem numericOnly" type="text" placeholder="ZIP" value="{{zip}}" />
+        <p>ZIP code:  </p>
+        <input id="zipCode" name="zip"  class = "big-form-item" type="text" placeholder="{{zip}}" value="{{zip}}" />
         <p class="formErrorReport" id="zipCodeError"></p>
 
         <input type="hidden" name="oldCard" value={{card_number}} />
         <button id="formSubmitter" class="unavailable submit" type="submit">submit</button>
       </form>
 
+    </div>
   </div>
 </div>
+
+
+
+{{!-- {{name}} {{card_number}} {{exp_month {{exp_date {{cvv}} {{address_1}} {{city}} {{state}} {{code}} --}}
