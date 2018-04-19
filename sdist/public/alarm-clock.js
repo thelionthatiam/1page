@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var react_sound_1 = require("react-sound");
 var actions_1 = require("./actions");
 var react_redux_1 = require("react-redux");
 var Clock = /** @class */ (function (_super) {
@@ -86,7 +87,8 @@ var AlarmController = /** @class */ (function (_super) {
                 React.createElement(MathProblem, { alarm: this.alarm }),
                 React.createElement("form", { action: snoozeRoute, method: "POST" },
                     React.createElement("input", { className: "button light-button", type: 'submit', value: 'snooze' }),
-                    React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.alarm.alarm_uuid })))));
+                    React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.alarm.alarm_uuid }))),
+            React.createElement(react_sound_1.default, { url: "/sounds/ring-song.mp3", playStatus: react_sound_1.default.status.PLAYING })));
     };
     return AlarmController;
 }(React.Component));

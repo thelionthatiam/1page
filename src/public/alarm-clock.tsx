@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import Sound from 'react-sound'
 import { fetchAlarms } from './actions'
 import { connect, Provider } from 'react-redux';
 
@@ -66,7 +67,7 @@ class Clock extends React.Component {
                 <div className='clock'>
                     <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
                 </div>
-                <div className='alarm-controllers-wrapper'>{messages}</div> 
+                <div className='alarm-controllers-wrapper'>{messages}</div>                  
             </div>
         )
     }
@@ -110,6 +111,10 @@ class AlarmController extends React.Component {
                         <input name="alarm_uuid" type="hidden" value={this.alarm.alarm_uuid} />
                     </form>
                 </div>
+                <Sound
+                    url="/sounds/ring-song.mp3"
+                    playStatus={Sound.status.PLAYING}
+                />
             </div>
         )
     }
