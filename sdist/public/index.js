@@ -65,6 +65,13 @@ function userDataReducer(state, action) {
                 isFetching: false,
                 profile: action.profile
             });
+        case actions_1.REQ_ALARM:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_1.RES_ALARM:
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
+            });
         default:
             return state;
     }

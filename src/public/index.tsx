@@ -13,7 +13,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './user-data';
-import { REQ_NAME_CHANGE, RES_NAME_CHANGE } from './actions'
+import { 
+    REQ_NAME_CHANGE, 
+    RES_NAME_CHANGE,
+    REQ_ALARM,
+    RES_ALARM,
+} from './actions'
 import { WSAEPFNOSUPPORT } from 'constants';
 
 
@@ -55,6 +60,13 @@ function userDataReducer(state = initialState, action) {
             return Object.assign({}, state, { 
                 isFetching: false,
                 profile: action.profile
+            }) 
+        case REQ_ALARM:
+            return Object.assign({}, state, { isFetching: true })
+        case RES_ALARM:
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
             }) 
         default:
             return state;

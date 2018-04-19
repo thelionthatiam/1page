@@ -71,7 +71,7 @@ body {
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
 
-.generic-form, .alarm-control-wrapper {
+.generic-form, .alarm-control-wrapper, .alarm-control-button-wrapper {
   padding: .5vw;
   margin: 1vw; }
 
@@ -553,10 +553,22 @@ button:focus {
   overflow: scroll;
   height: 100vh; }
 
+.alarm-controllers-wrapper {
+  display: flex;
+  flex-direction: column; }
+
 .alarm-control-wrapper {
   color: #fff;
   background-color: #9f2121;
+  border-radius: 5px;
   box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1); }
+
+.alarm-control-button-wrapper {
+  display: flex;
+  justify-content: space-around; }
+  .alarm-control-button-wrapper .button {
+    border: white;
+    background-color: white; }
 
 .listWrapper {
   display: flex;

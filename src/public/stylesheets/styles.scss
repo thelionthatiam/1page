@@ -778,11 +778,27 @@ button:focus {
 
 // ALARM CONTROLLER
 
+.alarm-controllers-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .alarm-control-wrapper {
   @extend %wrapper-spacing;
   color:$white;
   background-color:$darkRed;
+  border-radius:5px;
   box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, .1);
+}
+
+.alarm-control-button-wrapper {
+  @extend %wrapper-spacing;
+  display:flex;
+  justify-content: space-around;
+  .button {
+    border:white;
+    background-color:white;
+  }
 }
 
 // ALARM

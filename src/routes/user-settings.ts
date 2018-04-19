@@ -30,7 +30,7 @@ settings.route('/alarm-prices')
     })
 })
 
-settings.route('/alarm-setting')
+settings.route('/alarm-settings')
   .get((req, res) => {
     // validate user at session check
     req.SettingsSvc = new SettingsSvc(req.querySvc, req.session.user, null)

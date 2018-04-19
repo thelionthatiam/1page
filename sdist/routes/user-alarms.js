@@ -5,9 +5,23 @@ var error_handling_1 = require("../services/error-handling");
 var logic_alarms_1 = require("../logic/logic-alarms");
 var alarms = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
+alarms.route('/api')
+    .get(function (req, res) {
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
+    req.AlarmSvc.getUserAlarms()
+        .then(function (alarms) {
+        res.json(alarms);
+    })
+        .catch(function (err) {
+        console.log(err);
+        res.json({
+            'error': err,
+            'status': "failed"
+        });
+    });
+});
 alarms.route('/')
     .post(function (req, res) {
-    console.log('ALARMS POST', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.addAlarm()
         .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })

@@ -28,7 +28,7 @@ settings.route('/alarm-prices')
         res.render('error', { errMessage: error });
     });
 });
-settings.route('/alarm-setting')
+settings.route('/alarm-settings')
     .get(function (req, res) {
     // validate user at session check
     req.SettingsSvc = new logic_settings_1.default(req.querySvc, req.session.user, null);

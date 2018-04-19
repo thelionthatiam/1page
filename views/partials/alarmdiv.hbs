@@ -70,7 +70,7 @@
         <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>
   </div>
-  <div class = "alarm-row">
+  {{!-- <div class = "alarm-row">
     <p>alarm management</p>
     <form action = "/app/accounts/{{user_uuid}}/alarms/{{alarm_uuid}}/snooze" method = "POST">
       <input class="button dark-button" type = 'submit' value = 'snooze'>
@@ -85,7 +85,7 @@
       <input class="button dark-button" type='submit' value='wake'>
       <input name="alarm_uuid" type="hidden" value="{{ alarm_uuid }}">
     </form>
-  </div>
+  </div> --}}
   <p class="noMarginsPassing preInputMimic">{{ message }}</p>
   <p class="formErrorReport">{{ dbError }}</p>
   <h1>

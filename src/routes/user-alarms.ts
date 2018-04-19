@@ -9,10 +9,30 @@ import * as qs from 'querystring';
 import * as React from 'react';
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 
+alarms.route('/api')
+  .get((req, res) => {
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, null)
+
+    req.AlarmSvc.getUserAlarms()
+      .then((alarms) => {
+        res.json(alarms)
+      })
+      .catch((err) => {
+        console.log(err)
+        res.json(
+          {
+            'error': err,
+            'status':"failed"
+          }
+        );
+      });
+  })
+
+
+
 
 alarms.route('/')
   .post((req, res) => {
-    console.log('ALARMS POST',req.body)
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
     req.AlarmSvc.addAlarm()
