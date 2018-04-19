@@ -41,8 +41,11 @@ var PaymentsSvc = /** @class */ (function () {
     };
     PaymentsSvc.prototype.changeActivePayement = function () {
         var _this = this;
+        var state;
+        this.inputs.active === "true" ? state = false : state = true;
+        console.log('change active payments', this.inputs.active, this.inputs, state);
         return this.querySvc.updateAllFormsOfPaymentToFalse([false, this.user.uuid])
-            .then(function (result) { return _this.querySvc.updateActiveFormOfPayment([true, _this.inputs.card_number, _this.user.uuid]); });
+            .then(function (result) { return _this.querySvc.updateActiveFormOfPayment([state, _this.inputs.card_number, _this.user.uuid]); });
     };
     PaymentsSvc.prototype.getFormOfPayement = function () {
         console.log(this.user.uuid, this.inputs.card_number);

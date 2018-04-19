@@ -412,6 +412,19 @@ export default class QuerySvc {
         }
       })
   }
+
+  updateActiveFormOfPayment(values: [boolean, string, V.UUID]) {
+    console.log('update active forms of payment', values)
+    const text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error('Nothing in the database here...')
+        } else {
+          return null;
+        }
+      })
+  }
   
   updateContactInformation(values: [string, V.Email, V.NumOnly, V.UUID]): Promise<void> {
     const text = 'UPDATE users SET (name, email, phone) = ($1,$2,$3) WHERE user_uuid = $4';
@@ -443,21 +456,6 @@ export default class QuerySvc {
       .then(result => {
         if (result.rowCount === 0) {
           throw new Error('Could not update password. No user with that id in the database.')
-        } else {
-          return null;
-        }
-      })
-  }
-
-
-
-  
-  updateActiveFormOfPayment(values:[boolean, string, V.UUID]) {
-    const text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)'
-    return this.conn.query(text, values)
-      .then(result => {
-        if (result.rowCount === 0) {
-          throw new Error( 'Nothing in the database here...')
         } else {
           return null;
         }

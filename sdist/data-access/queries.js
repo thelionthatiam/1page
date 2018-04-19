@@ -373,6 +373,19 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.updateActiveFormOfPayment = function (values) {
+        console.log('update active forms of payment', values);
+        var text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('Nothing in the database here...');
+            }
+            else {
+                return null;
+            }
+        });
+    };
     QuerySvc.prototype.updateContactInformation = function (values) {
         var text = 'UPDATE users SET (name, email, phone) = ($1,$2,$3) WHERE user_uuid = $4';
         return this.conn.query(text, values)
@@ -403,18 +416,6 @@ var QuerySvc = /** @class */ (function () {
             .then(function (result) {
             if (result.rowCount === 0) {
                 throw new Error('Could not update password. No user with that id in the database.');
-            }
-            else {
-                return null;
-            }
-        });
-    };
-    QuerySvc.prototype.updateActiveFormOfPayment = function (values) {
-        var text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
-        return this.conn.query(text, values)
-            .then(function (result) {
-            if (result.rowCount === 0) {
-                throw new Error('Nothing in the database here...');
             }
             else {
                 return null;

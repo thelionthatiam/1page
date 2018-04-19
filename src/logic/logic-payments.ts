@@ -58,8 +58,11 @@ export default class PaymentsSvc {
     }
 
     changeActivePayement() {
+        let state;
+        this.inputs.active === "true" ? state = false : state = true;
+        console.log('change active payments', this.inputs.active, this.inputs, state)
         return this.querySvc.updateAllFormsOfPaymentToFalse([false, this.user.uuid])
-            .then(result => this.querySvc.updateActiveFormOfPayment([true, this.inputs.card_number, this.user.uuid]))
+            .then(result => this.querySvc.updateActiveFormOfPayment([state, this.inputs.card_number, this.user.uuid]))
     }
 
     getFormOfPayement() {

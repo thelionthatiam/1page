@@ -1,11 +1,8 @@
 import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import * as url from 'url';
-import { db } from '../middleware/database';
 import PaymentsSvc from '../logic/logic-payments'
 const payment = express.Router();
-
-
 
 payment.route('/')
   .get((req, res) => {
@@ -44,7 +41,7 @@ payment.route('/active-payment')
       .then((result) => res.redirect('/app/accounts/' + req.session.user.email + '/payment'))
       .catch((error) => {
         console.log(error)
-        res.render('payment/payments', {dbError:error})
+        res.render('payment/payments', { dbError:error })
       })
   })
 

@@ -171,21 +171,6 @@ export default class AlarmsSvc {
                     console.log('this is from the ringing condition inside the snooze')
                     return this.querySvc.insertSnooze([this.inputs.alarm_uuid, this.user.uuid])
                         .then(() => this.querySvc.updateAlarmState(['snoozing', this.inputs.alarm_uuid]))
-
-                    // this.querySvc.getUserSettings([this.user.uuid])
-                    //     .then(settings => {
-                    //         // update validation
-                    //         console.log(this.inputs.snooze_tally, settings.snooze_max)
-                    //         if (this.inputs.snooze_tally <= settings.snooze_max) {
-                    //             return this.querySvc.insertSnooze([this.inputs.alarm_uuid, this.user.uuid])
-                    //                 .then(() => this.querySvc.updateAlarmState(['snoozing', this.inputs.alarm_uuid]))
-                    //                 .then(() => this.querySvc.incrementSnoozeTally([this.inputs.alarm_uuid]))
-                    //         } else {
-                    //             return this.querySvc.insertDismiss([this.inputs.alarm_uuid, this.user.uuid])
-                    //                 .then(() => this.querySvc.updateAlarmState(['pending', this.inputs.alarm_uuid]))
-                    //                 .then(() => this.querySvc.resetSnoozeTally([this.inputs.alarm_uuid]))
-                    //         }
-                    //     })
                 } else {
                     throw new Error('No alarm is even ringing right now! Wait until it goes off.')
                 }
