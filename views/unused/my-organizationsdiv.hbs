@@ -23,12 +23,12 @@
 	      Already set as default
 	    </p>
 		{{else}}
-			<form class="flex product-cart-form" action="/accounts/{{email}}/organizations/{{org_uuid}}?_method=PUT" method="post">
+			<form class="flex product-cart-form" action="/accounts/{{email}}/orgs/{{org_uuid}}?_method=PUT" method="post">
 				<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
 				<button class = 'yes'>set as default</button>
 			</form>
 		{{/if}}
-		<form class="flex product-cart-form" action="/accounts/{{email}}/organizations/{{org_uuid}}?_method=DELETE" method="post">
+		<form class="flex product-cart-form" action="/accounts/{{email}}/orgs/{{org_uuid}}?_method=DELETE" method="post">
 				<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
 				<button class="yes">remove from my orgs</button>
 		</form>

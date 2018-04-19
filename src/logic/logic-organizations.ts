@@ -44,7 +44,7 @@ export default class OrgSvc {
         this.userOrgRenderObjs;
         this.activeOrgRenderObj;
     }
-
+    
     canAddOrg(userOrgs:Org[]) {
         return new Promise (
             (resolve, reject) => {
@@ -71,36 +71,7 @@ export default class OrgSvc {
         return this.querySvc.getUserOrgs([this.user.uuid])
             .then((userOrgs) => this.canAddOrg(userOrgs))
             .then(() => this.querySvc.insertUserOrg([this.user.uuid, this.org]))
-            .then(() => null)
-            .catch((e) => e)
     }
-
-    activeOrgRender(ActiveOrg:Org) {
-        return {
-            defaultSet: true,
-            active: true,
-            name: ActiveOrg.name,
-            description: ActiveOrg.description,
-            link: ActiveOrg.link,
-            cause: ActiveOrg.cause,
-            img: ActiveOrg.img,
-            org_uuid: ActiveOrg.org_uuid,
-            org_sku: ActiveOrg.org_sku
-        }
-    }
-
-    userOrgRenderAdditions() {
-        this.userOrgRenderObjs = this.userOrgsData
-        for (let i = 0; i < this.userOrgRenderObjs.length; i++) {
-          this.userOrgRenderObjs[i].email = this.user.email;
-          this.userOrgRenderObjs[i].user_orgs = true;
-          this.userOrgRenderObjs[i].loggedIn = this.user.permission === 'user' ? true : false; // substitute for res.locals
-          if (this.userOrgsData[i].active) {
-            this.activeOrgRenderObj = this.activeOrgRender(this.userOrgRenderObjs[i]) 
-          }
-        }
-    }
-
     formatRenderObj() {
         if (this.activeOrgRenderObj) {
             return {
@@ -122,14 +93,48 @@ export default class OrgSvc {
         }
     }
 
+    userOrgRenderAdditions(orgs) {
+        let renderVersion = []
+        for (let i = 0; i < orgs.length; i++) {
+            renderVersion[i] = orgs[i]
+            renderVersion[i].email = this.user.email;
+            renderVersion[i].user_orgs = true;
+            renderVersion[i].loggedIn = this.user.permission === 'user' ? true : false; // substitute for res.locals
+        }
+        return renderVersion
+    }
+
+    activeOrgRender(ActiveOrg: Org) {
+        return {
+            defaultSet: true,
+            active: true,
+            name: ActiveOrg.name,
+            description: ActiveOrg.description,
+            link: ActiveOrg.link,
+            cause: ActiveOrg.cause,
+            img: ActiveOrg.img,
+            org_uuid: ActiveOrg.org_uuid,
+            org_sku: ActiveOrg.org_sku
+        }
+    }
+
+    activeOrgCheck(orgs) {
+        for (let i = 0; i < orgs.length; i++) {
+            if (orgs[i].active) {
+                return this.activeOrgRender(orgs[i])
+            }
+        }
+    }
+
     getUserOrgsAndActiveOrg() {
+        console.log('get user orgs and active orgs runngin')
         return this.querySvc.getUserOrgsData([this.user.uuid])
-            .then(result => {
-                this.userOrgsData = result;
-                this.userOrgRenderAdditions() // needs validation
-                return this.formatRenderObj()
+            .then(orgs => {
+                return {
+                    organizationContent: this.userOrgRenderAdditions(orgs),
+                    activeOrgContent: this.activeOrgCheck(orgs)
+                }
             })
-            .catch(e => e)
     }
 
     // separate out from can add?
@@ -175,8 +180,12 @@ export default class OrgSvc {
 
 
     unsetDefaultOrg() {
-        console.log('update default org')
         return this.querySvc.updateActiveOrg([false, this.user.uuid, this.org])
+    }
+
+    removeFromUserOrgs() {
+        console.log('delete from user orgs', this.org, this)
+        return this.querySvc.deleteFromUserOrgs([this.user.uuid, this.org])
     }
 }
 

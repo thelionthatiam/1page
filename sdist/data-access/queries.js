@@ -40,9 +40,11 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('Nothing in the database here...');
+                console.log('User has no saved orgs');
+                return [];
             }
             else {
+                console.log('get user orgs', result.rows);
                 return result.rows;
             }
         });
@@ -52,14 +54,11 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('Nothing in the database here...');
+                console.log('User has no saved orgs');
+                return [];
             }
             else {
-                var validatedOrgs = [];
-                for (var i = 0; i < result.rows.length; i++) {
-                    validatedOrgs.push(R.UserOrgsJoin.fromJSON(result.rows[i]));
-                }
-                return validatedOrgs;
+                return result.rows;
             }
         });
     };
@@ -91,11 +90,10 @@ var QuerySvc = /** @class */ (function () {
                 throw new Error('Unable to retrieve orgs at this time. No orgs were present.');
             }
             else {
-                var validatedOrgs = [];
                 for (var i = 0; i < result.rows.length; i++) {
-                    validatedOrgs.push(R.OrgsDB.fromJSON(result.rows[i]));
+                    R.OrgsDB.fromJSON(result.rows[i]);
                 }
-                return validatedOrgs;
+                return result.rows;
             }
         });
     };
@@ -292,6 +290,7 @@ var QuerySvc = /** @class */ (function () {
         var text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2) RETURNING *';
         return this.conn.query(text, values)
             .then(function (result) {
+            console.log('insert user orgs active', result.rows[0].active);
             return result.rows[0].active;
         });
     };
@@ -681,6 +680,11 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.deletePushSub = function (values) {
         var text = 'DELETE FROM push_subs WHERE user_uuiid = $1';
+        return this.conn.query(text, values)
+            .then(function (result) { return null; });
+    };
+    QuerySvc.prototype.deleteFromUserOrgs = function (values) {
+        var text = 'DELETE FROM user_orgs WHERE user_uuid = $1 AND org_uuid = $2';
         return this.conn.query(text, values)
             .then(function (result) { return null; });
     };

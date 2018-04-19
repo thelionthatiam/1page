@@ -1,15 +1,16 @@
-import * as express from 'express';
-import { db } from '../middleware/database'; // this goes away
 import OrgSvc from '../logic/logic-organizations';
 import * as R from '../services/value-objects';
+import * as express from 'express';
 const orgs = express.Router();
 
 orgs.route('/')
   .post((req, res) => {
     // should valideate user session in session check middelware
-    req.OrgSvc = new OrgSvc(req.querySvc, R.UserSession.fromJSON(req.session.user), req.body.org_uuid)
+    console.log('adding to user orgs route', req.body)
+    req.OrgSvc = new OrgSvc(req.querySvc, req.session.user, req.body.org_uuid)
     req.OrgSvc.addToUserOrgs()
       .then(() => {
+        console.log('post route cb')
         res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs')
       })
       .catch((error) => {
@@ -19,22 +20,24 @@ orgs.route('/')
   })
   .get((req, res) => {
       // should valideate user session in session check middelware
-      req.OrgSvc = new OrgSvc(req.querySvc, R.UserSession.fromJSON(req.session.user), null)
+      console.log('get user orgs running ', req.body)
+      req.OrgSvc = new OrgSvc(req.querySvc, req.session.user, null)
 
       req.OrgSvc.getUserOrgsAndActiveOrg()
-        .then((userOrgDataForRender) => {
-          res.render('organizations', userOrgDataForRender)
-      })
-      .catch((err) => {
-        console.log(err);
-        res.render('organizations', { dbError: err });
-      });
+        .then(renderOrgs => {
+          console.log('getuser orgs and active orgs', renderOrgs)
+          res.render('organizations', renderOrgs)
+        })
+        .catch((err) => {
+          console.log(err);
+          res.render('organizations', { dbError: err });
+        });
   })
 
 
-orgs.route('/:sku')
+orgs.route('/:org_uuid')
   .put((req,res) => {
-    req.OrgSvc = new OrgSvc(req.querySvc, R.UserSession.fromJSON(req.session.user), req.body.org_uuid)
+    req.OrgSvc = new OrgSvc(req.querySvc, req.session.user, req.body.org_uuid)
 
     req.OrgSvc.setDefaultOrg()
       .then((result) => {
@@ -46,20 +49,22 @@ orgs.route('/:sku')
       })
   })
   .delete((req,res) => {
-    let org_uuid = req.body.org_uuid;
-    db.query('DELETE FROM user_orgs WHERE user_uuid = $1 AND org_uuid = $2', [req.session.user.uuid, org_uuid])
-    .then((result) => {
-      res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs/' )
-    })
-    .catch((error) => {
-      console.log(error)
-      res.render('organizations', {error:error, dbError:'try refreshing the page'})
-    })
+    console.log('delete runnning', req.body)
+    req.OrgSvc = new OrgSvc(req.querySvc, req.session.user, req.body.org_uuid)
+
+    req.OrgSvc.removeFromUserOrgs()
+      .then((result) => {
+        res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs/' )
+      })
+      .catch((error) => {
+        console.log(error)
+        res.render('organizations', {error:error, dbError:'try refreshing the page'})
+      })
   })
 
-orgs.route('/:sku/remove-default')
+orgs.route('/:org_uuid/remove-default')
   .put((req, res) => {
-    req.OrgSvc = new OrgSvc(req.querySvc, R.UserSession.fromJSON(req.session.user), req.body.org_uuid)
+    req.OrgSvc = new OrgSvc(req.querySvc, req.session.user, req.body.org_uuid)
     req.OrgSvc.unsetDefaultOrg()
       .then((result) => {
         res.redirect('/app/accounts/' + req.session.user.uuid + '/orgs/' )

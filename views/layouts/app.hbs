@@ -11,9 +11,9 @@
         a.store.dispatch(a.populate({{{ stringUser }}}))
     </script>
 
-    <form action='/push-test' method='POST'>
+    {{!-- <form action='/push-test' method='POST'>
         <button>send test notification</button>
-    </form>
+    </form> --}}
     <script>
         function askPermission() {
             return new Promise(function (resolve, reject) {
@@ -120,14 +120,14 @@
                     {{/if}}
                 </li>
 
-                {{!-- <li class='app-menu-li'>
+                <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/squares.svg' />
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/orgs" class='app-menu-text '>organizations</a>
                     {{else}}
                     <a href="/app/orgs/all" class='app-menu-text '>organizations</a>
                     {{/if}}
-                </li> --}}
+                </li>
     
                 {{!-- <li class='app-menu-li'>
                     <img class='formIcon fadeIn' src='/icons/white/graph-bar.svg' />

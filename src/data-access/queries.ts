@@ -49,8 +49,10 @@ export default class QuerySvc {
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
-          throw new Error( 'Nothing in the database here...')
+          console.log('User has no saved orgs')
+          return []
         } else {
+          console.log('get user orgs', result.rows)
           return result.rows;
         }
       })
@@ -61,13 +63,10 @@ export default class QuerySvc {
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
-          throw new Error( 'Nothing in the database here...')
+          console.log('User has no saved orgs')
+          return []
         } else {
-          let validatedOrgs = []
-          for (let i = 0; i < result.rows.length; i++) {
-            validatedOrgs.push(R.UserOrgsJoin.fromJSON(result.rows[i]))
-          }
-          return validatedOrgs
+          return result.rows
         }
       })
   }
@@ -102,11 +101,10 @@ export default class QuerySvc {
         if (result.rowCount === 0) {
           throw new Error ('Unable to retrieve orgs at this time. No orgs were present.')
         } else {
-          let validatedOrgs = []
           for (let i = 0; i < result.rows.length; i++) {
-            validatedOrgs.push(R.OrgsDB.fromJSON(result.rows[i]))
+            R.OrgsDB.fromJSON(result.rows[i])
           }
-          return validatedOrgs
+          return result.rows
         }
       })
   }
@@ -324,6 +322,7 @@ export default class QuerySvc {
     const text = 'INSERT INTO user_orgs(user_uuid, org_uuid) VALUES ($1, $2) RETURNING *'
     return this.conn.query(text, values)
       .then(result => {
+        console.log('insert user orgs active', result.rows[0].active)
         return result.rows[0].active
       })
   }
@@ -733,5 +732,9 @@ export default class QuerySvc {
       .then(result => null)
   }
 
-
+  deleteFromUserOrgs(values:V.UUID[]):Promise<void> {
+    const text = 'DELETE FROM user_orgs WHERE user_uuid = $1 AND org_uuid = $2'
+    return this.conn.query(text, values)
+      .then(result => null)
+  }
 };

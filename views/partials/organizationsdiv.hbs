@@ -4,7 +4,6 @@
 				<h3 class="org-titles">{{ name }}</h3>
 				<p class="small-text ">{{ cause }}</p>
 			</div>
-		
 			<div class="org-img-description-wrapper">
 				<div class="org-description">
 					<p class="small-text">{{ description }}{{ email }}</p>
@@ -12,11 +11,11 @@
 						<a class = 'a' href="{{link}}">
 							<img class='icon-mini' src='/icons/black/link.svg'>
 						</a>
-						<a class = 'a' href="{{link}}">
+						{{!-- <a class = 'a' href="{{link}}">
 							<img class='icon-mini' src='/icons/black/share.svg'>
-						</a>
+						</a> --}}
 						{{#if loggedIn}}
-							<form class='a' action="/app/accounts/{{email}}/orgs/{{org_sku}}?_method=PUT" method="post">
+							<form class='a' action="/app/accounts/{{email}}/orgs/{{org_uuid}}?_method=PUT" method="post">
 								<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
 								<input type='image' class='icon-mini' src='/icons/black/star.svg'>
 							</form>
@@ -24,7 +23,7 @@
 							<img class='icon-mini icon-disabled' src='/icons/black/star.svg'>
 						{{/if}}
 						{{#if user_orgs}}
-						<form class = 'a' action="/app/accounts/{{email}}/orgs/{{org_sku}}?_method=DELETE" method="post">
+						<form class = 'a' action="/app/accounts/{{email}}/orgs/{{org_uuid}}?_method=DELETE" method="post">
 							<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
 							<input type = 'image' class='icon-mini' src='/icons/black/x.svg'>
 						</form>

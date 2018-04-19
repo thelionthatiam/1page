@@ -1,6 +1,4 @@
 import * as express from 'express';
-import { deepMerge } from '../services/merge'
-import { db } from '../middleware/database';
 const allOrgs = express.Router();
 
 allOrgs.route('/all')
@@ -9,21 +7,17 @@ allOrgs.route('/all')
   })
   .get((req, res) => {
     let email;
-
+    console.log('all orgs get route running')
     res.locals.loggedIn ? email = req.session.user.email : email = undefined;
 
     req.querySvc.getOrgs([])
-      .then((result) => {
-        let organizationContent = result.rows;
-
-        for (let i = 0; i < organizationContent.length; i++) {
-          organizationContent[i].loggedIn = res.locals.loggedIn;
-          organizationContent[i].email = email;
+      .then(orgs => {
+        for (let i = 0; i < orgs.length; i++) {
+          orgs[i].loggedIn = res.locals.loggedIn;
+          orgs[i].email = email;
         }
         res.render('all-organizations', {
-          organizationContent:organizationContent,
-          loggedIn:res.locals.loggedIn
-          
+          organizationContent:orgs
         })
       })
       .catch((err) => {

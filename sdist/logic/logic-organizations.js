@@ -32,33 +32,7 @@ var OrgSvc = /** @class */ (function () {
         var _this = this;
         return this.querySvc.getUserOrgs([this.user.uuid])
             .then(function (userOrgs) { return _this.canAddOrg(userOrgs); })
-            .then(function () { return _this.querySvc.insertUserOrg([_this.user.uuid, _this.org]); })
-            .then(function () { return null; })
-            .catch(function (e) { return e; });
-    };
-    OrgSvc.prototype.activeOrgRender = function (ActiveOrg) {
-        return {
-            defaultSet: true,
-            active: true,
-            name: ActiveOrg.name,
-            description: ActiveOrg.description,
-            link: ActiveOrg.link,
-            cause: ActiveOrg.cause,
-            img: ActiveOrg.img,
-            org_uuid: ActiveOrg.org_uuid,
-            org_sku: ActiveOrg.org_sku
-        };
-    };
-    OrgSvc.prototype.userOrgRenderAdditions = function () {
-        this.userOrgRenderObjs = this.userOrgsData;
-        for (var i = 0; i < this.userOrgRenderObjs.length; i++) {
-            this.userOrgRenderObjs[i].email = this.user.email;
-            this.userOrgRenderObjs[i].user_orgs = true;
-            this.userOrgRenderObjs[i].loggedIn = this.user.permission === 'user' ? true : false; // substitute for res.locals
-            if (this.userOrgsData[i].active) {
-                this.activeOrgRenderObj = this.activeOrgRender(this.userOrgRenderObjs[i]);
-            }
-        }
+            .then(function () { return _this.querySvc.insertUserOrg([_this.user.uuid, _this.org]); });
     };
     OrgSvc.prototype.formatRenderObj = function () {
         if (this.activeOrgRenderObj) {
@@ -81,15 +55,46 @@ var OrgSvc = /** @class */ (function () {
             };
         }
     };
+    OrgSvc.prototype.userOrgRenderAdditions = function (orgs) {
+        var renderVersion = [];
+        for (var i = 0; i < orgs.length; i++) {
+            renderVersion[i] = orgs[i];
+            renderVersion[i].email = this.user.email;
+            renderVersion[i].user_orgs = true;
+            renderVersion[i].loggedIn = this.user.permission === 'user' ? true : false; // substitute for res.locals
+        }
+        return renderVersion;
+    };
+    OrgSvc.prototype.activeOrgRender = function (ActiveOrg) {
+        return {
+            defaultSet: true,
+            active: true,
+            name: ActiveOrg.name,
+            description: ActiveOrg.description,
+            link: ActiveOrg.link,
+            cause: ActiveOrg.cause,
+            img: ActiveOrg.img,
+            org_uuid: ActiveOrg.org_uuid,
+            org_sku: ActiveOrg.org_sku
+        };
+    };
+    OrgSvc.prototype.activeOrgCheck = function (orgs) {
+        for (var i = 0; i < orgs.length; i++) {
+            if (orgs[i].active) {
+                return this.activeOrgRender(orgs[i]);
+            }
+        }
+    };
     OrgSvc.prototype.getUserOrgsAndActiveOrg = function () {
         var _this = this;
+        console.log('get user orgs and active orgs runngin');
         return this.querySvc.getUserOrgsData([this.user.uuid])
-            .then(function (result) {
-            _this.userOrgsData = result;
-            _this.userOrgRenderAdditions(); // needs validation
-            return _this.formatRenderObj();
-        })
-            .catch(function (e) { return e; });
+            .then(function (orgs) {
+            return {
+                organizationContent: _this.userOrgRenderAdditions(orgs),
+                activeOrgContent: _this.activeOrgCheck(orgs)
+            };
+        });
     };
     // separate out from can add?
     OrgSvc.prototype.alreadyAddedOrg = function (userOrgs) {
@@ -130,8 +135,11 @@ var OrgSvc = /** @class */ (function () {
             .then(function () { return _this.querySvc.updateActiveOrg([true, _this.user.uuid, _this.org]); });
     };
     OrgSvc.prototype.unsetDefaultOrg = function () {
-        console.log('update default org');
         return this.querySvc.updateActiveOrg([false, this.user.uuid, this.org]);
+    };
+    OrgSvc.prototype.removeFromUserOrgs = function () {
+        console.log('delete from user orgs', this.org, this);
+        return this.querySvc.deleteFromUserOrgs([this.user.uuid, this.org]);
     };
     return OrgSvc;
 }());

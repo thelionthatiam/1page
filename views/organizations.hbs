@@ -6,9 +6,11 @@
                 <input type = 'text'>
             </div>
             <ul class = "org-filter-list">
-                <li class = "org-filter-text">current</li>
-                <li class = "org-filter-text">saved</li>
-                <li class = "org-filter-text">explore</li>
+                <a class='a' href='/app/accounts/{{email}}/orgs'>
+                  <li class="org-filter-text">current</li>
+                </a>
+                {{!-- <li class = "org-filter-text">saved</li>
+                <li class = "org-filter-text">explore</li> --}}
                 <a class = 'a' href = '/app/orgs/all'>
                   <li class="org-filter-text">all</li>
                 </a>
@@ -24,51 +26,33 @@
         <div class="column contentWrapper">
             <h4 class = 'organization-subtitle'>current donation</h4>
             <div class="alarm-row">
-                {{#if defaultSet}}
-                <div class="flex column" id='{{frontEndID}}'>
+                {{#if activeOrgContent.defaultSet}}
+                <div class="flex column" id='{{activeOrgContent.frontEndID}}'>
                   <div class="flex product-name-price-wrapper">
-                    <h3 class="org-titles">{{ name }}</h3>
-                    <p class="small-text ">{{ cause }}</p>
+                    <h3 class="org-titles">{{ activeOrgContent.name }}</h3>
+                    <p class="small-text ">{{ activeOrgContent.cause }}</p>
                   </div>
                 
                   <div class="org-img-description-wrapper">
                     <div class="org-description">
-                      <p class="small-text">{{ description }}</p>
+                      <p class="small-text">{{ activeOrgContent.description }}</p>
                       <div class="org-action-wrapper">
-                        <a class='a' href="{{link}}">
+                        <a class='a' href="{{activeOrgContent.link}}">
                           <img class='icon-mini' src='/icons/black/link.svg'>
                         </a>
-                        <a class='a' href="{{link}}">
+                        <a class='a' href="{{activeOrgContent.link}}">
                           <img class='icon-mini' src='/icons/black/share.svg'>
                         </a>
-                        {{!-- <form class='a' action="/app/accounts/{{email}}/orgs/{{uuid}}?_method=PUT" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
-                          <input type='image' class='icon-mini' src='/icons/black/star.svg'>
-                        </form> --}}
-                        {{!-- <form class='a' action="/app/accounts/{{email}}/orgs" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
-                          <input type='image' class='icon-mini' src='/icons/black/x.svg'>
-                        </form> --}}
-                        <form action="/app/accounts/{{email}}/orgs/{{uuid}}/remove-default?_method=PUT" method="post">
-                          <input type="hidden" name="org_uuid" value="{{ uuid }}" />
+                        <form action="/app/accounts/{{email}}/orgs/{{activeOrgContent.org_uuid}}/remove-default?_method=PUT" method="post">
+                          <input type="hidden" name="org_uuid" value="{{ activeOrgContent.org_uuid }}" />
                           <button class='button dark-button'>remove default</button>
                         </form>
                       </div>
                     </div>
                     <div class='org-img-wrapper'>
-                      <img class = 'org-img' src="/product-pictures/{{ img }}.jpg" />
+                      <img class = 'org-img' src="/product-pictures/{{ activeOrgContent.img }}.jpg" />
                     </div>
                   </div>
-                
-                  {{!--
-                  <form class="flex product-cart-form" action="/accounts/{{email}}/organizations" method="post">
-                    <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-                    <button class="button ">save to my orgs</button>
-                  </form> --}} {{!--
-                  <form class="flex product-cart-form" action="/accounts/{{email}}/organizations/{{org_sku}}?_method=PUT" method="post">
-                    <input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-                    <button class='yes'>set as default</button>
-                  </form> --}}
                 </div>
                 {{else}}
                 <div class='boxBorder padding'>
