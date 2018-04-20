@@ -151,22 +151,17 @@ class TimeForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         console.log(this.state.value)
-        if (this.state.value === '') {
-            console.log('this is teh new conditional', this.state.value)
-        } else {
+        if (this.state.value !== '') {
             this.props.postTime({
                 alarm_uuid: this.props.alarm_uuid,
                 time: this.state.value
             }) // is this the only difference?    
-        }
-        
+        }        
     }
 
     render() {
         return (
             <div>
-                
-                
                 {!this.state.form 
                 ? 
                 <div onClick={this.onBlur}><p className = 'alarm-time link-text'>{this.props.time}</p></div> 
@@ -174,9 +169,6 @@ class TimeForm extends React.Component {
                 <form  ref = {this.setWrapperRef} onSubmit={this.handleSubmit} onBlur={this.onBlur}>
                     <input type='text' className='link-text-form alarm-time' value={this.state.value} onChange={this.handleChange} placeholder = {this.props.time}/>
                 </form>}
-                
-                
-                
             </div>
         )
     }

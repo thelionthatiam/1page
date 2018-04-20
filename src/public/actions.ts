@@ -55,12 +55,13 @@ export function fetchNewTime(v) {
         console.log('fetch new time two:', v)
         dispatch(reqNewTime(v))
         console.log(reqNewTime)
-        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time?_method=PUT", {
             method: "post",
             credentials: 'same-origin',
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "test":"true"
             },
             body: JSON.stringify(v)
         })

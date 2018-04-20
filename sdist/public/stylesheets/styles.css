@@ -42,7 +42,7 @@ li {
   cursor: pointer; }
 
 .link-text:hover {
-  background-color: lightGrey;
+  background: lightGrey;
   border-radius: 4px;
   transition: 100ms; }
 

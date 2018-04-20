@@ -60,6 +60,7 @@ alarms.get('/new-alarm', function (req, res, next) {
     res.render('alarms/new-alarm');
 });
 // CHANGE TIME
+// (USING HEADERS NOW TO DIFRENTIAYE TYPE OF RES)
 alarms.route('/:alarm_uuid/time')
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
@@ -73,14 +74,26 @@ alarms.route('/:alarm_uuid/time')
     });
 })
     .put(function (req, res) {
+    console.log('time put running');
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateAlarmTime()
-        .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .then(function () {
+        // new conditional
+        console.log(req.headers);
+        if (req.headers.test) {
+            req.AlarmSvc.getUserAlarms();
+        }
+        else {
+            return res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
+        }
+    })
+        .then(function (alarms) { return res.json(alarms); })
         .catch(function (e) {
         console.log(e);
         res.render('error', { errMessage: error_handling_1.dbErrTranslator(e) });
     });
 });
+// !! TRYING NOT TO USE
 alarms.route('/:alarm_uuid/time/api')
     .put(function (req, res) {
     console.log('are we even getting here?', req.body);
@@ -160,7 +173,7 @@ alarms.route('/:alarm_uuid')
         res.render('error', { errMessage: e });
     });
 });
-// //  THIS IS STILL IMPORTANT !!!! alarm functionality
+// alarm functionality
 alarms.post('/:alarm_uuid/snooze', function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.snooze()

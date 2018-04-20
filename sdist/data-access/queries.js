@@ -543,7 +543,7 @@ var QuerySvc = /** @class */ (function () {
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {
-                throw new Error('That alarm no longer exists.');
+                throw new Error('Cannot update alarms, it doesnt exist in the db.');
             }
             else {
                 return null;

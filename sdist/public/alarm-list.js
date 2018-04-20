@@ -107,10 +107,7 @@ var TimeForm = /** @class */ (function (_super) {
     TimeForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
         console.log(this.state.value);
-        if (this.state.value === '') {
-            console.log('this is teh new conditional', this.state.value);
-        }
-        else {
+        if (this.state.value !== '') {
             this.props.postTime({
                 alarm_uuid: this.props.alarm_uuid,
                 time: this.state.value

@@ -74,6 +74,7 @@ alarms.get('/new-alarm', (req, res, next) => {
 })
 
 // CHANGE TIME
+// (USING HEADERS NOW TO DIFRENTIAYE TYPE OF RES)
 
 alarms.route('/:alarm_uuid/time')
     .get((req, res) => {
@@ -89,14 +90,26 @@ alarms.route('/:alarm_uuid/time')
         })
     })
     .put((req, res) => {
+      console.log('time put running')
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
       req.AlarmSvc.updateAlarmTime()
-        .then(time => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+        .then(() => {
+          // new conditional
+          console.log(req.headers)
+          if (req.headers.test) {
+            req.AlarmSvc.getUserAlarms()
+          } else {
+            return res.redirect('/app/accounts/' + req.session.user.email + '/alarms')
+          }
+        })
+        .then(alarms => res.json(alarms))
         .catch(e => {
           console.log(e)
           res.render('error', { errMessage: dbErrTranslator(e) })
         })
     })
+
+// !! TRYING NOT TO USE
 
 alarms.route('/:alarm_uuid/time/api')
   .put((req, res) => {
@@ -195,7 +208,7 @@ alarms.route('/:alarm_uuid')
   })
 
 
-// //  THIS IS STILL IMPORTANT !!!! alarm functionality
+// alarm functionality
 
 alarms.post('/:alarm_uuid/snooze', (req, res) => {
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
