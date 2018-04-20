@@ -1,1 +1,0 @@
-{"version":3,"file":"user-settings.js","sourceRoot":"","sources":["../../../src/public/components/user-settings.tsx"],"names":[],"mappings":";;AAAA,+BAAuC;AAEvC,sBAAsB,KAAK;IACzB,OAAO,CAAC,GAAG,CAAC,KAAK,CAAC,CAAA;IAClB,IAAI,iBAAiB,GAAG,IAAI,CAAC,SAAS,CAAC,KAAK,CAAC,QAAQ,CAAC,CAAA;IACtD,MAAM,CAAC,CACL;QACE,0DAAsB;QACpB,iBAAiB,CACf,CACP,CAAA;AACH,CAAC;AAED,kBAAe,YAAY,CAAC"}

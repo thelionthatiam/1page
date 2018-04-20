@@ -81,6 +81,20 @@ alarms.route('/:alarm_uuid/time')
         res.render('error', { errMessage: error_handling_1.dbErrTranslator(e) });
     });
 });
+alarms.route('/:alarm_uuid/time/api')
+    .put(function (req, res) {
+    console.log('are we even getting here?', req.body);
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.updateAlarmTime()
+        .then(function () { return req.AlarmSvc.getUserAlarms(); })
+        .then(function (alarms) { return res.json(alarms); })
+        .catch(function (e) {
+        res.json({
+            'error': e,
+            'status': "failed"
+        });
+    });
+});
 // CHANGE TITLE
 alarms.route('/:alarm_uuid/title')
     .get(function (req, res) {

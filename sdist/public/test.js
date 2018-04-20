@@ -13,26 +13,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_redux_1 = require("react-redux");
 var actions_1 = require("./actions");
-var Test = function (_a) {
-    var userData = _a.userData, onSubmit = _a.onSubmit;
-    console.log(onSubmit);
-    console.log(userData);
-    return (React.createElement("div", null,
-        React.createElement("form", { onSubmit: onSubmit },
-            React.createElement("input", { type: 'text', className: 'big-form-item' }),
-            React.createElement("button", { type: 'submit' }, "submit")),
-        React.createElement("h1", null, "profile"),
-        React.createElement("p", null, userData.profile.name),
-        React.createElement("p", null, userData.profile.email),
-        React.createElement("p", null, userData.profile.phone),
-        React.createElement("p", null, userData.profile.permission),
-        React.createElement("h1", null, "alarms"),
-        React.createElement("h4", null, userData.alarms[0].title),
-        React.createElement("p", null, userData.alarms[0].time),
-        React.createElement("p", null, userData.alarms[0].user_uuid),
-        React.createElement("p", null, userData.alarms[0].state),
-        React.createElement("p", null, userData.alarms[0].repeat)));
-};
 var NewTest = /** @class */ (function (_super) {
     __extends(NewTest, _super);
     function NewTest(props) {
@@ -49,7 +29,10 @@ var NewTest = /** @class */ (function (_super) {
     };
     NewTest.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        this.props.postName(this.state.value);
+        this.props.postTime({
+            alarm_uuid: this.props.userData.alarms[0].alarm_uuid,
+            time: this.state.value
+        });
     };
     NewTest.prototype.render = function () {
         return (React.createElement("div", null,
@@ -77,7 +60,8 @@ var mapStateToProps = function (state) {
 };
 var mapDispatchToProps = function (dispatch) {
     return {
-        postName: function (v) { return dispatch(actions_1.fetchNewName(v)); }
+        postName: function (v) { return dispatch(actions_1.fetchNewName(v)); },
+        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); }
     };
 };
 var TestApp = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(NewTest);

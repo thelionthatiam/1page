@@ -1,26 +1,38 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Sound from 'react-sound'
-import { fetchAlarms } from './actions'
+import { fetchAlarms, fetchNewTime } from './actions'
+import { AlarmList } from './alarm-list'
 import { connect, Provider } from 'react-redux';
-
 
 class Clock extends React.Component {
     state: { 
         date:Date;
         time: string;
         showControls:boolean;
+        value:string;
     }
     timerID:any; // not sure about this type
-    props:{updateAlarms:any;}
+    props:{
+        alarms: [{
+            title: string;
+            time: string;
+            user_uuid: string;
+            state: string;
+            repeat: string;
+        }],
+        postTime:any;
+    }
 
     constructor(props) {
         super(props)
         this.state = {
             date: new Date(),
             time: '',
-            showControls: false
+            showControls: false,
+            value: ''
         }
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
         this.timerID = setInterval(
@@ -32,17 +44,13 @@ class Clock extends React.Component {
         )
     }
 
-    componentWillMount() {}
-
-
-
     tick() {
         let now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
         for (let i = 0; i < this.props.alarms.length; i++) {
-            if (now === this.props.alarms[i]) {
+            if (now === this.props.alarms[i].time) { // just changed this without checking 4.19.18 13:39
                 this.setState({
                     showControls: true
-                }, () => console.log(this.state))
+                })
             }
         }
 
@@ -50,7 +58,17 @@ class Clock extends React.Component {
             date: new Date()
         });
     }
+    handleChange(event) {
+        this.setState({ value: event.target.value });
+    }
 
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.postTime({
+            alarm_uuid: '8b6c1e7e-d480-4313-a29b-8a9ed7d95a9e',
+            time: this.state.value
+        })
+    }
     render() {
 
         let messages = this.props.alarms.map((alarm) => {
@@ -67,7 +85,12 @@ class Clock extends React.Component {
                 <div className='clock'>
                     <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
                 </div>
-                <div className='alarm-controllers-wrapper'>{messages}</div>                  
+                <div className='alarm-controllers-wrapper'>{messages}</div>
+                <form onSubmit={this.handleSubmit}>
+                    <input type='text' className='big-form-item' value={this.state.value} onChange={this.handleChange} />
+                    <input type="submit" value="Submit" className='button dark-button' />
+                </form>
+                <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime}/>
             </div>
         )
     }
@@ -192,9 +215,6 @@ class MathProblem extends React.Component {
 }
 
 
-    
-
-
 const mapStateToProps = state => {
     // console.log('mapping for alarmlist', state)
     return {
@@ -204,7 +224,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        updateAlarms:() => dispatch(fetchAlarms())
+        updateAlarms:() => dispatch(fetchAlarms()),
+        postTime: (v) => dispatch(fetchNewTime(v))
     }
 }
 

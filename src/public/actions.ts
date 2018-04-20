@@ -33,6 +33,48 @@ export function fetchAlarms() {
 }
 
 // SAMPLE THUNK
+export const REQ_TIME_CHANGE = 'REQ_TIME_CHANGE'
+export const RES_TIME_CHANGE = 'RES_TIME_CHANGE'
+
+export function reqNewTime(v) {
+    console.log( 'req new timr', v)
+    return { type: REQ_TIME_CHANGE }
+}
+
+function recieveNewTime(alarms) {
+    console.log('rec new time', alarms)
+    return {
+        type: RES_TIME_CHANGE,
+        alarms: alarms
+    }
+}
+
+export function fetchNewTime(v) {
+    console.log('fetch new time one:', v)
+    return function(dispatch) {
+        console.log('fetch new time two:', v)
+        dispatch(reqNewTime(v))
+        console.log(reqNewTime)
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
+            method: "post",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(v)
+        })
+            .then((res) => res.json())
+            .then(alarms => {
+                console.log('fetch new time', alarms)
+                dispatch(recieveNewTime(alarms))
+            })
+            .catch(e => console.log(e))
+    }
+}
+
+
+// SAMPLE THUNK
 export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE'
 export const RES_NAME_CHANGE = 'RES_NAME_CHANGE'
 
@@ -68,4 +110,3 @@ export function fetchNewName(v) {
             .catch(e => console.log(e))
     }
 }
-

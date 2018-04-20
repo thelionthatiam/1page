@@ -10,13 +10,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-// import app from './app'
-// import newAccount from './new-account';
-// import login, { Login } from './login'
-// import home from './home'
-// import appReducers from './reducers/app-reducers';
+var app_1 = require("./app");
 var test_1 = require("./test");
-var alarm_clock_1 = require("./alarm-clock");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
@@ -56,6 +51,14 @@ function userDataReducer(state, action) {
             return Object.assign({}, state, {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
+            });
+        case actions_1.REQ_TIME_CHANGE:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_1.RES_TIME_CHANGE:
+            console.log('res time change', action);
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
             });
         case actions_1.REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
@@ -97,12 +100,12 @@ var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithD
 exports.store = store;
 function app() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(test_1.TestApp, null)), document.getElementById('test'));
+        React.createElement(app_1.default, null)), document.getElementById('app'));
 }
 exports.app = app;
-function alarmClock() {
+function test() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(alarm_clock_1.AlarmClock, null)), document.getElementById('alarm'));
+        React.createElement(test_1.TestApp, null)), document.getElementById('test'));
 }
-exports.alarmClock = alarmClock;
+exports.test = test;
 //# sourceMappingURL=index.js.map

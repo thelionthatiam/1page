@@ -1,9 +1,5 @@
-// import app from './app'
-// import newAccount from './new-account';
-// import login, { Login } from './login'
-// import home from './home'
-// import appReducers from './reducers/app-reducers';
-import { TestApp } from './test';
+import App from './app'
+import {TestApp } from './test'
 import { AlarmClock } from './alarm-clock'
 import * as wp from 'web-push';
 import * as React from 'react';
@@ -14,7 +10,9 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './user-data';
 import { 
-    REQ_NAME_CHANGE, 
+    REQ_TIME_CHANGE, 
+    RES_TIME_CHANGE,
+    REQ_NAME_CHANGE,
     RES_NAME_CHANGE,
     REQ_ALARM,
     RES_ALARM,
@@ -53,11 +51,19 @@ function userDataReducer(state = initialState, action) {
                 profile:action.userData.profile,
                 alarms:action.userData.alarms
             })
+        case REQ_TIME_CHANGE:
+            return Object.assign({}, state, { isFetching: true })
+        case RES_TIME_CHANGE:
+            console.log('res time change', action)
+            return Object.assign({}, state, { 
+                isFetching: false,
+                alarms: action.alarms
+            }) 
         case REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true })
         case RES_NAME_CHANGE:
             console.log('res name change', action)
-            return Object.assign({}, state, { 
+            return Object.assign({}, state, {
                 isFetching: false,
                 profile: action.profile
             }) 
@@ -99,18 +105,25 @@ let store = createStore(reducer, composeWithDevTools(
 function app() {
   ReactDOM.render(
     <Provider store = { store }>
+        <App/>
+    </Provider>,
+  document.getElementById('app'));
+}
+
+function test() {
+  ReactDOM.render(
+    <Provider store = { store }>
         <TestApp/>
     </Provider>,
   document.getElementById('test'));
 }
 
+// function alarmClock() {
+//     ReactDOM.render(
+//     <Provider store = { store }>
+//         <AlarmClock/>
+//     </Provider>,
+//     document.getElementById('alarm'))
+// }
 
-function alarmClock() {
-    ReactDOM.render(
-    <Provider store = { store }>
-        <AlarmClock/>
-    </Provider>,
-    document.getElementById('alarm'))
-}
-
-export { app, store, populate, alarmClock };
+export { app, store, populate, test };

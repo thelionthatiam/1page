@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_sound_1 = require("react-sound");
 var actions_1 = require("./actions");
+var alarm_list_1 = require("./alarm-list");
 var react_redux_1 = require("react-redux");
 var Clock = /** @class */ (function (_super) {
     __extends(Clock, _super);
@@ -21,8 +22,11 @@ var Clock = /** @class */ (function (_super) {
         _this.state = {
             date: new Date(),
             time: '',
-            showControls: false
+            showControls: false,
+            value: ''
         };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
     Clock.prototype.componentDidMount = function () {
@@ -32,19 +36,27 @@ var Clock = /** @class */ (function (_super) {
             return _this.tick();
         }, 1000);
     };
-    Clock.prototype.componentWillMount = function () { };
     Clock.prototype.tick = function () {
-        var _this = this;
         var now = this.state.date.toLocaleTimeString('en-US', { hour12: false });
         for (var i = 0; i < this.props.alarms.length; i++) {
-            if (now === this.props.alarms[i]) {
+            if (now === this.props.alarms[i].time) {
                 this.setState({
                     showControls: true
-                }, function () { return console.log(_this.state); });
+                });
             }
         }
         this.setState({
             date: new Date()
+        });
+    };
+    Clock.prototype.handleChange = function (event) {
+        this.setState({ value: event.target.value });
+    };
+    Clock.prototype.handleSubmit = function (event) {
+        event.preventDefault();
+        this.props.postTime({
+            alarm_uuid: '8b6c1e7e-d480-4313-a29b-8a9ed7d95a9e',
+            time: this.state.value
         });
     };
     Clock.prototype.render = function () {
@@ -56,7 +68,11 @@ var Clock = /** @class */ (function (_super) {
         return (React.createElement("div", null,
             React.createElement("div", { className: 'clock' },
                 React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
-            React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages)));
+            React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages),
+            React.createElement("form", { onSubmit: this.handleSubmit },
+                React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
+                React.createElement("input", { type: "submit", value: "Submit", className: 'button dark-button' })),
+            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime })));
     };
     return Clock;
 }(React.Component));
@@ -151,7 +167,8 @@ var mapStateToProps = function (state) {
 };
 var mapDispatchToProps = function (dispatch, ownProps) {
     return {
-        updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); }
+        updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); },
+        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); }
     };
 };
 exports.AlarmClock = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Clock);

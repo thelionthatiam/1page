@@ -29,8 +29,6 @@ alarms.route('/api')
   })
 
 
-
-
 alarms.route('/')
   .post((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
@@ -99,6 +97,24 @@ alarms.route('/:alarm_uuid/time')
           res.render('error', { errMessage: dbErrTranslator(e) })
         })
     })
+
+alarms.route('/:alarm_uuid/time/api')
+  .put((req, res) => {
+    console.log('are we even getting here?', req.body)
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+    req.AlarmSvc.updateAlarmTime()
+      .then(() => req.AlarmSvc.getUserAlarms())
+      .then(alarms => res.json(alarms))
+      .catch(e => {
+        res.json(
+          {
+            'error': e,
+            'status': "failed"
+          }
+        );
+      })
+  })
+  
 
 
 // CHANGE TITLE

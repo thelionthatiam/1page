@@ -166,7 +166,7 @@ let dummy = {
 }
 
 index.get('/test', (req, res) => {
-    res.render('test-page')
+    res.render('test-page');
 })
 
 

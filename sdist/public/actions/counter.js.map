@@ -1,1 +1,0 @@
-{"version":3,"file":"counter.js","sourceRoot":"","sources":["../../../src/public/actions/counter.ts"],"names":[],"mappings":";;AAAa,QAAA,SAAS,GAAG,WAAW,CAAA;AACvB,QAAA,SAAS,GAAG,WAAW,CAAA;AAEvB,QAAA,SAAS,GAAG;IACvB,MAAM,CAAC;QACL,IAAI,EAAE,iBAAS;KAChB,CAAA;AACH,CAAC,CAAA;AAEY,QAAA,SAAS,GAAG;IACvB,MAAM,CAAC;QACL,IAAI,EAAE,iBAAS;KAChB,CAAA;AACH,CAAC,CAAA"}
