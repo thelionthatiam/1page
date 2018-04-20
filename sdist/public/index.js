@@ -46,6 +46,7 @@ var ErrorBoundary = /** @class */ (function (_super) {
 var initialState = {};
 function userDataReducer(state, action) {
     if (state === void 0) { state = initialState; }
+    console.log('ACTION', action.type, action);
     switch (action.type) {
         case user_data_1.POPULATE:
             return Object.assign({}, state, {
@@ -58,7 +59,8 @@ function userDataReducer(state, action) {
             console.log('res time change', action);
             return Object.assign({}, state, {
                 isFetching: false,
-                alarms: action.alarms
+                alarms: action.alarms,
+                error: "dismissed"
             });
         case actions_1.REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
@@ -75,20 +77,17 @@ function userDataReducer(state, action) {
                 isFetching: false,
                 alarms: action.alarms
             });
-        default:
-            return state;
-    }
-}
-function nameReducer(state, action) {
-    if (state === void 0) { state = { newName: 'literally anything' }; }
-    switch (action.type) {
-        // case REQ_NAME_CHANGE:
-        //     return Object.assign({}, state, { isFetching: true })
-        // case RES_NAME_CHANGE:
-        //     return Object.assign({}, state, { 
-        //         isFetching: false,
-        //         newName: action.newName
-        //     })
+        case actions_1.GEN_ERR:
+            console.log('this is the err condition');
+            return Object.assign({}, state, {
+                isFetching: false,
+                error: action.error,
+            });
+        case actions_1.CLEAR_ERR:
+            console.log('THIS IS THE CLEAR ERROR');
+            return Object.assign({}, state, {
+                error: action.error,
+            });
         default:
             return state;
     }

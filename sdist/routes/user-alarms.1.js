@@ -205,4 +205,4 @@ alarms.post('/:alarm_uuid/wake', function (req, res) {
     });
 });
 exports.default = alarms;
-//# sourceMappingURL=user-alarms.js.map
+//# sourceMappingURL=user-alarms.1.js.map

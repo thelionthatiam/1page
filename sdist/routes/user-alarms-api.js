@@ -1,11 +1,21 @@
 "use strict";
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////////////AA///////PPPPP/////IIIIIIII////////////////////////////////////
+//////////AA///AA/////PP//PP///////II///////////////////////////////////////
+//////////AA///AA/////PP//PP///////II///////////////////////////////////////
+//////////AAAAAAA/////PPPP/////////II///////////////////////////////////////
+//////////AA///AA/////PP///////////II///////////////////////////////////////
+//////////AA///AA/////PP////////IIIIIIII////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var error_handling_1 = require("../services/error-handling");
 var logic_alarms_1 = require("../logic/logic-alarms");
-var alarms = express.Router();
+var alarmsAPI = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
-alarms.route('/api')
+alarmsAPI.route('/api')
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
     req.AlarmSvc.getUserAlarms()
@@ -20,7 +30,7 @@ alarms.route('/api')
         });
     });
 });
-alarms.route('/')
+alarmsAPI.route('/')
     .post(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.addAlarm()
@@ -56,44 +66,12 @@ alarms.route('/')
         res.render('error', { error: e });
     });
 });
-alarms.get('/new-alarm', function (req, res, next) {
+alarmsAPI.get('/new-alarm', function (req, res, next) {
     res.render('alarms/new-alarm');
 });
 // CHANGE TIME
-// (USING HEADERS NOW TO DIFRENTIAYE TYPE OF RES)
-alarms.route('/:alarm_uuid/time')
-    .get(function (req, res) {
-    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
-    req.AlarmSvc.getAlarm()
-        .then(function (alarm) {
-        res.render('alarms/time', alarm);
-    })
-        .catch(function (e) {
-        console.log(e);
-        res.render('error', { error: e });
-    });
-})
+alarmsAPI.route('/:alarm_uuid/time/api')
     .put(function (req, res) {
-    console.log('time put running');
-    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
-    req.AlarmSvc.updateAlarmTime()
-        .then(function (alarms) {
-        if (req.headers.test) {
-            return res.json(alarms);
-        }
-        else {
-            return res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-        }
-    })
-        .catch(function (e) {
-        console.log(e);
-        res.render('error', { errMessage: error_handling_1.dbErrTranslator(e) });
-    });
-});
-// !! TRYING NOT TO USE
-alarms.route('/:alarm_uuid/time/api')
-    .put(function (req, res) {
-    console.log('are we even getting here?', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateAlarmTime()
         .then(function () { return req.AlarmSvc.getUserAlarms(); })
@@ -101,12 +79,13 @@ alarms.route('/:alarm_uuid/time/api')
         .catch(function (e) {
         res.json({
             'error': e,
-            'status': "failed"
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
         });
     });
 });
 // CHANGE TITLE
-alarms.route('/:alarm_uuid/title')
+alarmsAPI.route('/:alarm_uuid/title')
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
@@ -128,7 +107,7 @@ alarms.route('/:alarm_uuid/title')
     });
 });
 // TOGGLE ACTIVE
-alarms.route('/:alarm_uuid/active').put(function (req, res) {
+alarmsAPI.route('/:alarm_uuid/active').put(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.toggleActiveAlarm()
         .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
@@ -138,7 +117,7 @@ alarms.route('/:alarm_uuid/active').put(function (req, res) {
     });
 });
 // CHANGE DAYS OF WEEK SECTION
-alarms.route('/:alarm_uuid/days-of-week')
+alarmsAPI.route('/:alarm_uuid/days-of-week')
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
     req.AlarmSvc.getAlarm()
@@ -158,7 +137,7 @@ alarms.route('/:alarm_uuid/days-of-week')
     });
 });
 // ARCHIVE ALARM
-alarms.route('/:alarm_uuid')
+alarmsAPI.route('/:alarm_uuid')
     .delete(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.archiveAlarm()
@@ -171,7 +150,7 @@ alarms.route('/:alarm_uuid')
     });
 });
 // alarm functionality
-alarms.post('/:alarm_uuid/snooze', function (req, res) {
+alarmsAPI.post('/:alarm_uuid/snooze', function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.snooze()
         .then(function (result) {
@@ -182,7 +161,7 @@ alarms.post('/:alarm_uuid/snooze', function (req, res) {
         res.render('error', { errMessage: e });
     });
 });
-alarms.post('/:alarm_uuid/dismiss', function (req, res) {
+alarmsAPI.post('/:alarm_uuid/dismiss', function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.dismiss()
         .then(function (result) {
@@ -193,7 +172,7 @@ alarms.post('/:alarm_uuid/dismiss', function (req, res) {
         res.render('error', { errMessage: e });
     });
 });
-alarms.post('/:alarm_uuid/wake', function (req, res) {
+alarmsAPI.post('/:alarm_uuid/wake', function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.wake()
         .then(function (result) {
@@ -204,5 +183,5 @@ alarms.post('/:alarm_uuid/wake', function (req, res) {
         res.render('error', { errMessage: e });
     });
 });
-exports.default = alarms;
-//# sourceMappingURL=user-alarms.js.map
+exports.default = alarmsAPI;
+//# sourceMappingURL=user-alarms-api.js.map

@@ -101,7 +101,10 @@ export default class AlarmsSvc {
         return TimeHelpers.isMilitaryTime(this.inputs.time) 
             .then(() => {
                 return this.querySvc.updateAlarmTime([this.inputs.time, this.inputs.alarm_uuid, this.user.uuid])
-            })        
+            })
+            .then(() => {
+                return this.getUserAlarms()
+            })
     }
 
     updateAlarmTitle(): Promise<void>  {

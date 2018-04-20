@@ -1,7 +1,21 @@
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////////////AA///////PPPPP/////IIIIIIII////////////////////////////////////
+//////////AA///AA/////PP//PP///////II///////////////////////////////////////
+//////////AA///AA/////PP//PP///////II///////////////////////////////////////
+//////////AAAAAAA/////PPPP/////////II///////////////////////////////////////
+//////////AA///AA/////PP///////////II///////////////////////////////////////
+//////////AA///AA/////PP////////IIIIIIII////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+
+
+
 import * as express from 'express';
 import { dbErrTranslator } from '../services/error-handling';
 import AlarmSvc from '../logic/logic-alarms';
-const alarms = express.Router();
+const alarmsAPI = express.Router();
 
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 import * as url from 'url';
@@ -9,7 +23,7 @@ import * as qs from 'querystring';
 import * as React from 'react';
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 
-alarms.route('/api')
+alarmsAPI.route('/api')
   .get((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, null)
 
@@ -29,7 +43,7 @@ alarms.route('/api')
   })
 
 
-alarms.route('/')
+alarmsAPI.route('/')
   .post((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
@@ -69,48 +83,14 @@ alarms.route('/')
       })
   })
 
-alarms.get('/new-alarm', (req, res, next) => {
+alarmsAPI.get('/new-alarm', (req, res, next) => {
   res.render('alarms/new-alarm')
 })
 
 // CHANGE TIME
-// (USING HEADERS NOW TO DIFRENTIAYE TYPE OF RES)
 
-alarms.route('/:alarm_uuid/time')
-    .get((req, res) => {
-      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)
-
-      req.AlarmSvc.getAlarm()
-        .then(alarm => {
-          res.render('alarms/time', alarm)
-        })
-        .catch(e => {
-          console.log(e)
-          res.render('error', { error:e })
-        })
-    })
-    .put((req, res) => {
-      console.log('time put running')
-      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
-      req.AlarmSvc.updateAlarmTime()
-        .then(alarms => {
-          if (req.headers.test) {
-            return res.json(alarms)
-          } else {
-            return res.redirect('/app/accounts/' + req.session.user.email + '/alarms')
-          }
-        })
-        .catch(e => {
-          console.log(e)
-          res.render('error', { errMessage: dbErrTranslator(e) })
-        })
-    })
-
-// !! TRYING NOT TO USE
-
-alarms.route('/:alarm_uuid/time/api')
+alarmsAPI.route('/:alarm_uuid/time/api')
   .put((req, res) => {
-    console.log('are we even getting here?', req.body)
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
     req.AlarmSvc.updateAlarmTime()
       .then(() => req.AlarmSvc.getUserAlarms())
@@ -119,7 +99,8 @@ alarms.route('/:alarm_uuid/time/api')
         res.json(
           {
             'error': e,
-            'status': "failed"
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
           }
         );
       })
@@ -129,7 +110,7 @@ alarms.route('/:alarm_uuid/time/api')
 
 // CHANGE TITLE
 
-alarms.route('/:alarm_uuid/title')
+alarmsAPI.route('/:alarm_uuid/title')
     .get((req, res) => {
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)
 
@@ -154,7 +135,7 @@ alarms.route('/:alarm_uuid/title')
 
 // TOGGLE ACTIVE
 
-alarms.route('/:alarm_uuid/active').put((req, res) => {
+alarmsAPI.route('/:alarm_uuid/active').put((req, res) => {
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
   req.AlarmSvc.toggleActiveAlarm()
     .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
@@ -167,7 +148,7 @@ alarms.route('/:alarm_uuid/active').put((req, res) => {
 
 // CHANGE DAYS OF WEEK SECTION
 
-alarms.route('/:alarm_uuid/days-of-week')
+alarmsAPI.route('/:alarm_uuid/days-of-week')
     .get((req, res) => {
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)      
       req.AlarmSvc.getAlarm()
@@ -190,7 +171,7 @@ alarms.route('/:alarm_uuid/days-of-week')
 
 // ARCHIVE ALARM
 
-alarms.route('/:alarm_uuid')
+alarmsAPI.route('/:alarm_uuid')
   .delete((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
@@ -207,7 +188,7 @@ alarms.route('/:alarm_uuid')
 
 // alarm functionality
 
-alarms.post('/:alarm_uuid/snooze', (req, res) => {
+alarmsAPI.post('/:alarm_uuid/snooze', (req, res) => {
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
   req.AlarmSvc.snooze()
@@ -220,7 +201,7 @@ alarms.post('/:alarm_uuid/snooze', (req, res) => {
     })
 })
 
-alarms.post('/:alarm_uuid/dismiss', (req, res) => {
+alarmsAPI.post('/:alarm_uuid/dismiss', (req, res) => {
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
   req.AlarmSvc.dismiss()
@@ -233,7 +214,7 @@ alarms.post('/:alarm_uuid/dismiss', (req, res) => {
     })
 })
 
-alarms.post('/:alarm_uuid/wake', (req, res) => {
+alarmsAPI.post('/:alarm_uuid/wake', (req, res) => {
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
 
   req.AlarmSvc.wake()
@@ -247,4 +228,4 @@ alarms.post('/:alarm_uuid/wake', (req, res) => {
 })
 
 
-export default alarms;
+export default alarmsAPI;

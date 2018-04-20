@@ -53,11 +53,19 @@ var Clock = /** @class */ (function (_super) {
                 return React.createElement(AlarmController, { alarm: alarm, key: alarm.id });
             }
         });
+        var error;
+        if (this.props.error && this.props.error !== 'dismissed') {
+            error = React.createElement("div", { className: "test-error" },
+                React.createElement("h1", { className: "textError" }, "Error"),
+                React.createElement("p", { className: "textError one-item-spacing" }, this.props.error),
+                React.createElement("button", { className: 'button dark-button', onClick: this.props.clearError }, "got it"));
+        }
         return (React.createElement("div", null,
             React.createElement("div", { className: 'clock' },
                 React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
             React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages),
-            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime })));
+            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime }),
+            error));
     };
     return Clock;
 }(React.Component));
@@ -145,15 +153,16 @@ var MathProblem = /** @class */ (function (_super) {
     return MathProblem;
 }(React.Component));
 var mapStateToProps = function (state) {
-    // console.log('mapping for alarmlist', state)
     return {
-        alarms: state.userData.alarms
+        alarms: state.userData.alarms,
+        error: state.userData.error
     };
 };
 var mapDispatchToProps = function (dispatch, ownProps) {
     return {
         updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); },
-        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); }
+        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); },
+        clearError: function () { return dispatch(actions_1.clearError()); }
     };
 };
 exports.AlarmClock = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Clock);

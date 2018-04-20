@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Sound from 'react-sound'
-import { fetchAlarms, fetchNewTime } from './actions'
+import { fetchAlarms, fetchNewTime, clearError } from './actions'
 import { AlarmList } from './alarm-list'
 import { connect, Provider } from 'react-redux';
 
@@ -21,6 +21,8 @@ class Clock extends React.Component {
             repeat: string;
         }],
         postTime:any;
+        error:string;
+        clearError:any;
     }
 
     constructor(props) {
@@ -66,6 +68,15 @@ class Clock extends React.Component {
                     />    
             }
         })
+        let error;
+
+        if (this.props.error && this.props.error !== 'dismissed') {
+            error = <div className="test-error">
+                <h1 className="textError">Error</h1>
+                <p className="textError one-item-spacing">{this.props.error}</p>
+                <button className = 'button dark-button' onClick = {this.props.clearError}>got it</button>
+            </div>
+        }
 
         return (
             <div>
@@ -74,6 +85,7 @@ class Clock extends React.Component {
                 </div>
                 <div className='alarm-controllers-wrapper'>{messages}</div>
                 <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime}/>
+                {error}
             </div>
         )
     }
@@ -199,16 +211,17 @@ class MathProblem extends React.Component {
 
 
 const mapStateToProps = state => {
-    // console.log('mapping for alarmlist', state)
     return {
-        alarms: state.userData.alarms
+        alarms: state.userData.alarms,
+        error:state.userData.error
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         updateAlarms:() => dispatch(fetchAlarms()),
-        postTime: (v) => dispatch(fetchNewTime(v))
+        postTime: (v) => dispatch(fetchNewTime(v)),
+        clearError: () => dispatch(clearError())
     }
 }
 

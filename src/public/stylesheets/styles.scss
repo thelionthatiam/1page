@@ -525,6 +525,22 @@ button:focus {
   justify-content: center;
 }
 
+.test-error {
+  @extend %one-item-spacing;
+  position:fixed;
+	bottom:0;
+	right:0;
+	margin:40px;
+	background-color:lightblue;
+	border-radius:4px;
+  flex-direction:column;
+  justify-content: center;
+  display:flex;
+  opacity: 0.8;
+  max-width:40vw;
+  transition:200ms;
+}
+
 
 //  LOGIN PAGE
 .login-img-wrapper {

@@ -12,6 +12,7 @@ var user_organizations_1 = require("./routes/user-organizations");
 var user_settings_1 = require("./routes/user-settings");
 var user_payment_1 = require("./routes/user-payment");
 var push_notifications_1 = require("./routes/push-notifications");
+var user_alarms_api_1 = require("./routes/user-alarms-api");
 var index = express.Router();
 index.use('/', guest_authorization_1.default);
 index.use('/', guest_accounts_1.default);
@@ -33,6 +34,8 @@ index.use('/app/accounts/:email/payment', user_payment_1.default);
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
 // router.use('/accounts/:email', require('./account/transactions'));
+// REACT AND REDUX
+index.use('/app/accounts/:email/alarms', user_alarms_api_1.default);
 // subscribe to push this is working poorly
 index.post('/subscribe', function (req, res) {
     // console.log('this is from the subscribe route', req.body, req.session.user)

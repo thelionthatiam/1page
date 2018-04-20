@@ -16,6 +16,8 @@ import {
     RES_NAME_CHANGE,
     REQ_ALARM,
     RES_ALARM,
+    GEN_ERR,
+    CLEAR_ERR
 } from './actions'
 import { WSAEPFNOSUPPORT } from 'constants';
 
@@ -45,6 +47,7 @@ class ErrorBoundary extends React.Component {
 let initialState = {}
 
 function userDataReducer(state = initialState, action) {
+    console.log('ACTION', action.type, action)
     switch (action.type) {
         case POPULATE:
             return Object.assign({}, state, {
@@ -57,7 +60,8 @@ function userDataReducer(state = initialState, action) {
             console.log('res time change', action)
             return Object.assign({}, state, { 
                 isFetching: false,
-                alarms: action.alarms
+                alarms: action.alarms,
+                error: "dismissed"
             }) 
         case REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true })
@@ -72,26 +76,23 @@ function userDataReducer(state = initialState, action) {
         case RES_ALARM:
             return Object.assign({}, state, {
                 isFetching: false,
-                alarms: action.alarms
-            }) 
+                alarms: action.alarms                
+            })
+        case GEN_ERR:
+            console.log('this is the err condition')
+            return Object.assign({}, state, {
+                isFetching:false,
+                error:action.error,
+            })
+        case CLEAR_ERR:
+            console.log('THIS IS THE CLEAR ERROR')
+            return Object.assign({}, state, {
+                error: action.error,
+            })
         default:
             return state;
     }
 }  
-
-function nameReducer(state = {newName: 'literally anything'}, action) {
-    switch(action.type) {
-        // case REQ_NAME_CHANGE:
-        //     return Object.assign({}, state, { isFetching: true })
-        // case RES_NAME_CHANGE:
-        //     return Object.assign({}, state, { 
-        //         isFetching: false,
-        //         newName: action.newName
-        //     })
-        default:
-            return state
-    }
-}
 
 let reducer = combineReducers({
     userData: userDataReducer

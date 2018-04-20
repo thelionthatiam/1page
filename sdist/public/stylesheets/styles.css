@@ -69,7 +69,7 @@ body {
 .none {
   display: none; }
 
-.one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .formErrorReport {
+.one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .test-error, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
 
@@ -356,6 +356,20 @@ button:focus {
   display: flex;
   flex-direction: column;
   justify-content: center; }
+
+.test-error {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 40px;
+  background-color: lightblue;
+  border-radius: 4px;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  opacity: 0.8;
+  max-width: 40vw;
+  transition: 200ms; }
 
 .login-img-wrapper {
   width: 100vw;

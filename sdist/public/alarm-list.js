@@ -71,7 +71,7 @@ var TimeForm = /** @class */ (function (_super) {
     function TimeForm(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            value: '',
+            value: _this.props.time,
             form: false
         };
         _this.handleChange = _this.handleChange.bind(_this);
@@ -81,20 +81,15 @@ var TimeForm = /** @class */ (function (_super) {
         _this.handleClickOutside = _this.handleClickOutside.bind(_this);
         return _this;
     }
-    TimeForm.prototype.componentDidMount = function () {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    };
-    TimeForm.prototype.componentWillUnmount = function () {
-        document.removeEventListener('mousedown', this.handleClickOutside);
-    };
+    TimeForm.prototype.componentDidMount = function () { document.addEventListener('mousedown', this.handleClickOutside); };
+    TimeForm.prototype.componentWillUnmount = function () { document.removeEventListener('mousedown', this.handleClickOutside); };
     TimeForm.prototype.onBlur = function () {
         this.setState({
-            form: !this.state.form
+            form: !this.state.form,
+            value: this.props.time
         });
     };
-    TimeForm.prototype.setWrapperRef = function (node) {
-        this.wrapperRef = node;
-    };
+    TimeForm.prototype.setWrapperRef = function (node) { this.wrapperRef = node; };
     TimeForm.prototype.handleClickOutside = function (event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
             this.handleSubmit(event);
@@ -102,11 +97,12 @@ var TimeForm = /** @class */ (function (_super) {
         }
     };
     TimeForm.prototype.handleChange = function (event) {
-        this.setState({ value: event.target.value });
+        if (event.target.value !== '') {
+            this.setState({ value: event.target.value });
+        }
     };
     TimeForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        console.log(this.state.value);
         if (this.state.value !== '') {
             this.props.postTime({
                 alarm_uuid: this.props.alarm_uuid,
@@ -121,7 +117,7 @@ var TimeForm = /** @class */ (function (_super) {
                     React.createElement("p", { className: 'alarm-time link-text' }, this.props.time))
             :
                 React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
-                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange, placeholder: this.props.time }))));
+                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange }))));
     };
     return TimeForm;
 }(React.Component));

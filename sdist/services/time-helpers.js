@@ -39,7 +39,7 @@ var TimeHelpers = /** @class */ (function () {
                 resolve(time);
             }
             else {
-                reject('alarms time');
+                reject('Please use military time. You don\'t need seconds or colons if you don\'t want, but you at least need HHMM.');
             }
         });
     };

@@ -109,7 +109,7 @@ class TimeForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: '',
+            value: this.props.time,
             form: false
         };
         this.handleChange = this.handleChange.bind(this);
@@ -119,23 +119,17 @@ class TimeForm extends React.Component {
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleClickOutside);
-    }
+    componentDidMount() {document.addEventListener('mousedown', this.handleClickOutside)}
+    componentWillUnmount() {document.removeEventListener('mousedown', this.handleClickOutside)}
 
     onBlur() {
         this.setState({
-            form:!this.state.form
+            form:!this.state.form,
+            value:this.props.time
         })
     }
 
-    setWrapperRef(node) {
-        this.wrapperRef = node;
-    }
+    setWrapperRef(node) { this.wrapperRef = node }
 
     handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
@@ -145,12 +139,13 @@ class TimeForm extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        if (event.target.value !== '') {
+            this.setState({ value: event.target.value });
+        }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state.value)
         if (this.state.value !== '') {
             this.props.postTime({
                 alarm_uuid: this.props.alarm_uuid,
@@ -166,8 +161,8 @@ class TimeForm extends React.Component {
                 ? 
                 <div onClick={this.onBlur}><p className = 'alarm-time link-text'>{this.props.time}</p></div> 
                 :  
-                <form  ref = {this.setWrapperRef} onSubmit={this.handleSubmit} onBlur={this.onBlur}>
-                    <input type='text' className='link-text-form alarm-time' value={this.state.value} onChange={this.handleChange} placeholder = {this.props.time}/>
+                <form  ref = {this.setWrapperRef} onSubmit = {this.handleSubmit} onBlur = {this.onBlur}>
+                    <input type='text' className='link-text-form alarm-time' value = {this.state.value} onChange={this.handleChange} />
                 </form>}
             </div>
         )

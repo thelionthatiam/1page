@@ -12,7 +12,7 @@ import settings from './routes/user-settings';
 import payment from './routes/user-payment';
 import pusher from './routes/push-notifications';
 
-
+import alarmsAPI from './routes/user-alarms-api';
 const index = express.Router();
 
 
@@ -39,6 +39,11 @@ index.use('/app/accounts/:email/payment', payment);
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
 // router.use('/accounts/:email', require('./account/transactions'));
+
+// REACT AND REDUX
+
+index.use('/app/accounts/:email/alarms', alarmsAPI);
+
 
 
 // subscribe to push this is working poorly

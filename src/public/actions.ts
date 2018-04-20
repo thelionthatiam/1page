@@ -32,9 +32,12 @@ export function fetchAlarms() {
     }
 }
 
-// SAMPLE THUNK
-export const REQ_TIME_CHANGE = 'REQ_TIME_CHANGE'
-export const RES_TIME_CHANGE = 'RES_TIME_CHANGE'
+// TIME CHANGE
+export const REQ_TIME_CHANGE = 'REQ_TIME_CHANGE';
+export const RES_TIME_CHANGE = 'RES_TIME_CHANGE';
+export const GEN_ERR = 'GEN_ERR'
+export const CLEAR_ERR = 'CLEAR_ERR'
+
 
 export function reqNewTime(v) {
     console.log( 'req new timr', v)
@@ -49,35 +52,90 @@ function recieveNewTime(alarms) {
     }
 }
 
+export function clearError() {
+    console.log('clear errors')
+    return {
+        type: CLEAR_ERR,
+        error: 'dismissed',
+        route: 'dismissed'
+    }
+    
+}
+
+function recieveError(error, dispatch) {
+    return {
+        type: GEN_ERR,
+        error: error.error,
+        route: error.route
+    }
+}
+
 export function fetchNewTime(v) {
-    console.log('fetch new time one:', v)
     return function(dispatch) {
-        console.log('fetch new time two:', v)
         dispatch(reqNewTime(v))
         console.log(reqNewTime)
-        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time?_method=PUT", {
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
             method: "post",
             credentials: 'same-origin',
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "test":"true"
             },
             body: JSON.stringify(v)
         })
             .then((res) => res.json())
             .then(alarms => {
                 console.log('fetch new time', alarms)
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
+                console.log('fetch new time', alarms)
                 dispatch(recieveNewTime(alarms))
             })
-            .catch(e => console.log(e))
+            // .catch(e => console.log(e))
     }
 }
 
+// TIME CHANGE
+export const REQ_TITLE_CHANGE = 'REQ_TIME_CHANGE';
+export const RES_TITLE_CHANGE = 'RES_TIME_CHANGE';
+
+export function reqNewTitle(v) {
+    console.log('req new timr', v)
+    return { type: REQ_TIME_CHANGE }
+}
+
+function recieveNewTitle(alarms) {
+    console.log('rec new time', alarms)
+    return {
+        type: RES_TIME_CHANGE,
+        alarms: alarms
+    }
+}
+
+export function fetchNewTitle(v) {
+    return function (dispatch) {
+        dispatch(reqNewTitle(v))
+        console.log(reqNewTitle)
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
+            method: "post",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(v)
+        })
+            .then((res) => res.json())
+            .then(alarms => {
+                dispatch(recieveNewTime(alarms))
+            })
+    }
+}
 
 // SAMPLE THUNK
-export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE'
-export const RES_NAME_CHANGE = 'RES_NAME_CHANGE'
+export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';
+export const RES_NAME_CHANGE = 'RES_NAME_CHANGE';
 
 export function reqNewName(v) {
     return { type: REQ_NAME_CHANGE }
