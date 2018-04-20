@@ -25,8 +25,6 @@ var Clock = /** @class */ (function (_super) {
             showControls: false,
             value: ''
         };
-        _this.handleChange = _this.handleChange.bind(_this);
-        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
     Clock.prototype.componentDidMount = function () {
@@ -49,16 +47,6 @@ var Clock = /** @class */ (function (_super) {
             date: new Date()
         });
     };
-    Clock.prototype.handleChange = function (event) {
-        this.setState({ value: event.target.value });
-    };
-    Clock.prototype.handleSubmit = function (event) {
-        event.preventDefault();
-        this.props.postTime({
-            alarm_uuid: '8b6c1e7e-d480-4313-a29b-8a9ed7d95a9e',
-            time: this.state.value
-        });
-    };
     Clock.prototype.render = function () {
         var messages = this.props.alarms.map(function (alarm) {
             if (alarm.state === 'ringing') {
@@ -69,9 +57,6 @@ var Clock = /** @class */ (function (_super) {
             React.createElement("div", { className: 'clock' },
                 React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
             React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages),
-            React.createElement("form", { onSubmit: this.handleSubmit },
-                React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
-                React.createElement("input", { type: "submit", value: "Submit", className: 'button dark-button' })),
             React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime })));
     };
     return Clock;

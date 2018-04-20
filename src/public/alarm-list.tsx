@@ -13,7 +13,6 @@ export class AlarmList extends React.Component {
 
     }
 
-
     render() {
         let alarms = this.props.alarms.map((alarm) => {
             return <Alarm 
@@ -61,14 +60,13 @@ class Alarm extends React.Component {
                             <p className = "small-text centered-text">tomorrow</p>
                             <input name="alarm_uuid" type="hidden" value= {this.props.alarm.alarm_uuid}/>
                             <input name="title" type='hidden' value={this.props.alarm.title}/>
-                        </form>
-                        <TimeForm alarm_uuid = {this.props.alarm.alarm_uuid} postTime = {this.props.postTime}/>
+                        </form>                        
                         <div className='alarm-time-row'>
-                            <form action={timeAction} method='get'>
-                                <input type='submit' className="alarm-time link-text" value={this.props.alarm.time} />
-                                <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid} />
-                                <input name="time" type='hidden' value={this.props.alarm.time} />
-                            </form>
+                            <TimeForm
+                                alarm_uuid={this.props.alarm.alarm_uuid}
+                                time={this.props.alarm.time}
+                                postTime={this.props.postTime}
+                            />
                             <form action='/app/accounts/{user_uuid}/alarms/{alarm_uuid}/active?_method=PUT' method='POST'>
                                 {activeButton}
                                 <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid} />
@@ -98,22 +96,53 @@ class Alarm extends React.Component {
 class TimeForm extends React.Component {
     state: {
         value: string;
+        form: boolean;
     }
     props: {
         postTime: any;
         alarm_uuid:string;
+        time:string;
     }
     alarm_uuid: string;
+    wrapperRef: Node;
 
     constructor(props) {
         super(props)
         this.state = {
-            value: ''
-        }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
+            value: '',
+            form: false
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    onBlur() {
+        this.setState({
+            form:!this.state.form
+        })
+    }
+
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+    }
+
+    handleClickOutside(event) {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.handleSubmit(event)
+            this.onBlur()
+        }
+    }
 
     handleChange(event) {
         this.setState({ value: event.target.value });
@@ -121,41 +150,34 @@ class TimeForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        console.log('handlesubmit function', this.props.postTime)
-        console.log(this.props.postTime)
-        this.props.postTime({
-            alarm_uuid: this.props.alarm_uuid,
-            time: this.state.value
-        }) // is this the only difference?
-
+        console.log(this.state.value)
+        if (this.state.value === '') {
+            console.log('this is teh new conditional', this.state.value)
+        } else {
+            this.props.postTime({
+                alarm_uuid: this.props.alarm_uuid,
+                time: this.state.value
+            }) // is this the only difference?    
+        }
+        
     }
 
     render() {
-        console.log('render of time form', this.props)
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <input type='text' className='big-form-item' value={this.state.value} onChange={this.handleChange} />
-                    <input type="submit" value="submit new time" className='button dark-button' />
-                </form>
+                
+                
+                {!this.state.form 
+                ? 
+                <div onClick={this.onBlur}><p className = 'alarm-time link-text'>{this.props.time}</p></div> 
+                :  
+                <form  ref = {this.setWrapperRef} onSubmit={this.handleSubmit} onBlur={this.onBlur}>
+                    <input type='text' className='link-text-form alarm-time' value={this.state.value} onChange={this.handleChange} placeholder = {this.props.time}/>
+                </form>}
+                
+                
+                
             </div>
         )
     }
 }
-
-// const mapStateToProps = state => {
-//     return {
-//         userData: state.userData
-//     }
-// }
-
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         postTime: (v) => dispatch(fetchNewTime(v))
-//     }
-// }
-
-// const TimeFormCont = connect(
-//     // mapStateToProps,
-//     mapDispatchToProps
-// )(TimeForm)

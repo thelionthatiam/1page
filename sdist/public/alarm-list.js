@@ -51,12 +51,8 @@ var Alarm = /** @class */ (function (_super) {
                         React.createElement("p", { className: "small-text centered-text" }, "tomorrow"),
                         React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid }),
                         React.createElement("input", { name: "title", type: 'hidden', value: this.props.alarm.title })),
-                    React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, postTime: this.props.postTime }),
                     React.createElement("div", { className: 'alarm-time-row' },
-                        React.createElement("form", { action: timeAction, method: 'get' },
-                            React.createElement("input", { type: 'submit', className: "alarm-time link-text", value: this.props.alarm.time }),
-                            React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid }),
-                            React.createElement("input", { name: "time", type: 'hidden', value: this.props.alarm.time })),
+                        React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, time: this.props.alarm.time, postTime: this.props.postTime }),
                         React.createElement("form", { action: '/app/accounts/{user_uuid}/alarms/{alarm_uuid}/active?_method=PUT', method: 'POST' },
                             activeButton,
                             React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid }),
@@ -75,45 +71,61 @@ var TimeForm = /** @class */ (function (_super) {
     function TimeForm(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            value: ''
+            value: '',
+            form: false
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.onBlur = _this.onBlur.bind(_this);
+        _this.setWrapperRef = _this.setWrapperRef.bind(_this);
+        _this.handleClickOutside = _this.handleClickOutside.bind(_this);
         return _this;
     }
+    TimeForm.prototype.componentDidMount = function () {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    };
+    TimeForm.prototype.componentWillUnmount = function () {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    };
+    TimeForm.prototype.onBlur = function () {
+        this.setState({
+            form: !this.state.form
+        });
+    };
+    TimeForm.prototype.setWrapperRef = function (node) {
+        this.wrapperRef = node;
+    };
+    TimeForm.prototype.handleClickOutside = function (event) {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.handleSubmit(event);
+            this.onBlur();
+        }
+    };
     TimeForm.prototype.handleChange = function (event) {
         this.setState({ value: event.target.value });
     };
     TimeForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        console.log('handlesubmit function', this.props.postTime);
-        console.log(this.props.postTime);
-        this.props.postTime({
-            alarm_uuid: this.props.alarm_uuid,
-            time: this.state.value
-        }); // is this the only difference?
+        console.log(this.state.value);
+        if (this.state.value === '') {
+            console.log('this is teh new conditional', this.state.value);
+        }
+        else {
+            this.props.postTime({
+                alarm_uuid: this.props.alarm_uuid,
+                time: this.state.value
+            }); // is this the only difference?    
+        }
     };
     TimeForm.prototype.render = function () {
-        console.log('render of time form', this.props);
-        return (React.createElement("div", null,
-            React.createElement("form", { onSubmit: this.handleSubmit },
-                React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
-                React.createElement("input", { type: "submit", value: "submit new time", className: 'button dark-button' }))));
+        return (React.createElement("div", null, !this.state.form
+            ?
+                React.createElement("div", { onClick: this.onBlur },
+                    React.createElement("p", { className: 'alarm-time link-text' }, this.props.time))
+            :
+                React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
+                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange, placeholder: this.props.time }))));
     };
     return TimeForm;
 }(React.Component));
-// const mapStateToProps = state => {
-//     return {
-//         userData: state.userData
-//     }
-// }
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         postTime: (v) => dispatch(fetchNewTime(v))
-//     }
-// }
-// const TimeFormCont = connect(
-//     // mapStateToProps,
-//     mapDispatchToProps
-// )(TimeForm)
 //# sourceMappingURL=alarm-list.js.map

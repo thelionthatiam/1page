@@ -46,6 +46,13 @@ li {
   border-radius: 4px;
   transition: 100ms; }
 
+.link-text-form {
+  padding: 2px;
+  margin: 2px;
+  transition: 100ms;
+  background: lightGrey;
+  border-radius: 4px; }
+
 body {
   border: 0;
   margin: 0; }
@@ -101,7 +108,8 @@ label {
 
 form {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+  margin: 0; }
 
 .form-row {
   flex-direction: row; }

@@ -31,8 +31,6 @@ class Clock extends React.Component {
             showControls: false,
             value: ''
         }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount() {
         this.timerID = setInterval(
@@ -58,17 +56,6 @@ class Clock extends React.Component {
             date: new Date()
         });
     }
-    handleChange(event) {
-        this.setState({ value: event.target.value });
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.props.postTime({
-            alarm_uuid: '8b6c1e7e-d480-4313-a29b-8a9ed7d95a9e',
-            time: this.state.value
-        })
-    }
     render() {
 
         let messages = this.props.alarms.map((alarm) => {
@@ -86,10 +73,6 @@ class Clock extends React.Component {
                     <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
                 </div>
                 <div className='alarm-controllers-wrapper'>{messages}</div>
-                <form onSubmit={this.handleSubmit}>
-                    <input type='text' className='big-form-item' value={this.state.value} onChange={this.handleChange} />
-                    <input type="submit" value="Submit" className='button dark-button' />
-                </form>
                 <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime}/>
             </div>
         )
