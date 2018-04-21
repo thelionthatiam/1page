@@ -80,14 +80,11 @@ function fetchNewTime(v) {
         })
             .then(function (res) { return res.json(); })
             .then(function (alarms) {
-            console.log('fetch new time', alarms);
             if (alarms.status === 'failed') {
                 return dispatch(recieveError(alarms, dispatch));
             }
-            console.log('fetch new time', alarms);
             dispatch(recieveNewTime(alarms));
         });
-        // .catch(e => console.log(e))
     };
 }
 exports.fetchNewTime = fetchNewTime;
