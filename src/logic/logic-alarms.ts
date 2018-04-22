@@ -83,7 +83,9 @@ export default class AlarmsSvc {
     getUserAlarms():Promise<Alarm[]> {
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(alarms => {
+                console.log('is this runing', alarms)
                 let currentAlarms = this.removeArchived(alarms)
+                console.log('current alarms onlh', currentAlarms)
                 let sortedAlarms = currentAlarms.sort(TimeHelpers.orderTimes)
                 return this.addTodayOrTomorrowIndicator(sortedAlarms);
             })

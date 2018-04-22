@@ -2,6 +2,9 @@ import QuerySvc from '../data-access/queries';
 import * as R from '../services/value-objects';
 import * as V from '../services/validation';
 
+import AlarmSvc from './logic-alarms';
+
+
 export class SessionCheckSvc {
     querySvc : QuerySvc;
     user : R.UserSession;
@@ -20,9 +23,29 @@ export class SessionCheckSvc {
     }
 }
 
+// this is also terrible
+
+interface Alarm {
+    user_uuid: V.UUID;
+    title: string;
+    active: boolean;
+    alarm_uuid: V.UUID;
+    state: string;
+    time: string;
+    triggered: boolean;
+    mon: boolean;
+    tues: boolean;
+    wed: boolean;
+    thur: boolean;
+    fri: boolean;
+    sat: boolean;
+    sun: boolean;
+}
+
+
 // THIS IS OLD AND TERRIBLE
 interface Everything {
-    alarms?: R.AlarmDB[];
+    alarms?: Alarm[];
     formsOfPayment?: FormsOfPayment[]; // still require real validation
     settings?: Settings[]; // still require real validation
     orgs?: Orgs[]; // still require real validation
@@ -40,22 +63,20 @@ export class RenderStateSvc {
         this.user = {};
     }
     getEverything() {
-        // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
         return this.querySvc.getUser([this.sessionUser.uuid])
             .then(profile => {
                 this.user.profile = profile
-                // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
-                return this.querySvc.getUserAlarms([this.sessionUser.uuid])
+
+                let alarmSvc = new AlarmSvc(this.querySvc, this.sessionUser, null)
+                return alarmSvc.getUserAlarms()
             })
             .then(alarms => {
+                console.log(alarms)
                 this.user.alarms = alarms
-                // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
                 return this.user
             })
     }
-
 }
-
 
             // NOT CURRENTLY USING THIS CONCEPT
             // .then(result => {

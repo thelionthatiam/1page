@@ -36,7 +36,7 @@ alarmsAPI.route('/api')
         res.json(
           {
             'error': err,
-            'status':"failed"
+            'status': "failed"
           }
         );
       });
