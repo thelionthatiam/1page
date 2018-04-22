@@ -34,12 +34,20 @@ var TimeHelpers = /** @class */ (function () {
     };
     TimeHelpers.isMilitaryTime = function (time) {
         return new Promise(function (resolve, reject) {
+            var noLeadingZeros = /^(\d):?([0-5]\d):?([0-5]\d)?$/;
             var militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
-            if (militaryRe.test(time)) {
+            if (noLeadingZeros.test(time)) {
+                console.log('leading zeros case', time);
+                var timeWithLeadingZeros = '0' + time;
+                console.log('leading zeros case', timeWithLeadingZeros);
+                resolve(timeWithLeadingZeros);
+            }
+            else if (militaryRe.test(time)) {
+                console.log('time with leading zeros', time);
                 resolve(time);
             }
             else {
-                reject('Please use military time. You don\'t need seconds or colons if you don\'t want, but you at least need HHMM.');
+                reject('Please use military time. Now you can have leading zeros!');
             }
         });
     };

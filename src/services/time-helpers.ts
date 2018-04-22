@@ -36,11 +36,18 @@ export default class TimeHelpers {
     static isMilitaryTime(time) {
         return new Promise(
             (resolve, reject) => {
+                let noLeadingZeros = /^(\d):?([0-5]\d):?([0-5]\d)?$/;
                 let militaryRe = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/;
-                if (militaryRe.test(time)) {
+                if (noLeadingZeros.test(time)) {
+                    console.log('leading zeros case', time)
+                    let timeWithLeadingZeros = '0' + time
+                    console.log('leading zeros case', timeWithLeadingZeros)
+                    resolve(timeWithLeadingZeros)
+                } else if (militaryRe.test(time)) {
+                    console.log('time with leading zeros', time)
                     resolve(time)
                 } else {
-                    reject('Please use military time. You don\'t need seconds or colons if you don\'t want, but you at least need HHMM.')
+                    reject('Please use military time. Now you can have leading zeros!')
                 }
             }
         )

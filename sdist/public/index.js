@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 var test_1 = require("./test");
+var simple_clock_1 = require("./simple-clock");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
@@ -46,7 +47,7 @@ var ErrorBoundary = /** @class */ (function (_super) {
 var initialState = {};
 function userDataReducer(state, action) {
     if (state === void 0) { state = initialState; }
-    console.log('ACTION', action.type, action);
+    // console.log('ACTION', action.type, action)
     switch (action.type) {
         case user_data_1.POPULATE:
             return Object.assign({}, state, {
@@ -56,7 +57,7 @@ function userDataReducer(state, action) {
         case actions_1.REQ_TIME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
         case actions_1.RES_TIME_CHANGE:
-            console.log('res time change', action);
+            // console.log('res time change', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 alarms: action.alarms,
@@ -65,7 +66,7 @@ function userDataReducer(state, action) {
         case actions_1.REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
         case actions_1.RES_NAME_CHANGE:
-            console.log('res name change', action);
+            // console.log('res name change', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 profile: action.profile
@@ -78,13 +79,13 @@ function userDataReducer(state, action) {
                 alarms: action.alarms
             });
         case actions_1.GEN_ERR:
-            console.log('this is the err condition');
+            // console.log('this is the err condition')
             return Object.assign({}, state, {
                 isFetching: false,
                 error: action.error,
             });
         case actions_1.CLEAR_ERR:
-            console.log('THIS IS THE CLEAR ERROR');
+            // console.log('THIS IS THE CLEAR ERROR')
             return Object.assign({}, state, {
                 error: action.error,
             });
@@ -107,4 +108,8 @@ function test() {
         React.createElement(test_1.TestApp, null)), document.getElementById('test'));
 }
 exports.test = test;
+function alarmClock() {
+    ReactDOM.render(React.createElement(simple_clock_1.SimpleClock, null), document.getElementById('simpleClock'));
+}
+exports.alarmClock = alarmClock;
 //# sourceMappingURL=index.js.map
