@@ -6,9 +6,11 @@
                 <input type='text'>
             </div>
             <ul class="org-filter-list">
+                 {{#if loggedIn}}
                 <a class='a' href='/app/accounts/{{email}}/orgs'>
-                  <li class="org-filter-text">current</li>
+                    <li class="org-filter-text">current</li>
                 </a>
+                {{/if}}
                 {{!-- <li class = "org-filter-text">saved</li>
                 <li class = "org-filter-text">explore</li> --}}
                 <a class = 'a' href = '/app/orgs/all'>

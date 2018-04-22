@@ -1,6 +1,7 @@
 import App from './app'
 import {TestApp } from './test'
 import { AlarmClock } from './alarm-clock'
+import { SimpleClock } from './simple-clock'
 import * as wp from 'web-push';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -47,7 +48,7 @@ class ErrorBoundary extends React.Component {
 let initialState = {}
 
 function userDataReducer(state = initialState, action) {
-    console.log('ACTION', action.type, action)
+    // console.log('ACTION', action.type, action)
     switch (action.type) {
         case POPULATE:
             return Object.assign({}, state, {
@@ -57,7 +58,7 @@ function userDataReducer(state = initialState, action) {
         case REQ_TIME_CHANGE:
             return Object.assign({}, state, { isFetching: true })
         case RES_TIME_CHANGE:
-            console.log('res time change', action)
+            // console.log('res time change', action)
             return Object.assign({}, state, { 
                 isFetching: false,
                 alarms: action.alarms,
@@ -66,7 +67,7 @@ function userDataReducer(state = initialState, action) {
         case REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true })
         case RES_NAME_CHANGE:
-            console.log('res name change', action)
+            // console.log('res name change', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 profile: action.profile
@@ -79,13 +80,13 @@ function userDataReducer(state = initialState, action) {
                 alarms: action.alarms                
             })
         case GEN_ERR:
-            console.log('this is the err condition')
+            // console.log('this is the err condition')
             return Object.assign({}, state, {
                 isFetching:false,
                 error:action.error,
             })
         case CLEAR_ERR:
-            console.log('THIS IS THE CLEAR ERROR')
+            // console.log('THIS IS THE CLEAR ERROR')
             return Object.assign({}, state, {
                 error: action.error,
             })
@@ -119,12 +120,10 @@ function test() {
   document.getElementById('test'));
 }
 
-// function alarmClock() {
-//     ReactDOM.render(
-//     <Provider store = { store }>
-//         <AlarmClock/>
-//     </Provider>,
-//     document.getElementById('alarm'))
-// }
+function alarmClock() {
+    ReactDOM.render(
+        <SimpleClock/>,
+    document.getElementById('simpleClock'))
+}
 
-export { app, store, populate, test };
+export { app, store, populate, test, alarmClock };

@@ -14,6 +14,7 @@ export class AlarmList extends React.Component {
     }
 
     render() {
+        console.log('Alarm List', this.props)
         let alarms = this.props.alarms.map((alarm) => {
             return <Alarm 
                     alarm = {alarm}
@@ -21,9 +22,15 @@ export class AlarmList extends React.Component {
                     postTime = {this.props.postTime}
                 />
         })
+
+
+
         return (
             <div>
                 <h1>{alarms}</h1>
+                <form action={"/app/accounts/" + this.props.alarms[0].user_uuid + "/alarms/new-alarm"} method="GET">
+                    <button className="button dark-button"> add alarm </button>
+                </form>
             </div>
         )
     }
@@ -41,8 +48,7 @@ class Alarm extends React.Component {
     }
 
     render() {
-        let titleAction = "/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/title";
-        let timeAction = "/app/accounts/" + this.props.alarm.time + "/alarms/" + this.props.alarm.alarm_uuid + "/title";
+        console.log('Alarm', this.props)
         let activeButton;
         if (this.props.alarm.active) {
             activeButton = <button type='submit' className="button dark-button">disable</button>
@@ -54,7 +60,7 @@ class Alarm extends React.Component {
             <div className="column contentWrapper">
                 <div className="alarm-row">
                     <div className = 'time-wrapper'>
-                        <form className = 'form-row' action={titleAction} method='get'>
+                        <form className='form-row' action={"/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/title"} method='get'>
                             <input type='submit' className = "alarm-title small-text link-text" value={this.props.alarm.title}/>
                             <p className="small-text centered-text">•</p>
                             <p className = "small-text centered-text">tomorrow</p>
@@ -67,7 +73,7 @@ class Alarm extends React.Component {
                                 time={this.props.alarm.time}
                                 postTime={this.props.postTime}
                             />
-                            <form action='/app/accounts/{user_uuid}/alarms/{alarm_uuid}/active?_method=PUT' method='POST'>
+                            <form action={"/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/active?_method=PUT"} method='POST'>
                                 {activeButton}
                                 <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid} />
                                 <input name="active" type='hidden' value={this.props.alarm.active} />

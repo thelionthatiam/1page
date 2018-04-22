@@ -46,7 +46,6 @@ class Spa extends React.Component {
                                     <h1 className='app-menu-title'>s.y.l.</h1>
                                 </div>
                             </a>
-                            <li className='app-menu-li' id='logout'>{this.props.userData.profile.permission}</li>
 
                             <li className='app-menu-li'>
                                 <img className='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
@@ -110,7 +109,6 @@ class Spa extends React.Component {
                                     <h1 className='app-menu-title'>s.y.l.</h1>
                                 </div>
                             </a>
-                            <li className='app-menu-li' id='logout'>{this.props.userData.profile.permission}</li>
 
                             <li className='app-menu-li'>
                                 <img className='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
@@ -121,8 +119,29 @@ class Spa extends React.Component {
                                 <img className='formIcon fadeIn' src='/icons/white/squares.svg' />
                                 <Link to={"/app/accounts/" + this.props.userData.profile.email + "/orgs"} className='app-menu-text '>test</Link>
                             </li>
-
-                            
+                            {/* hotfix for working app */}
+                            <li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/squares.svg' />
+                                <a href="/app/accounts/{{email}}/orgs" className='app-menu-text '>organizations</a>
+                            </li>
+                            {/* hotfix for working app */}
+                            <li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/user-fem.svg' />
+                                <a href="/app/accounts/{{email}}" className='app-menu-text'>profile</a>
+                            </li>
+                            {/* hotfix for working app */}
+                            <li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/mixer.svg' />
+                                <a href="/app/accounts/{{email}}/settings" className='app-menu-text'>settings</a>
+                            </li>
+                            {/* hotfix for working app */}
+                            <li className='app-menu-li' id='logout'>
+                                <img className='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                                <form action="/log-out" method="post">
+                                    <button type="submit" className="app-menu-text">logout</button>
+                                </form>
+                            </li>
+                            <li className='app-menu-li' id='logout'>{this.props.userData.profile.permission}</li>
                             {/*<li className='app-menu-li'>
                                 <img className='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
                                 <Link to={"/app/accounts/" + this.props.profile.email + "/insights"} className='app-menu-text'>insights</Link>
