@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var logic_alarms_1 = require("./logic-alarms");
 var SessionCheckSvc = /** @class */ (function () {
     function SessionCheckSvc(querySvc, user) {
         this.querySvc = querySvc;
@@ -24,16 +25,15 @@ var RenderStateSvc = /** @class */ (function () {
     }
     RenderStateSvc.prototype.getEverything = function () {
         var _this = this;
-        // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%start get everything', this)
         return this.querySvc.getUser([this.sessionUser.uuid])
             .then(function (profile) {
             _this.user.profile = profile;
-            // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%one', this.user)
-            return _this.querySvc.getUserAlarms([_this.sessionUser.uuid]);
+            var alarmSvc = new logic_alarms_1.default(_this.querySvc, _this.sessionUser, null);
+            return alarmSvc.getUserAlarms();
         })
             .then(function (alarms) {
+            console.log(alarms);
             _this.user.alarms = alarms;
-            // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%five', this.user)
             return _this.user;
         });
     };

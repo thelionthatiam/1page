@@ -42,7 +42,9 @@ var AlarmsSvc = /** @class */ (function () {
         var _this = this;
         return this.querySvc.getUserAlarms([this.user.uuid])
             .then(function (alarms) {
+            console.log('is this runing', alarms);
             var currentAlarms = _this.removeArchived(alarms);
+            console.log('current alarms onlh', currentAlarms);
             var sortedAlarms = currentAlarms.sort(time_helpers_1.default.orderTimes);
             return _this.addTodayOrTomorrowIndicator(sortedAlarms);
         });
