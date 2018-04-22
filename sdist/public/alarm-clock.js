@@ -17,6 +17,7 @@ var alarm_list_1 = require("./alarm-list");
 var react_redux_1 = require("react-redux");
 var Clock = /** @class */ (function (_super) {
     __extends(Clock, _super);
+    //
     function Clock(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {

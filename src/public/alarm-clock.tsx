@@ -24,7 +24,7 @@ class Clock extends React.Component {
         error:string;
         clearError:any;
     }
-
+//
     constructor(props) {
         super(props)
         this.state = {

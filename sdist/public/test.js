@@ -29,27 +29,26 @@ var NewTest = /** @class */ (function (_super) {
     };
     NewTest.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        this.props.postTime({
-            alarm_uuid: this.props.userData.alarms[0].alarm_uuid,
-            time: this.state.value
-        });
+        this.props.postName(this.state.value);
     };
     NewTest.prototype.render = function () {
-        return (React.createElement("div", null,
-            React.createElement("form", { onSubmit: this.handleSubmit },
-                React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
-                React.createElement("input", { type: "submit", value: "Submit", className: 'button dark-button' })),
-            React.createElement("h1", null, "profile"),
-            React.createElement("p", null, this.props.userData.profile.name),
-            React.createElement("p", null, this.props.userData.profile.email),
-            React.createElement("p", null, this.props.userData.profile.phone),
-            React.createElement("p", null, this.props.userData.profile.permission),
-            React.createElement("h1", null, "alarms"),
-            React.createElement("h4", null, this.props.userData.alarms[0].title),
-            React.createElement("p", null, this.props.userData.alarms[0].time),
-            React.createElement("p", null, this.props.userData.alarms[0].user_uuid),
-            React.createElement("p", null, this.props.userData.alarms[0].state),
-            React.createElement("p", null, this.props.userData.alarms[0].repeat)));
+        return (React.createElement("div", { className: 'app-content' },
+            React.createElement("div", { className: 'profile-wrapper full-width' },
+                React.createElement("form", { onSubmit: this.handleSubmit },
+                    React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
+                    React.createElement("input", { type: "submit", value: "Submit", className: 'button dark-button' })),
+                React.createElement("div", null,
+                    React.createElement("h1", null, "profile"),
+                    React.createElement("p", null, this.props.userData.profile.name),
+                    React.createElement("p", null, this.props.userData.profile.email),
+                    React.createElement("p", null, this.props.userData.profile.phone),
+                    React.createElement("p", null, this.props.userData.profile.permission),
+                    React.createElement("h1", null, "alarms"),
+                    React.createElement("h4", null, this.props.userData.alarms[0].title),
+                    React.createElement("p", null, this.props.userData.alarms[0].time),
+                    React.createElement("p", null, this.props.userData.alarms[0].user_uuid),
+                    React.createElement("p", null, this.props.userData.alarms[0].state),
+                    React.createElement("p", null, this.props.userData.alarms[0].repeat)))));
     };
     return NewTest;
 }(React.Component));

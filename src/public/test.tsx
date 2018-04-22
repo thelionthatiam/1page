@@ -46,32 +46,31 @@ class NewTest extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.postTime({
-            alarm_uuid: this.props.userData.alarms[0].alarm_uuid,
-            time: this.state.value
-        })
-        
+        this.props.postName(this.state.value);
     }
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.handleSubmit}>
-                    <input type='text' className = 'big-form-item' value = {this.state.value} onChange = {this.handleChange} />
-                    <input type="submit" value="Submit" className = 'button dark-button' />
-                </form>
-                
-                <h1>profile</h1>
-                <p>{this.props.userData.profile.name}</p>
-                <p>{this.props.userData.profile.email}</p>
-                <p>{this.props.userData.profile.phone}</p>
-                <p>{this.props.userData.profile.permission}</p>
-                <h1>alarms</h1>
-                <h4>{this.props.userData.alarms[0].title}</h4>
-                <p>{this.props.userData.alarms[0].time}</p>
-                <p>{this.props.userData.alarms[0].user_uuid}</p>
-                <p>{this.props.userData.alarms[0].state}</p>
-                <p>{this.props.userData.alarms[0].repeat}</p>
+            <div className = 'app-content'>
+                <div className = 'profile-wrapper full-width'>
+                    <form onSubmit={this.handleSubmit}>
+                        <input type='text' className = 'big-form-item' value = {this.state.value} onChange = {this.handleChange} />
+                        <input type="submit" value="Submit" className = 'button dark-button' />
+                    </form>
+                    <div>
+                        <h1>profile</h1>
+                        <p>{this.props.userData.profile.name}</p>
+                        <p>{this.props.userData.profile.email}</p>
+                        <p>{this.props.userData.profile.phone}</p>
+                        <p>{this.props.userData.profile.permission}</p>
+                        <h1>alarms</h1>
+                        <h4>{this.props.userData.alarms[0].title}</h4>
+                        <p>{this.props.userData.alarms[0].time}</p>
+                        <p>{this.props.userData.alarms[0].user_uuid}</p>
+                        <p>{this.props.userData.alarms[0].state}</p>
+                        <p>{this.props.userData.alarms[0].repeat}</p>
+                    </div>
+                </div>
             </div>
         )
     }    
