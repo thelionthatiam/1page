@@ -50,7 +50,7 @@ var Alarm = /** @class */ (function (_super) {
                     React.createElement("form", { className: 'form-row', action: "/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/title", method: 'get' },
                         React.createElement("input", { type: 'submit', className: "alarm-title small-text link-text", value: this.props.alarm.title }),
                         React.createElement("p", { className: "small-text centered-text" }, "\u2022"),
-                        React.createElement("p", { className: "small-text centered-text" }, "tomorrow"),
+                        React.createElement("p", { className: "small-text centered-text" }, this.props.alarm.nextAlarm),
                         React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid }),
                         React.createElement("input", { name: "title", type: 'hidden', value: this.props.alarm.title })),
                     React.createElement("div", { className: 'alarm-time-row' },
