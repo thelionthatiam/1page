@@ -56,8 +56,9 @@ var AlarmsSvc = /** @class */ (function () {
     AlarmsSvc.prototype.updateAlarmTime = function () {
         var _this = this;
         return time_helpers_1.default.isMilitaryTime(this.inputs.time)
-            .then(function () {
-            return _this.querySvc.updateAlarmTime([_this.inputs.time, _this.inputs.alarm_uuid, _this.user.uuid]);
+            .then(function (time) {
+            console.log('update alarm time', time);
+            return _this.querySvc.updateAlarmTime([time, _this.inputs.alarm_uuid, _this.user.uuid]);
         })
             .then(function () {
             return _this.getUserAlarms();
