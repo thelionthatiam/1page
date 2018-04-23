@@ -131,7 +131,6 @@ router.route('/accounts/:user_uuid/contact')
 ////////////
 router.route('/accounts/:user_uuid/alarms/:alarm_uuid')
     .get(function (req, res) {
-    console.log('ALARM ACCOUNT ROUTE');
     var user_uuid = req.query.user_uuid;
     var alarm_uuid = req.query.alarm_uuid;
     var permission = false;

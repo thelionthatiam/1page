@@ -69,7 +69,10 @@ var AlarmsSvc = /** @class */ (function () {
     };
     AlarmsSvc.prototype.toggleActiveAlarm = function () {
         var state;
-        this.inputs.active === "true" ? state = false : state = true;
+        console.log('TOGGLE ACTIVE ALARM LOGIC', this.inputs);
+        this.inputs.active === "true" || this.inputs.active ? state = false : state = true;
+        console.log(this.inputs.active, state);
+        console.log(typeof this.inputs.active, typeof state);
         return this.querySvc.updateAlarmToggleActive([state, this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.weekObjToQueryValues = function () {

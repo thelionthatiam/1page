@@ -22,6 +22,7 @@ var redux_1 = require("redux");
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
 var actions_1 = require("./actions");
+var actions_alarm_1 = require("./actions-alarm");
 // wrap around erroring component 
 var ErrorBoundary = /** @class */ (function (_super) {
     __extends(ErrorBoundary, _super);
@@ -47,7 +48,6 @@ var ErrorBoundary = /** @class */ (function (_super) {
 var initialState = {};
 function userDataReducer(state, action) {
     if (state === void 0) { state = initialState; }
-    // console.log('ACTION', action.type, action)
     switch (action.type) {
         case user_data_1.POPULATE:
             return Object.assign({}, state, {
@@ -57,7 +57,6 @@ function userDataReducer(state, action) {
         case actions_1.REQ_TIME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
         case actions_1.RES_TIME_CHANGE:
-            // console.log('res time change', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 alarms: action.alarms,
@@ -66,7 +65,6 @@ function userDataReducer(state, action) {
         case actions_1.REQ_NAME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
         case actions_1.RES_NAME_CHANGE:
-            // console.log('res name change', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 profile: action.profile
@@ -78,14 +76,20 @@ function userDataReducer(state, action) {
                 isFetching: false,
                 alarms: action.alarms
             });
+        case actions_alarm_1.REQ_ACTIVE_TOGGLE:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_alarm_1.RES_ACTIVE_TOGGLE:
+            console.log('res active toggle', action);
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
+            });
         case actions_1.GEN_ERR:
-            // console.log('this is the err condition')
             return Object.assign({}, state, {
                 isFetching: false,
                 error: action.error,
             });
         case actions_1.CLEAR_ERR:
-            // console.log('THIS IS THE CLEAR ERROR')
             return Object.assign({}, state, {
                 error: action.error,
             });

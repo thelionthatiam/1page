@@ -32,7 +32,6 @@ var RenderStateSvc = /** @class */ (function () {
             return alarmSvc.getUserAlarms();
         })
             .then(function (alarms) {
-            console.log(alarms);
             _this.user.alarms = alarms;
             return _this.user;
         });

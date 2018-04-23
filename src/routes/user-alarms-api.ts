@@ -167,13 +167,20 @@ alarmsAPI.route('/:alarm_uuid/title')
 ////////////////////////////////////////////////////
 // TOGGLE ACTIVE
 
-alarmsAPI.route('/:alarm_uuid/active').put((req, res) => {
+alarmsAPI.route('/:alarm_uuid/active/api').put((req, res) => {
+  console.log('CHANGE ACTIVE', req.body)
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
   req.AlarmSvc.toggleActiveAlarm()
-    .then(() => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+    .then(() => req.AlarmSvc.getUserAlarms())
+    .then(alarms => res.json(alarms))
     .catch(e => {
-      console.log(e)
-      res.render('error', { errMessage: e })
+      res.json(
+        {
+          'error': e,
+          'status': "failed",
+          'route': '/:alarm_uuid/time/api'
+        }
+      );
     })
 })
 ////////////////////////////////////////////////////

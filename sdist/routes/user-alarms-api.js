@@ -140,13 +140,18 @@ alarmsAPI.route('/:alarm_uuid/title')
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 // TOGGLE ACTIVE
-alarmsAPI.route('/:alarm_uuid/active').put(function (req, res) {
+alarmsAPI.route('/:alarm_uuid/active/api').put(function (req, res) {
+    console.log('CHANGE ACTIVE', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.toggleActiveAlarm()
-        .then(function () { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .then(function () { return req.AlarmSvc.getUserAlarms(); })
+        .then(function (alarms) { return res.json(alarms); })
         .catch(function (e) {
-        console.log(e);
-        res.render('error', { errMessage: e });
+        res.json({
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+        });
     });
 });
 ////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Sound from 'react-sound'
 import { fetchAlarms, fetchNewTime, clearError } from './actions'
+import { fetchActiveToggle } from './actions-alarm'
 import { AlarmList } from './alarm-list'
 import { connect, Provider } from 'react-redux';
 
@@ -21,6 +22,7 @@ class Clock extends React.Component {
             repeat: string;
         }],
         postTime:any;
+        toggleActive:any;
         error:string;
         clearError:any;
     }
@@ -84,7 +86,7 @@ class Clock extends React.Component {
                     <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
                 </div>
                 <div className='alarm-controllers-wrapper'>{messages}</div>
-                <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime}/>
+                <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime} toggleActive = {this.props.toggleActive}/>
                 {error}
             </div>
         )
@@ -221,7 +223,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         updateAlarms:() => dispatch(fetchAlarms()),
         postTime: (v) => dispatch(fetchNewTime(v)),
-        clearError: () => dispatch(clearError())
+        toggleActive: (v) => dispatch(fetchActiveToggle(v)),
+        clearError: () => dispatch(clearError()),
+        
     }
 }
 

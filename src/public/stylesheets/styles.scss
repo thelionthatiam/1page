@@ -336,6 +336,37 @@ button:focus {
   align-self: flex-start;
 }
 
+
+// TOGGLE BUTTON
+
+.toggle-wrapper {
+	display:flex;
+	align-items:center;
+	width:60px;
+	height:24px;
+	background-color:lightgrey;
+	border-radius:90px;
+}
+
+.toggle-on {
+	background-color:#bada55;
+}
+
+.toggler {
+	background-color:white;
+	height:20px;
+	width:20px;
+	margin-left:2px;
+	border-radius:90px;
+	transition:200ms;
+}
+
+.toggler-on {
+	transform:translate($toggle-width - (22px));
+	margin-left:0px;
+}
+
+
 // SETTINGS NO JS
 
 .settings-form-wrapper {
@@ -623,6 +654,10 @@ button:focus {
   height:$icon-width*2;
   margin-right:2vw;
   transition:300ms;
+}
+
+.down-arrow {
+  transform:rotate(90deg)
 }
 
 .home-navigation-wrapper {

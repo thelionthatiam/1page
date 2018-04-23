@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_sound_1 = require("react-sound");
 var actions_1 = require("./actions");
+var actions_alarm_1 = require("./actions-alarm");
 var alarm_list_1 = require("./alarm-list");
 var react_redux_1 = require("react-redux");
 var Clock = /** @class */ (function (_super) {
@@ -65,7 +66,7 @@ var Clock = /** @class */ (function (_super) {
             React.createElement("div", { className: 'clock' },
                 React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
             React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages),
-            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime }),
+            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime, toggleActive: this.props.toggleActive }),
             error));
     };
     return Clock;
@@ -163,7 +164,8 @@ var mapDispatchToProps = function (dispatch, ownProps) {
     return {
         updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); },
         postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); },
-        clearError: function () { return dispatch(actions_1.clearError()); }
+        toggleActive: function (v) { return dispatch(actions_alarm_1.fetchActiveToggle(v)); },
+        clearError: function () { return dispatch(actions_1.clearError()); },
     };
 };
 exports.AlarmClock = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Clock);

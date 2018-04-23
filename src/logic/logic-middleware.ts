@@ -71,7 +71,6 @@ export class RenderStateSvc {
                 return alarmSvc.getUserAlarms()
             })
             .then(alarms => {
-                console.log(alarms)
                 this.user.alarms = alarms
                 return this.user
             })

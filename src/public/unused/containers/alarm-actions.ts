@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { fetchAlarms } from '../actions/alarms';
 import UserAlarms from '../components/user-alarms'
 
-console.log('ALARM ACTIONS:', window.userData)
 
 const mapStateToProps = (state, ownProps) => {
     return {

@@ -93,42 +93,42 @@ export function fetchNewTime(v) {
     }
 }
 
-// TIME CHANGE
-export const REQ_TITLE_CHANGE = 'REQ_TIME_CHANGE';
-export const RES_TITLE_CHANGE = 'RES_TIME_CHANGE';
+// TITLE CHANGE
+// export const REQ_TITLE_CHANGE = 'REQ_TIME_CHANGE';
+// export const RES_TITLE_CHANGE = 'RES_TIME_CHANGE';
 
-export function reqNewTitle(v) {
-    console.log('req new timr', v)
-    return { type: REQ_TIME_CHANGE }
-}
+// export function reqNewTitle(v) {
+//     console.log('req new timr', v)
+//     return { type: REQ_TITLE_CHANGE }
+// }
 
-function recieveNewTitle(alarms) {
-    console.log('rec new time', alarms)
-    return {
-        type: RES_TIME_CHANGE,
-        alarms: alarms
-    }
-}
+// function recieveNewTitle(profile) {
+//     console.log('rec new time', profile)
+//     return {
+//         type: RES_TIME_CHANGE,
+//         profile: profile
+//     }
+// }
 
-export function fetchNewTitle(v) {
-    return function (dispatch) {
-        dispatch(reqNewTitle(v))
-        console.log(reqNewTitle)
-        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
-            method: "post",
-            credentials: 'same-origin',
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(v)
-        })
-            .then((res) => res.json())
-            .then(alarms => {
-                dispatch(recieveNewTime(alarms))
-            })
-    }
-}
+// export function fetchNewTitle(v) {
+//     return function (dispatch) {
+//         dispatch(reqNewTitle(v))
+//         console.log(reqNewTitle)
+//         return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
+//             method: "post",
+//             credentials: 'same-origin',
+//             headers: {
+//                 "Accept": "application/json",
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(v)
+//         })
+//             .then((res) => res.json())
+//             .then(profile => {
+//                 dispatch(recieveNewTitle(profile))
+//             })
+//     }
+// }
 
 // SAMPLE THUNK
 export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';

@@ -214,6 +214,35 @@ button:focus {
 .left-text {
   align-self: flex-start; }
 
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  width: 60px;
+  height: 24px;
+  background-color: lightgrey;
+  border-radius: 90px; }
+
+.toggle-on {
+  background-color: #bada55; }
+
+.toggler {
+  background-color: white;
+  height: 20.4px;
+  width: 20.4px;
+  margin-left: 2.4px;
+  border-radius: 90px;
+  transition: 200ms; }
+
+.toggler-on {
+  transform: translate(38.4px);
+  margin-left: 0px; }
+
+.toggle-down {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: .05; }
+
 .settings-form-wrapper {
   display: flex;
   flex-direction: column;
@@ -435,6 +464,9 @@ button:focus {
   height: 60px;
   margin-right: 2vw;
   transition: 300ms; }
+
+.down-arrow {
+  transform: rotate(90deg); }
 
 .home-navigation-wrapper {
   display: flex;

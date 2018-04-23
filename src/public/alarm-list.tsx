@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Toggler from './little-components/toggle'
 import { connect, Provider } from 'react-redux';
 import { fetchNewTime } from './actions';
 
@@ -6,6 +7,7 @@ export class AlarmList extends React.Component {
     props: {
         alarms:any;
         postTime:any;
+        toggleActive:any;
     }
 
     constructor(props) {
@@ -14,12 +16,12 @@ export class AlarmList extends React.Component {
     }
 
     render() {
-        console.log('Alarm List', this.props)
         let alarms = this.props.alarms.map((alarm) => {
             return <Alarm 
                     alarm = {alarm}
                     key={alarm.id}
                     postTime = {this.props.postTime}
+                    toggleActive = {this.props.toggleActive}
                 />
         })
 
@@ -27,7 +29,7 @@ export class AlarmList extends React.Component {
 
         return (
             <div>
-                <h1>{alarms}</h1>
+                {alarms}
                 <form action={"/app/accounts/" + this.props.alarms[0].user_uuid + "/alarms/new-alarm"} method="GET">
                     <button className="button dark-button"> add alarm </button>
                 </form>
@@ -41,14 +43,19 @@ class Alarm extends React.Component {
     props: {
         alarm:any;
         postTime:any;
+        toggleActive:any;
     }
 
     constructor(props) {
         super(props)
+        this.testClick = this.testClick.bind(this)
+    }
+
+    testClick() {
+        console.log('test click completed', this.props.alarm.alarm_uuid)
     }
 
     render() {
-        console.log('Alarm', this.props)
         let activeButton;
         if (this.props.alarm.active) {
             activeButton = <button type='submit' className="button dark-button">disable</button>
@@ -73,11 +80,14 @@ class Alarm extends React.Component {
                                 time={this.props.alarm.time}
                                 postTime={this.props.postTime}
                             />
-                            <form action={"/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/active?_method=PUT"} method='POST'>
-                                {activeButton}
-                                <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid} />
-                                <input name="active" type='hidden' value={this.props.alarm.active} />
-                            </form>
+                            <div className = 'toggle-down'>
+                                {/* <form action={"/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/active?_method=PUT"} method='POST'>
+                                    <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid} />
+                                    <input name="active" type='hidden' value={this.props.alarm.active} />
+                                </form> */}
+                                <Toggler alarm = {this.props.alarm} toggleActive = {this.props.toggleActive}/>
+                                <img className = 'icon down-arrow' src = '/icons/black/forward-outline.svg'/>
+                            </div>
 
                         </div>
                     </div>

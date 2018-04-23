@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_redux_1 = require("react-redux");
 var user_alarms_1 = require("../components/user-alarms");
-console.log('ALARM ACTIONS:', window.userData);
 var mapStateToProps = function (state, ownProps) {
     return {
         userData: state.getPermissions,
