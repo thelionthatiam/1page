@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Sound from 'react-sound'
-import { fetchAlarms, fetchNewTime, clearError } from './actions'
-import { fetchActiveToggle, fetchAlarmTitle, fetchNewAlarm } from './actions-alarm'
+import { clearError } from './actions'
+import { fetchAlarms, fetchActiveToggle, fetchAlarmTitle, fetchNewAlarm, fetchNewTime } from './actions-alarm'
 import { AlarmList } from './alarm-list'
 import { connect, Provider } from 'react-redux';
 import { eventNames } from 'cluster';

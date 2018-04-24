@@ -1,59 +1,8 @@
-// GET ALARMS FOR TICKER
-export const REQ_ALARM = 'REQ_ALARM'
-export const RES_ALARM = 'RES_ALARM'
-
-export function reqAlarms() {
-    return {
-        type: REQ_ALARM,
-    }
-}
-
-function recieveAlarms(alarms) {
-    return {
-        type: RES_ALARM,
-        alarms:alarms
-    } 
-}
-
-export function fetchAlarms() {
-    return function(dispatch) {
-        dispatch(reqAlarms())
-        return fetch('/app/accounts/:email/alarms/api', {
-            method: 'get',
-            credentials:'same-origin',
-            headers: {
-                "Accept":"application/json",
-                "Content-Type":"application/json",
-            }
-        })
-        .then(res => res.json())
-        .then(alarms => dispatch(recieveAlarms(alarms)))
-        .catch(e => console.log(e))
-    }
-}
-
-// TIME CHANGE
-export const REQ_TIME_CHANGE = 'REQ_TIME_CHANGE';
-export const RES_TIME_CHANGE = 'RES_TIME_CHANGE';
+// ERROR HANDLING
 export const GEN_ERR = 'GEN_ERR'
 export const CLEAR_ERR = 'CLEAR_ERR'
 
-
-export function reqNewTime(v) {
-    console.log( 'req new timr', v)
-    return { type: REQ_TIME_CHANGE }
-}
-
-function recieveNewTime(alarms) {
-    console.log('rec new time', alarms)
-    return {
-        type: RES_TIME_CHANGE,
-        alarms: alarms
-    }
-}
-
 export function clearError() {
-    console.log('clear errors')
     return {
         type: CLEAR_ERR,
         error: 'dismissed',
@@ -63,13 +12,10 @@ export function clearError() {
 }
 
 export function recieveError(error, dispatch) {
-    console.log('do we even get here??')
-    console.log(typeof error.error)
     if (error.error !== null && typeof error.error === 'object') {
         console.log('The input was an object from postgres, write a more specific error for the route: ', error.route)
         error.error = 'There was a problem with your input. Try again.'
     }
-    console.log(error)
     return {
         type: GEN_ERR,
         error: error.error,
@@ -77,65 +23,6 @@ export function recieveError(error, dispatch) {
     }
 }
 
-export function fetchNewTime(v) {
-    return function(dispatch) {
-        dispatch(reqNewTime(v))
-        console.log(reqNewTime)
-        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
-            method: "post",
-            credentials: 'same-origin',
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(v)
-        })
-            .then((res) => res.json())
-            .then(alarms => {
-                if (alarms.status === 'failed') {
-                    return dispatch(recieveError(alarms, dispatch))
-                }
-                dispatch(recieveNewTime(alarms))
-            })
-    }
-}
-
-// TITLE CHANGE
-// export const REQ_TITLE_CHANGE = 'REQ_TIME_CHANGE';
-// export const RES_TITLE_CHANGE = 'RES_TIME_CHANGE';
-
-// export function reqNewTitle(v) {
-//     console.log('req new timr', v)
-//     return { type: REQ_TITLE_CHANGE }
-// }
-
-// function recieveNewTitle(profile) {
-//     console.log('rec new time', profile)
-//     return {
-//         type: RES_TIME_CHANGE,
-//         profile: profile
-//     }
-// }
-
-// export function fetchNewTitle(v) {
-//     return function (dispatch) {
-//         dispatch(reqNewTitle(v))
-//         console.log(reqNewTitle)
-//         return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
-//             method: "post",
-//             credentials: 'same-origin',
-//             headers: {
-//                 "Accept": "application/json",
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(v)
-//         })
-//             .then((res) => res.json())
-//             .then(profile => {
-//                 dispatch(recieveNewTitle(profile))
-//             })
-//     }
-// }
 
 // SAMPLE THUNK
 export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';

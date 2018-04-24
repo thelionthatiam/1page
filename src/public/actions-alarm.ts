@@ -1,4 +1,41 @@
 import { recieveError } from './actions'
+
+// GET ALARMS FOR TICKER
+export const REQ_ALARM = 'REQ_ALARM'
+export const RES_ALARM = 'RES_ALARM'
+
+export function reqAlarms() {
+    return {
+        type: REQ_ALARM,
+    }
+}
+
+function recieveAlarms(alarms) {
+    return {
+        type: RES_ALARM,
+        alarms: alarms
+    }
+}
+
+export function fetchAlarms() {
+    return function (dispatch) {
+        dispatch(reqAlarms())
+        return fetch('/app/accounts/:email/alarms/api', {
+            method: 'get',
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            }
+        })
+            .then(res => res.json())
+            .then(alarms => dispatch(recieveAlarms(alarms)))
+            .catch(e => console.log(e))
+    }
+}
+
+
+
 // ADD ALARM
 
 export const REQ_NEW_ALARM = 'REQ_NEW_ALARM';
@@ -36,6 +73,47 @@ export function fetchNewAlarm(v) {
             })
     }
 }
+
+
+// TIME CHANGE
+export const REQ_TIME_CHANGE = 'REQ_TIME_CHANGE';
+export const RES_TIME_CHANGE = 'RES_TIME_CHANGE';
+
+export function reqNewTime(v) {
+    return { type: REQ_TIME_CHANGE }
+}
+
+function recieveNewTime(alarms) {
+    return {
+        type: RES_TIME_CHANGE,
+        alarms: alarms
+    }
+}
+
+export function fetchNewTime(v) {
+    return function (dispatch) {
+        dispatch(reqNewTime(v))
+        console.log(reqNewTime)
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/time/api?_method=PUT", {
+            method: "post",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(v)
+        })
+            .then((res) => res.json())
+            .then(alarms => {
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
+                dispatch(recieveNewTime(alarms))
+            })
+    }
+}
+
+
 
 // TOGGLE ACTIVE
 export const REQ_ACTIVE_TOGGLE = 'REQ_ACTIVE_TOGGLE';

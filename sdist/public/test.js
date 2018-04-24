@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var react_redux_1 = require("react-redux");
 var actions_1 = require("./actions");
+var actions_alarm_1 = require("./actions-alarm");
 var NewTest = /** @class */ (function (_super) {
     __extends(NewTest, _super);
     function NewTest(props) {
@@ -60,7 +61,7 @@ var mapStateToProps = function (state) {
 var mapDispatchToProps = function (dispatch) {
     return {
         postName: function (v) { return dispatch(actions_1.fetchNewName(v)); },
-        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); }
+        postTime: function (v) { return dispatch(actions_alarm_1.fetchNewTime(v)); }
     };
 };
 var TestApp = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(NewTest);

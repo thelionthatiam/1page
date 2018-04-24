@@ -242,8 +242,8 @@ var mapStateToProps = function (state) {
 };
 var mapDispatchToProps = function (dispatch, ownProps) {
     return {
-        updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); },
-        postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); },
+        updateAlarms: function () { return dispatch(actions_alarm_1.fetchAlarms()); },
+        postTime: function (v) { return dispatch(actions_alarm_1.fetchNewTime(v)); },
         postTitle: function (v) { return dispatch(actions_alarm_1.fetchAlarmTitle(v)); },
         toggleActive: function (v) { return dispatch(actions_alarm_1.fetchActiveToggle(v)); },
         postAlarm: function (v) { return dispatch(actions_alarm_1.fetchNewAlarm(v)); },

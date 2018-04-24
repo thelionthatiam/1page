@@ -11,16 +11,16 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './user-data';
 import { 
-    REQ_TIME_CHANGE, 
-    RES_TIME_CHANGE,
     REQ_NAME_CHANGE,
     RES_NAME_CHANGE,
-    REQ_ALARM,
-    RES_ALARM,
     GEN_ERR,
     CLEAR_ERR,
 } from './actions'
 import {
+    REQ_ALARM,
+    RES_ALARM,
+    REQ_TIME_CHANGE,
+    RES_TIME_CHANGE,
     REQ_ACTIVE_TOGGLE,
     RES_ACTIVE_TOGGLE,
     REQ_ALARM_TITLE,

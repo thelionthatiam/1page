@@ -54,9 +54,9 @@ function userDataReducer(state, action) {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
             });
-        case actions_1.REQ_TIME_CHANGE:
+        case actions_alarm_1.REQ_TIME_CHANGE:
             return Object.assign({}, state, { isFetching: true });
-        case actions_1.RES_TIME_CHANGE:
+        case actions_alarm_1.RES_TIME_CHANGE:
             return Object.assign({}, state, {
                 isFetching: false,
                 alarms: action.alarms,
@@ -69,9 +69,9 @@ function userDataReducer(state, action) {
                 isFetching: false,
                 profile: action.profile
             });
-        case actions_1.REQ_ALARM:
+        case actions_alarm_1.REQ_ALARM:
             return Object.assign({}, state, { isFetching: true });
-        case actions_1.RES_ALARM:
+        case actions_alarm_1.RES_ALARM:
             return Object.assign({}, state, {
                 isFetching: false,
                 alarms: action.alarms

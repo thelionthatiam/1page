@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
 import { populate } from './user-data';
-import { fetchNewName, fetchNewTime } from './actions';
+import { fetchNewName } from './actions';
+import { fetchNewTime } from './actions-alarm'
 
 class NewTest extends React.Component {
     state: {
