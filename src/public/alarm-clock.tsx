@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Sound from 'react-sound'
 import { fetchAlarms, fetchNewTime, clearError } from './actions'
-import { fetchActiveToggle } from './actions-alarm'
+import { fetchActiveToggle, fetchAlarmTitle, fetchNewAlarm } from './actions-alarm'
 import { AlarmList } from './alarm-list'
 import { connect, Provider } from 'react-redux';
+import { eventNames } from 'cluster';
 
 class Clock extends React.Component {
     state: { 
@@ -17,12 +18,13 @@ class Clock extends React.Component {
         alarms: [{
             title: string;
             time: string;
-            user_uuid: string;
             state: string;
             repeat: string;
         }],
         postTime:any;
+        postTitle: any;
         toggleActive:any;
+        postAlarm:any;
         error:string;
         clearError:any;
     }
@@ -86,7 +88,13 @@ class Clock extends React.Component {
                     <h1>{this.state.date.toLocaleTimeString('en-US', { hour12: false })}</h1>
                 </div>
                 <div className='alarm-controllers-wrapper'>{messages}</div>
-                <AlarmList alarms = {this.props.alarms} postTime = {this.props.postTime} toggleActive = {this.props.toggleActive}/>
+                <AlarmList 
+                    alarms = {this.props.alarms} 
+                    postTime = {this.props.postTime} 
+                    postTitle = {this.props.postTitle}
+                    toggleActive = {this.props.toggleActive}
+                    />
+                <AddAlarmForm postAlarm = {this.props.postAlarm}/> 
                 {error}
             </div>
         )
@@ -212,6 +220,136 @@ class MathProblem extends React.Component {
 }
 
 
+class AddAlarmForm extends React.Component {
+    state: {
+        form: boolean;
+        time:string;
+        title:string;
+        buttonStyle: string;
+    }
+
+    props: {
+        alarm:any;
+        postAlarm:any;
+    }
+
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            form:false,
+            title: '',
+            time: '',
+            buttonStyle: ''
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        // this.onBlur = this.onBlur.bind(this);
+        // this.setWrapperRef = this.setWrapperRef.bind(this);
+        // this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.openForm = this.openForm.bind(this)
+    }
+
+    // componentDidMount() { document.addEventListener('mousedown', this.handleClickOutside) }
+    
+    openForm() {
+        if (this.state.form) {
+            this.setState({
+                buttonStyle: '',
+                form:false
+            })
+        } else {
+            this.setState({
+                buttonStyle: 'rotate-right',
+                form:true
+            })
+        }
+        
+    }
+
+    // onBlur() {this.setState({form: false})}
+
+    // setWrapperRef(node) { this.wrapperRef = node }
+
+    // handleClickOutside(event) {
+    //     console.log(event, event.currentTarget.nodeName)
+    //     if (this.wrapperRef) {
+    //         if (event.target.name !== 'time' || event.target.name !== 'title') {
+    //             this.onBlur()
+    //         }
+    //     }
+    // }
+
+    handleChange(event) {this.setState({ [event.target.name]: event.target.value })}
+
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.postAlarm({
+            title:this.state.title,
+            time:this.state.time
+        })
+
+        this.setState({
+            form:false,
+            title:'',
+            time: '',
+            buttonStyle: ''
+        })
+        
+    }
+
+    render() {
+        return (
+            <div>
+                <div className={this.state.form?'curtain':''}></div>
+                <div className={this.state.form ? "flex column popup-form" : "flex column popup-form-pre"}>
+                    
+                    {this.state.form
+                    ?
+                    <div className="add-alarm">
+                        <h1 className = 'light-text'>add alarm</h1>
+                        <form 
+                            onSubmit = {this.handleSubmit}>
+                            {/* ref = {this.setWrapperRef} 
+                            onBlur = {this.onBlur}> */}
+                            
+                            <input
+                                name="time"
+                                className="link-text-form alarm-time special"
+                                type="text"
+                                placeholder="06:00"
+                                value={this.state.time}
+                                onChange = {this.handleChange}
+                            />
+                            
+                            <input
+                                name="title"
+                                className="link-text-form alarm-time special"
+                                type="text"
+                                placeholder="work week"
+                                value={this.state.title}
+                                onChange = {this.handleChange}
+                            />
+                            <button className="button light-button" type="submit"> submit </button>
+                        </form>
+                    </div>
+                    :
+                    <div className="add-alarm-placeholder"></div>
+                    }
+                    <div className={"fixed-center-wrapper" + " " + this.state.buttonStyle} onClick={this.openForm}>
+                        <img src='/icons/white/plus.svg' className='icon add-alarm-icon' />
+                    </div>
+                </div>
+                
+            </div>
+        )
+    }
+
+
+}
+
+
 const mapStateToProps = state => {
     return {
         alarms: state.userData.alarms,
@@ -223,11 +361,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         updateAlarms:() => dispatch(fetchAlarms()),
         postTime: (v) => dispatch(fetchNewTime(v)),
+        postTitle: (v) => dispatch(fetchAlarmTitle(v)),
         toggleActive: (v) => dispatch(fetchActiveToggle(v)),
+        postAlarm: (v) => dispatch(fetchNewAlarm(v)),
         clearError: () => dispatch(clearError()),
         
     }
 }
+
 
 
 

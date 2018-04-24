@@ -22,7 +22,9 @@ import {
 } from './actions'
 import {
     REQ_ACTIVE_TOGGLE,
-    RES_ACTIVE_TOGGLE
+    RES_ACTIVE_TOGGLE,
+    REQ_ALARM_TITLE,
+    RES_ALARM_TITLE
 } from './actions-alarm'
 import { WSAEPFNOSUPPORT } from 'constants';
 
@@ -84,6 +86,13 @@ function userDataReducer(state = initialState, action) {
             return Object.assign({}, state, {isFetching : true})
         case RES_ACTIVE_TOGGLE:
             console.log('res active toggle', action)
+            return Object.assign({}, state, {
+                isFetching:false,
+                alarms:action.alarms
+            })
+        case REQ_ALARM_TITLE:
+            return Object.assign({}, state, {isFetching: true})
+        case REQ_ALARM_TITLE:
             return Object.assign({}, state, {
                 isFetching:false,
                 alarms:action.alarms

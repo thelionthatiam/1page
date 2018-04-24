@@ -31,6 +31,9 @@ li {
 .mini-text {
   font-size: 10px; }
 
+.light-text {
+  color: #fff; }
+
 .centered-text {
   padding: 2px;
   margin: 2px; }
@@ -56,6 +59,16 @@ li {
 body {
   border: 0;
   margin: 0; }
+
+.curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: 300ms;
+  overflow: hidden; }
 
 .link {
   color: #068721;
@@ -165,16 +178,17 @@ button:focus {
   outline: 0; }
 
 .light-button {
-  border: 1px solid #282828;
+  border: 1px solid lightGrey;
+  background-color: lightGrey;
   border-radius: 4px;
-  transition: 200ms;
+  transition: 300ms;
   box-shadow: none;
   align-self: center; }
 
 .light-button:hover {
-  background-color: lightGrey;
-  border: 1px solid lightGrey;
-  transition: 200ms; }
+  background-color: white;
+  border: 1px solid white;
+  transition: 300ms; }
 
 .dark-button {
   background-color: #282828;
@@ -227,21 +241,15 @@ button:focus {
 
 .toggler {
   background-color: white;
-  height: 20.4px;
-  width: 20.4px;
-  margin-left: 2.4px;
+  height: 20px;
+  width: 20px;
+  margin-left: 2px;
   border-radius: 90px;
   transition: 200ms; }
 
 .toggler-on {
-  transform: translate(38.4px);
+  transform: translate(38px);
   margin-left: 0px; }
-
-.toggle-down {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-grow: .05; }
 
 .settings-form-wrapper {
   display: flex;
@@ -559,7 +567,7 @@ button:focus {
 
 .app-menu {
   width: 18vw;
-  height: 98vh;
+  height: 99vh;
   max-width: 200px;
   display: flex;
   flex-direction: column;
@@ -795,13 +803,83 @@ button:focus {
   height: 30px;
   transition: 300ms; }
 
+.popup-form-pre {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 10vw;
+  position: fixed;
+  bottom: 5vh;
+  left: 40vw;
+  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden; }
+
+.popup-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 80vw;
+  position: fixed;
+  bottom: 5vh;
+  left: 40vw;
+  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden; }
+
+.add-alarm-placeholder {
+  flex-grow: 1; }
+
+.add-alarm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  padding: 4px;
+  transition: 300ms;
+  border-radius: 4px;
+  overflow: hidden; }
+
+.fixed-center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 130px;
+  background-color: #325872;
+  margin: 4px;
+  transition: 300ms;
+  overflow: hidden; }
+
+.add-alarm-icon {
+  width: 60px;
+  height: 60px;
+  overflow: hidden; }
+
+.fixed-center-wrapper:hover {
+  transition: 300ms;
+  overflow: hidden; }
+
+.rotate-right {
+  transform: rotate(135deg);
+  transition: 300ms; }
+
+.special {
+  background-color: white;
+  overflow: hidden; }
+
 .icon-mini {
   width: 22.5px;
   height: 22.5px;
   transition: 300ms; }
 
 .icon-disabled {
-  opacity: .3; }
+  opacity: 0.3; }
 
 .fadeIn {
   opacity: 1;

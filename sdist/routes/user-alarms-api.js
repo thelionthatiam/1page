@@ -16,6 +16,19 @@ var logic_alarms_1 = require("../logic/logic-alarms");
 var alarmsAPI = express.Router();
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 alarmsAPI.route('/api')
+    .post(function (req, res) {
+    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
+    req.AlarmSvc.addAlarm()
+        .then(function () { return req.AlarmSvc.getUserAlarms(); })
+        .then(function (alarms) { return res.json(alarms); })
+        .catch(function (e) {
+        res.json({
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+        });
+    });
+})
     .get(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, null);
     req.AlarmSvc.getUserAlarms()
@@ -108,25 +121,17 @@ alarmsAPI.route('/:alarm_uuid/time/api')
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 // CHANGE TITLE
-alarmsAPI.route('/:alarm_uuid/title')
-    .get(function (req, res) {
-    req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.query);
-    req.AlarmSvc.getAlarm()
-        .then(function (alarm) {
-        res.render('alarms/title', alarm);
-    })
-        .catch(function (e) {
-        console.log(e);
-        res.render('error', { errMessage: e });
-    });
-})
-    .put(function (req, res) {
+alarmsAPI.route('/:alarm_uuid/title/api').put(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.updateAlarmTitle()
-        .then(function (time) { return res.redirect('/app/accounts/' + req.session.user.email + '/alarms'); })
+        .then(function () { return req.AlarmSvc.getUserAlarms(); })
+        .then(function (alarms) { return res.json(alarms); })
         .catch(function (e) {
-        console.log(e);
-        res.render('error', { errMessage: e });
+        res.json({
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+        });
     });
 });
 ////////////////////////////////////////////////////
@@ -141,7 +146,6 @@ alarmsAPI.route('/:alarm_uuid/title')
 ////////////////////////////////////////////////////
 // TOGGLE ACTIVE
 alarmsAPI.route('/:alarm_uuid/active/api').put(function (req, res) {
-    console.log('CHANGE ACTIVE', req.body);
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.toggleActiveAlarm()
         .then(function () { return req.AlarmSvc.getUserAlarms(); })

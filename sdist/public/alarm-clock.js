@@ -66,7 +66,8 @@ var Clock = /** @class */ (function (_super) {
             React.createElement("div", { className: 'clock' },
                 React.createElement("h1", null, this.state.date.toLocaleTimeString('en-US', { hour12: false }))),
             React.createElement("div", { className: 'alarm-controllers-wrapper' }, messages),
-            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime, toggleActive: this.props.toggleActive }),
+            React.createElement(alarm_list_1.AlarmList, { alarms: this.props.alarms, postTime: this.props.postTime, postTitle: this.props.postTitle, toggleActive: this.props.toggleActive }),
+            React.createElement(AddAlarmForm, { postAlarm: this.props.postAlarm }),
             error));
     };
     return Clock;
@@ -154,6 +155,85 @@ var MathProblem = /** @class */ (function (_super) {
     };
     return MathProblem;
 }(React.Component));
+var AddAlarmForm = /** @class */ (function (_super) {
+    __extends(AddAlarmForm, _super);
+    function AddAlarmForm(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            form: false,
+            title: '',
+            time: '',
+            buttonStyle: ''
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        // this.onBlur = this.onBlur.bind(this);
+        // this.setWrapperRef = this.setWrapperRef.bind(this);
+        // this.handleClickOutside = this.handleClickOutside.bind(this);
+        _this.openForm = _this.openForm.bind(_this);
+        return _this;
+    }
+    // componentDidMount() { document.addEventListener('mousedown', this.handleClickOutside) }
+    AddAlarmForm.prototype.openForm = function () {
+        if (this.state.form) {
+            this.setState({
+                buttonStyle: '',
+                form: false
+            });
+        }
+        else {
+            this.setState({
+                buttonStyle: 'rotate-right',
+                form: true
+            });
+        }
+    };
+    // onBlur() {this.setState({form: false})}
+    // setWrapperRef(node) { this.wrapperRef = node }
+    // handleClickOutside(event) {
+    //     console.log(event, event.currentTarget.nodeName)
+    //     if (this.wrapperRef) {
+    //         if (event.target.name !== 'time' || event.target.name !== 'title') {
+    //             this.onBlur()
+    //         }
+    //     }
+    // }
+    AddAlarmForm.prototype.handleChange = function (event) {
+        this.setState((_a = {}, _a[event.target.name] = event.target.value, _a));
+        var _a;
+    };
+    AddAlarmForm.prototype.handleSubmit = function (event) {
+        event.preventDefault();
+        this.props.postAlarm({
+            title: this.state.title,
+            time: this.state.time
+        });
+        this.setState({
+            form: false,
+            title: '',
+            time: '',
+            buttonStyle: ''
+        });
+    };
+    AddAlarmForm.prototype.render = function () {
+        return (React.createElement("div", null,
+            React.createElement("div", { className: this.state.form ? 'curtain' : '' }),
+            React.createElement("div", { className: this.state.form ? "flex column popup-form" : "flex column popup-form-pre" },
+                this.state.form
+                    ?
+                        React.createElement("div", { className: "add-alarm" },
+                            React.createElement("h1", { className: 'light-text' }, "add alarm"),
+                            React.createElement("form", { onSubmit: this.handleSubmit },
+                                React.createElement("input", { name: "time", className: "link-text-form alarm-time special", type: "text", placeholder: "06:00", value: this.state.time, onChange: this.handleChange }),
+                                React.createElement("input", { name: "title", className: "link-text-form alarm-time special", type: "text", placeholder: "work week", value: this.state.title, onChange: this.handleChange }),
+                                React.createElement("button", { className: "button light-button", type: "submit" }, " submit ")))
+                    :
+                        React.createElement("div", { className: "add-alarm-placeholder" }),
+                React.createElement("div", { className: "fixed-center-wrapper" + " " + this.state.buttonStyle, onClick: this.openForm },
+                    React.createElement("img", { src: '/icons/white/plus.svg', className: 'icon add-alarm-icon' })))));
+    };
+    return AddAlarmForm;
+}(React.Component));
 var mapStateToProps = function (state) {
     return {
         alarms: state.userData.alarms,
@@ -164,7 +244,9 @@ var mapDispatchToProps = function (dispatch, ownProps) {
     return {
         updateAlarms: function () { return dispatch(actions_1.fetchAlarms()); },
         postTime: function (v) { return dispatch(actions_1.fetchNewTime(v)); },
+        postTitle: function (v) { return dispatch(actions_alarm_1.fetchAlarmTitle(v)); },
         toggleActive: function (v) { return dispatch(actions_alarm_1.fetchActiveToggle(v)); },
+        postAlarm: function (v) { return dispatch(actions_alarm_1.fetchNewAlarm(v)); },
         clearError: function () { return dispatch(actions_1.clearError()); },
     };
 };

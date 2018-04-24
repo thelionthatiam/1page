@@ -20,12 +20,9 @@ var AlarmList = /** @class */ (function (_super) {
     AlarmList.prototype.render = function () {
         var _this = this;
         var alarms = this.props.alarms.map(function (alarm) {
-            return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive });
+            return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive, postTitle: _this.props.postTitle });
         });
-        return (React.createElement("div", null,
-            alarms,
-            React.createElement("form", { action: "/app/accounts/" + this.props.alarms[0].user_uuid + "/alarms/new-alarm", method: "GET" },
-                React.createElement("button", { className: "button dark-button" }, " add alarm "))));
+        return (React.createElement("div", null, alarms));
     };
     return AlarmList;
 }(React.Component));
@@ -51,22 +48,17 @@ var Alarm = /** @class */ (function (_super) {
         return (React.createElement("div", { className: "column contentWrapper" },
             React.createElement("div", { className: "alarm-row" },
                 React.createElement("div", { className: 'time-wrapper' },
-                    React.createElement("form", { className: 'form-row', action: "/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/title", method: 'get' },
-                        React.createElement("input", { type: 'submit', className: "alarm-title small-text link-text", value: this.props.alarm.title }),
-                        React.createElement("p", { className: "small-text centered-text" }, "\u2022"),
-                        React.createElement("p", { className: "small-text centered-text" }, this.props.alarm.nextAlarm),
-                        React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid }),
-                        React.createElement("input", { name: "title", type: 'hidden', value: this.props.alarm.title })),
+                    React.createElement("div", { className: 'form-row' },
+                        React.createElement(TitleForm, { alarm_uuid: this.props.alarm.alarm_uuid, title: this.props.alarm.title, postTitle: this.props.postTitle })),
                     React.createElement("div", { className: 'alarm-time-row' },
                         React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, time: this.props.alarm.time, postTime: this.props.postTime }),
                         React.createElement("div", { className: 'toggle-down' },
-                            React.createElement(toggle_1.default, { alarm: this.props.alarm, toggleActive: this.props.toggleActive }),
-                            React.createElement("img", { className: 'icon down-arrow', src: '/icons/black/forward-outline.svg' }))))),
+                            React.createElement(toggle_1.default, { alarm: this.props.alarm, toggleActive: this.props.toggleActive }))))),
             React.createElement("div", { className: "alarm-row" },
                 React.createElement("a", { href: '/app/accounts/{user_uuid}/settings' },
                     React.createElement("img", { className: 'icon fadeIn', src: '/icons/black/gear.svg' })),
                 React.createElement("form", { action: "/app/accounts/{user_uuid}/alarms/{alarm_uuid}?_method=DELETE", method: "POST" },
-                    React.createElement("input", { className: "icon", type: "image", width: "20px", height: "20px", src: "/icons/black/x.svg" }),
+                    React.createElement("input", { className: "icon", type: "image", width: "20px", height: "20px", src: "/icons/black/trash.svg" }),
                     React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid })))));
     };
     return Alarm;
@@ -125,5 +117,60 @@ var TimeForm = /** @class */ (function (_super) {
                     React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange }))));
     };
     return TimeForm;
+}(React.Component));
+var TitleForm = /** @class */ (function (_super) {
+    __extends(TitleForm, _super);
+    function TitleForm(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            value: _this.props.title,
+            form: false
+        };
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.onBlur = _this.onBlur.bind(_this);
+        _this.setWrapperRef = _this.setWrapperRef.bind(_this);
+        _this.handleClickOutside = _this.handleClickOutside.bind(_this);
+        return _this;
+    }
+    TitleForm.prototype.componentDidMount = function () { document.addEventListener('mousedown', this.handleClickOutside); };
+    TitleForm.prototype.componentWillUnmount = function () { document.removeEventListener('mousedown', this.handleClickOutside); };
+    TitleForm.prototype.onBlur = function () {
+        this.setState({
+            form: !this.state.form,
+            value: this.props.title // changed
+        });
+    };
+    TitleForm.prototype.setWrapperRef = function (node) { this.wrapperRef = node; };
+    TitleForm.prototype.handleClickOutside = function (event) {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.handleSubmit(event);
+            this.onBlur();
+        }
+    };
+    TitleForm.prototype.handleChange = function (event) {
+        if (event.target.value !== '') {
+            this.setState({ value: event.target.value });
+        }
+    };
+    TitleForm.prototype.handleSubmit = function (event) {
+        event.preventDefault();
+        if (this.state.value !== '') {
+            this.props.postTitle({
+                alarm_uuid: this.props.alarm_uuid,
+                title: this.state.value
+            }); // is this the only difference?    
+        }
+    };
+    TitleForm.prototype.render = function () {
+        return (React.createElement("div", null, !this.state.form
+            ?
+                React.createElement("div", { onClick: this.onBlur },
+                    React.createElement("p", { className: 'alarm-title small-text link-text' }, this.props.title)) //changed class and property
+            :
+                React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
+                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-title small-text', value: this.state.value, onChange: this.handleChange }))));
+    };
+    return TitleForm;
 }(React.Component));
 //# sourceMappingURL=alarm-list.js.map

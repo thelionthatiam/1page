@@ -24,6 +24,22 @@ import * as React from 'react';
 // YINSO ADDITIONS FOR REDIRECT WITH QUERY OBJECT, LIMITED BY SIZE OF QUERY, put info into sessions may be preferable
 
 alarmsAPI.route('/api')
+  .post((req, res) => {
+    req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
+
+    req.AlarmSvc.addAlarm()
+      .then(() => req.AlarmSvc.getUserAlarms())
+      .then(alarms => res.json(alarms))
+      .catch(e => {
+        res.json(
+          {
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+          }
+        );
+      })
+  })
   .get((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, null)
 
@@ -133,26 +149,19 @@ alarmsAPI.route('/:alarm_uuid/time/api')
 ////////////////////////////////////////////////////
 // CHANGE TITLE
 
-alarmsAPI.route('/:alarm_uuid/title')
-    .get((req, res) => {
-      req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.query)
-
-      req.AlarmSvc.getAlarm()
-        .then(alarm => {
-          res.render('alarms/title', alarm)
-        })
-        .catch(e => {
-          console.log(e)
-          res.render('error', {errMessage:e})
-        })
-    })
-    .put((req, res) => {
+alarmsAPI.route('/:alarm_uuid/title/api').put((req, res) => {
       req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
       req.AlarmSvc.updateAlarmTitle()
-        .then(time => res.redirect('/app/accounts/' + req.session.user.email + '/alarms'))
+        .then(() => req.AlarmSvc.getUserAlarms())
+        .then(alarms => res.json(alarms))
         .catch(e => {
-          console.log(e)
-          res.render('error', {errMessage:e})
+          res.json(
+            {
+              'error': e,
+              'status': "failed",
+              'route': '/:alarm_uuid/time/api'
+            }
+          );
         })
     })
 ////////////////////////////////////////////////////
@@ -168,7 +177,6 @@ alarmsAPI.route('/:alarm_uuid/title')
 // TOGGLE ACTIVE
 
 alarmsAPI.route('/:alarm_uuid/active/api').put((req, res) => {
-  console.log('CHANGE ACTIVE', req.body)
   req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
   req.AlarmSvc.toggleActiveAlarm()
     .then(() => req.AlarmSvc.getUserAlarms())
