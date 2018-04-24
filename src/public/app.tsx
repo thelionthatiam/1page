@@ -136,12 +136,16 @@ class Spa extends React.Component {
                             </li>
                             {/* hotfix for working app */}
                             <li className='app-menu-li' id='logout'>
-                                <img className='formIcon fadeIn' src='/icons/white/back-1.svg' />
-                                <form action="/log-out" method="post">
-                                    <button type="submit" className="app-menu-text">logout</button>
-                                </form>
+                                <div className = "filler"></div>
+                                <div className = "logout-wrapper">
+                                    <img className='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                                    <form action="/log-out" method="post">
+                                        <button type="submit" className="app-menu-text">logout</button>
+                                    </form>
+                                </div>
+                                <p className='app-menu-li'>{this.props.userData.profile.permission}</p>
                             </li>
-                            <li className='app-menu-li' id='logout'>{this.props.userData.profile.permission}</li>
+                            
                             {/*<li className='app-menu-li'>
                                 <img className='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
                                 <Link to={"/app/accounts/" + this.props.profile.email + "/insights"} className='app-menu-text'>insights</Link>

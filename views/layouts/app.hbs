@@ -166,18 +166,16 @@
                 {{/if}}
                 {{#if loggedIn}}
                 <li class='app-menu-li' id='logout'>
-                    <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
-                    <form action="/log-out" method="post">
-                       
-                        <button type="submit" class="app-menu-text">logout</button>
-
-                        
-                    </form>
-                </li>
-                {{/if}}
-                <li>
+                    <div class = 'filler'></div>
+                    <div class = 'logout-wrapper'>
+                        <img class='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                        <form action="/log-out" method="post">
+                            <button type="submit" class="app-menu-text">logout</button>
+                        </form>
+                    </div>
                     <p> You're a {{permission}}.</p>
                 </li>
+                {{/if}}
             </ul>
             {{{body}}}
         </div>

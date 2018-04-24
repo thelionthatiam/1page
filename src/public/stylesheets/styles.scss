@@ -194,7 +194,7 @@ $icon-container-width:$icon-width + $small-margin-l;
 .centerColumn {@include centerColumn}
 
 .marginPaddingFix {
-  margins:0!important;
+  margin:0!important;
   padding:0!important;
 }
 
@@ -847,11 +847,24 @@ $toggle-width: 60px;
 }
 
 #logout {
+  flex-direction:column;
+  flex-grow:1;
   justify-content: flex-end;
+}
+
+.filler {
+  flex-grow:1;
 }
 
 #logout > .app-menu-text {
   text-transform:lowercase;
+}
+
+.logout-wrapper {
+  display: flex;
+  width:100%;
+  align-content: center;
+  align-items: center;
 }
 
 // APP-CONTENT
@@ -1093,6 +1106,7 @@ $toggle-width: 60px;
   flex-direction:column;
   width:40vw;
   height:10vw;
+  min-height: 100px;
   position:fixed;
   bottom:5vh;
   left:20vw + 40vw - 20vw;

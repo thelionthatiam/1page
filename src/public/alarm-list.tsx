@@ -76,13 +76,6 @@ class Alarm extends React.Component {
                                 postTitle = {this.props.postTitle}
                                 />
                         </div>
-                        {/* <form className='form-row' action={"/app/accounts/" + this.props.alarm.user_uuid + "/alarms/" + this.props.alarm.alarm_uuid + "/title"} method='get'>
-                            <input type='submit' className = "alarm-title small-text link-text" value={this.props.alarm.title}/>
-                            <p className="small-text centered-text">•</p>
-                            <p className = "small-text centered-text">{this.props.alarm.nextAlarm}</p>
-                            <input name="alarm_uuid" type="hidden" value= {this.props.alarm.alarm_uuid}/>
-                            <input name="title" type='hidden' value={this.props.alarm.title}/>
-                        </form>*/}
                         <div className='alarm-time-row'>
                             <TimeForm
                                 alarm_uuid = {this.props.alarm.alarm_uuid}

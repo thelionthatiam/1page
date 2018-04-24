@@ -108,7 +108,7 @@ body {
   align-items: center; }
 
 .marginPaddingFix {
-  margins: 0 !important;
+  margin: 0 !important;
   padding: 0 !important; }
 
 .link-img {
@@ -615,10 +615,21 @@ button:focus {
   background-color: transparent; }
 
 #logout {
+  flex-direction: column;
+  flex-grow: 1;
   justify-content: flex-end; }
+
+.filler {
+  flex-grow: 1; }
 
 #logout > .app-menu-text {
   text-transform: lowercase; }
+
+.logout-wrapper {
+  display: flex;
+  width: 100%;
+  align-content: center;
+  align-items: center; }
 
 .app-content {
   overflow: scroll;
@@ -811,6 +822,7 @@ button:focus {
   flex-direction: column;
   width: 40vw;
   height: 10vw;
+  min-height: 100px;
   position: fixed;
   bottom: 5vh;
   left: 40vw;
