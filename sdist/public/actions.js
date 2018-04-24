@@ -59,6 +59,13 @@ function clearError() {
 }
 exports.clearError = clearError;
 function recieveError(error, dispatch) {
+    console.log('do we even get here??');
+    console.log(typeof error.error);
+    if (error.error !== null && typeof error.error === 'object') {
+        console.log('The input was an object from postgres, write a more specific error for the route: ', error.route);
+        error.error = 'There was a problem with your input. Try again.';
+    }
+    console.log(error);
     return {
         type: exports.GEN_ERR,
         error: error.error,

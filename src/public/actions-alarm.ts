@@ -92,7 +92,6 @@ function recieveAlarmTitle(alarms) {
 export function fetchAlarmTitle(v) {
     return function (dispatch) {
         dispatch(reqActiveToggle(v))
-        console.log(reqActiveToggle)
         return fetch("/app/accounts/:email/alarms/:alarm_uuid/title/api?_method=PUT", {
             method: "post",
             credentials: 'same-origin',
@@ -104,6 +103,7 @@ export function fetchAlarmTitle(v) {
         })
             .then((res) => res.json())
             .then(alarms => {
+                console.log('return from fetch new titile', alarms)
                 if (alarms.status === 'failed') {
                     return dispatch(recieveError(alarms, dispatch))
                 }

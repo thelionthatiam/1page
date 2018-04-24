@@ -93,11 +93,13 @@ function userDataReducer(state = initialState, action) {
         case REQ_ALARM_TITLE:
             return Object.assign({}, state, {isFetching: true})
         case REQ_ALARM_TITLE:
+            console.log('req alarm title', action)
             return Object.assign({}, state, {
                 isFetching:false,
                 alarms:action.alarms
             })
         case GEN_ERR:
+            console.log('gen error', action)
             return Object.assign({}, state, {
                 isFetching: false,
                 error: action.error,
