@@ -1,15 +1,14 @@
 "use strict";
-// ADD ALARM
 Object.defineProperty(exports, "__esModule", { value: true });
+var actions_1 = require("./actions");
+// ADD ALARM
 exports.REQ_NEW_ALARM = 'REQ_NEW_ALARM';
 exports.RES_NEW_ALARM = 'RES_NEW_ALARM';
 function reqNewAlarm(v) {
-    console.log('reqdfgmr', v);
     return { type: exports.REQ_NEW_ALARM };
 }
 exports.reqNewAlarm = reqNewAlarm;
 function recieveNewAlarm(alarms) {
-    console.log('RECfgh', alarms);
     return {
         type: exports.RES_NEW_ALARM,
         alarms: alarms
@@ -29,7 +28,9 @@ function fetchNewAlarm(v) {
         })
             .then(function (res) { return res.json(); })
             .then(function (alarms) {
-            console.log(alarms);
+            if (alarms.status === 'failed') {
+                return dispatch(actions_1.recieveError(alarms, dispatch));
+            }
             dispatch(recieveNewAlarm(alarms));
         });
     };
@@ -62,12 +63,15 @@ function fetchActiveToggle(v) {
         })
             .then(function (res) { return res.json(); })
             .then(function (alarms) {
+            if (alarms.status === 'failed') {
+                return dispatch(actions_1.recieveError(alarms, dispatch));
+            }
             dispatch(recieveActiveToggle(alarms));
         });
     };
 }
 exports.fetchActiveToggle = fetchActiveToggle;
-// TOGGLE TITLE
+// TITLE
 exports.REQ_ALARM_TITLE = 'REQ_ALARM_TITLE';
 exports.RES_ALARM_TITLE = 'RES_ALARM_TITLE';
 function reqAlarmTitle(v) {
@@ -95,6 +99,9 @@ function fetchAlarmTitle(v) {
         })
             .then(function (res) { return res.json(); })
             .then(function (alarms) {
+            if (alarms.status === 'failed') {
+                return dispatch(actions_1.recieveError(alarms, dispatch));
+            }
             dispatch(recieveActiveToggle(alarms));
         });
     };

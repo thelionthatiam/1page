@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var R = require("../services/value-objects");
 var time_helpers_1 = require("../services/time-helpers");
 var AlarmsSvc = /** @class */ (function () {
     function AlarmsSvc(querySvc, user, inputs) {
@@ -12,9 +11,8 @@ var AlarmsSvc = /** @class */ (function () {
     AlarmsSvc.prototype.addAlarm = function () {
         var _this = this;
         return time_helpers_1.default.isMilitaryTime(this.inputs.time)
-            .then(function () {
-            R.AlarmInputs.fromJSON(_this.inputs); // <-- this is where I'm doing validation again??
-            return _this.querySvc.insertAlarm([_this.user.uuid, _this.inputs.title, _this.inputs.time]);
+            .then(function (time) {
+            return _this.querySvc.insertAlarm([_this.user.uuid, _this.inputs.title, time]);
         });
     };
     AlarmsSvc.prototype.addTodayOrTomorrowIndicator = function (sortedAlarms) {
@@ -57,7 +55,6 @@ var AlarmsSvc = /** @class */ (function () {
         var _this = this;
         return time_helpers_1.default.isMilitaryTime(this.inputs.time)
             .then(function (time) {
-            console.log('update alarm time', time);
             return _this.querySvc.updateAlarmTime([time, _this.inputs.alarm_uuid, _this.user.uuid]);
         })
             .then(function () {

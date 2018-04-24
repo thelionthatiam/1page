@@ -51,9 +51,8 @@ export default class AlarmsSvc {
 
     addAlarm():Promise<void> {
         return TimeHelpers.isMilitaryTime(this.inputs.time)
-            .then(() => {
-                R.AlarmInputs.fromJSON(this.inputs) // <-- this is where I'm doing validation again??
-                return this.querySvc.insertAlarm([this.user.uuid, this.inputs.title, this.inputs.time])
+            .then(time => {
+                return this.querySvc.insertAlarm([this.user.uuid, this.inputs.title, time])
             })
     }
 
@@ -100,7 +99,6 @@ export default class AlarmsSvc {
     updateAlarmTime():Promise<void> {
         return TimeHelpers.isMilitaryTime(this.inputs.time) 
             .then(time => {
-                console.log('update alarm time', time)
                 return this.querySvc.updateAlarmTime([time, this.inputs.alarm_uuid, this.user.uuid])
             })
             .then(() => {

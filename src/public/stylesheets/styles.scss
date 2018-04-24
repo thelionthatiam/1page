@@ -1142,6 +1142,8 @@ $toggle-width: 60px;
   margin:4px;
   transition:300ms;
   overflow:hidden;
+  // this doesn't work well with rotation
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, .1);
 }
 
 .add-alarm-icon {
@@ -1155,9 +1157,14 @@ $toggle-width: 60px;
   overflow:hidden;
 }
 
+.fixed-center-wrapper:active {
+  transform: translateY(1px) rotate(20deg);
+}
+// sort-of an active state
 .rotate-right {
-  transform: rotate(135deg);
+  transform: translateY(1px) rotate(135deg);
   transition:300ms;
+  box-shadow:none;
 }
 
 .special {

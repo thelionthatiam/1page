@@ -65,6 +65,7 @@ function recieveError(error, dispatch) {
         route: error.route
     };
 }
+exports.recieveError = recieveError;
 function fetchNewTime(v) {
     return function (dispatch) {
         dispatch(reqNewTime(v));

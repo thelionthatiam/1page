@@ -62,7 +62,7 @@ export function clearError() {
     
 }
 
-function recieveError(error, dispatch) {
+export function recieveError(error, dispatch) {
     return {
         type: GEN_ERR,
         error: error.error,

@@ -1,16 +1,14 @@
-
+import { recieveError } from './actions'
 // ADD ALARM
 
 export const REQ_NEW_ALARM = 'REQ_NEW_ALARM';
 export const RES_NEW_ALARM = 'RES_NEW_ALARM';
 
 export function reqNewAlarm(v) {
-    console.log('reqdfgmr', v)
     return { type: REQ_NEW_ALARM }
 }
 
 function recieveNewAlarm(alarms) {
-    console.log('RECfgh', alarms)
     return {
         type: RES_NEW_ALARM,
         alarms: alarms
@@ -31,7 +29,9 @@ export function fetchNewAlarm(v) {
         })
             .then((res) => res.json())
             .then(alarms => {
-                console.log(alarms)
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
                 dispatch(recieveNewAlarm(alarms))
             })
     }
@@ -66,12 +66,15 @@ export function fetchActiveToggle(v) {
         })
             .then((res) => res.json())
             .then(alarms => {
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
                 dispatch(recieveActiveToggle(alarms))
             })
     }
 }
 
-// TOGGLE TITLE
+// TITLE
 export const REQ_ALARM_TITLE = 'REQ_ALARM_TITLE';
 export const RES_ALARM_TITLE = 'RES_ALARM_TITLE';
 
@@ -101,6 +104,9 @@ export function fetchAlarmTitle(v) {
         })
             .then((res) => res.json())
             .then(alarms => {
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
                 dispatch(recieveActiveToggle(alarms))
             })
     }

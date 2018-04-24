@@ -854,7 +854,8 @@ button:focus {
   background-color: #325872;
   margin: 4px;
   transition: 300ms;
-  overflow: hidden; }
+  overflow: hidden;
+  box-shadow: 3px 3px 6px 1px rgba(0, 0, 0, 0.1); }
 
 .add-alarm-icon {
   width: 60px;
@@ -865,9 +866,13 @@ button:focus {
   transition: 300ms;
   overflow: hidden; }
 
+.fixed-center-wrapper:active {
+  transform: translateY(1px) rotate(20deg); }
+
 .rotate-right {
-  transform: rotate(135deg);
-  transition: 300ms; }
+  transform: translateY(1px) rotate(135deg);
+  transition: 300ms;
+  box-shadow: none; }
 
 .special {
   background-color: white;
