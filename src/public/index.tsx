@@ -24,6 +24,8 @@ import {
     REQ_ACTIVE_TOGGLE,
     RES_ACTIVE_TOGGLE,
     REQ_ALARM_TITLE,
+    REQ_ALARM_ARCHIVE,
+    RES_ALARM_ARCHIVE,
     RES_ALARM_TITLE
 } from './actions-alarm'
 import { WSAEPFNOSUPPORT } from 'constants';
@@ -93,10 +95,17 @@ function userDataReducer(state = initialState, action) {
         case REQ_ALARM_TITLE:
             return Object.assign({}, state, {isFetching: true})
         case REQ_ALARM_TITLE:
-            console.log('req alarm title', action)
+
             return Object.assign({}, state, {
                 isFetching:false,
                 alarms:action.alarms
+            })
+        case REQ_ALARM_ARCHIVE:
+            return Object.assign({}, state, { isFetching: true })
+        case REQ_ALARM_ARCHIVE:
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
             })
         case GEN_ERR:
             console.log('gen error', action)

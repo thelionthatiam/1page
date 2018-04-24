@@ -181,11 +181,49 @@ export function fetchAlarmTitle(v) {
         })
             .then((res) => res.json())
             .then(alarms => {
-                console.log('return from fetch new titile', alarms)
                 if (alarms.status === 'failed') {
                     return dispatch(recieveError(alarms, dispatch))
                 }
                 dispatch(recieveActiveToggle(alarms))
+            })
+    }
+}
+
+
+// ARCHIVE ALARMS
+
+export const REQ_ALARM_ARCHIVE = 'REQ_ALARM_ARCHIVE';
+export const RES_ALARM_ARCHIVE = 'RES_ALARM_ARCHIVE';
+
+export function reqAlarmArchive(v) {
+    return { type: REQ_ALARM_ARCHIVE }
+}
+
+function recieveAlarmArchive(alarms) {
+    return {
+        type: RES_ALARM_ARCHIVE,
+        alarms: alarms
+    }
+}
+
+export function fetchAlarmArchive(v) {
+    return function (dispatch) {
+        dispatch(reqAlarmArchive(v))
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/api?_method=DELETE", {
+            method: "post",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(v)
+        })
+            .then((res) => res.json())
+            .then(alarms => {
+                if (alarms.status === 'failed') {
+                    return dispatch(recieveError(alarms, dispatch))
+                }
+                dispatch(recieveAlarmArchive(alarms))
             })
     }
 }

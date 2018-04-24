@@ -229,6 +229,9 @@ button:focus {
 .left-text {
   align-self: flex-start; }
 
+.empty-list h1 {
+  color: lightGrey; }
+
 .toggle-wrapper {
   display: flex;
   align-items: center;
@@ -405,7 +408,7 @@ button:focus {
   flex-direction: column;
   justify-content: center;
   display: flex;
-  opacity: 0.8;
+  opacity: 0.95;
   max-width: 40vw;
   transition: 200ms; }
 

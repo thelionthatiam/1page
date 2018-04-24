@@ -236,17 +236,19 @@ alarmsAPI.route('/:alarm_uuid/days-of-week')
 
 // ARCHIVE ALARM
 
-alarmsAPI.route('/:alarm_uuid')
-  .delete((req, res) => {
+alarmsAPI.route('/:alarm_uuid/api').delete((req, res) => {
     req.AlarmSvc = new AlarmSvc(req.querySvc, req.session.user, req.body)
-
     req.AlarmSvc.archiveAlarm()
-      .then((result) => {
-        res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-      })
+      .then(() => req.AlarmSvc.getUserAlarms())
+      .then(alarms => res.json(alarms))
       .catch(e => {
-        console.log(e)
-        res.render('error', { errMessage:e })
+        res.json(
+          {
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+          }
+        );
       })
   })
 

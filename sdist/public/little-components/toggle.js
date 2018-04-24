@@ -39,5 +39,24 @@ var Toggler = /** @class */ (function (_super) {
     };
     return Toggler;
 }(React.Component));
-exports.default = Toggler;
+exports.Toggler = Toggler;
+var ArchiveAlarm = /** @class */ (function (_super) {
+    __extends(ArchiveAlarm, _super);
+    function ArchiveAlarm(props) {
+        var _this = _super.call(this, props) || this;
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
+        return _this;
+    }
+    ArchiveAlarm.prototype.handleSubmit = function (e) {
+        e.preventDefault();
+        this.props.archiveAlarm({
+            alarm_uuid: this.props.alarm.alarm_uuid
+        });
+    };
+    ArchiveAlarm.prototype.render = function () {
+        return (React.createElement("input", { onClick: this.handleSubmit, className: "icon", type: "image", width: "20px", height: "20px", src: "/icons/black/trash.svg" }));
+    };
+    return ArchiveAlarm;
+}(React.Component));
+exports.ArchiveAlarm = ArchiveAlarm;
 //# sourceMappingURL=toggle.js.map

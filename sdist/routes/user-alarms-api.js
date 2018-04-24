@@ -199,16 +199,17 @@ alarmsAPI.route('/:alarm_uuid/days-of-week')
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
 // ARCHIVE ALARM
-alarmsAPI.route('/:alarm_uuid')
-    .delete(function (req, res) {
+alarmsAPI.route('/:alarm_uuid/api').delete(function (req, res) {
     req.AlarmSvc = new logic_alarms_1.default(req.querySvc, req.session.user, req.body);
     req.AlarmSvc.archiveAlarm()
-        .then(function (result) {
-        res.redirect('/app/accounts/' + req.session.user.email + '/alarms');
-    })
+        .then(function () { return req.AlarmSvc.getUserAlarms(); })
+        .then(function (alarms) { return res.json(alarms); })
         .catch(function (e) {
-        console.log(e);
-        res.render('error', { errMessage: e });
+        res.json({
+            'error': e,
+            'status': "failed",
+            'route': '/:alarm_uuid/time/api'
+        });
     });
 });
 ////////////////////////////////////////////////////

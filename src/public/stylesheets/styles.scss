@@ -193,6 +193,7 @@ $icon-container-width:$icon-width + $small-margin-l;
 // BOILERPLATE
 .centerColumn {@include centerColumn}
 
+
 .marginPaddingFix {
   margin:0!important;
   padding:0!important;
@@ -354,6 +355,11 @@ button:focus {
   align-self: flex-start;
 }
 
+.empty-list {
+  h1 {
+    color:$lightGrey;
+  }
+}
 
 // TOGGLE BUTTON
 $toggle-width: 60px;
@@ -584,7 +590,7 @@ $toggle-width: 60px;
   flex-direction:column;
   justify-content: center;
   display:flex;
-  opacity: 0.8;
+  opacity: 0.95;
   max-width:40vw;
   transition:200ms;
 }

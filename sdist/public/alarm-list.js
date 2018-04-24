@@ -20,9 +20,14 @@ var AlarmList = /** @class */ (function (_super) {
     AlarmList.prototype.render = function () {
         var _this = this;
         var alarms = this.props.alarms.map(function (alarm) {
-            return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive, postTitle: _this.props.postTitle });
+            return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive, postTitle: _this.props.postTitle, archiveAlarm: _this.props.archiveAlarm });
         });
-        return (React.createElement("div", null, alarms));
+        return (React.createElement("div", null, this.props.alarms.length === 0
+            ?
+                React.createElement("div", { className: 'centerColumn empty-list' },
+                    React.createElement("h1", null, "nothing here, try adding an alarm below"))
+            :
+                alarms));
     };
     return AlarmList;
 }(React.Component));
@@ -30,13 +35,8 @@ exports.AlarmList = AlarmList;
 var Alarm = /** @class */ (function (_super) {
     __extends(Alarm, _super);
     function Alarm(props) {
-        var _this = _super.call(this, props) || this;
-        _this.testClick = _this.testClick.bind(_this);
-        return _this;
+        return _super.call(this, props) || this;
     }
-    Alarm.prototype.testClick = function () {
-        console.log('test click completed', this.props.alarm.alarm_uuid);
-    };
     Alarm.prototype.render = function () {
         var activeButton;
         if (this.props.alarm.active) {
@@ -45,7 +45,7 @@ var Alarm = /** @class */ (function (_super) {
         else {
             activeButton = React.createElement("button", { type: 'submit', className: "button light-button" }, "enable");
         }
-        return (React.createElement("div", { className: "column contentWrapper" },
+        return (React.createElement("div", { className: "column contentWrapper fadeIn" },
             React.createElement("div", { className: "alarm-row" },
                 React.createElement("div", { className: 'time-wrapper' },
                     React.createElement("div", { className: 'form-row' },
@@ -55,13 +55,11 @@ var Alarm = /** @class */ (function (_super) {
                     React.createElement("div", { className: 'alarm-time-row' },
                         React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, time: this.props.alarm.time, postTime: this.props.postTime }),
                         React.createElement("div", { className: 'toggle-down' },
-                            React.createElement(toggle_1.default, { alarm: this.props.alarm, toggleActive: this.props.toggleActive }))))),
+                            React.createElement(toggle_1.Toggler, { alarm: this.props.alarm, toggleActive: this.props.toggleActive }))))),
             React.createElement("div", { className: "alarm-row" },
                 React.createElement("a", { href: '/app/accounts/{user_uuid}/settings' },
                     React.createElement("img", { className: 'icon fadeIn', src: '/icons/black/gear.svg' })),
-                React.createElement("form", { action: "/app/accounts/{user_uuid}/alarms/{alarm_uuid}?_method=DELETE", method: "POST" },
-                    React.createElement("input", { className: "icon", type: "image", width: "20px", height: "20px", src: "/icons/black/trash.svg" }),
-                    React.createElement("input", { name: "alarm_uuid", type: "hidden", value: this.props.alarm.alarm_uuid })))));
+                React.createElement(toggle_1.ArchiveAlarm, { alarm: this.props.alarm, archiveAlarm: this.props.archiveAlarm }))));
     };
     return Alarm;
 }(React.Component));

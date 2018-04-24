@@ -87,7 +87,13 @@ function userDataReducer(state, action) {
         case actions_alarm_1.REQ_ALARM_TITLE:
             return Object.assign({}, state, { isFetching: true });
         case actions_alarm_1.REQ_ALARM_TITLE:
-            console.log('req alarm title', action);
+            return Object.assign({}, state, {
+                isFetching: false,
+                alarms: action.alarms
+            });
+        case actions_alarm_1.REQ_ALARM_ARCHIVE:
+            return Object.assign({}, state, { isFetching: true });
+        case actions_alarm_1.REQ_ALARM_ARCHIVE:
             return Object.assign({}, state, {
                 isFetching: false,
                 alarms: action.alarms

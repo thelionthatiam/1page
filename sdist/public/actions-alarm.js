@@ -166,7 +166,6 @@ function fetchAlarmTitle(v) {
         })
             .then(function (res) { return res.json(); })
             .then(function (alarms) {
-            console.log('return from fetch new titile', alarms);
             if (alarms.status === 'failed') {
                 return dispatch(actions_1.recieveError(alarms, dispatch));
             }
@@ -175,4 +174,39 @@ function fetchAlarmTitle(v) {
     };
 }
 exports.fetchAlarmTitle = fetchAlarmTitle;
+// ARCHIVE ALARMS
+exports.REQ_ALARM_ARCHIVE = 'REQ_ALARM_ARCHIVE';
+exports.RES_ALARM_ARCHIVE = 'RES_ALARM_ARCHIVE';
+function reqAlarmArchive(v) {
+    return { type: exports.REQ_ALARM_ARCHIVE };
+}
+exports.reqAlarmArchive = reqAlarmArchive;
+function recieveAlarmArchive(alarms) {
+    return {
+        type: exports.RES_ALARM_ARCHIVE,
+        alarms: alarms
+    };
+}
+function fetchAlarmArchive(v) {
+    return function (dispatch) {
+        dispatch(reqAlarmArchive(v));
+        return fetch("/app/accounts/:email/alarms/:alarm_uuid/api?_method=DELETE", {
+            method: "post",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(v)
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (alarms) {
+            if (alarms.status === 'failed') {
+                return dispatch(actions_1.recieveError(alarms, dispatch));
+            }
+            dispatch(recieveAlarmArchive(alarms));
+        });
+    };
+}
+exports.fetchAlarmArchive = fetchAlarmArchive;
 //# sourceMappingURL=actions-alarm.js.map

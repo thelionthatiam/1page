@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Toggler from './little-components/toggle'
+import TransitionGroup from 'react-transition-group/TransitionGroup'
+import { Toggler, ArchiveAlarm } from './little-components/toggle'
 import { connect, Provider } from 'react-redux';
-import { fetchNewTime } from './actions';
+import { fetchNewTime } from './actions-alarm';
 
 export class AlarmList extends React.Component {
     props: {
@@ -9,6 +10,7 @@ export class AlarmList extends React.Component {
         postTime:any;
         postTitle:any;
         toggleActive:any;
+        archiveAlarm:any;
     }
 
     constructor(props) {
@@ -24,14 +26,20 @@ export class AlarmList extends React.Component {
                     postTime = {this.props.postTime}
                     toggleActive = {this.props.toggleActive}
                     postTitle = {this.props.postTitle}
+                    archiveAlarm = {this.props.archiveAlarm}
                 />
         })
 
-
-
         return (
             <div>
-                {alarms} 
+                {this.props.alarms.length === 0
+                ? 
+                <div className = 'centerColumn empty-list'>
+                    <h1>nothing here, try adding an alarm below</h1>
+                </div>
+                :
+                alarms
+                } 
             </div>
         )
     }
@@ -44,15 +52,11 @@ class Alarm extends React.Component {
         postTime:any;
         postTitle:any;
         toggleActive:any;
+        archiveAlarm:any;
     }
 
     constructor(props) {
         super(props)
-        this.testClick = this.testClick.bind(this)
-    }
-
-    testClick() {
-        console.log('test click completed', this.props.alarm.alarm_uuid)
     }
 
     render() {
@@ -64,7 +68,7 @@ class Alarm extends React.Component {
         }
         
         return (
-            <div className="column contentWrapper">
+            <div className="column contentWrapper fadeIn">
                 <div className="alarm-row">
                     <div className = 'time-wrapper'>
                         <div className='form-row'>
@@ -95,10 +99,14 @@ class Alarm extends React.Component {
                     <a href='/app/accounts/{user_uuid}/settings'>
                         <img className='icon fadeIn' src='/icons/black/gear.svg'/>
                     </a>
-                    <form action="/app/accounts/{user_uuid}/alarms/{alarm_uuid}?_method=DELETE" method="POST">
+                    <ArchiveAlarm 
+                        alarm = {this.props.alarm} 
+                        archiveAlarm = {this.props.archiveAlarm} 
+                        />
+                    {/* <form action="/app/accounts/{user_uuid}/alarms/{alarm_uuid}?_method=DELETE" method="POST">
                         <input className = "icon" type="image" width="20px" height="20px" src="/icons/black/trash.svg"/>
                         <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid}/>
-                    </form>
+                    </form> */}
                 </div>
             </div>
         )
