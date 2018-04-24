@@ -49,6 +49,8 @@ var Alarm = /** @class */ (function (_super) {
             React.createElement("div", { className: "alarm-row" },
                 React.createElement("div", { className: 'time-wrapper' },
                     React.createElement("div", { className: 'form-row' },
+                        React.createElement("p", { className: "small-text centered-text" }, this.props.alarm.nextAlarm),
+                        React.createElement("p", { className: "small-text centered-text" }, "\u2022"),
                         React.createElement(TitleForm, { alarm_uuid: this.props.alarm.alarm_uuid, title: this.props.alarm.title, postTitle: this.props.postTitle })),
                     React.createElement("div", { className: 'alarm-time-row' },
                         React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, time: this.props.alarm.time, postTime: this.props.postTime }),
@@ -133,7 +135,9 @@ var TitleForm = /** @class */ (function (_super) {
         _this.handleClickOutside = _this.handleClickOutside.bind(_this);
         return _this;
     }
-    TitleForm.prototype.componentDidMount = function () { document.addEventListener('mousedown', this.handleClickOutside); };
+    TitleForm.prototype.componentDidMount = function () {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    };
     TitleForm.prototype.componentWillUnmount = function () { document.removeEventListener('mousedown', this.handleClickOutside); };
     TitleForm.prototype.onBlur = function () {
         this.setState({
@@ -149,24 +153,22 @@ var TitleForm = /** @class */ (function (_super) {
         }
     };
     TitleForm.prototype.handleChange = function (event) {
-        if (event.target.value !== '') {
-            this.setState({ value: event.target.value });
-        }
+        // if (event.target.value !== '') {
+        this.setState({ value: event.target.value });
+        // }
     };
     TitleForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        if (this.state.value !== '') {
-            this.props.postTitle({
-                alarm_uuid: this.props.alarm_uuid,
-                title: this.state.value
-            }); // is this the only difference?    
-        }
+        this.props.postTitle({
+            alarm_uuid: this.props.alarm_uuid,
+            title: this.state.value
+        }); // is this the only difference?    
     };
     TitleForm.prototype.render = function () {
         return (React.createElement("div", null, !this.state.form
             ?
                 React.createElement("div", { onClick: this.onBlur },
-                    React.createElement("p", { className: 'alarm-title small-text link-text' }, this.props.title)) //changed class and property
+                    React.createElement("p", { className: 'alarm-title small-text link-text' }, this.props.title ? this.props.title : 'add title')) //changed class and property
             :
                 React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
                     React.createElement("input", { type: 'text', className: 'link-text-form alarm-title small-text', value: this.state.value, onChange: this.handleChange }))));

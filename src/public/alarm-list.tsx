@@ -68,6 +68,8 @@ class Alarm extends React.Component {
                 <div className="alarm-row">
                     <div className = 'time-wrapper'>
                         <div className='form-row'>
+                            <p className="small-text centered-text">{this.props.alarm.nextAlarm}</p>
+                            <p className="small-text centered-text">•</p>
                             <TitleForm
                                 alarm_uuid = {this.props.alarm.alarm_uuid}
                                 title = {this.props.alarm.title}
@@ -215,7 +217,9 @@ class TitleForm extends React.Component {
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
-    componentDidMount() { document.addEventListener('mousedown', this.handleClickOutside) }
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside)
+    }
     componentWillUnmount() { document.removeEventListener('mousedown', this.handleClickOutside) }
 
     onBlur() {
@@ -235,19 +239,18 @@ class TitleForm extends React.Component {
     }
 
     handleChange(event) {
-        if (event.target.value !== '') {
+        // if (event.target.value !== '') {
             this.setState({ value: event.target.value });
-        }
+        // }
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.value !== '') {
-            this.props.postTitle({ // this changed
-                alarm_uuid: this.props.alarm_uuid,
-                title: this.state.value
-            }) // is this the only difference?    
-        }
+        this.props.postTitle({ 
+            alarm_uuid: this.props.alarm_uuid,
+            title: this.state.value
+        }) // is this the only difference?    
+        
     }
 
     render() {
@@ -255,7 +258,7 @@ class TitleForm extends React.Component {
             <div>
                 {!this.state.form
                     ?
-                    <div onClick={this.onBlur}><p className='alarm-title small-text link-text'>{this.props.title}</p></div> //changed class and property
+                    <div onClick={this.onBlur}><p className='alarm-title small-text link-text'>{this.props.title? this.props.title : 'add title'}</p></div> //changed class and property
                     :
                     <form ref={this.setWrapperRef} onSubmit={this.handleSubmit} onBlur={this.onBlur}>
                         <input type='text' className='link-text-form alarm-title small-text' value={this.state.value} onChange={this.handleChange} />
