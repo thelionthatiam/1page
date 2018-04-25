@@ -87,7 +87,6 @@ var OrgSvc = /** @class */ (function () {
     };
     OrgSvc.prototype.getUserOrgsAndActiveOrg = function () {
         var _this = this;
-        console.log('get user orgs and active orgs runngin');
         return this.querySvc.getUserOrgsData([this.user.uuid])
             .then(function (orgs) {
             return {

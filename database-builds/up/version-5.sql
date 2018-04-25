@@ -96,3 +96,8 @@ ALTER TABLE user_settings ADD COLUMN queit_after numeric(10,2) NOT NULL DEFAULT 
 ALTER TABLE user_settings ADD COLUMN snooze_length numeric(10,2) NOT NULL DEFAULT 30; --30 seconds for production
 
 ALTER TABLE payment_credit ADD COLUMN active BOOLEAN default false;
+
+
+-- no default for user_settings
+alter table user_settings drop column active_payment;
+alter table user_settings add column active boolean default false;

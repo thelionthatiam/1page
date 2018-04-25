@@ -11,10 +11,20 @@ import orgs from './routes/user-organizations';
 import settings from './routes/user-settings';
 import payment from './routes/user-payment';
 import pusher from './routes/push-notifications';
+import trans from './routes/user-trans'
 
 import alarmsAPI from './routes/user-alarms-api';
 const index = express.Router();
 
+import {
+    payPal,
+    ach,
+    aliPay,
+    googlePlay,
+    stripe
+} from './services/transaction-helpers';
+import * as R from './services/value-objects';
+import * as V from './services/validation'
 
 index.use('/', auth);
 index.use('/', accts);
@@ -35,16 +45,142 @@ index.use('/app/accounts/:email/alarms', alarms);
 index.use('/app/accounts/:email/orgs', orgs);
 index.use('/app/accounts/:email/settings', settings);
 index.use('/app/accounts/:email/payment', payment);
+index.use('/app/accounts/:email/trans', trans)
 // router.use('/accounts/:email', require('./account/cart'));
 // router.use('/accounts/:email', require('./account/coupons'));
 // router.use('/accounts/:email', require('./account/orders'));
 // router.use('/accounts/:email', require('./account/transactions'));
 
+
+
+index.route('/anythingatall').get((req,res) => res.json({status:"OK"}))
+
+
+// ABSURD TRANS TEST
+
+index.route('/trans')
+    .get((req, res) => {
+        console.log('testing get trans')
+        res.redirect('/app/accounts')
+    })
+    .post((req, res) => {
+        console.log('|||||||||||||||||', 'transaction started')
+        let dismisses: number;
+        let unpaidDismisses: any;
+        let dismissTot: number;
+        let snoozes: number;
+        let unpaidSnoozes: any;
+        let snoozeTot: number;
+        let wakes: number;
+        let unpaidWakes: any;
+        let wakeTot: number;
+        let total: number;
+        let payment_uuid: string;
+        let recipient: V.UUID;
+        let org_trans_total: number;
+        let trans_uuid: V.UUID;
+        let revenue: number;
+        let snoozePrice: number;
+        let dismissPrice: number;
+        let wakePrice: number;
+
+        let user = R.UserSession.fromJSON(req.session.user);
+        req.querySvc.getUnpaidSnoozes([user.uuid, false])
+            .then((result) => {
+                console.log('|||||||||||||||||', 'get unpaid snoozes', result.rows)
+                console.log('|||||||||||||||||','snoozes', result.rowCount)
+                snoozes = result.rowCount
+                unpaidSnoozes = result.rows
+                console.log(req.querySvc)
+                return req.querySvc.getUnpaidDismisses([user.uuid, false])
+            })
+            .then((result) => {
+                console.log('|||||||||||||||||','dismisses', result.rowCount)
+                dismisses = result.rowCount
+                unpaidDismisses = result.rows
+                return req.querySvc.getUnpaidWakes([user.uuid, false])
+            })
+            .then((result) => {
+                console.log('|||||||||||||||||','wakes', result.rowCount)
+                wakes = result.rowCount
+                unpaidWakes = result.rows
+                return req.querySvc.getActiveOrg([user.uuid, true])
+            })
+            .then((activeOrg) => {
+                recipient = activeOrg.org_uuid;
+                console.log('|||||||||||||||||', recipient)
+                return req.querySvc.getUserSettings([user.uuid])
+            })
+            .then((settings) => {
+                snoozePrice = parseFloat(settings.snooze_price);
+                dismissPrice = parseFloat(settings.dismiss_price);
+                wakePrice = parseFloat(settings.wake_price);
+
+                snoozeTot = (snoozePrice * snoozes)
+                dismissTot = (dismissPrice * dismisses)
+                wakeTot = (wakePrice * wakes)
+                total = ( snoozeTot + dismissTot + wakeTot )
+
+                org_trans_total = stripe.orgCut(total);
+                revenue = stripe.revenue(total);
+
+                let inputs = [
+                        user.uuid,
+                        recipient,
+                        settings.active_payment,
+                        snoozes,
+                        dismisses,
+                        wakes,
+                        total
+                    ]
+                console.log('|||||||||||||||||', inputs)
+                return req.querySvc.insertTransaction(inputs)
+            })
+            .then((result) => {
+                trans_uuid = result.rows[0].trans_uuid // could just return trans_uuid
+                console.log('|||||||||||||||||||', result.rows[0])
+                let payArr = [];
+
+                for (let i = 0; i < unpaidSnoozes.length; i++ ) {
+                    let input = [ true, unpaidSnoozes[i].snooze_uuid]
+                    let promise = req.querySvc.updateSnoozeToPaid(input);
+                    payArr.push(promise)
+                }
+
+                for (let i = 0; i < unpaidDismisses.length; i++ ) {
+                    let input = [ true, unpaidDismisses[i].dismiss_uuid]
+                    let promise = req.querySvc.updateDismissesToPaid(input);
+                    payArr.push(promise)
+                }
+
+                for (let i = 0; i < unpaidWakes.length; i++ ) {
+                    let input = [ true, unpaidWakes[i].wakes_uuid]
+                    let promise = req.querySvc.updateWakesToPaid(input);
+                    payArr.push(promise)
+                }
+
+                return Promise.all(payArr)
+            })
+            .then((info) => { // why info?
+                return req.querySvc.insertOrgPayment([trans_uuid, user.uuid, recipient, org_trans_total, false])
+            })
+            .then((result) => {
+                return req.querySvc.insertRevenue([trans_uuid, user.uuid, revenue])
+            })
+            .then(() => res.redirect('/app/account'))
+            .catch((error) => {
+                console.log(error)
+                throw new Error('there was an error: ' + error)
+            })
+
+    })
+
+
+
+
 // REACT AND REDUX
 
 index.use('/app/accounts/:email/alarms', alarmsAPI);
-
-
 
 // subscribe to push this is working poorly
 

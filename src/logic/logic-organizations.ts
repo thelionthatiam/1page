@@ -127,7 +127,6 @@ export default class OrgSvc {
     }
 
     getUserOrgsAndActiveOrg() {
-        console.log('get user orgs and active orgs runngin')
         return this.querySvc.getUserOrgsData([this.user.uuid])
             .then(orgs => {
                 return {

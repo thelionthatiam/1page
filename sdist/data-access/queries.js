@@ -44,8 +44,20 @@ var QuerySvc = /** @class */ (function () {
                 return [];
             }
             else {
-                console.log('get user orgs', result.rows);
                 return result.rows;
+            }
+        });
+    };
+    QuerySvc.prototype.getActiveOrg = function (values) {
+        var text = 'SELECT * FROM user_orgs WHERE user_uuid = $1 and active = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('User has no active orgs.');
+                return [];
+            }
+            else {
+                return result.rows[0];
             }
         });
     };
@@ -266,11 +278,6 @@ var QuerySvc = /** @class */ (function () {
         var text = 'INSERT INTO alarms(user_uuid, title, time) VALUES ($1, $2, $3) RETURNING *';
         return this.conn.query(text, values);
     };
-    // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-    // insertSnooze(values:string[]) {
-    //   const text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
-    //   return this.conn.query(text, values);
-    // }
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertTransaction = function (values) {
         var text = 'INSERT INTO transactions(user_uuid, recipient, payment_uuid, snoozes, dismisses, wakes, total) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';

@@ -3,6 +3,7 @@ import * as R from '../services/value-objects';
 import * as pg from 'pg';
 
 import * as accounts from './queries-accounts';
+import { AnalysisOptions } from 'aws-sdk/clients/cloudsearch';
  
 export default class QuerySvc {
   conn:pg.PoolClient;
@@ -52,10 +53,23 @@ export default class QuerySvc {
           console.log('User has no saved orgs')
           return []
         } else {
-          console.log('get user orgs', result.rows)
           return result.rows;
         }
       })
+  }
+
+  getActiveOrg(values:[V.UUID, boolean]) {
+    const text = 'SELECT * FROM user_orgs WHERE user_uuid = $1 and active = $2'
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0) {
+          console.log('User has no active orgs.')
+          return []
+        } else {
+          return result.rows[0];
+        }
+      })
+
   }
 
   getUserOrgsData(values:[V.UUID]) {
@@ -295,13 +309,7 @@ export default class QuerySvc {
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  // insertSnooze(values:string[]) {
-  //   const text = 'INSERT INTO snooze(user_uuid, alarm_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
-  //   return this.conn.query(text, values);
-  // }
-
-  // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertTransaction(values:string[]) {
+  insertTransaction(values:any[]) {
     const text = 'INSERT INTO transactions(user_uuid, recipient, payment_uuid, snoozes, dismisses, wakes, total) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *'
     return this.conn.query(text, values)
   }

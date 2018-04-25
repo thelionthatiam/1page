@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as bcrypt from 'bcrypt';
 import { destroySession } from '../logic/logic-authorization';
 import ProfileSvc from '../logic/logic-profile'
-import { db } from '../middleware/database';
 
 
 const profile = express.Router();
