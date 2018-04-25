@@ -102,10 +102,13 @@ index.route('/trans')
         total = (snoozeTot + dismissTot + wakeTot);
         org_trans_total = transaction_helpers_1.stripe.orgCut(total);
         revenue = transaction_helpers_1.stripe.revenue(total);
+        return req.querySvc.getActiveFormOfPayment([user.uuid, true]);
+    })
+        .then(function (active_payment) {
         var inputs = [
             user.uuid,
             recipient,
-            settings.active_payment,
+            active_payment,
             snoozes,
             dismisses,
             wakes,

@@ -202,6 +202,18 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.getActiveFormOfPayment = function (values) {
+        var text = 'SELECT * FROM payment_credit WHERE user_uuid = $1 AND active = $2';
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                throw new Error('No active card on record.');
+            }
+            else {
+                return result.rows[0].card_uuid;
+            }
+        });
+    };
     QuerySvc.prototype.getDaysOfWeek = function (values) {
         var text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2';
         return this.conn.query(text, values)
@@ -382,7 +394,7 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.updateActiveFormOfPayment = function (values) {
         console.log('update active forms of payment', values);
-        var text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)';
+        var text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3) RETURNING *';
         return this.conn.query(text, values)
             .then(function (result) {
             if (result.rowCount === 0) {

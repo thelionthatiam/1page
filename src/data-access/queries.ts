@@ -223,6 +223,18 @@ export default class QuerySvc {
       })
   }
 
+  getActiveFormOfPayment(values:[V.UUID, boolean]) {
+    const text = 'SELECT * FROM payment_credit WHERE user_uuid = $1 AND active = $2'
+    return this.conn.query(text, values) 
+      .then(result => {
+        if (result.rowCount === 0) {
+          throw new Error ('No active card on record.')
+        } else {
+          return result.rows[0].card_uuid
+        }
+      })
+  }
+
   getDaysOfWeek(values:V.UUID[]) {
     const text = 'SELECT * FROM alarms WHERE alarm_uuid = $1 AND user_uuid = $2'
     return this.conn.query(text, values)
@@ -421,15 +433,15 @@ export default class QuerySvc {
       })
   }
 
-  updateActiveFormOfPayment(values: [boolean, string, V.UUID]) {
+  updateActiveFormOfPayment(values: [boolean, string, V.UUID]){
     console.log('update active forms of payment', values)
-    const text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3)'
+    const text = 'UPDATE payment_credit SET active = $1 WHERE (card_number, user_uuid) = ($2, $3) RETURNING *'
     return this.conn.query(text, values)
       .then(result => {
         if (result.rowCount === 0) {
           throw new Error('Nothing in the database here...')
         } else {
-          return null;
+          return null
         }
       })
   }

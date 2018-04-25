@@ -65,7 +65,7 @@ UPDATE wakes SET paid = false;
 -- when users are deleted, they are also removed from user_settings which had a foreign key to user_uuid
 
 ALTER TABLE user_settings DROP CONSTRAINT user_settings_user_uuid_fkey;
-ALTER TABLE user_settings ADD CONSTRAINT user_settings_user_uuid_fkey FOREIGN KEY (user_uuid) REFERENCES users(user_uuid) ON DELETE CASCADE;
+ALTER TABLE user_settings aaaaa FOREIGN KEY (user_uuid) REFERENCES users(user_uuid) ON DELETE CASCADE;
 
 ALTER TABLE alarms DROP CONSTRAINT alarms_title_check;
 ALTER TABLE alarms ADD CONSTRAINT alarms_title_check CHECK (title::text ~ '^[ 0-9a-zA-Z!@#$%^&*()_+]{0,25}$'::text);
@@ -98,6 +98,5 @@ ALTER TABLE user_settings ADD COLUMN snooze_length numeric(10,2) NOT NULL DEFAUL
 ALTER TABLE payment_credit ADD COLUMN active BOOLEAN default false;
 
 
--- no default for user_settings
+-- no need to record this in settimngs, just query the payments table
 alter table user_settings drop column active_payment;
-alter table user_settings add column active boolean default false;

@@ -123,16 +123,18 @@ index.route('/trans')
 
                 org_trans_total = stripe.orgCut(total);
                 revenue = stripe.revenue(total);
-
+                return req.querySvc.getActiveFormOfPayment([user.uuid, true])
+            })
+            .then(active_payment => {
                 let inputs = [
-                        user.uuid,
-                        recipient,
-                        settings.active_payment,
-                        snoozes,
-                        dismisses,
-                        wakes,
-                        total
-                    ]
+                    user.uuid,
+                    recipient,
+                    active_payment,
+                    snoozes,
+                    dismisses,
+                    wakes,
+                    total
+                ]
                 console.log('|||||||||||||||||', inputs)
                 return req.querySvc.insertTransaction(inputs)
             })
