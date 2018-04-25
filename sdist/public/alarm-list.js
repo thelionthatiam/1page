@@ -11,21 +11,65 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var Transition_1 = require("react-transition-group/Transition");
 var toggle_1 = require("./little-components/toggle");
 var AlarmList = /** @class */ (function (_super) {
     __extends(AlarmList, _super);
     function AlarmList(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            show: true
+        };
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
     }
+    AlarmList.prototype.handleClick = function (e) {
+        e.preventDefault();
+        this.setState({ show: !this.state.show });
+    };
     AlarmList.prototype.render = function () {
         var _this = this;
         var alarms = this.props.alarms.map(function (alarm) {
             return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive, postTitle: _this.props.postTitle, archiveAlarm: _this.props.archiveAlarm });
         });
+        var duration = 200;
+        var defaultStyle = {
+            transition: "opacity " + duration + "ms ease-in-out",
+            opacity: 0,
+        };
+        var transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            entered: {
+                opacity: .3,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exiting: {
+                opacity: .1,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exited: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            }
+        };
         return (React.createElement("div", null, this.props.alarms.length === 0
             ?
-                React.createElement("div", { className: 'centerColumn empty-list' },
-                    React.createElement("h1", null, "nothing here, try adding an alarm below"))
+                React.createElement("div", { className: 'centerColumn' },
+                    React.createElement(Transition_1.default, { in: this.state.show, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
+                        switch (state) {
+                            case 'entering':
+                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
+                            case 'entered':
+                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
+                            case 'exiting':
+                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
+                            case 'exited':
+                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
+                        }
+                    }))
             :
                 alarms));
     };

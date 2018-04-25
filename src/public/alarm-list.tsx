@@ -1,6 +1,8 @@
 import * as React from 'react';
-import TransitionGroup from 'react-transition-group/TransitionGroup'
-import { Toggler, ArchiveAlarm } from './little-components/toggle'
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from 'react-transition-group/Transition';
+import { Toggler, ArchiveAlarm, } from './little-components/toggle'
+import NothingHere from './little-components/nothing-here'
 import { connect, Provider } from 'react-redux';
 import { fetchNewTime } from './actions-alarm';
 
@@ -13,9 +15,21 @@ export class AlarmList extends React.Component {
         archiveAlarm:any;
     }
 
+    state: {
+        show:boolean;
+    }
+
     constructor(props) {
         super(props)
-
+        this.state = {
+            show:true
+        }
+        this.handleClick = this.handleClick.bind(this)
+        
+    }
+    handleClick(e) {
+        e.preventDefault()
+        this.setState({show:!this.state.show})
     }
 
     render() {
@@ -30,16 +44,64 @@ export class AlarmList extends React.Component {
                 />
         })
 
+        let duration = 200;
+
+        let defaultStyle = {
+            transition: `opacity ${duration}ms ease-in-out`,
+            opacity: 0,
+        }
+
+        let transitionStyles = {
+            entering: { 
+                opacity: 0 ,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            entered: { 
+                opacity: .3 ,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exiting: { 
+                opacity: .1 ,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exited: { 
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            }
+        };
+
         return (
             <div>
                 {this.props.alarms.length === 0
-                ? 
-                <div className = 'centerColumn empty-list'>
-                    <h1>nothing here, try adding an alarm below</h1>
+                ?
+                <div className = 'centerColumn'>
+                    <Transition 
+                        in = {this.state.show} 
+                        timeout = {duration} 
+                        unmountOnExit = {true}
+                        mountOnEnter = {true}
+                        appear = {true}
+                        >
+
+                        {state => {
+                            
+                            switch (state) {
+                                case 'entering':
+                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
+                                case 'entered':
+                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
+                                case 'exiting':
+                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
+                                case 'exited':
+                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
+                            }
+                        }}
+                    </Transition>
                 </div>
                 :
                 alarms
                 } 
+                
             </div>
         )
     }
@@ -103,10 +165,6 @@ class Alarm extends React.Component {
                         alarm = {this.props.alarm} 
                         archiveAlarm = {this.props.archiveAlarm} 
                         />
-                    {/* <form action="/app/accounts/{user_uuid}/alarms/{alarm_uuid}?_method=DELETE" method="POST">
-                        <input className = "icon" type="image" width="20px" height="20px" src="/icons/black/trash.svg"/>
-                        <input name="alarm_uuid" type="hidden" value={this.props.alarm.alarm_uuid}/>
-                    </form> */}
                 </div>
             </div>
         )
