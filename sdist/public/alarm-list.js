@@ -13,63 +13,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var Transition_1 = require("react-transition-group/Transition");
 var toggle_1 = require("./little-components/toggle");
+var nothing_here_1 = require("./little-components/nothing-here");
 var AlarmList = /** @class */ (function (_super) {
     __extends(AlarmList, _super);
     function AlarmList(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            show: true
-        };
-        _this.handleClick = _this.handleClick.bind(_this);
-        return _this;
+        return _super.call(this, props) || this;
     }
-    AlarmList.prototype.handleClick = function (e) {
-        e.preventDefault();
-        this.setState({ show: !this.state.show });
-    };
     AlarmList.prototype.render = function () {
         var _this = this;
         var alarms = this.props.alarms.map(function (alarm) {
             return React.createElement(Alarm, { alarm: alarm, key: alarm.id, postTime: _this.props.postTime, toggleActive: _this.props.toggleActive, postTitle: _this.props.postTitle, archiveAlarm: _this.props.archiveAlarm });
         });
-        var duration = 200;
-        var defaultStyle = {
-            transition: "opacity " + duration + "ms ease-in-out",
-            opacity: 0,
-        };
-        var transitionStyles = {
-            entering: {
-                opacity: 0,
-                transition: "opacity " + duration + "ms ease-in-out",
-            },
-            entered: {
-                opacity: .3,
-                transition: "opacity " + duration + "ms ease-in-out",
-            },
-            exiting: {
-                opacity: .1,
-                transition: "opacity " + duration + "ms ease-in-out",
-            },
-            exited: {
-                opacity: 0,
-                transition: "opacity " + duration + "ms ease-in-out",
-            }
-        };
         return (React.createElement("div", null, this.props.alarms.length === 0
             ?
-                React.createElement("div", { className: 'centerColumn' },
-                    React.createElement(Transition_1.default, { in: this.state.show, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
-                        switch (state) {
-                            case 'entering':
-                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                            case 'entered':
-                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                            case 'exiting':
-                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                            case 'exited':
-                                return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                        }
-                    }))
+                React.createElement(nothing_here_1.default, null)
             :
                 alarms));
     };
@@ -82,6 +39,7 @@ var Alarm = /** @class */ (function (_super) {
         return _super.call(this, props) || this;
     }
     Alarm.prototype.render = function () {
+        var _this = this;
         var activeButton;
         if (this.props.alarm.active) {
             activeButton = React.createElement("button", { type: 'submit', className: "button dark-button" }, "disable");
@@ -89,21 +47,42 @@ var Alarm = /** @class */ (function (_super) {
         else {
             activeButton = React.createElement("button", { type: 'submit', className: "button light-button" }, "enable");
         }
-        return (React.createElement("div", { className: "column contentWrapper fadeIn" },
-            React.createElement("div", { className: "alarm-row" },
-                React.createElement("div", { className: 'time-wrapper' },
-                    React.createElement("div", { className: 'form-row' },
-                        React.createElement("p", { className: "small-text centered-text" }, this.props.alarm.nextAlarm),
-                        React.createElement("p", { className: "small-text centered-text" }, "\u2022"),
-                        React.createElement(TitleForm, { alarm_uuid: this.props.alarm.alarm_uuid, title: this.props.alarm.title, postTitle: this.props.postTitle })),
-                    React.createElement("div", { className: 'alarm-time-row' },
-                        React.createElement(TimeForm, { alarm_uuid: this.props.alarm.alarm_uuid, time: this.props.alarm.time, postTime: this.props.postTime }),
-                        React.createElement("div", { className: 'toggle-down' },
-                            React.createElement(toggle_1.Toggler, { alarm: this.props.alarm, toggleActive: this.props.toggleActive }))))),
-            React.createElement("div", { className: "alarm-row" },
-                React.createElement("a", { href: '/app/accounts/{user_uuid}/settings' },
-                    React.createElement("img", { className: 'icon fadeIn', src: '/icons/black/gear.svg' })),
-                React.createElement(toggle_1.ArchiveAlarm, { alarm: this.props.alarm, archiveAlarm: this.props.archiveAlarm }))));
+        var duration = 200;
+        var transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            entered: {
+                opacity: 1,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exiting: {
+                opacity: .8,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exited: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            }
+        };
+        return (React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
+            return React.createElement("div", { className: "column contentWrapper", style: transitionStyles[state] },
+                React.createElement("div", { className: "alarm-row" },
+                    React.createElement("div", { className: 'time-wrapper' },
+                        React.createElement("div", { className: 'form-row' },
+                            React.createElement("p", { className: "small-text centered-text" }, _this.props.alarm.nextAlarm),
+                            React.createElement("p", { className: "small-text centered-text" }, "\u2022"),
+                            React.createElement(TitleForm, { alarm_uuid: _this.props.alarm.alarm_uuid, title: _this.props.alarm.title, postTitle: _this.props.postTitle })),
+                        React.createElement("div", { className: 'alarm-time-row' },
+                            React.createElement(TimeForm, { alarm_uuid: _this.props.alarm.alarm_uuid, time: _this.props.alarm.time, postTime: _this.props.postTime }),
+                            React.createElement("div", { className: 'toggle-down' },
+                                React.createElement(toggle_1.Toggler, { alarm: _this.props.alarm, toggleActive: _this.props.toggleActive }))))),
+                React.createElement("div", { className: "alarm-row" },
+                    React.createElement("a", { href: '/app/accounts/{user_uuid}/settings' },
+                        React.createElement("img", { className: 'icon fadeIn', src: '/icons/black/gear.svg' })),
+                    React.createElement(toggle_1.ArchiveAlarm, { alarm: _this.props.alarm, archiveAlarm: _this.props.archiveAlarm })));
+        }));
     };
     return Alarm;
 }(React.Component));

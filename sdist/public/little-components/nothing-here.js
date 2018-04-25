@@ -19,10 +19,6 @@ var NothingHere = /** @class */ (function (_super) {
     }
     NothingHere.prototype.render = function () {
         var duration = 200;
-        var defaultStyle = {
-            transition: "opacity " + duration + "ms ease-in-out",
-            opacity: 0,
-        };
         var transitionStyles = {
             entering: {
                 opacity: 0,
@@ -43,16 +39,9 @@ var NothingHere = /** @class */ (function (_super) {
         };
         return (React.createElement("div", { className: 'centerColumn' },
             React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
-                switch (state) {
-                    case 'entering':
-                        return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                    case 'entered':
-                        return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                    case 'exiting':
-                        return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                    case 'exited':
-                        return React.createElement("h1", { style: transitionStyles[state] }, "nothing here, add below");
-                }
+                return React.createElement("div", null,
+                    React.createElement("h3", { style: transitionStyles[state] }, "nothing here yet "),
+                    React.createElement("h1", { style: transitionStyles[state] }, " \u00AF\\_(\u30C4)_/\u00AF "));
             })));
     };
     return NothingHere;

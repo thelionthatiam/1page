@@ -21,15 +21,6 @@ export class AlarmList extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            show:true
-        }
-        this.handleClick = this.handleClick.bind(this)
-        
-    }
-    handleClick(e) {
-        e.preventDefault()
-        this.setState({show:!this.state.show})
     }
 
     render() {
@@ -43,65 +34,14 @@ export class AlarmList extends React.Component {
                     archiveAlarm = {this.props.archiveAlarm}
                 />
         })
-
-        let duration = 200;
-
-        let defaultStyle = {
-            transition: `opacity ${duration}ms ease-in-out`,
-            opacity: 0,
-        }
-
-        let transitionStyles = {
-            entering: { 
-                opacity: 0 ,
-                transition: `opacity ${duration}ms ease-in-out`,
-            },
-            entered: { 
-                opacity: .3 ,
-                transition: `opacity ${duration}ms ease-in-out`,
-            },
-            exiting: { 
-                opacity: .1 ,
-                transition: `opacity ${duration}ms ease-in-out`,
-            },
-            exited: { 
-                opacity: 0,
-                transition: `opacity ${duration}ms ease-in-out`,
-            }
-        };
-
         return (
             <div>
                 {this.props.alarms.length === 0
                 ?
-                <div className = 'centerColumn'>
-                    <Transition 
-                        in = {this.state.show} 
-                        timeout = {duration} 
-                        unmountOnExit = {true}
-                        mountOnEnter = {true}
-                        appear = {true}
-                        >
-
-                        {state => {
-                            
-                            switch (state) {
-                                case 'entering':
-                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
-                                case 'entered':
-                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
-                                case 'exiting':
-                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
-                                case 'exited':
-                                    return <h1 style = {transitionStyles[state]}>nothing here, add below</h1>;
-                            }
-                        }}
-                    </Transition>
-                </div>
+                <NothingHere/>
                 :
                 alarms
                 } 
-                
             </div>
         )
     }
@@ -128,45 +68,74 @@ class Alarm extends React.Component {
         } else {
             activeButton = <button type='submit' className="button light-button">enable</button>
         }
-        
-        return (
-            <div className="column contentWrapper fadeIn">
-                <div className="alarm-row">
-                    <div className = 'time-wrapper'>
-                        <div className='form-row'>
-                            <p className="small-text centered-text">{this.props.alarm.nextAlarm}</p>
-                            <p className="small-text centered-text">•</p>
-                            <TitleForm
-                                alarm_uuid = {this.props.alarm.alarm_uuid}
-                                title = {this.props.alarm.title}
-                                postTitle = {this.props.postTitle}
-                                />
-                        </div>
-                        <div className='alarm-time-row'>
-                            <TimeForm
-                                alarm_uuid = {this.props.alarm.alarm_uuid}
-                                time = {this.props.alarm.time}
-                                postTime = {this.props.postTime}
-                            />
-                            <div className = 'toggle-down'>
-                                <Toggler alarm = {this.props.alarm} toggleActive = {this.props.toggleActive}/>
-                                {/* <img className = 'icon down-arrow' src = '/icons/black/forward-outline.svg'/> */}
-                            </div>
+        let duration = 200;
 
+        let transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            entered: {
+                opacity: 1,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exiting: {
+                opacity: .8,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exited: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            }
+        };
+
+        return (
+            <Transition
+                in={true}
+                timeout={duration}
+                unmountOnExit={true}
+                mountOnEnter={true}
+                appear={true}>
+                {state => 
+                <div className="column contentWrapper" style = {transitionStyles[state]}>
+                    <div className="alarm-row">
+                        <div className = 'time-wrapper'>
+                            <div className='form-row'>
+                                <p className="small-text centered-text">{this.props.alarm.nextAlarm}</p>
+                                <p className="small-text centered-text">•</p>
+                                <TitleForm
+                                    alarm_uuid = {this.props.alarm.alarm_uuid}
+                                    title = {this.props.alarm.title}
+                                    postTitle = {this.props.postTitle}
+                                    />
+                            </div>
+                            <div className='alarm-time-row'>
+                                <TimeForm
+                                    alarm_uuid = {this.props.alarm.alarm_uuid}
+                                    time = {this.props.alarm.time}
+                                    postTime = {this.props.postTime}
+                                />
+                                <div className = 'toggle-down'>
+                                    <Toggler alarm = {this.props.alarm} toggleActive = {this.props.toggleActive}/>
+                                    {/* <img className = 'icon down-arrow' src = '/icons/black/forward-outline.svg'/> */}
+                                </div>
+
+                            </div>
                         </div>
                     </div>
+                        
+                    <div className="alarm-row">
+                        <a href='/app/accounts/{user_uuid}/settings'>
+                            <img className='icon fadeIn' src='/icons/black/gear.svg'/>
+                        </a>
+                        <ArchiveAlarm 
+                            alarm = {this.props.alarm} 
+                            archiveAlarm = {this.props.archiveAlarm} 
+                            />
+                    </div>
                 </div>
-                    
-                <div className="alarm-row">
-                    <a href='/app/accounts/{user_uuid}/settings'>
-                        <img className='icon fadeIn' src='/icons/black/gear.svg'/>
-                    </a>
-                    <ArchiveAlarm 
-                        alarm = {this.props.alarm} 
-                        archiveAlarm = {this.props.archiveAlarm} 
-                        />
-                </div>
-            </div>
+                }
+            </Transition>
         )
     }
 }

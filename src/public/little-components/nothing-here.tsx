@@ -10,11 +10,6 @@ export default class NothingHere extends React.Component {
     render() {
         let duration = 200;
 
-        let defaultStyle = {
-            transition: `opacity ${duration}ms ease-in-out`,
-            opacity: 0,
-        }
-
         let transitionStyles = {
             entering: {
                 opacity: 0,
@@ -33,6 +28,7 @@ export default class NothingHere extends React.Component {
                 transition: `opacity ${duration}ms ease-in-out`,
             }
         };
+     
 
         return (
             <div className='centerColumn'>
@@ -43,20 +39,12 @@ export default class NothingHere extends React.Component {
                     mountOnEnter={true}
                     appear={true}
                 >
-
-                    {state => {
-
-                        switch (state) {
-                            case 'entering':
-                                return <h1 style={transitionStyles[state]}>nothing here, add below</h1>;
-                            case 'entered':
-                                return <h1 style={transitionStyles[state]}>nothing here, add below</h1>;
-                            case 'exiting':
-                                return <h1 style={transitionStyles[state]}>nothing here, add below</h1>;
-                            case 'exited':
-                                return <h1 style={transitionStyles[state]}>nothing here, add below</h1>;
-                        }
-                    }}
+                    {state => 
+                        <div>
+                            <h3 style={transitionStyles[state]}>nothing here yet </h3>
+                            <h1 style={transitionStyles[state]}> ¯\_(ツ)_/¯ </h1>
+                        </div>
+                    }
                 </Transition>
             </div>
         )
