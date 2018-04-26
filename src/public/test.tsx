@@ -71,14 +71,8 @@ class NewTest extends React.Component {
                         <p>{this.props.userData.alarms[0].state}</p>
                         <p>{this.props.userData.alarms[0].repeat}</p>
                     </div>
-                    <form action = {'/app/accounts/' + this.props.userData.profile.email + '/alarms'} method = 'get'>
-                        <button type = 'submit' className = 'button dark-button'>alarms</button>
-                    </form>
-                    <form action={'/app/accounts/' + this.props.userData.profile.email + '/orgs'} method='get'>
-                        <button type='submit' className='button dark-button'>orgs</button>
-                    </form>
-                    <form action={'/trans'} method='post'>
-                        <button type='submit' className='button dark-button'>post test trans</button>
+                    <form action={'/app/accounts/' + this.props.userData.profile.email + '/trans'} method='post'>
+                        <button type='submit' className='button dark-button'>transactions</button>
                     </form>
                 </div>
             </div>

@@ -8,10 +8,10 @@ router.post('/', function (req, res) {
     var transSvc = new logic_trans_1.default(req.querySvc, req.session.user);
     transSvc.transact()
         .then(function () { return res.redirect('/app/account'); })
-        .catch(function (err) {
-        console.log(err);
-        res.redirect('/app/account');
+        .catch(function (error) {
+        console.log(error);
+        throw new Error('there was an error: ' + error);
     });
 });
 exports.default = router;
-//# sourceMappingURL=user-trans.js.map
+//# sourceMappingURL=test.js.map

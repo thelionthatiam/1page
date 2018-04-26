@@ -102,7 +102,6 @@ var AlarmsSvc = /** @class */ (function () {
         });
     };
     AlarmsSvc.prototype.archiveAlarm = function () {
-        console.log('archive alarm', this.inputs.alarm_uuid, this.user.uuid);
         return this.querySvc.updateAlarmArchived([true, this.inputs.alarm_uuid, this.user.uuid]);
     };
     AlarmsSvc.prototype.deleteAlarm = function () {

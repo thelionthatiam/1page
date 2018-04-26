@@ -19,14 +19,14 @@
                 
             </ul>
         </div>
-        <div class = 'top-row-time'>
+        {{!-- <div class = 'top-row-time'>
             <p class = 'top-row-time-text small-text'>5:50:00AM</p>
             <p class = 'top-row-time-text small-text'>Monday, April 2, 2018</p>
-        </div>
+        </div> --}}
     </div>
     <div class="column searchWrapper">
         <div class="column contentWrapper">
-            <h4 class = 'organization-subtitle'>current donation</h4>
+            <h4 class = 'organization-subtitle'>currently donating to:</h4>
             <div class="alarm-row">
                 {{#if activeOrgContent.defaultSet}}
                 <div class="flex column" id='{{activeOrgContent.frontEndID}}'>
@@ -55,6 +55,26 @@
                       <img class = 'org-img' src="/product-pictures/{{ activeOrgContent.img }}.jpg" />
                     </div>
                   </div>
+                  <div class="mob-org-img-description-wrapper">
+                    <div class="org-description">
+                      <p class="small-text">{{ activeOrgContent.description }}</p>
+                      <div class="org-action-wrapper">
+                        <a class='a' href="{{activeOrgContent.link}}">
+                          <img class='icon-mini' src='/icons/black/link.svg'>
+                        </a>
+                        <a class='a' href="{{activeOrgContent.link}}">
+                          <img class='icon-mini' src='/icons/black/share.svg'>
+                        </a>
+                        <form action="/app/accounts/{{email}}/orgs/{{activeOrgContent.org_uuid}}/remove-default?_method=PUT" method="post">
+                          <input type="hidden" name="org_uuid" value="{{ activeOrgContent.org_uuid }}" />
+                          <button class='button dark-button'>remove default</button>
+                        </form>
+                      </div>
+                    </div>
+                    <div class='org-img-wrapper'>
+                      <img class='org-img' src="/product-pictures/{{ activeOrgContent.img }}.jpg" />
+                    </div>
+                  </div>
                 </div>
                 {{else}}
                 <div class='boxBorder padding'>
@@ -71,7 +91,7 @@
             <div class="alarm-row">
                  {{#each organizationContent}} {{> my-organizationsdiv}} {{/each}}
             </div> --}}
-            <h4 class='organization-subtitle'>saved organizations</h4>
+            <h4 class='organization-subtitle'>saved organizations:</h4>
             <div class="categoryListWrapper">
                 {{#each organizationContent}} {{> organizationsdiv}} {{/each}}
             </div>

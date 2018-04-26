@@ -11,66 +11,29 @@ import orgs from './routes/user-organizations';
 import settings from './routes/user-settings';
 import payment from './routes/user-payment';
 import pusher from './routes/push-notifications';
-import trans from './routes/user-trans';
+
+import trans from './routes/user-trans'
 
 import alarmsAPI from './routes/user-alarms-api';
 const index = express.Router();
 
-import {
-    payPal,
-    ach,
-    aliPay,
-    googlePlay,
-    stripe
-} from './services/transaction-helpers';
-import * as R from './services/value-objects';
-import * as V from './services/validation';
-import TransSvc from './logic/logic-trans';
-
 index.use('/', auth);
 index.use('/', accts);
 index.use('/', pusher);
-// router.use('/', require('./guest/email'));
-// router.use('/guest', require('./guest/shopping'));
-
-index.use('/app*', appLayout)
+index.use('/app*', appLayout);
 index.use('/app/orgs', allOrgs);
-
-
-index.use('/app/accounts/:email', profile)
-index.use('/app/accounts/:email', allUserData)
+index.use('/app/accounts/:email', profile);
+index.use('/app/accounts/:email', allUserData);
 index.use('/app/accounts/:email/alarms', alarms);
 index.use('/app/accounts/:email/orgs', orgs);
 index.use('/app/accounts/:email/settings', settings);
 index.use('/app/accounts/:email/payment', payment);
-index.use('/app/accounts/:email/trans', trans)
-
-
-// ABSURD TRANS TEST
-
-index.route('/trans')
-    .post((req, res) => {
-        console.log('transaction started', req.session.user)
-        let transSvc = new TransSvc(req.querySvc, req.session.user)
-        transSvc.transact()
-            .then(() => res.redirect('/app/account'))
-            .catch((error) => {
-                console.log(error)
-                throw new Error('there was an error: ' + error)
-            })
-
-    })
-
-
-
-
+index.use('/app/accounts/:email/trans', trans);
 // REACT AND REDUX
-
 index.use('/app/accounts/:email/alarms', alarmsAPI);
 
 // subscribe to push this is working poorly
-
-
+// PUSH NOTIFICATION TEST
 index.post('/subscribe', (req, res) => {
     // console.log('this is from the subscribe route', req.body, req.session.user)
 

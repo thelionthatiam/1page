@@ -65,6 +65,43 @@
                 </ul>
             </div>
         </div>
+        <div class="mob-home-navigation-bar">
+            <div class="home-title-wrapper">
+                <div class="home-logo-wrapper">
+                    <a class='a' href="/">
+                        <img class="home-icon fadeIn" src="/icons/logo-placeholder.svg" />
+                    </a>
+                </div>
+                <div class="home-title-text-wrapper">
+                    <h1 class="home-title">s.y.l.</h1>
+                    <p class = 'mini-text'> You're a {{permission}}.</p>
+                </div>
+            </div>
+            <div class="home-navigation-wrapper">
+                <ul class="home-navigation-list">
+                    {{#if loggedIn}}
+                    <form action='/log-out' method="POST">
+                        <input class="home-navigation-item" type="submit" value="log out">
+                    </form>
+                    {{else}}
+                    <a href="/to-login">
+                        <li class="home-navigation-item">log in</li>
+                    </a>
+                    {{/if}}
+                    <li class="home-navigation-item">
+                        {{#if loggedIn}}
+                        <a href="/app">
+                            <button class="home-to-alarm">alarm clock</button>
+                        </a>
+                        {{else}}
+                        <a href="/new-account">
+                            <button class="home-create-account">create account</button>
+                        </a>
+                        {{/if}}
+                    </li>
+                </ul>
+            </div>
+        </div>
         {{{ body }}}       
         {{#if loggedIn}} {{else}}
         <div class="home-tryit-wrapper">

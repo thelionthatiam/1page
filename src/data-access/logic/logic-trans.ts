@@ -145,6 +145,4 @@ export default class TransSvc {
                 return this.querySvc.insertRevenue([this.trans_uuid, this.user.uuid, this.revenue])
             })
     }
-
-
 }

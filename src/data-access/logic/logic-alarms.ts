@@ -130,8 +130,6 @@ export default class AlarmsSvc {
         ]
     }
 
-
-
     updateDaysOfWeek():Promise<void>{
         return this.querySvc.updateDaysOfWeek(this.weekObjToQueryValues())
             .then(() => this.querySvc.getUserAlarm([this.inputs.alarm_uuid, this.user.uuid]))
@@ -152,7 +150,6 @@ export default class AlarmsSvc {
         }
 
     archiveAlarm():Promise<void> {
-        console.log('archive alarm', this.inputs.alarm_uuid, this.user.uuid)
         return this.querySvc.updateAlarmArchived([true, this.inputs.alarm_uuid, this.user.uuid])
     }
 

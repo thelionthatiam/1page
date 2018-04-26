@@ -34,6 +34,9 @@ li {
 .light-text {
   color: #fff; }
 
+.gray-text {
+  color: #756F6F; }
+
 .centered-text {
   padding: 2px;
   margin: 2px; }
@@ -86,7 +89,7 @@ body {
   padding: .4vw;
   margin: .3vw; }
 
-.big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .alarm-row, .day-title, .days-radio-wrapper {
+.big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .mob-org-img-description-wrapper, .alarm-row, .day-title, .days-radio-wrapper {
   margin-left: 0vw;
   padding-left: 0vw;
   margin-bottom: 2.5vh; }
@@ -135,7 +138,8 @@ form {
 .big-form-item {
   border-bottom: 1px solid #282828;
   font-size: 36px;
-  font-weight: 600; }
+  font-weight: 600;
+  width: 100%; }
 
 input {
   border: none;
@@ -297,7 +301,8 @@ button:focus {
   width: 100%;
   display: flex;
   align-items: center;
-  align-content: center; }
+  align-content: center;
+  padding: 3px; }
 
 .top-row-search-bar {
   flex-grow: .60;
@@ -352,9 +357,6 @@ button:focus {
   margin-left: 1vw;
   color: lightGrey; }
 
-.organization-subtitle {
-  margin-left: -20px; }
-
 .org-titles {
   text-transform: uppercase;
   font-weight: 400; }
@@ -364,6 +366,23 @@ button:focus {
   display: flex;
   align-items: center;
   align-content: center; }
+
+.mob-org-img-description-wrapper {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  display: none; }
+
+@media all and (max-width: 750px) {
+  .mob-org-img-description-wrapper {
+    display: flex; }
+    .mob-org-img-description-wrapper .org-description {
+      width: 100%; }
+    .mob-org-img-description-wrapper .org-img-wrapper {
+      width: 100%; }
+  .org-img-description-wrapper {
+    display: none; } }
 
 .org-description {
   width: 40%;
@@ -428,13 +447,16 @@ button:focus {
 
 .login-wrapper {
   min-width: 30vw;
-  display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.76);
   padding: 1vw;
   display: flex;
   flex-direction: column;
   justify-content: center; }
+
+@media all and (max-width: 750px) {
+  .login-wrapper {
+    width: 90vw; } }
 
 .home-img-wrapper {
   width: 100vw;
@@ -459,6 +481,29 @@ button:focus {
   align-items: center;
   background-color: rgba(255, 255, 255, 0.76);
   padding: 1vw; }
+
+.mob-home-navigation-bar {
+  position: absolute;
+  display: none;
+  top: 4vh;
+  width: 100vw; }
+
+@media all and (max-width: 750px) {
+  .home-navigation-bar {
+    display: none; }
+  .mob-home-navigation-bar {
+    display: flex;
+    justify-content: space-between; }
+    .mob-home-navigation-bar .home-navigation-wrapper {
+      justify-content: flex-end; }
+    .mob-home-navigation-bar .home-create-account {
+      height: 40px;
+      width: 120px;
+      font-size: 12px; }
+    .mob-home-navigation-bar .home-to-alarm {
+      height: 40px;
+      width: 120px;
+      font-size: 12px; } }
 
 .home-title {
   font-weight: 600; }
@@ -527,6 +572,11 @@ button:focus {
   align-items: center;
   background-color: #282828; }
 
+@media all and (max-width: 750px) {
+  .home-tryit-wrapper {
+    width: 40vw;
+    left: 30vw; } }
+
 .home-try {
   text-transform: uppercase;
   color: #fff;
@@ -576,6 +626,33 @@ button:focus {
   display: flex;
   flex-direction: column;
   background-color: #282828; }
+
+.mob-app-menu {
+  width: 18vw;
+  height: 99vh;
+  min-width: 45px;
+  max-width: 45px;
+  display: none;
+  flex-direction: column;
+  background-color: #282828; }
+
+@media all and (max-width: 750px) {
+  .mob-app-menu {
+    display: flex; }
+    .mob-app-menu .app-menu-li {
+      justify-content: center;
+      flex-direction: column; }
+      .mob-app-menu .app-menu-li .app-menu-title-wrapper {
+        margin-top: 10px; }
+      .mob-app-menu .app-menu-li .app-menu-text {
+        display: flex;
+        flex-direction: column; }
+      .mob-app-menu .app-menu-li .logout-wrapper {
+        justify-content: center; }
+    .mob-app-menu .formIcon {
+      margin: 0; }
+  .app-menu {
+    display: none; } }
 
 .app-menu-title-wrapper {
   display: flex;

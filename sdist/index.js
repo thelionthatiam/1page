@@ -15,17 +15,11 @@ var push_notifications_1 = require("./routes/push-notifications");
 var user_trans_1 = require("./routes/user-trans");
 var user_alarms_api_1 = require("./routes/user-alarms-api");
 var index = express.Router();
-var logic_trans_1 = require("./logic/logic-trans");
 index.use('/', guest_authorization_1.default);
 index.use('/', guest_accounts_1.default);
 index.use('/', push_notifications_1.default);
-// router.use('/', require('./guest/email'));
-// router.use('/guest', require('./guest/shopping'));
 index.use('/app*', choose_layout_1.default);
 index.use('/app/orgs', organizations_1.default);
-// router.use('/admin', require('./admin/products'));
-// router.use('/admin', require('./admin/coupons'));
-// router.use('/admin', require('./admin/accounts'));
 index.use('/app/accounts/:email', user_account_1.default);
 index.use('/app/accounts/:email', user_all_1.default);
 index.use('/app/accounts/:email/alarms', user_alarms_1.default);
@@ -33,25 +27,10 @@ index.use('/app/accounts/:email/orgs', user_organizations_1.default);
 index.use('/app/accounts/:email/settings', user_settings_1.default);
 index.use('/app/accounts/:email/payment', user_payment_1.default);
 index.use('/app/accounts/:email/trans', user_trans_1.default);
-// router.use('/accounts/:email', require('./account/cart'));
-// router.use('/accounts/:email', require('./account/coupons'));
-// router.use('/accounts/:email', require('./account/orders'));
-// router.use('/accounts/:email', require('./account/transactions'));
-// ABSURD TRANS TEST
-index.route('/trans')
-    .post(function (req, res) {
-    console.log('transaction started', req.session.user);
-    var transSvc = new logic_trans_1.default(req.querySvc, req.session.user);
-    transSvc.transact()
-        .then(function () { return res.redirect('/app/account'); })
-        .catch(function (error) {
-        console.log(error);
-        throw new Error('there was an error: ' + error);
-    });
-});
 // REACT AND REDUX
 index.use('/app/accounts/:email/alarms', user_alarms_api_1.default);
 // subscribe to push this is working poorly
+// PUSH NOTIFICATION TEST
 index.post('/subscribe', function (req, res) {
     // console.log('this is from the subscribe route', req.body, req.session.user)
     req.querySvc.checkUserSubscriptions([req.session.user.uuid])

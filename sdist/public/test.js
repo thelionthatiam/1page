@@ -50,12 +50,8 @@ var NewTest = /** @class */ (function (_super) {
                     React.createElement("p", null, this.props.userData.alarms[0].user_uuid),
                     React.createElement("p", null, this.props.userData.alarms[0].state),
                     React.createElement("p", null, this.props.userData.alarms[0].repeat)),
-                React.createElement("form", { action: '/app/accounts/' + this.props.userData.profile.email + '/alarms', method: 'get' },
-                    React.createElement("button", { type: 'submit', className: 'button dark-button' }, "alarms")),
-                React.createElement("form", { action: '/app/accounts/' + this.props.userData.profile.email + '/orgs', method: 'get' },
-                    React.createElement("button", { type: 'submit', className: 'button dark-button' }, "orgs")),
-                React.createElement("form", { action: '/trans', method: 'post' },
-                    React.createElement("button", { type: 'submit', className: 'button dark-button' }, "post test trans")))));
+                React.createElement("form", { action: '/app/accounts/' + this.props.userData.profile.email + '/trans', method: 'post' },
+                    React.createElement("button", { type: 'submit', className: 'button dark-button' }, "transactions")))));
     };
     return NewTest;
 }(React.Component));

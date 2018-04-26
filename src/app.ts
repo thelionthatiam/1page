@@ -110,7 +110,7 @@ app.use(function (err:Error, req:express.Request, res:express.Response, next:exp
 // app.listen(8000, '172.31.31.153')
 
 // localhost
-app.listen(8000, 'localhost')
+app.listen(3000, 'localhost')
 
 // // easy switch to https
 // http.createServer({
