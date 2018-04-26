@@ -157,17 +157,42 @@ export default class QuerySvc {
 
   getUnpaidSnoozes(values : [V.UUID, boolean]) {
     const text = 'SELECT * FROM snoozes WHERE user_uuid = $1 AND paid = $2'
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0 ) {
+          console.log('there were no snoozes in this period')
+          return []
+        }  else {
+          return result.rows
+        }
+
+      })
   }
 
   getUnpaidDismisses(values:[V.UUID, boolean]) {
     const text = 'SELECT * FROM dismisses WHERE user_uuid = $1 AND paid = $2'
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0 ) {
+          console.log('there were no dismisses in this period')
+          return []
+        } else {
+          return result.rows
+        }
+      })
   }
 
   getUnpaidWakes(values:[V.UUID, boolean]) {
     const text = 'SELECT * FROM wakes WHERE user_uuid = $1 AND paid = $2'
-    return this.conn.query(text, values);
+    return this.conn.query(text, values)
+      .then(result => {
+        if (result.rowCount === 0 ) {
+          console.log('there were no wakes in this period')
+          return []
+        } else {
+          return result.rows
+        }
+      })
   }
 
   getUserSettings(values:V.UUID[]) {
@@ -321,19 +346,27 @@ export default class QuerySvc {
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertTransaction(values:any[]) {
+  insertTransaction(values:any[]): Promise<any> {
+    console.log('insert transaction started')
     const text = 'INSERT INTO transactions(user_uuid, recipient, payment_uuid, snoozes, dismisses, wakes, total) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *'
     return this.conn.query(text, values)
+      .then(result => {
+        console.log(result)
+        return result.rows[0]
+      })
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertOrgPayment(values:string[]) {
+  insertOrgPayment(values:any[]):Promise<void> {
     const text = 'INSERT INTO org_transactions(trans_uuid, user_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)'
     return this.conn.query(text, values)
+      .then(result => {
+        return null
+      })
   }
 
   // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
-  insertRevenue(values:string[]) {
+  insertRevenue(values:any[]) {
     const text = 'INSERT INTO revenue(trans_uuid, user_uuid, trans_revenue_total) VALUES ($1, $2, $3)'
     return this.conn.query(text, values)
   }

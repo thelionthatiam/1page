@@ -140,15 +140,42 @@ var QuerySvc = /** @class */ (function () {
     };
     QuerySvc.prototype.getUnpaidSnoozes = function (values) {
         var text = 'SELECT * FROM snoozes WHERE user_uuid = $1 AND paid = $2';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('there were no snoozes in this period');
+                return [];
+            }
+            else {
+                return result.rows;
+            }
+        });
     };
     QuerySvc.prototype.getUnpaidDismisses = function (values) {
         var text = 'SELECT * FROM dismisses WHERE user_uuid = $1 AND paid = $2';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('there were no dismisses in this period');
+                return [];
+            }
+            else {
+                return result.rows;
+            }
+        });
     };
     QuerySvc.prototype.getUnpaidWakes = function (values) {
         var text = 'SELECT * FROM wakes WHERE user_uuid = $1 AND paid = $2';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('there were no wakes in this period');
+                return [];
+            }
+            else {
+                return result.rows;
+            }
+        });
     };
     QuerySvc.prototype.getUserSettings = function (values) {
         var text = 'SELECT * FROM user_settings where user_uuid = $1';
@@ -292,13 +319,21 @@ var QuerySvc = /** @class */ (function () {
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertTransaction = function (values) {
+        console.log('insert transaction started');
         var text = 'INSERT INTO transactions(user_uuid, recipient, payment_uuid, snoozes, dismisses, wakes, total) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            console.log(result);
+            return result.rows[0];
+        });
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertOrgPayment = function (values) {
         var text = 'INSERT INTO org_transactions(trans_uuid, user_uuid, recipient, org_trans_total, sent) VALUES ($1, $2, $3, $4, $5)';
-        return this.conn.query(text, values);
+        return this.conn.query(text, values)
+            .then(function (result) {
+            return null;
+        });
     };
     // SHOULD I BE DEFINING A SPECIAL TYPE FOR THIS ARRAY?
     QuerySvc.prototype.insertRevenue = function (values) {

@@ -77,14 +77,8 @@ class NewTest extends React.Component {
                     <form action={'/app/accounts/' + this.props.userData.profile.email + '/orgs'} method='get'>
                         <button type='submit' className='button dark-button'>orgs</button>
                     </form>
-                    <form action={'/trans'} method='get'>
-                        <button type='submit' className='button dark-button'>get test trans</button>
-                    </form>
                     <form action={'/trans'} method='post'>
                         <button type='submit' className='button dark-button'>post test trans</button>
-                    </form>
-                    <form action={'/anythingatall'} method='get'>
-                        <button type='submit' className='button dark-button'>get test</button>
                     </form>
                 </div>
             </div>
