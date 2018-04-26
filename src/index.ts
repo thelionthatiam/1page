@@ -36,9 +36,6 @@ index.use('/', pusher);
 index.use('/app*', appLayout)
 index.use('/app/orgs', allOrgs);
 
-// router.use('/admin', require('./admin/products'));
-// router.use('/admin', require('./admin/coupons'));
-// router.use('/admin', require('./admin/accounts'));
 
 index.use('/app/accounts/:email', profile)
 index.use('/app/accounts/:email', allUserData)
@@ -47,10 +44,6 @@ index.use('/app/accounts/:email/orgs', orgs);
 index.use('/app/accounts/:email/settings', settings);
 index.use('/app/accounts/:email/payment', payment);
 index.use('/app/accounts/:email/trans', trans)
-// router.use('/accounts/:email', require('./account/cart'));
-// router.use('/accounts/:email', require('./account/coupons'));
-// router.use('/accounts/:email', require('./account/orders'));
-// router.use('/accounts/:email', require('./account/transactions'));
 
 
 // ABSURD TRANS TEST
