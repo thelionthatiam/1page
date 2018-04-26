@@ -168,6 +168,83 @@ class Spa extends React.Component {
                                 </form>
                             </li>*/}
                         </ul>
+                        <ul className="mob-app-menu">
+                            <li className = 'app-menu-li'>
+                                <a href='/'>
+                                    <div className='app-menu-title-wrapper'>
+                                        <img className='formIcon fadeIn' src='/icons/logo-placeholder.svg' />
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li className='app-menu-li'>
+                                
+                                <Link to={"/app/accounts/" + this.props.userData.profile.email + "/alarms"} className='app-menu-text'>
+                                    <img className='formIcon fadeIn' src='/icons/white/clock-alarm.svg' />
+                                </Link>
+                                <p className = "mini-text gray-text">alarm</p>
+                            </li>
+
+                            <li className='app-menu-li'>
+                                
+                                <Link to={"/app/accounts/" + this.props.userData.profile.email + "/orgs"} className='app-menu-text '>
+                                    <img className='formIcon fadeIn' src='/icons/white/squares.svg' />
+                                </Link>
+                                <p className="mini-text gray-text">test</p>
+                            </li>
+                            <li className='app-menu-li'>
+                                
+                                <a href="/app/accounts/{{email}}/orgs" className='app-menu-text '>
+                                    <img className='formIcon fadeIn' src='/icons/white/squares.svg' />
+                                </a>
+                                <p className = "mini-text gray-text">orgs</p>
+                            </li>
+                            <li className='app-menu-li'>
+                                
+                                <a href="/app/accounts/{{email}}" className='app-menu-text'>
+                                    <img className='formIcon fadeIn' src='/icons/white/user-fem.svg' />
+                                </a>
+                                <p className = "mini-text gray-text">profile</p>
+                            </li>
+                            <li className='app-menu-li'>
+                                
+                                <a href="/app/accounts/{{email}}/settings" className='app-menu-text'>
+                                    <img className='formIcon fadeIn' src='/icons/white/mixer.svg' />
+                                </a>
+                                <p className = "mini-text gray-text">settings</p>
+                            </li>
+                            <li className='app-menu-li' id='logout'>
+                                <div className='filler'></div>
+                                <div className='logout-wrapper'>
+                                    <form action="/log-out" method="post">
+                                        <input type='image' name="submit" className='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                                    </form>
+                                </div>
+                                <p className="mini-text gray-text">logout</p>
+                            </li>
+
+                            {/*<li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/graph-bar.svg' />
+                                <Link to={"/app/accounts/" + this.props.profile.email + "/insights"} className='app-menu-text'>insights</Link>
+                            </li>
+
+                            <li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/user-fem.svg' />
+                                <Link to={"/app/accounts/" + this.props.profile.email + "/profile"} className='app-menu-text'>profile</Link>
+                            </li>
+
+                            <li className='app-menu-li'>
+                                <img className='formIcon fadeIn' src='/icons/white/mixer.svg' />
+                                <Link to={"/app/accounts/" + this.props.profile.email + "/settings"} className='app-menu-text'>settings</Link>
+                            </li>
+
+                            <li className='app-menu-li' id='logout'>
+                                <img className='formIcon fadeIn' src='/icons/white/back-1.svg' />
+                                <form action="/log-out" method="post">
+                                    <button type="submit" className="app-menu-text">logout</button>
+                                </form>
+                            </li>*/}
+                        </ul>
                         <div className="app-content">
                             <Route path='/app/account' render={() => <Redirect to={'/app/accounts/' + this.props.userData.profile.email + '/alarms'} />} />
                             <Route path={'/app/accounts/' + this.props.userData.profile.email + '/alarms'} component={AlarmClock} />
