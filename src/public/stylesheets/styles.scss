@@ -75,6 +75,14 @@ li {
   cursor:pointer;
 }
 
+@media all and (max-width:750px) {
+  .link-text {
+    background-color:rgba(6, 135, 33, 0.18);
+    border-radius:2px;
+    padding:0 6px 0 6px;
+  }
+}
+
 .link-text:hover {
   background:$lightGrey;
   border-radius:4px;
@@ -156,6 +164,13 @@ body{
 %one-item-spacing {
   padding:.4vw;
   margin: .3vw;
+}
+
+@media all and (max-width:750px) {
+  %one-item-spacing {
+    padding:5px;
+    margin: 3px;
+  }
 }
 
 %one-item-spacing-col {
@@ -338,6 +353,14 @@ button:focus {
   justify-content: center;
 }
 
+@media all and (max-width:750px) {
+  .full-page {
+    width:auto;
+    padding:20px;
+    justify-content: flex-start;
+  }
+}
+
 .long-page {
   margin-top:2vh;
   width:80vw;
@@ -353,6 +376,13 @@ button:focus {
   flex-direction:column;
   align-items: center;
   justify-content: center;
+}
+
+@media all and (max-width:750px) {
+  .full-width {
+    padding:20px;
+    justify-content: flex-start;
+  }
 }
 
 .left-text {
@@ -565,6 +595,7 @@ $toggle-width: 60px;
 
 .org-description {
   @extend %one-item-spacing;
+  height:100%;
   width:40%;
   display:flex;
   flex-direction:column;
@@ -872,11 +903,11 @@ $toggle-width: 60px;
   flex-direction:column;
   background-color:$darkGrey;
 }
+
+$mobile-menu-width:45px;
 .mob-app-menu {
-  width:$menu-width;
+  width:$mobile-menu-width;
   height:99vh;
-  min-width:45px;
-  max-width:45px;
   display:none;
   flex-direction:column;
   background-color:$darkGrey;
@@ -977,12 +1008,21 @@ $toggle-width: 60px;
 
 // APP-CONTENT
 
+@function get-vw($target) { 
+  $vw-context: (1000*.01) * 1px;
+  @return ($target/$vw-context) * 1vw;
+}
+
 .app-content {
   overflow:scroll;
   height:100vh;
   // width:100%;
 }
-
+@media all and (max-width:750px){
+  .app-content   {
+    width:(100vw - get-vw($mobile-menu-width))
+  }
+}
 .contentWrapper {
    @extend %app-content-gutters;
 }
@@ -1205,6 +1245,11 @@ $toggle-width: 60px;
   width:$icon-width;
   height:$icon-width;
   transition:300ms;
+}
+
+.disabled-icon {
+  background-color:$justGrey;
+  border-radius:100%;
 }
 
 .popup-form-pre {

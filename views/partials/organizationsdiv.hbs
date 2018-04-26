@@ -42,16 +42,43 @@
 				<div class = 'org-img-wrapper'>
 					<img class = 'org-img' src="/product-pictures/{{ img }}.jpg" />
 				</div>
-			</div>			
+			</div>
+			<div class="mob-org-img-description-wrapper">
+				<div class="org-description">
+					<p class="small-text">{{ description }}{{ email }}</p>
+					<div class="org-action-wrapper">
+						<a class='a' href="{{link}}">
+							<img class='icon-mini' src='/icons/black/link.svg'>
+						</a>
+						{{!--
+						<a class='a' href="{{link}}">
+							<img class='icon-mini' src='/icons/black/share.svg'>
+						</a> --}} {{#if loggedIn}}
+						<form class='a' action="/app/accounts/{{email}}/orgs/{{org_uuid}}?_method=PUT" method="post">
+							<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
+							<input type='image' class='icon-mini' src='/icons/black/star.svg'>
+						</form>
+						{{else}}
+						<img class='icon-mini icon-disabled' src='/icons/black/star.svg'> {{/if}} {{#if user_orgs}}
+						<form class='a' action="/app/accounts/{{email}}/orgs/{{org_uuid}}?_method=DELETE" method="post">
+							<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
+							<input type='image' class='icon-mini' src='/icons/black/x.svg'>
+						</form>
+						{{else}} {{#if loggedIn}}
+						<form class='a' action="/app/accounts/{{email}}/orgs" method="post">
+							<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
+							<input type='image' class='icon-mini' src='/icons/black/plus.svg'>
+						</form>
+						{{else}}
+						<img class='icon-mini icon-disabled' src='/icons/black/plus.svg'> {{/if}} {{/if}}
+					</div>
+				</div>
+				<div class='org-img-wrapper'>
+					<img class='org-img' src="/product-pictures/{{ img }}.jpg" />
+				</div>
+			</div>
 			
-				{{!-- <form class="flex product-cart-form" action="/accounts/{{email}}/organizations" method="post">
-					<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-					<button class="button ">save to my orgs</button>
-				</form> --}}
-				{{!-- <form class="flex product-cart-form" action="/accounts/{{email}}/organizations/{{org_sku}}?_method=PUT" method="post">
-					<input type="hidden" name="org_uuid" value="{{ org_uuid }}" />
-					<button class='yes'>set as default</button>
-				</form> --}}
+
 		</div>
 </div>
 

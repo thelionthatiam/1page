@@ -215,25 +215,32 @@
                 <li class='app-menu-li'>
                     {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}" class='app-menu-text'><img class='formIcon fadeIn' src='/icons/white/user-fem.svg' /></a>
-                    {{else}}
-                    <a class='app-menu-text-disabled disabled-a'><img class='formIcon fadeIn' src='/icons/white/user-fem.svg' /></a>
-                    {{/if}}
                     <p class = "mini-text gray-text">profile</p>
+                    {{else}}
+                    <a class='app-menu-text-disabled disabled-a'><img class='formIcon fadeIn disabled-icon' src='/icons/white/user-fem.svg' /></a>
+                    <p class = "mini-text gray-text">unavail.</p>
+                    {{/if}}
+                    
                 </li>
                 <li class='app-menu-li'>
                      {{#if loggedIn}}
                     <a href="/app/accounts/{{email}}/settings" class='app-menu-text'><img class='formIcon fadeIn' src='/icons/white/mixer.svg' /></a>
-                    {{else}}
-                    <a class='app-menu-text-disabled disabled-a'><img class='formIcon fadeIn' src='/icons/white/mixer.svg' /></a>
-                    {{/if}}
                     <p class = "mini-text gray-text">settings</p>
+                    {{else}}
+                    <a class='app-menu-text-disabled disabled-a'><img class='formIcon fadeIn disabled-icon' src='/icons/white/mixer.svg' /></a>
+                    <p class = "mini-text gray-text">unavail.</p>
+                    {{/if}}
+                    
                 </li>
                 {{#if loggedIn}} {{else}}
-                <li class='app-menu-li'>
-                    <form action="/to-login" method="get">
-                        <input type="img" class='formIcon fadeIn' src='/icons/white/heart.svg'>log in</button>
-                    </form>
-                    <p>login</p>
+                <li class='app-menu-li' id='logout'>
+                    <div class='filler'></div>
+                    <div class='logout-wrapper'>
+                        <form action="/to-login" method="get">
+                            <input type="image"  name="submit" class='formIcon fadeIn' src='/icons/white/heart.svg'>
+                        </form>
+                     </div>
+                    <p class="mini-text gray-text">login</p>
                 </li>
                 {{/if}} {{#if loggedIn}}
                 <li class='app-menu-li' id='logout'>

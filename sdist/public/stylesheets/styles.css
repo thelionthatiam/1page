@@ -47,6 +47,12 @@ li {
   transition: 100ms;
   cursor: pointer; }
 
+@media all and (max-width: 750px) {
+  .link-text {
+    background-color: rgba(6, 135, 33, 0.18);
+    border-radius: 2px;
+    padding: 0 6px 0 6px; } }
+
 .link-text:hover {
   background: lightGrey;
   border-radius: 4px;
@@ -88,6 +94,11 @@ body {
 .one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .test-error, .formErrorReport {
   padding: .4vw;
   margin: .3vw; }
+
+@media all and (max-width: 750px) {
+  .one-item-spacing, .big-form-item, .userFormItem, .light-button, .dark-button, .search-wrapper, .top-row-time, .org-description, .test-error, .formErrorReport {
+    padding: 5px;
+    margin: 3px; } }
 
 .big-form-item, .formTitle, .userFormItem, .profile-form, .organization-subtitle, .org-img-description-wrapper, .mob-org-img-description-wrapper, .alarm-row, .day-title, .days-radio-wrapper {
   margin-left: 0vw;
@@ -215,6 +226,12 @@ button:focus {
   align-items: center;
   justify-content: center; }
 
+@media all and (max-width: 750px) {
+  .full-page {
+    width: auto;
+    padding: 20px;
+    justify-content: flex-start; } }
+
 .long-page {
   margin-top: 2vh;
   width: 80vw;
@@ -229,6 +246,11 @@ button:focus {
   flex-direction: column;
   align-items: center;
   justify-content: center; }
+
+@media all and (max-width: 750px) {
+  .full-width {
+    padding: 20px;
+    justify-content: flex-start; } }
 
 .left-text {
   align-self: flex-start; }
@@ -385,6 +407,7 @@ button:focus {
     display: none; } }
 
 .org-description {
+  height: 100%;
   width: 40%;
   display: flex;
   flex-direction: column; }
@@ -628,10 +651,8 @@ button:focus {
   background-color: #282828; }
 
 .mob-app-menu {
-  width: 18vw;
+  width: 45px;
   height: 99vh;
-  min-width: 45px;
-  max-width: 45px;
   display: none;
   flex-direction: column;
   background-color: #282828; }
@@ -714,6 +735,10 @@ button:focus {
 .app-content {
   overflow: scroll;
   height: 100vh; }
+
+@media all and (max-width: 750px) {
+  .app-content {
+    width: 95.5vw; } }
 
 .alarm-controllers-wrapper {
   display: flex;
@@ -894,6 +919,10 @@ button:focus {
   width: 30px;
   height: 30px;
   transition: 300ms; }
+
+.disabled-icon {
+  background-color: #756F6F;
+  border-radius: 100%; }
 
 .popup-form-pre {
   display: flex;
