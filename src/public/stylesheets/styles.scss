@@ -39,7 +39,7 @@ ul {
     list-style:none;
     border:0;
     margin:0;
-    padding:1vw
+    padding:0;
 }
 li {
     padding-bottom:2px;
@@ -75,14 +75,6 @@ li {
   cursor:pointer;
 }
 
-@media all and (max-width:750px) {
-  .link-text {
-    background-color:rgba(6, 135, 33, 0.18);
-    border-radius:2px;
-    padding:0 6px 0 6px;
-  }
-}
-
 .link-text:hover {
   background:$lightGrey;
   border-radius:4px;
@@ -95,9 +87,18 @@ li {
   transition:100ms;
   background:$lightGrey;
   border-radius:4px;
-
+  width:180px;
+  transition:300ms;
 }
 
+.small-form {
+  width:120px;
+}
+// @media all and (max-width:750px) {
+//   .link-text-form {
+//     width:150px;
+//   }
+// }
 
 body{
     border:0;
@@ -355,7 +356,7 @@ button:focus {
 
 @media all and (max-width:750px) {
   .full-page {
-    width:auto;
+    width:100%;
     padding:20px;
     justify-content: flex-start;
   }
@@ -436,7 +437,23 @@ $toggle-width: 60px;
   text-transform:uppercase;
 }
 
+@function get-vw($target) { 
+  $vw-context: (1000*.01) * 1px;
+  @return ($target/$vw-context) * 1vw;
+}
+
 // PAYMENT NO JS
+$mobile-menu-width:45px;
+
+.test-add {
+	background-color:#ddd;
+	position: fixed;
+  width:40px;
+  height:40px;
+	left: (50 + (get-vw(45px)));
+	top: 80%;
+	transform: translateX(-50%);
+}
 
 .card-number-wrapper {
   display:flex;
@@ -897,7 +914,7 @@ $toggle-width: 60px;
 // APP-MENU
 .app-menu {
   width:$menu-width;
-  height:99vh;
+  height:100vh;
   max-width:200px;
   display:flex;
   flex-direction:column;
@@ -907,42 +924,17 @@ $toggle-width: 60px;
 $mobile-menu-width:45px;
 .mob-app-menu {
   width:$mobile-menu-width;
-  height:99vh;
+  height:100vh;
   display:none;
   flex-direction:column;
   background-color:$darkGrey;
 }
 
-@media all and (max-width: 750px) {
-  .mob-app-menu {
-    display: flex;
-    .app-menu-li {
-      justify-content: center;
-      flex-direction:column;
-      .app-menu-title-wrapper {
-        margin-top : 10px;
-      }
-      .app-menu-text {
-        display:flex;
-        flex-direction:column;
-      }
-      .logout-wrapper {
-        justify-content: center;
-      }
-    }
-    .formIcon {
-      margin:0;
-    }
-  }
-  .app-menu {
-    display: none;
-  }
-}
-
 .app-menu-title-wrapper {
   display:flex;
   align-items: center;
-  margin-bottom:10vh;
+  margin:1vw;
+  margin-bottom:10vh; 
 }
 
 .app-menu-title {
@@ -954,6 +946,7 @@ $mobile-menu-width:45px;
 .app-menu-li {
   display:flex;
   align-items: center;
+  margin:1vw;
   margin-bottom:3vh;
 }
 
@@ -1006,18 +999,44 @@ $mobile-menu-width:45px;
   align-items: center;
 }
 
-// APP-CONTENT
-
-@function get-vw($target) { 
-  $vw-context: (1000*.01) * 1px;
-  @return ($target/$vw-context) * 1vw;
+@media all and (max-width: 750px) {
+  .mob-app-menu {
+    display: flex;
+    .app-menu-li {
+      justify-content: center;
+      flex-direction:column;
+      margin:4px;
+        margin-bottom:15px;
+      .app-menu-title-wrapper {
+        margin:4px;
+        margin-bottom:40px;
+      }
+      .app-menu-text {
+        display:flex;
+        flex-direction:column;
+      }
+      .logout-wrapper {
+        justify-content: center;
+      }
+    }
+    .formIcon {
+      margin:0;
+    }
+  }
+  .app-menu {
+    display: none;
+  }
 }
+
+// APP-CONTENT
 
 .app-content {
   overflow:scroll;
   height:100vh;
   // width:100%;
 }
+
+
 @media all and (max-width:750px){
   .app-content   {
     width:(100vw - get-vw($mobile-menu-width))
@@ -1262,7 +1281,8 @@ $mobile-menu-width:45px;
   min-height: 100px;
   position:fixed;
   bottom:5vh;
-  left:20vw + 40vw - 20vw;
+  left: 60vw;
+  transform:translateX(-50%);
   overflow:hidden;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -1275,11 +1295,12 @@ $mobile-menu-width:45px;
   align-items:center;
   align-content:center;
   flex-direction:column;
-  width:40vw;
-  height:80vw;
+  width:80vw;
+  height:80vh;
   position:fixed;
   bottom:5vh;
-  left:20vw + 40vw - 20vw;
+  left: 60vw;
+  transform:translateX(-50%);
   overflow:hidden;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -1328,11 +1349,29 @@ $mobile-menu-width:45px;
 .fixed-center-wrapper:active {
   transform: translateY(1px) rotate(20deg);
 }
-// sort-of an active state
+
 .rotate-right {
   transform: translateY(1px) rotate(135deg);
   transition:300ms;
   box-shadow:none;
+}
+
+@media all and (max-width:750px) {
+  .popup-form-pre {
+    width:40vw;
+    height:10vh;
+    bottom:5vh;
+    left: (50 + (get-vw(45px)));
+    transform:translateX(-50%);
+  }
+  .popup-form {
+    width:800vw;
+    height:80vh;
+    bottom:5vh;
+    left: (50 + (get-vw(45px)));
+    transform:translateX(-50%);
+
+  }
 }
 
 .special {

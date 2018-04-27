@@ -18,7 +18,7 @@ ul {
   list-style: none;
   border: 0;
   margin: 0;
-  padding: 1vw; }
+  padding: 0; }
 
 li {
   padding-bottom: 2px;
@@ -47,12 +47,6 @@ li {
   transition: 100ms;
   cursor: pointer; }
 
-@media all and (max-width: 750px) {
-  .link-text {
-    background-color: rgba(6, 135, 33, 0.18);
-    border-radius: 2px;
-    padding: 0 6px 0 6px; } }
-
 .link-text:hover {
   background: lightGrey;
   border-radius: 4px;
@@ -63,7 +57,12 @@ li {
   margin: 2px;
   transition: 100ms;
   background: lightGrey;
-  border-radius: 4px; }
+  border-radius: 4px;
+  width: 180px;
+  transition: 300ms; }
+
+.small-form {
+  width: 120px; }
 
 body {
   border: 0;
@@ -228,7 +227,7 @@ button:focus {
 
 @media all and (max-width: 750px) {
   .full-page {
-    width: auto;
+    width: 100%;
     padding: 20px;
     justify-content: flex-start; } }
 
@@ -288,6 +287,15 @@ button:focus {
 
 .settings-title {
   text-transform: uppercase; }
+
+.test-add {
+  background-color: #ddd;
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  left: 54.5vw;
+  top: 80%;
+  transform: translateX(-50%); }
 
 .card-number-wrapper {
   display: flex;
@@ -644,7 +652,7 @@ button:focus {
 
 .app-menu {
   width: 18vw;
-  height: 99vh;
+  height: 100vh;
   max-width: 200px;
   display: flex;
   flex-direction: column;
@@ -652,32 +660,15 @@ button:focus {
 
 .mob-app-menu {
   width: 45px;
-  height: 99vh;
+  height: 100vh;
   display: none;
   flex-direction: column;
   background-color: #282828; }
 
-@media all and (max-width: 750px) {
-  .mob-app-menu {
-    display: flex; }
-    .mob-app-menu .app-menu-li {
-      justify-content: center;
-      flex-direction: column; }
-      .mob-app-menu .app-menu-li .app-menu-title-wrapper {
-        margin-top: 10px; }
-      .mob-app-menu .app-menu-li .app-menu-text {
-        display: flex;
-        flex-direction: column; }
-      .mob-app-menu .app-menu-li .logout-wrapper {
-        justify-content: center; }
-    .mob-app-menu .formIcon {
-      margin: 0; }
-  .app-menu {
-    display: none; } }
-
 .app-menu-title-wrapper {
   display: flex;
   align-items: center;
+  margin: 1vw;
   margin-bottom: 10vh; }
 
 .app-menu-title {
@@ -688,6 +679,7 @@ button:focus {
 .app-menu-li {
   display: flex;
   align-items: center;
+  margin: 1vw;
   margin-bottom: 3vh; }
 
 .app-menu-text {
@@ -731,6 +723,27 @@ button:focus {
   width: 100%;
   align-content: center;
   align-items: center; }
+
+@media all and (max-width: 750px) {
+  .mob-app-menu {
+    display: flex; }
+    .mob-app-menu .app-menu-li {
+      justify-content: center;
+      flex-direction: column;
+      margin: 4px;
+      margin-bottom: 15px; }
+      .mob-app-menu .app-menu-li .app-menu-title-wrapper {
+        margin: 4px;
+        margin-bottom: 40px; }
+      .mob-app-menu .app-menu-li .app-menu-text {
+        display: flex;
+        flex-direction: column; }
+      .mob-app-menu .app-menu-li .logout-wrapper {
+        justify-content: center; }
+    .mob-app-menu .formIcon {
+      margin: 0; }
+  .app-menu {
+    display: none; } }
 
 .app-content {
   overflow: scroll;
@@ -934,7 +947,8 @@ button:focus {
   min-height: 100px;
   position: fixed;
   bottom: 5vh;
-  left: 40vw;
+  left: 60vw;
+  transform: translateX(-50%);
   overflow: hidden;
   overflow-y: hidden;
   overflow-x: hidden; }
@@ -945,11 +959,12 @@ button:focus {
   align-items: center;
   align-content: center;
   flex-direction: column;
-  width: 40vw;
-  height: 80vw;
+  width: 80vw;
+  height: 80vh;
   position: fixed;
   bottom: 5vh;
-  left: 40vw;
+  left: 60vw;
+  transform: translateX(-50%);
   overflow: hidden;
   overflow-y: hidden;
   overflow-x: hidden; }
@@ -995,6 +1010,20 @@ button:focus {
   transform: translateY(1px) rotate(135deg);
   transition: 300ms;
   box-shadow: none; }
+
+@media all and (max-width: 750px) {
+  .popup-form-pre {
+    width: 40vw;
+    height: 10vh;
+    bottom: 5vh;
+    left: 54.5vw;
+    transform: translateX(-50%); }
+  .popup-form {
+    width: 800vw;
+    height: 80vh;
+    bottom: 5vh;
+    left: 54.5vw;
+    transform: translateX(-50%); } }
 
 .special {
   background-color: white;

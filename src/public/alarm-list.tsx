@@ -146,6 +146,9 @@ class TimeForm extends React.Component {
     state: {
         value: string;
         form: boolean;
+        formStyle:{
+            width:string;
+        }
     }
     props: {
         postTime: any;
@@ -159,7 +162,10 @@ class TimeForm extends React.Component {
         super(props)
         this.state = {
             value: this.props.time,
-            form: false
+            form: false,
+            formStyle: {
+                width: '148.25px'
+            },
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -186,11 +192,15 @@ class TimeForm extends React.Component {
             this.onBlur()
         }
     }
-
-    handleChange(event) {
-        if (event.target.value !== '') {
-            this.setState({ value: event.target.value });
+    static calcWidth(chars) {
+        if (chars < 5) {
+            return ('30px')
+        } else {
+            return ((chars * 6) + 'px')
         }
+    }   
+    handleChange(event) {
+        this.setState({ value: event.target.value });
     }
 
     handleSubmit(event) {
@@ -211,7 +221,12 @@ class TimeForm extends React.Component {
                 <div onClick={this.onBlur}><p className = 'alarm-time link-text'>{this.props.time}</p></div> 
                 :  
                 <form  ref = {this.setWrapperRef} onSubmit = {this.handleSubmit} onBlur = {this.onBlur}>
-                    <input type='text' className='link-text-form alarm-time' value = {this.state.value} onChange={this.handleChange} />
+                    <input type='text' 
+                        className='link-text-form alarm-time' 
+                        value = {this.state.value} 
+                        onChange={this.handleChange} 
+                        style = {this.state.formStyle}
+                        />
                 </form>}
             </div>
         )
@@ -223,6 +238,9 @@ class TitleForm extends React.Component {
     state: {
         value: string;
         form: boolean;
+        formStyle: {
+            width:string;
+        };
     }
     props: {
         postTitle: any; // changed
@@ -236,7 +254,10 @@ class TitleForm extends React.Component {
         super(props)
         this.state = {
             value: this.props.title, // changed
-            form: false
+            form: false,
+            formStyle: {
+                width: TitleForm.calcWidth(this.props.title.length)
+            },
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -266,10 +287,20 @@ class TitleForm extends React.Component {
         }
     }
 
+    static calcWidth(chars) {
+        if (chars < 5) {
+            return ('30px')
+        } else {
+            return ((chars*6) + 'px')
+        }
+    }   
     handleChange(event) {
-        // if (event.target.value !== '') {
-            this.setState({ value: event.target.value });
-        // }
+        this.setState({ 
+            value: event.target.value,
+            formStyle: {
+                width:TitleForm.calcWidth(event.target.value.length)
+            }
+        }, () => console.log(this.state));
     }
 
     handleSubmit(event) {
@@ -282,6 +313,7 @@ class TitleForm extends React.Component {
     }
 
     render() {
+        console.log(this.state)
         return (
             <div>
                 {!this.state.form
@@ -289,7 +321,12 @@ class TitleForm extends React.Component {
                     <div onClick={this.onBlur}><p className='alarm-title small-text link-text'>{this.props.title? this.props.title : 'add title'}</p></div> //changed class and property
                     :
                     <form ref={this.setWrapperRef} onSubmit={this.handleSubmit} onBlur={this.onBlur}>
-                        <input type='text' className='link-text-form alarm-title small-text' value={this.state.value} onChange={this.handleChange} />
+                        <input type='text' 
+                            className='link-text-form alarm-title small-text small-form' 
+                            value={this.state.value} 
+                            onChange={this.handleChange} 
+                            style = {this.state.formStyle}
+                            />
                     </form>}
             </div>
         )

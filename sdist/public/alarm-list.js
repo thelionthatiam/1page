@@ -92,7 +92,10 @@ var TimeForm = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             value: _this.props.time,
-            form: false
+            form: false,
+            formStyle: {
+                width: '148.25px'
+            },
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -116,10 +119,16 @@ var TimeForm = /** @class */ (function (_super) {
             this.onBlur();
         }
     };
-    TimeForm.prototype.handleChange = function (event) {
-        if (event.target.value !== '') {
-            this.setState({ value: event.target.value });
+    TimeForm.calcWidth = function (chars) {
+        if (chars < 5) {
+            return ('30px');
         }
+        else {
+            return ((chars * 6) + 'px');
+        }
+    };
+    TimeForm.prototype.handleChange = function (event) {
+        this.setState({ value: event.target.value });
     };
     TimeForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
@@ -137,7 +146,7 @@ var TimeForm = /** @class */ (function (_super) {
                     React.createElement("p", { className: 'alarm-time link-text' }, this.props.time))
             :
                 React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
-                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange }))));
+                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-time', value: this.state.value, onChange: this.handleChange, style: this.state.formStyle }))));
     };
     return TimeForm;
 }(React.Component));
@@ -147,7 +156,10 @@ var TitleForm = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             value: _this.props.title,
-            form: false
+            form: false,
+            formStyle: {
+                width: TitleForm.calcWidth(_this.props.title.length)
+            },
         };
         _this.handleChange = _this.handleChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
@@ -173,10 +185,22 @@ var TitleForm = /** @class */ (function (_super) {
             this.onBlur();
         }
     };
+    TitleForm.calcWidth = function (chars) {
+        if (chars < 5) {
+            return ('30px');
+        }
+        else {
+            return ((chars * 6) + 'px');
+        }
+    };
     TitleForm.prototype.handleChange = function (event) {
-        // if (event.target.value !== '') {
-        this.setState({ value: event.target.value });
-        // }
+        var _this = this;
+        this.setState({
+            value: event.target.value,
+            formStyle: {
+                width: TitleForm.calcWidth(event.target.value.length)
+            }
+        }, function () { return console.log(_this.state); });
     };
     TitleForm.prototype.handleSubmit = function (event) {
         event.preventDefault();
@@ -186,13 +210,14 @@ var TitleForm = /** @class */ (function (_super) {
         }); // is this the only difference?    
     };
     TitleForm.prototype.render = function () {
+        console.log(this.state);
         return (React.createElement("div", null, !this.state.form
             ?
                 React.createElement("div", { onClick: this.onBlur },
                     React.createElement("p", { className: 'alarm-title small-text link-text' }, this.props.title ? this.props.title : 'add title')) //changed class and property
             :
                 React.createElement("form", { ref: this.setWrapperRef, onSubmit: this.handleSubmit, onBlur: this.onBlur },
-                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-title small-text', value: this.state.value, onChange: this.handleChange }))));
+                    React.createElement("input", { type: 'text', className: 'link-text-form alarm-title small-text small-form', value: this.state.value, onChange: this.handleChange, style: this.state.formStyle }))));
     };
     return TitleForm;
 }(React.Component));
