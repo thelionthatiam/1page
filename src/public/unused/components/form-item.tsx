@@ -4,28 +4,34 @@ import { textFormValidation } from './helpers/validation'
 
 import * as React from 'react';
 
-
-interface FormItemStates {
-  firstClick:boolean;
-  clicked:boolean;
-  submitable:boolean;
-  focused:boolean;
-  error:boolean;
-  submitted:boolean;
-  errorMessage:string;
-  input:string;
-  value:string;
-}
-
 class FormItem extends React.Component {
-  state:FormItemStates;
+  state:{
+    firstClick: boolean;
+    clicked: boolean;
+    submitable: boolean;
+    focused: boolean;
+    error: boolean;
+    submitted: boolean;
+    errorMessage: string;
+    input: string;
+    value: string;
+    entropy: number;
+  };
+  props:{
+    title: string;
+    imgSrc:string;
+    type?:string;
+    buttonText?: string;
+    placeholder: string;
+    submitted?: boolean;
+    sendData?: Function;
+    entropy?: number;
+    newPass?: boolean;
+    sumbitted?:boolean;
+  }
+
   title:string;
   buttonText:string;
-  placeholder:string;
-  submitted:boolean;
-  sendData:Function;
-  entropy:number;
-  newPass:boolean;
 
   constructor(props:FormItem) {
     super(props)
@@ -229,6 +235,20 @@ class FormItem extends React.Component {
 }
 
 class TextInput extends React.Component {
+  props:{
+    clicked:boolean;
+    firstClick:boolean;
+    placeholder:string;
+    error:boolean;
+    submitted:boolean;
+    type:string;
+    value:string;
+  }
+
+  state: {
+    showPass: boolean;
+    placeholder:string;
+  }
   constructor(props) {
     super(props)
     this.state = {

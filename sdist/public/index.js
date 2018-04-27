@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 var test_1 = require("./test");
+var new_account_1 = require("./unused/components/new-account");
 var simple_clock_1 = require("./simple-clock");
 var React = require("react");
 var ReactDOM = require("react-dom");
@@ -131,4 +132,8 @@ function alarmClock() {
     ReactDOM.render(React.createElement(simple_clock_1.SimpleClock, null), document.getElementById('simpleClock'));
 }
 exports.alarmClock = alarmClock;
+function newAccount() {
+    ReactDOM.render(React.createElement(new_account_1.default, null), document.getElementById('newAccount'));
+}
+exports.newAccount = newAccount;
 //# sourceMappingURL=index.js.map

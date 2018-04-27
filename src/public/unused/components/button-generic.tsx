@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-function Button(props) {
+export default function Button(props) {
 
   let currentClass = 'yes'
   if (!props.submitable) {
@@ -15,5 +15,3 @@ function Button(props) {
       </button>
     )
 }
-
-export default Button;

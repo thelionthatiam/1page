@@ -2,10 +2,9 @@ import FormWrapper from './form-wrapper'
 import FormItem from './form-item'
 import Button from './button-generic'
 
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
 
-class SpaNewAccount extends Component {
+class NewAccount extends React.Component {
   render() {
     return (
       <div className="flex column userWrapper">
@@ -49,4 +48,4 @@ class SpaNewAccount extends Component {
   }
 }
 
-export default SpaNewAccount;
+export default NewAccount;

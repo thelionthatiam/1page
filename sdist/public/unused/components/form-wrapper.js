@@ -10,7 +10,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = require("react");
+var button_generic_1 = require("./button-generic");
+var React = require("react");
+//
 var FormWrapper = /** @class */ (function (_super) {
     __extends(FormWrapper, _super);
     function FormWrapper(props) {
@@ -114,22 +116,22 @@ var FormWrapper = /** @class */ (function (_super) {
     };
     FormWrapper.prototype.render = function () {
         var _this = this;
-        var childWithProp = react_1.default.Children.map(this.props.children, function (child) {
-            return react_1.default.cloneElement(child, {
+        console.log('CHILDREN', this.props.children);
+        var childWithProp = React.Children.map(this.props.children, function (child) {
+            console.log(child);
+            return React.cloneElement(child, {
                 sendData: _this.getData,
                 submitted: _this.state.submitted
             });
         });
-        return (react_1.default.createElement("div", { className: 'formWrapper' },
-            react_1.default.createElement("form", { onSubmit: this.handleSubmit, action: this.props.url, method: this.props.method },
+        return (React.createElement("div", { className: 'formWrapper' },
+            React.createElement("form", { onSubmit: this.handleSubmit, action: this.props.url, method: this.props.method },
                 childWithProp,
-                react_1.default.createElement("input", { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, 
-                    // buttonText = {this.props.buttonText}
-                    type: 'submit', value: 'login' })),
-            react_1.default.createElement("div", null,
-                react_1.default.createElement("p", { className: this.state.error ? "textError fadeIn" : 'fadeOut' }, this.state.errorMessage))));
+                React.createElement(button_generic_1.default, { submitable: this.state.submitable, submitted: this.state.submitted, onClick: this.handleSubmit, buttonText: this.props.buttonText })),
+            React.createElement("div", null,
+                React.createElement("p", { className: this.state.error ? "textError fadeIn" : 'fadeOut' }, this.state.errorMessage))));
     };
     return FormWrapper;
-}(react_1.default.Component));
+}(React.Component));
 exports.default = FormWrapper;
 //# sourceMappingURL=form-wrapper.js.map

@@ -1,14 +1,24 @@
 import Button from './button-generic'
-import React from 'react';
-
-interface FormWrapperStates {
-  submitable:any;
-  submitted:boolean;
-  clicked:boolean;
-}
-
+import * as React from 'react';
+//
 class FormWrapper extends React.Component {
-  states:FormWrapperStates;
+  state:{
+    errorMessage:string;
+    error:boolean;
+    submitted:boolean;
+    submitable:boolean;
+    data:{}
+  }
+  
+  props: {
+    url:string;
+    method:string;
+    buttonText:string;
+    noValidation?:boolean;
+    children:Element;
+  }
+
+
   formItems:any;
   testObj:any;
   action:any;
@@ -118,7 +128,9 @@ class FormWrapper extends React.Component {
   }
 
   render() {
+    console.log('CHILDREN', this.props.children)
     const childWithProp = React.Children.map(this.props.children, (child) => {
+      console.log(child)
       return React.cloneElement(child, {
           sendData: this.getData,
           submitted: this.state.submitted
@@ -133,13 +145,13 @@ class FormWrapper extends React.Component {
           method = {this.props.method}
           >
           {childWithProp}
-          <input
+          <Button
             submitable = {this.state.submitable}
             submitted = {this.state.submitted}
             onClick = {this.handleSubmit}
-            // buttonText = {this.props.buttonText}
-            type = 'submit'
-            value = 'login'
+            buttonText = {this.props.buttonText}
+            // type = 'submit'
+            // value = 'login'
             />
         </form>
         <div>

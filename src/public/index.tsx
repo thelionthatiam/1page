@@ -1,5 +1,6 @@
 import App from './app'
-import {TestApp } from './test'
+import { TestApp } from './test'
+import NewAccount from './unused/components/new-account';
 import { AlarmClock } from './alarm-clock'
 import { SimpleClock } from './simple-clock'
 import * as wp from 'web-push';
@@ -153,4 +154,10 @@ function alarmClock() {
     document.getElementById('simpleClock'))
 }
 
-export { app, store, populate, test, alarmClock };
+function newAccount() {
+    ReactDOM.render(
+        <NewAccount />,
+    document.getElementById('newAccount'))
+}
+
+export { app, store, populate, test, alarmClock, newAccount };
