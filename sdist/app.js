@@ -8,12 +8,12 @@ var session = require("express-session");
 var methodOverride = require("method-override");
 var cors = require("cors");
 var index_1 = require("./index");
+var errors_1 = require("./errors");
 var db_connect_config_1 = require("./services/db-connect-config");
 var database_1 = require("./middleware/database");
 var alarm_trigger_1 = require("./services/alarm-trigger");
 var server_render_state_1 = require("./middleware/server-render-state");
 var session_check_1 = require("./middleware/session-check");
-var e = require("./services/error-handling");
 var app = express();
 app.use(express.static(path.join(__dirname, './public/rollup')));
 app.use(methodOverride('_method'));
@@ -47,53 +47,11 @@ app.use(session({
 app.use(session_check_1.default);
 app.use(server_render_state_1.default);
 app.use('/', index_1.default);
-// AUTONOMOUS DB/SERVER ALARM
+// AUTONOMOUS ALARM
 var alarmTrigger = new alarm_trigger_1.default(db_connect_config_1.dbConfig);
 alarmTrigger.start();
 // ERROR STUFF
-app.use(function (req, res, next) {
-    res.status(404);
-    res.render('error', {
-        errName: null,
-        errMessage: "We couldn't find this page.",
-        layout: 'react'
-    });
-});
-app.use(function (err, req, res, next) {
-    if (err.name === 'PayloadTooLargeError') {
-        res.status(413);
-        res.render('error', {
-            errName: err.message,
-            errMessage: "You entered something over 50kb. Please make your inputs are smaller and try again.",
-            layout: 'react'
-        });
-    }
-    else if (err.name === 'ReferenceError') {
-        res.status(500);
-        res.render('error', {
-            errName: err.message,
-            errMessage: "Something was missing.",
-            layout: 'react'
-        });
-    }
-    else if (e.serverErrorFileNotFound.test(err.message)) {
-        res.status(404);
-        res.render('error', {
-            number: "404",
-            errName: err.message,
-            errMessage: "Could not find this page!",
-            layout: 'react'
-        });
-    }
-    else {
-        res.status(500);
-        res.render('error', {
-            errName: err.message,
-            errMessage: null,
-            layout: 'react'
-        });
-    }
-});
+app.use(errors_1.default);
 // production
 // app.listen(8000, '172.31.31.153')
 // localhost
