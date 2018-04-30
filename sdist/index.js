@@ -2,14 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var request = require("request");
+var weather_ave_1 = require("./services/weather-ave");
 var index = express.Router();
 var apiID = '32dde93e0e284c9a767893b4529adb0d';
 index.route('/')
     .post(function (req, res) {
     getWeather(req.body.city, apiID)
         .then(function (localWeather) {
-        console.log(localWeather);
-        res.render('home');
+        return weather_ave_1.default(localWeather.list);
+    })
+        .then(function (forecast) {
+        console.log(forecast);
+        res.render('home', {
+            day: forecast
+        });
     })
         .catch(function (e) { return console.log(e); });
 })

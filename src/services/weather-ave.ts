@@ -7,20 +7,24 @@ function toDate(textTime) {
     return date[2]
 }
 
-function splitToDays(list) {
-    
-    let dates = []
-    let currentDate = 0
+export default function formatForecast(list) {
+    return new Promise (
+        (resolve, reject) => {
+            let dates = []
+            let currentDate = 0
 
-    for (let i = 0; i < list.length; i++) {
-        if (toDate(list[i].dt_txt) !== currentDate) {
-            
-            let group = groupDate(list, toDate(list[i].dt_txt))
-            dates.push(group)
+            for (let i = 0; i < list.length; i++) {
+                if (toDate(list[i].dt_txt) !== currentDate) {
+
+                    let group = groupDate(list, toDate(list[i].dt_txt))
+                    dates.push(group)
+                }
+                currentDate = toDate(list[i].dt_txt)
+            }
+            resolve(dates)
         }
-        currentDate = toDate(list[i].dt_txt)
-    }
-    console.log(dates)
+    )
+    
 }
 
 function groupDate(list, date) {
@@ -28,7 +32,7 @@ function groupDate(list, date) {
         date: '',
         min: 0,
         max:0,
-        weather: []
+        weather: {}
     }
 
     let weathers = []
@@ -44,8 +48,7 @@ function groupDate(list, date) {
             sameDate.date = date;
             sameDate.min = Math.round(sortedTemp(mins)[0] - 273);
             sameDate.max = Math.round(sortedTemp(maxs)[maxs.length - 1] - 273);
-            sameDate.weather = weathers
-            //weatherMode(list[i].weather[0].main, weathers);
+            sameDate.weather = mode(frequency(weathers))
         }
     }
     return sameDate
@@ -54,32 +57,36 @@ function groupDate(list, date) {
 function sortedTemp(tempArr) {
     return tempArr.sort((a,b) => a-b)
 }
+ 
+function frequency(arr) {
+    let sorted = arr.sort();
+    let count = 0;
+    let item = arr[0];
+    let obj = {};
 
-
-function averageTemp(currentTemp, temp) {
-   if (currentTemp === 0) {
-       return temp - 273
-   } else {
-       return Math.round(((((currentTemp - 273) + temp) / 2)))
-   }
-}
-
-function weatherMode(currentWeather, weathers) {
-    if (weathers.length === 0) {
-        return currentWeather
-    } else {
-        return mode(weathers)
+    for (let i = 0; i < sorted.length; i++) {
+        if (arr[i] === item) {
+            count = count + 1
+            obj[item] = count
+        } else {
+            count = 0
+            item = arr[i]
+            count = count + 1
+            obj[item] = count
+        }
     }
+    return obj
 }
 
-// REFACTOR 
-function mode(arr) {
-    return arr.sort((a, b) =>
-        arr.filter(v => v === a).length
-        - arr.filter(v => v === b).length
-    ).pop();
+
+function mode(frequency) {
+    let max = 0;
+    let mode = ''
+    for (let k in frequency) {
+        if (frequency[k] > max) {
+            max = frequency[k]
+            mode = k
+        }
+    }
+    return mode
 }
-
-splitToDays(obj.list)
-
-
