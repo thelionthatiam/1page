@@ -6,6 +6,14 @@
             <i class="fas fa-times"></i>
             <button type = 'submit'>get weather</button>
         </form>
+        <div class = 'current-wrapper'>
+            <h1 class = 'big-temp'>30</h1>
+            <div class = 'current-details'>
+                <h4 class = 'units'>F</h4>
+                <p class = 'description small-text'>partly cloudy</p>
+                <p class = 'humidity small-text'>humidity 60%</p>
+            </div>
+        </div>
     </div>
     <div class = 'forecast-wrapper'>
          {{#each day}} {{> day-forecast}} {{/each}}
