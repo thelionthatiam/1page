@@ -7,11 +7,11 @@
             <button type = 'submit'>get weather</button>
         </form>
         <div class = 'current-wrapper'>
-            <h1 class = 'big-temp'>30</h1>
+            <h1 class = 'big-temp'>{{weather.temp}}°</h1>
             <div class = 'current-details'>
                 <h4 class = 'units'>F</h4>
-                <p class = 'description small-text'>partly cloudy</p>
-                <p class = 'humidity small-text'>humidity 60%</p>
+                <p class = 'description small-text'>{{weather.description}}</p>
+                <p class = 'humidity small-text'>humidity {{weather.humidity}}%</p>
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
   padding: 0px; }
 
 h1, h2, h3, h4, h5, h6, p, li, a, button, input, label {
-  font-family: "Open Sans", sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 
 a {
   text-decoration: none;
@@ -113,6 +113,9 @@ body {
   color: #756F6F;
   font-weight: 100; }
 
+.units {
+  align-self: flex-start; }
+
 .thin-line {
   background-color: grey;
   width: 1px;
@@ -120,5 +123,5 @@ body {
   margin-bottom: 1vw; }
 
 .fa-search, .fa-times {
-  color: #282828;
-  padding: 3px; }
+  color: rgba(0, 0, 0, 0.31);
+  padding: 4px; }
