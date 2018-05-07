@@ -1,7 +1,7 @@
 import * as pg from 'pg';
-import QuerySvc  from '../data-access/queries'
+import QuerySvc from '../data-access/queries'
 
-function init(databaseInformation:pg.ConnectionConfig) {
+function init(databaseInformation: pg.ConnectionConfig) {
     const pool = new pg.Pool(databaseInformation);
 
     return (req, res, next) => {

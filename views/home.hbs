@@ -1,24 +1,6 @@
 
-<div id='test' class = 'widget-wrapper'>
-    <div class = 'search-wrapper'>
-        <form action = '/' method = 'POST'>
-            <i class="fas fa-search"></i><input type = 'text' name = 'city' placeholder = 'choose a city'>
-            <i class="fas fa-times"></i>
-            <button type = 'submit'>get weather</button>
-        </form>
-        <div class = 'current-wrapper'>
-            <h1 class = 'big-temp'>{{weather.temp}}°</h1>
-            <div class = 'current-details'>
-                <h4 class = 'units'>F</h4>
-                <p class = 'description small-text'>{{weather.description}}</p>
-                <p class = 'humidity small-text'>humidity {{weather.humidity}}%</p>
-            </div>
-        </div>
-    </div>
-    <div class = 'forecast-wrapper'>
-         {{#each day}} {{> day-forecast}} {{/each}}
-    </div>
-    
+<div id='root' class = ''>
+        <h1>hello world</h1>
 </div>
 
 <script>

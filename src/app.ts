@@ -8,8 +8,6 @@ import * as cors from 'cors';
 import index from './index';
 import errors from './errors'
 import { init } from './middleware/database'
-import renderState from './middleware/server-render-state';
-import sessionCheck from "./middleware/session-check";
 
 const app = express();
 app.use(express.static(path.join(__dirname, './public/rollup')));
@@ -54,4 +52,4 @@ app.use('/', index)
 // app.use(errors)
 
 // localhost
-app.listen(8080, 'localhost')
+app.listen(4000, 'localhost',() => console.log('start'))
