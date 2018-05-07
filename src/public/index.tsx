@@ -131,33 +131,13 @@ let store = createStore(reducer, composeWithDevTools(
     applyMiddleware(thunkMiddleware)
 ))
 
-
-function app() {
-  ReactDOM.render(
-    <Provider store = { store }>
-        <App/>
-    </Provider>,
-  document.getElementById('app'));
-}
-
 function test() {
   ReactDOM.render(
     <Provider store = { store }>
         <TestApp/>
     </Provider>,
-  document.getElementById('test'));
+  document.getElementById('root'));
 }
 
-function alarmClock() {
-    ReactDOM.render(
-        <SimpleClock/>,
-    document.getElementById('simpleClock'))
-}
 
-function newAccount() {
-    ReactDOM.render(
-        <NewAccount />,
-    document.getElementById('newAccount'))
-}
-
-export { app, store, populate, test, alarmClock, newAccount };
+export { store, populate, test };
