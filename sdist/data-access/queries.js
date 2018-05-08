@@ -22,6 +22,32 @@ var QuerySvc = /** @class */ (function () {
             }
         });
     };
+    QuerySvc.prototype.selectAllAlbums = function () {
+        var text = 'SELECT * FROM albums';
+        return this.conn.query(text)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('Select all albums shows nothing in the database');
+                return ['empty'];
+            }
+            else {
+                return result.rows;
+            }
+        });
+    };
+    QuerySvc.prototype.selectAllPhotos = function () {
+        var text = 'SELECT * FROM photos';
+        return this.conn.query(text)
+            .then(function (result) {
+            if (result.rowCount === 0) {
+                console.log('Select all photos shows nothing in the database');
+                return ['empty'];
+            }
+            else {
+                return result.rows;
+            }
+        });
+    };
     return QuerySvc;
 }());
 exports.default = QuerySvc;

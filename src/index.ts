@@ -1,13 +1,15 @@
 import * as express from 'express';
 import * as request from 'request';
-import testRouter from './routes/route-test';
+import photoRouter from './routes/route-photos';
 const index = express.Router()
 
-index.use('/', testRouter)
+index.use('/', photoRouter)
 
 index.route('/')
-    .get((req, res) => {
+    .get((req, res) => {    
         res.render('home')
     })
+
+
 
 export default index;

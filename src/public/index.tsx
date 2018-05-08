@@ -1,4 +1,4 @@
-import { TestApp } from './test'
+import Photos from './photos'
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -7,6 +7,8 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { POPULATE, populate } from './user-data';
 import { 
+    REQ_PHOTOS,
+    RES_PHOTOS,
     REQ_TEST,
     RES_TEST,
     GEN_ERR,
@@ -37,7 +39,7 @@ class ErrorBoundary extends React.Component {
 }
 
 let initialState = {
-    test:[]
+    albums:[]
 }
 
 function reduce(state = initialState, action) {
@@ -46,6 +48,15 @@ function reduce(state = initialState, action) {
             return Object.assign({}, state, {
                 profile:action.userData.profile,
                 alarms:action.userData.alarms
+            })
+        case REQ_PHOTOS:
+            return Object.assign({}, state, {
+                isFetching: true
+            })
+        case RES_PHOTOS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                albums: action.albums
             })
         case REQ_TEST:
             return Object.assign({}, state, {
@@ -71,20 +82,20 @@ function reduce(state = initialState, action) {
 }  
 
 let reducer = combineReducers({
-    test: reduce
+    all: reduce
 })
 
 let store = createStore(reducer, composeWithDevTools(
     applyMiddleware(thunkMiddleware)
 ))
 
-function test() {
+function photos() {
   ReactDOM.render(
     <Provider store = { store }>
-        <TestApp/>
+        <Photos/>
     </Provider>,
   document.getElementById('root'));
 }
 
 
-export { store, populate, test };
+export { store, populate, photos };

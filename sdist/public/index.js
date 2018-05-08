@@ -10,7 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var test_1 = require("./test");
+var photos_1 = require("./photos");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
@@ -42,7 +42,7 @@ var ErrorBoundary = /** @class */ (function (_super) {
     return ErrorBoundary;
 }(React.Component));
 var initialState = {
-    test: []
+    albums: []
 };
 function reduce(state, action) {
     if (state === void 0) { state = initialState; }
@@ -51,6 +51,15 @@ function reduce(state, action) {
             return Object.assign({}, state, {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
+            });
+        case actions_1.REQ_PHOTOS:
+            return Object.assign({}, state, {
+                isFetching: true
+            });
+        case actions_1.RES_PHOTOS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                albums: action.albums
             });
         case actions_1.REQ_TEST:
             return Object.assign({}, state, {
@@ -75,13 +84,13 @@ function reduce(state, action) {
     }
 }
 var reducer = redux_1.combineReducers({
-    test: reduce
+    all: reduce
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;
-function test() {
+function photos() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(test_1.TestApp, null)), document.getElementById('root'));
+        React.createElement(photos_1.default, null)), document.getElementById('root'));
 }
-exports.test = test;
+exports.photos = photos;
 //# sourceMappingURL=index.js.map

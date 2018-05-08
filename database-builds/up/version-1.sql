@@ -5,4 +5,3 @@ CREATE TABLE test (
     test_uuid UUID UNIQUE NOT NULL default uuid_generate_v4(),
     date timestamptz NOT NULL default now()
 );
-

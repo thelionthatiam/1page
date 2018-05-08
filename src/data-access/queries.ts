@@ -29,5 +29,31 @@ export default class QuerySvc {
                 }
             })
     }
+
+    selectAllAlbums(): Promise<pg.QueryResult> {
+        const text = 'SELECT * FROM albums'
+        return this.conn.query(text)
+            .then(result => {
+                if (result.rowCount === 0) {
+                    console.log('Select all albums shows nothing in the database')
+                    return ['empty']
+                } else {
+                    return result.rows
+                }
+            })
+    }
+
+    selectAllPhotos(): Promise<pg.QueryResult> {
+        const text = 'SELECT * FROM photos'
+        return this.conn.query(text)
+            .then(result => {
+                if (result.rowCount === 0) {
+                    console.log('Select all photos shows nothing in the database')
+                    return ['empty']
+                } else {
+                    return result.rows
+                }
+            })
+    }
     
 };

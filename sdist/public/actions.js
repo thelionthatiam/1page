@@ -23,6 +23,41 @@ function recieveError(error, dispatch) {
     };
 }
 exports.recieveError = recieveError;
+// PHOTO THUNK
+exports.REQ_PHOTOS = 'REQ_PHOTOS';
+exports.RES_PHOTOS = 'RES_PHOTOS';
+function reqPhotos() {
+    return { type: exports.REQ_PHOTOS };
+}
+exports.reqPhotos = reqPhotos;
+function resPhotos(albums) {
+    return {
+        type: exports.RES_PHOTOS,
+        albums: albums
+    };
+}
+function fetchPhotos() {
+    return function (dispatch) {
+        dispatch(reqPhotos());
+        return fetch("/photos", {
+            method: "get",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (albums) {
+            if (albums.status === 'failed') {
+                return dispatch(recieveError(albums, dispatch));
+            }
+            console.log('fetch album data', albums);
+            dispatch(resPhotos(albums));
+        });
+    };
+}
+exports.fetchPhotos = fetchPhotos;
 // SAMPLE THUNK
 exports.REQ_TEST = 'REQ_TEST';
 exports.RES_TEST = 'RES_TEST';

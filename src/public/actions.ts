@@ -24,6 +24,47 @@ export function recieveError(error, dispatch) {
 }
 
 
+// PHOTO THUNK
+export const REQ_PHOTOS = 'REQ_PHOTOS';
+export const RES_PHOTOS = 'RES_PHOTOS';
+
+export function reqPhotos() {
+    return { type: REQ_PHOTOS }
+}
+
+function resPhotos(albums) {
+    return {
+        type: RES_PHOTOS,
+        albums
+    }
+}
+
+export function fetchPhotos() {
+    return function (dispatch) {
+        dispatch(reqPhotos())
+        return fetch("/photos", {
+            method: "get",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then(albums => {
+                if (albums.status === 'failed') {
+                    return dispatch(recieveError(albums, dispatch))
+                }
+                console.log('fetch album data', albums)
+                dispatch(resPhotos(albums))
+            })
+    }
+}
+
+
+
+
+
 // SAMPLE THUNK
 export const REQ_TEST = 'REQ_TEST';
 export const RES_TEST = 'RES_TEST';
