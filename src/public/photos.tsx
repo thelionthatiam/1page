@@ -66,47 +66,46 @@ class PhotoContainer extends React.Component {
                     key={item.id}
                     title={item.title}
                 >
-                    <p>{item.title}</p>
-                    <p>{item.date}</p>
-                    <p>{item.description}</p>
-                    <p>{item.album_uuid}</p>
+                    <h2>{item.title}</h2>
+                    <p className = 'small-text'>{item.date}</p>
+                    <p className='small-text margin-bottom'>{item.description}</p>
+
                     { 
                         item.photos.length > 0 ?
 
                             item.photos.map((item) => {
                             return <div
                                 key={item.id}>
-                                <p>{item.photo}</p>
                                 <img src={"/imgs/" + item.photo + ".jpg"}/>
                             </div>
                         }):
                         null
-                    };
+                    }
                     
                 </div>
             })
         }
 
         return (
-            <div>
-                <div >
-                    <h1>hello photo world</h1>
-                    <form action='/photos' method="get">
-                        <button type="submit">get photos</button>
-                    </form>
+            <div className = 'page-wrapper'>
+                <div className = 'title-wrapper'>
+                    <img className = 'title-icon' src = '/icons/titles/photo-icon.svg'/>
+                    <h1 className = 'title'>THIS IS A BEATIFUL TITLE</h1>
                 </div>
-                <Transition
-                    in={true}
-                    timeout={duration}
-                    unmountOnExit={true}
-                    mountOnEnter={true}
-                    appear={true}>
-                    {state =>
-                        <div style={transitionStyles[state]}>
-                            {items}
-                        </div>
-                    }
-                </Transition>
+                <div className = 'album-wrapper'>
+                    <Transition
+                        in={true}
+                        timeout={duration}
+                        unmountOnExit={true}
+                        mountOnEnter={true}
+                        appear={true}>
+                        {state =>
+                            <div style={transitionStyles[state]}>
+                                {items}
+                            </div>
+                        }
+                    </Transition>
+                </div>
             </div>
 
         )

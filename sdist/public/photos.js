@@ -48,28 +48,25 @@ var PhotoContainer = /** @class */ (function (_super) {
         if (this.props.albums.length !== 0) {
             items = this.props.albums.map(function (item) {
                 return React.createElement("div", { key: item.id, title: item.title },
-                    React.createElement("p", null, item.title),
-                    React.createElement("p", null, item.date),
-                    React.createElement("p", null, item.description),
-                    React.createElement("p", null, item.album_uuid),
+                    React.createElement("h2", null, item.title),
+                    React.createElement("p", { className: 'small-text' }, item.date),
+                    React.createElement("p", { className: 'small-text margin-bottom' }, item.description),
                     item.photos.length > 0 ?
                         item.photos.map(function (item) {
                             return React.createElement("div", { key: item.id },
-                                React.createElement("p", null, item.photo),
                                 React.createElement("img", { src: "/imgs/" + item.photo + ".jpg" }));
                         }) :
-                        null,
-                    ";");
+                        null);
             });
         }
-        return (React.createElement("div", null,
-            React.createElement("div", null,
-                React.createElement("h1", null, "hello photo world"),
-                React.createElement("form", { action: '/photos', method: "get" },
-                    React.createElement("button", { type: "submit" }, "get photos"))),
-            React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
-                return React.createElement("div", { style: transitionStyles[state] }, items);
-            })));
+        return (React.createElement("div", { className: 'page-wrapper' },
+            React.createElement("div", { className: 'title-wrapper' },
+                React.createElement("img", { className: 'title-icon', src: '/icons/titles/photo-icon.svg' }),
+                React.createElement("h1", { className: 'title' }, "THIS IS A BEATIFUL TITLE")),
+            React.createElement("div", { className: 'album-wrapper' },
+                React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
+                    return React.createElement("div", { style: transitionStyles[state] }, items);
+                }))));
     };
     return PhotoContainer;
 }(React.Component));
