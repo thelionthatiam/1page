@@ -24,39 +24,80 @@ export function recieveError(error, dispatch) {
 }
 
 
-// SAMPLE THUNK
-export const REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';
-export const RES_NAME_CHANGE = 'RES_NAME_CHANGE';
+// PHOTO THUNK
+export const REQ_PHOTOS = 'REQ_PHOTOS';
+export const RES_PHOTOS = 'RES_PHOTOS';
 
-export function reqNewName(v) {
-    return { type: REQ_NAME_CHANGE }
+export function reqPhotos() {
+    return { type: REQ_PHOTOS }
 }
 
-function recieveNewName(user) {
+function resPhotos(albums) {
     return {
-        type: RES_NAME_CHANGE,
-        profile: user
+        type: RES_PHOTOS,
+        albums
     }
 }
 
-export function fetchNewName(v) {
+export function fetchPhotos() {
     return function (dispatch) {
-        dispatch(reqNewName(v))
-        return fetch("/new-name", {
-            method: "post",
+        dispatch(reqPhotos())
+        return fetch("/photos", {
+            method: "get",
             credentials: 'same-origin',
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name: v })
+            }
         })
-            .then((res) => {
-                return res.json();
+            .then((res) => res.json())
+            .then(albums => {
+                if (albums.status === 'failed') {
+                    return dispatch(recieveError(albums, dispatch))
+                }
+                console.log('fetch album data', albums)
+                dispatch(resPhotos(albums))
             })
-            .then(user => {
-                dispatch(recieveNewName(user))
+    }
+}
+
+
+
+
+
+// SAMPLE THUNK
+export const REQ_TEST = 'REQ_TEST';
+export const RES_TEST = 'RES_TEST';
+
+export function reqTestData() {
+    return { type: REQ_TEST }
+}
+
+function resTestData(test) {
+    return {
+        type: RES_TEST,
+        test
+    }
+}
+
+export function fetchTestData() {
+    return function (dispatch) {
+        dispatch(reqTestData())
+        return fetch("/test", {
+            method: "get",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => res.json())
+            .then(test => {
+                if (test.status === 'failed') {
+                    return dispatch(recieveError(test, dispatch))
+                }
+                console.log('fetch test data', test)
+                dispatch(resTestData(test))
             })
-            .catch(e => console.log(e))
     }
 }

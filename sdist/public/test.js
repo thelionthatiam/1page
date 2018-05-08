@@ -11,59 +11,78 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var Transition_1 = require("react-transition-group/Transition");
 var react_redux_1 = require("react-redux");
 var actions_1 = require("./actions");
-var actions_alarm_1 = require("./actions-alarm");
 var NewTest = /** @class */ (function (_super) {
     __extends(NewTest, _super);
     function NewTest(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {
-            value: ''
-        };
-        _this.handleChange = _this.handleChange.bind(_this);
         _this.handleSubmit = _this.handleSubmit.bind(_this);
+        _this.componentDidMount = _this.componentDidMount.bind(_this);
         return _this;
     }
-    NewTest.prototype.handleChange = function (event) {
-        this.setState({ value: event.target.value });
+    NewTest.prototype.componentDidMount = function () {
+        this.props.getTestData();
     };
     NewTest.prototype.handleSubmit = function (event) {
         event.preventDefault();
-        this.props.postName(this.state.value);
+        console.log('handlesubmit', this.props.getTestData());
+        this.props.getTestData();
     };
     NewTest.prototype.render = function () {
-        return (React.createElement("div", { className: 'app-content' },
-            React.createElement("div", { className: 'profile-wrapper full-width' },
-                React.createElement("form", { onSubmit: this.handleSubmit },
-                    React.createElement("input", { type: 'text', className: 'big-form-item', value: this.state.value, onChange: this.handleChange }),
-                    React.createElement("input", { type: "submit", value: "Submit", className: 'button dark-button' })),
-                React.createElement("div", null,
-                    React.createElement("h1", null, "profile"),
-                    React.createElement("p", null, this.props.userData.profile.name),
-                    React.createElement("p", null, this.props.userData.profile.email),
-                    React.createElement("p", null, this.props.userData.profile.phone),
-                    React.createElement("p", null, this.props.userData.profile.permission),
-                    React.createElement("h1", null, "alarms"),
-                    React.createElement("h4", null, this.props.userData.alarms[0].title),
-                    React.createElement("p", null, this.props.userData.alarms[0].time),
-                    React.createElement("p", null, this.props.userData.alarms[0].user_uuid),
-                    React.createElement("p", null, this.props.userData.alarms[0].state),
-                    React.createElement("p", null, this.props.userData.alarms[0].repeat)),
-                React.createElement("form", { action: '/app/accounts/' + this.props.userData.profile.email + '/trans', method: 'post' },
-                    React.createElement("button", { type: 'submit', className: 'button dark-button' }, "transactions")))));
+        console.log(this.props.test, this.props.test.length);
+        var duration = 200;
+        var transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            entered: {
+                opacity: 1,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exiting: {
+                opacity: .8,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exited: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            }
+        };
+        var items = React.createElement("h1", null, "nothing here yet!");
+        if (this.props.test.length !== 0) {
+            items = this.props.test.map(function (item) {
+                return React.createElement("div", { key: item.id, title: item.test },
+                    React.createElement("p", null, item.id),
+                    React.createElement("p", null, item.test),
+                    React.createElement("p", null, item.test_uuid),
+                    React.createElement("p", null, item.date));
+            });
+        }
+        return (React.createElement("div", null,
+            React.createElement("div", null,
+                React.createElement("h1", null, "hello react world"),
+                React.createElement("form", { action: '/test', method: "post" },
+                    React.createElement("input", { type: 'text' }),
+                    React.createElement("button", { type: "submit" }, "test"))),
+            React.createElement("div", null,
+                React.createElement("button", { onClick: this.handleSubmit }, "test")),
+            React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
+                return React.createElement("div", { style: transitionStyles[state] }, items);
+            })));
     };
     return NewTest;
 }(React.Component));
 var mapStateToProps = function (state) {
     return {
-        userData: state.userData
+        test: state.test.test
     };
 };
 var mapDispatchToProps = function (dispatch) {
     return {
-        postName: function (v) { return dispatch(actions_1.fetchNewName(v)); },
-        postTime: function (v) { return dispatch(actions_alarm_1.fetchNewTime(v)); }
+        getTestData: function () { return dispatch(actions_1.fetchTestData()); }
     };
 };
 var TestApp = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(NewTest);

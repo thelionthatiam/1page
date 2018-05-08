@@ -23,39 +23,74 @@ function recieveError(error, dispatch) {
     };
 }
 exports.recieveError = recieveError;
-// SAMPLE THUNK
-exports.REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';
-exports.RES_NAME_CHANGE = 'RES_NAME_CHANGE';
-function reqNewName(v) {
-    return { type: exports.REQ_NAME_CHANGE };
+// PHOTO THUNK
+exports.REQ_PHOTOS = 'REQ_PHOTOS';
+exports.RES_PHOTOS = 'RES_PHOTOS';
+function reqPhotos() {
+    return { type: exports.REQ_PHOTOS };
 }
-exports.reqNewName = reqNewName;
-function recieveNewName(user) {
+exports.reqPhotos = reqPhotos;
+function resPhotos(albums) {
     return {
-        type: exports.RES_NAME_CHANGE,
-        profile: user
+        type: exports.RES_PHOTOS,
+        albums: albums
     };
 }
-function fetchNewName(v) {
+function fetchPhotos() {
     return function (dispatch) {
-        dispatch(reqNewName(v));
-        return fetch("/new-name", {
-            method: "post",
+        dispatch(reqPhotos());
+        return fetch("/photos", {
+            method: "get",
             credentials: 'same-origin',
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name: v })
+            }
         })
-            .then(function (res) {
-            return res.json();
-        })
-            .then(function (user) {
-            dispatch(recieveNewName(user));
-        })
-            .catch(function (e) { return console.log(e); });
+            .then(function (res) { return res.json(); })
+            .then(function (albums) {
+            if (albums.status === 'failed') {
+                return dispatch(recieveError(albums, dispatch));
+            }
+            console.log('fetch album data', albums);
+            dispatch(resPhotos(albums));
+        });
     };
 }
-exports.fetchNewName = fetchNewName;
+exports.fetchPhotos = fetchPhotos;
+// SAMPLE THUNK
+exports.REQ_TEST = 'REQ_TEST';
+exports.RES_TEST = 'RES_TEST';
+function reqTestData() {
+    return { type: exports.REQ_TEST };
+}
+exports.reqTestData = reqTestData;
+function resTestData(test) {
+    return {
+        type: exports.RES_TEST,
+        test: test
+    };
+}
+function fetchTestData() {
+    return function (dispatch) {
+        dispatch(reqTestData());
+        return fetch("/test", {
+            method: "get",
+            credentials: 'same-origin',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        })
+            .then(function (res) { return res.json(); })
+            .then(function (test) {
+            if (test.status === 'failed') {
+                return dispatch(recieveError(test, dispatch));
+            }
+            console.log('fetch test data', test);
+            dispatch(resTestData(test));
+        });
+    };
+}
+exports.fetchTestData = fetchTestData;
 //# sourceMappingURL=actions.js.map

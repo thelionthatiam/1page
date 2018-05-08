@@ -8,6 +8,8 @@ var session = require("express-session");
 var methodOverride = require("method-override");
 var cors = require("cors");
 var index_1 = require("./index");
+var db_connect_config_1 = require("./services/db-connect-config");
+var database_1 = require("./middleware/database");
 var app = express();
 app.use(express.static(path.join(__dirname, './public/rollup')));
 app.use(methodOverride('_method'));
@@ -23,6 +25,7 @@ app.engine('hbs', hbs({
 app.set('views', path.join(__dirname, "../views"));
 app.use(express.static(path.join(__dirname, './public')));
 app.set('trust proxy', 1);
+app.use(database_1.init(db_connect_config_1.dbConfig));
 // for cross origin fetch
 app.options('*', cors());
 app.use(cors());

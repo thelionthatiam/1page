@@ -1,95 +1,117 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import Transition from 'react-transition-group/Transition';
+import NothingHere from './little-components/nothing-here'
 import { connect, Provider } from 'react-redux';
-import { populate } from './user-data';
-import { fetchNewName } from './actions';
-import { fetchNewTime } from './actions-alarm'
+
+import { fetchTestData } from './actions'
 
 class NewTest extends React.Component {
-    state: {
-        value: string;
-    }
     props: {
-        postName:(string) => string; 
-        postTime: (string) => string; 
-        userData: {
-            alarms:[{
-                title:string;
-                time:string;
-                user_uuid:string;
-                state:string;
-                repeat:string;
-                alarm_uuid:string;
-            }],
-            profile: {
-                name:string;
-                email:string;
-                phone:string;
-                permission:string;
-            }
-        }
+        test: [{
+            id: string;
+            title: string;
+            uuid: string;
+            test_uuid: string;
+        }]
+        getTestData:() => props.items
     }
-
+    
 
     constructor(props) {
         super(props)
-        this.state = {
-            value: ''
-        }
-        this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.componentDidMount = this.componentDidMount.bind(this)
     }
-
-
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    
+    componentDidMount() {
+        this.props.getTestData()
     }
 
     handleSubmit(event) {
-        event.preventDefault();
-        this.props.postName(this.state.value);
+        event.preventDefault()
+        console.log('handlesubmit', this.props.getTestData())
+        this.props.getTestData()
+
     }
 
     render() {
+        console.log(this.props.test, this.props.test.length)
+        let duration = 200;
+
+        let transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            entered: {
+                opacity: 1,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exiting: {
+                opacity: .8,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exited: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            }
+        };
+        let items = <h1>nothing here yet!</h1>
+        if (this.props.test.length !== 0) {
+            items = this.props.test.map((item) => {
+                return <div
+                    key={item.id}
+                    title={item.test}
+                >
+                    <p>{item.id}</p>
+                    <p>{item.test}</p>
+                    <p>{item.test_uuid}</p>
+                    <p>{item.date}</p>
+                </div>
+            })
+        }
+       
         return (
-            <div className = 'app-content'>
-                <div className = 'profile-wrapper full-width'>
-                    <form onSubmit={this.handleSubmit}>
-                        <input type='text' className = 'big-form-item' value = {this.state.value} onChange = {this.handleChange} />
-                        <input type="submit" value="Submit" className = 'button dark-button' />
-                    </form>
-                    <div>
-                        <h1>profile</h1>
-                        <p>{this.props.userData.profile.name}</p>
-                        <p>{this.props.userData.profile.email}</p>
-                        <p>{this.props.userData.profile.phone}</p>
-                        <p>{this.props.userData.profile.permission}</p>
-                        <h1>alarms</h1>
-                        <h4>{this.props.userData.alarms[0].title}</h4>
-                        <p>{this.props.userData.alarms[0].time}</p>
-                        <p>{this.props.userData.alarms[0].user_uuid}</p>
-                        <p>{this.props.userData.alarms[0].state}</p>
-                        <p>{this.props.userData.alarms[0].repeat}</p>
-                    </div>
-                    <form action={'/app/accounts/' + this.props.userData.profile.email + '/trans'} method='post'>
-                        <button type='submit' className='button dark-button'>transactions</button>
+            <div>
+                <div >
+                    <h1>hello react world</h1>
+                    <form action='/test' method="post">
+                        <input type='text' />
+                        <button type="submit">test</button>
                     </form>
                 </div>
+                <div >
+                    <button onClick={this.handleSubmit}>test</button>
+                </div>
+                <Transition
+                    in={true}
+                    timeout={duration}
+                    unmountOnExit={true}
+                    mountOnEnter={true}
+                    appear={true}>
+                    {state =>
+                        <div style={transitionStyles[state]}>
+                            {items}
+                        </div>
+                    }
+                </Transition>
             </div>
+            
         )
     }    
 }
 
 const mapStateToProps = state => {
     return {
-        userData: state.userData
+        test:state.test.test
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        postName:(v) => dispatch(fetchNewName(v)),
-        postTime:(v) => dispatch(fetchNewTime(v))
+        getTestData: () => dispatch(fetchTestData())
     }
 }
 

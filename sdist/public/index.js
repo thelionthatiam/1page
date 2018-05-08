@@ -10,10 +10,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("./app");
-var test_1 = require("./test");
-var new_account_1 = require("./unused/components/new-account");
-var simple_clock_1 = require("./simple-clock");
+var photos_1 = require("./photos");
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
@@ -23,7 +20,6 @@ var redux_1 = require("redux");
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
 var actions_1 = require("./actions");
-var actions_alarm_1 = require("./actions-alarm");
 // wrap around erroring component 
 var ErrorBoundary = /** @class */ (function (_super) {
     __extends(ErrorBoundary, _super);
@@ -39,15 +35,16 @@ var ErrorBoundary = /** @class */ (function (_super) {
     };
     ErrorBoundary.prototype.render = function () {
         if (this.state.hasError) {
-            // You can render any custom fallback UI
             return React.createElement("h1", null, "Something went wrong.");
         }
         return this.props.children;
     };
     return ErrorBoundary;
 }(React.Component));
-var initialState = {};
-function userDataReducer(state, action) {
+var initialState = {
+    albums: []
+};
+function reduce(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case user_data_1.POPULATE:
@@ -55,52 +52,25 @@ function userDataReducer(state, action) {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
             });
-        case actions_alarm_1.REQ_TIME_CHANGE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_TIME_CHANGE:
+        case actions_1.REQ_PHOTOS:
             return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms,
-                error: "dismissed"
+                isFetching: true
             });
-        case actions_1.REQ_NAME_CHANGE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_1.RES_NAME_CHANGE:
+        case actions_1.RES_PHOTOS:
             return Object.assign({}, state, {
                 isFetching: false,
-                profile: action.profile
+                albums: action.albums
             });
-        case actions_alarm_1.REQ_ALARM:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_ALARM:
+        case actions_1.REQ_TEST:
             return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
+                isFetching: true
             });
-        case actions_alarm_1.REQ_ACTIVE_TOGGLE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_ACTIVE_TOGGLE:
-            console.log('res active toggle', action);
+        case actions_1.RES_TEST:
             return Object.assign({}, state, {
                 isFetching: false,
-                alarms: action.alarms
-            });
-        case actions_alarm_1.REQ_ALARM_TITLE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.REQ_ALARM_TITLE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
-            });
-        case actions_alarm_1.REQ_ALARM_ARCHIVE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.REQ_ALARM_ARCHIVE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
+                test: action.test
             });
         case actions_1.GEN_ERR:
-            console.log('gen error', action);
             return Object.assign({}, state, {
                 isFetching: false,
                 error: action.error,
@@ -114,26 +84,13 @@ function userDataReducer(state, action) {
     }
 }
 var reducer = redux_1.combineReducers({
-    userData: userDataReducer
+    all: reduce
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;
-function app() {
+function photos() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(app_1.default, null)), document.getElementById('app'));
+        React.createElement(photos_1.default, null)), document.getElementById('root'));
 }
-exports.app = app;
-function test() {
-    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(test_1.TestApp, null)), document.getElementById('test'));
-}
-exports.test = test;
-function alarmClock() {
-    ReactDOM.render(React.createElement(simple_clock_1.SimpleClock, null), document.getElementById('simpleClock'));
-}
-exports.alarmClock = alarmClock;
-function newAccount() {
-    ReactDOM.render(React.createElement(new_account_1.default, null), document.getElementById('newAccount'));
-}
-exports.newAccount = newAccount;
+exports.photos = photos;
 //# sourceMappingURL=index.js.map
