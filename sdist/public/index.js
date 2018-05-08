@@ -20,7 +20,6 @@ var redux_1 = require("redux");
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
 var actions_1 = require("./actions");
-var actions_alarm_1 = require("./actions-alarm");
 // wrap around erroring component 
 var ErrorBoundary = /** @class */ (function (_super) {
     __extends(ErrorBoundary, _super);
@@ -36,15 +35,16 @@ var ErrorBoundary = /** @class */ (function (_super) {
     };
     ErrorBoundary.prototype.render = function () {
         if (this.state.hasError) {
-            // You can render any custom fallback UI
             return React.createElement("h1", null, "Something went wrong.");
         }
         return this.props.children;
     };
     return ErrorBoundary;
 }(React.Component));
-var initialState = {};
-function userDataReducer(state, action) {
+var initialState = {
+    test: []
+};
+function reduce(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case user_data_1.POPULATE:
@@ -52,52 +52,16 @@ function userDataReducer(state, action) {
                 profile: action.userData.profile,
                 alarms: action.userData.alarms
             });
-        case actions_alarm_1.REQ_TIME_CHANGE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_TIME_CHANGE:
+        case actions_1.REQ_TEST:
             return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms,
-                error: "dismissed"
+                isFetching: true
             });
-        case actions_1.REQ_NAME_CHANGE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_1.RES_NAME_CHANGE:
+        case actions_1.RES_TEST:
             return Object.assign({}, state, {
                 isFetching: false,
-                profile: action.profile
-            });
-        case actions_alarm_1.REQ_ALARM:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_ALARM:
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
-            });
-        case actions_alarm_1.REQ_ACTIVE_TOGGLE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.RES_ACTIVE_TOGGLE:
-            console.log('res active toggle', action);
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
-            });
-        case actions_alarm_1.REQ_ALARM_TITLE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.REQ_ALARM_TITLE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
-            });
-        case actions_alarm_1.REQ_ALARM_ARCHIVE:
-            return Object.assign({}, state, { isFetching: true });
-        case actions_alarm_1.REQ_ALARM_ARCHIVE:
-            return Object.assign({}, state, {
-                isFetching: false,
-                alarms: action.alarms
+                test: action.test
             });
         case actions_1.GEN_ERR:
-            console.log('gen error', action);
             return Object.assign({}, state, {
                 isFetching: false,
                 error: action.error,
@@ -111,7 +75,7 @@ function userDataReducer(state, action) {
     }
 }
 var reducer = redux_1.combineReducers({
-    userData: userDataReducer
+    test: reduce
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;

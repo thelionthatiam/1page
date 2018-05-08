@@ -7,6 +7,7 @@ import * as methodOverride from 'method-override';
 import * as cors from 'cors';
 import index from './index';
 import errors from './errors'
+import { dbConfig } from "./services/db-connect-config";
 import { init } from './middleware/database'
 
 const app = express();
@@ -28,6 +29,8 @@ app.use(express.static(path.join(__dirname, './public')));
 
 app.set('trust proxy', 1);
 
+
+app.use(init(dbConfig))
 // for cross origin fetch
 app.options('*', cors())
 app.use(cors())

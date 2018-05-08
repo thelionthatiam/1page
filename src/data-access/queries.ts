@@ -11,6 +11,23 @@ export default class QuerySvc {
         this.conn = conn;
     }
 
-    // select
+    insertTest(values:[string]):Promise<void> {
+        const text = 'INSERT INTO test (test) VALUES ($1)';
+        return this.conn.query(text, values)
+            .then(result => null)
+    }
+
+    selectTest():Promise<pg.QueryResult> {
+        const text = 'SELECT * FROM test'
+        return this.conn.query(text)
+            .then(result => {
+                if (result.rowCount === 0) {
+                    console.log('Select test shows nothing in the database')
+                    return ['empty']
+                } else {
+                    return result.rows
+                }
+            })
+    }
     
 };

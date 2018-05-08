@@ -24,38 +24,38 @@ function recieveError(error, dispatch) {
 }
 exports.recieveError = recieveError;
 // SAMPLE THUNK
-exports.REQ_NAME_CHANGE = 'REQ_NAME_CHANGE';
-exports.RES_NAME_CHANGE = 'RES_NAME_CHANGE';
-function reqNewName(v) {
-    return { type: exports.REQ_NAME_CHANGE };
+exports.REQ_TEST = 'REQ_TEST';
+exports.RES_TEST = 'RES_TEST';
+function reqTestData() {
+    return { type: exports.REQ_TEST };
 }
-exports.reqNewName = reqNewName;
-function recieveNewName(user) {
+exports.reqTestData = reqTestData;
+function resTestData(test) {
     return {
-        type: exports.RES_NAME_CHANGE,
-        profile: user
+        type: exports.RES_TEST,
+        test: test
     };
 }
-function fetchNewName(v) {
+function fetchTestData() {
     return function (dispatch) {
-        dispatch(reqNewName(v));
-        return fetch("/new-name", {
-            method: "post",
+        dispatch(reqTestData());
+        return fetch("/test", {
+            method: "get",
             credentials: 'same-origin',
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ name: v })
+            }
         })
-            .then(function (res) {
-            return res.json();
-        })
-            .then(function (user) {
-            dispatch(recieveNewName(user));
-        })
-            .catch(function (e) { return console.log(e); });
+            .then(function (res) { return res.json(); })
+            .then(function (test) {
+            if (test.status === 'failed') {
+                return dispatch(recieveError(test, dispatch));
+            }
+            console.log('fetch test data', test);
+            dispatch(resTestData(test));
+        });
     };
 }
-exports.fetchNewName = fetchNewName;
+exports.fetchTestData = fetchTestData;
 //# sourceMappingURL=actions.js.map
