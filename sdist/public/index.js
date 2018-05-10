@@ -10,13 +10,17 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var photos_1 = require("./photos");
+// DEPENDENCIES
 var React = require("react");
 var ReactDOM = require("react-dom");
 var react_redux_1 = require("react-redux");
 var redux_devtools_extension_1 = require("redux-devtools-extension");
 var redux_thunk_1 = require("redux-thunk");
 var redux_1 = require("redux");
+// COMPONENTS
+var photos_1 = require("./photos");
+var blinds_1 = require("./blinds");
+//ACTIONS
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
 var actions_1 = require("./actions");
@@ -93,4 +97,8 @@ function photos() {
         React.createElement(photos_1.default, null)), document.getElementById('root'));
 }
 exports.photos = photos;
+function blinds() {
+    ReactDOM.render(React.createElement(blinds_1.default, null), document.getElementById('blinds'));
+}
+exports.blinds = blinds;
 //# sourceMappingURL=index.js.map

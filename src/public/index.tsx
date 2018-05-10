@@ -1,10 +1,16 @@
-import Photos from './photos'
+
+// DEPENDENCIES
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { WSAEPFNOSUPPORT } from 'constants';
+// COMPONENTS
+import Photos from './photos'
+import Blinds from './blinds'
+//ACTIONS
 import { POPULATE, populate } from './user-data';
 import { 
     REQ_PHOTOS,
@@ -14,7 +20,7 @@ import {
     GEN_ERR,
     CLEAR_ERR,
 } from './actions'
-import { WSAEPFNOSUPPORT } from 'constants';
+
 
 
 // wrap around erroring component 
@@ -97,5 +103,13 @@ function photos() {
   document.getElementById('root'));
 }
 
+function blinds() {
+    ReactDOM.render(
+        <Blinds/>,
+        document.getElementById('blinds')
+    )
+}
 
-export { store, populate, photos };
+
+
+export { store, populate, photos, blinds };
