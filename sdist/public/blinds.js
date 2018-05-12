@@ -71,11 +71,11 @@ var Blinds = /** @class */ (function (_super) {
             active: true,
             blinds: freeze
         }, function () {
-            console.log(_this.state.blinds, 'handleclick callback');
             _this.props.toggleBlinds(_this.state.active);
         });
     };
     Blinds.prototype.revert = function (e) {
+        var _this = this;
         e.preventDefault();
         this.setState({
             blinds: [
@@ -106,6 +106,8 @@ var Blinds = /** @class */ (function (_super) {
                 }
             ],
             active: false
+        }, function () {
+            _this.props.toggleBlinds(_this.state.active);
         });
     };
     Blinds.prototype.render = function () {

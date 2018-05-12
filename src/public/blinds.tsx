@@ -73,7 +73,6 @@ class Blinds extends React.Component {
             active: true,
             blinds: freeze
         }, () => {
-            console.log(this.state.blinds, 'handleclick callback')
             this.props.toggleBlinds(this.state.active)
         });
         
@@ -110,6 +109,8 @@ class Blinds extends React.Component {
                 }
             ],
             active: false
+        }, () => {
+            this.props.toggleBlinds(this.state.active)
         });
     }
 
