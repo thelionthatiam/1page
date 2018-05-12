@@ -35,7 +35,6 @@ var PhotoGallery = /** @class */ (function (_super) {
     PhotoGallery.prototype.render = function () {
         var _this = this;
         var width = this.state.width;
-        console.log('photogallery', this.props);
         if (this.props.blinds.active) {
             return (React.createElement(react_measure_1.default, { bounds: true, onResize: function (contentRect) { return _this.setState({ width: contentRect.bounds.width }); } }, function (_a) {
                 var measureRef = _a.measureRef;

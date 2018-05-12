@@ -25,7 +25,6 @@ class PhotoGallery extends React.Component {
     }
     render() {
         const width = this.state.width;
-        console.log('photogallery', this.props)
         if (this.props.blinds.active) {
             return (
                 <Measure bounds onResize={(contentRect) => this.setState({ width: contentRect.bounds.width })}>

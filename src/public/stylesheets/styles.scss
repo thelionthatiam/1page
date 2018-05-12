@@ -3,6 +3,7 @@
   margin: 0px;
   padding: 0px;
   transition:200ms;
+  //border:1px solid grey;
 }
 
 // FONTS
@@ -208,7 +209,6 @@ $p-color: $pink;
   @extend %p;
 }
 
-
 .photo-container {
   display:block;
   margin-left: auto;
@@ -216,7 +216,9 @@ $p-color: $pink;
   max-width:1000px;
 }
 
-
+.revert-button {
+  z-index: 10;
+}
 
 
 

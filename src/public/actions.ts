@@ -66,7 +66,6 @@ export function fetchPhotos() {
 export const OPEN_BLINDS = 'OPEN_BLINDS';
 export const CLOSE_BLINDS = 'CLOSE_BLINDS';
 export function toggleBlinds(isOpen) {
-    console.log('toggleblinds', isOpen)
     if (isOpen) {
         return {
             type: OPEN_BLINDS
@@ -109,7 +108,6 @@ export function fetchTestData() {
                 if (test.status === 'failed') {
                     return dispatch(recieveError(test, dispatch))
                 }
-                console.log('fetch test data', test)
                 dispatch(resTestData(test))
             })
     }

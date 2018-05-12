@@ -70,14 +70,13 @@ function reduce(state, action) {
                 albums: action.albums
             });
         case actions_1.OPEN_BLINDS:
-            console.log('blinds');
             return Object.assign({}, state, {
                 blinds: {
                     active: true
                 }
             });
         case actions_1.CLOSE_BLINDS:
-            console.log('blinds');
+            console.log('BLINDS ARE CLOSED');
             return Object.assign({}, state, {
                 blinds: {
                     active: false

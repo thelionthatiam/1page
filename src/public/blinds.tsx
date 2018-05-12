@@ -58,7 +58,6 @@ class Blinds extends React.Component {
 
     handleClick(id, e) {
         e.preventDefault();
-        console.log('clicked')
         let freeze = this.state.blinds;
         for (let i = 0; i < freeze.length; i++) {
             for (let k in freeze[i]) {
@@ -80,6 +79,7 @@ class Blinds extends React.Component {
 
     revert(e) {
         e.preventDefault();
+        console.log('revert triggered')
         this.setState({
             blinds: [
                 {
@@ -110,12 +110,13 @@ class Blinds extends React.Component {
             ],
             active: false
         }, () => {
+            console.log('active state after revert', this.state.active)
+            console.log('state after revert', this.state)
             this.props.toggleBlinds(this.state.active)
         });
     }
 
     render() {
-        console.log('blinds', this.props)
         let blinds = this.state.blinds.map(data => {
             return (
                 <Blind 
@@ -132,7 +133,7 @@ class Blinds extends React.Component {
         return(
             <div className = "page-wrapper" >
                 { blinds }
-                < button onClick = { this.revert } > revert </button>
+                < button className = 'revert-button' onClick = { this.revert } > revert </button>
             </div>
         );
     }
@@ -146,6 +147,7 @@ class Blind extends React.Component {
                 opacity: "0",
                 transition: "1000ms",
                 height: "0px",
+                fontSize: '0px'
             },
             selected: {
                 transition: "1000ms",
@@ -162,7 +164,6 @@ class Blind extends React.Component {
 
         let activeStyle = null;
         if (this.props.active) {
-            console.log('render props active')
             this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
         }            
     

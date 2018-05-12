@@ -20604,7 +20604,6 @@ var a = (function (exports) {
 	var OPEN_BLINDS = 'OPEN_BLINDS';
 	var CLOSE_BLINDS = 'CLOSE_BLINDS';
 	function toggleBlinds(isOpen) {
-	    console.log('toggleblinds', isOpen);
 	    if (isOpen) {
 	        return {
 	            type: OPEN_BLINDS
@@ -20718,7 +20717,6 @@ var a = (function (exports) {
 	    Blinds.prototype.handleClick = function (id, e) {
 	        var _this = this;
 	        e.preventDefault();
-	        console.log('clicked');
 	        var freeze = this.state.blinds;
 	        for (var i = 0; i < freeze.length; i++) {
 	            for (var k in freeze[i]) {
@@ -20740,6 +20738,7 @@ var a = (function (exports) {
 	    Blinds.prototype.revert = function (e) {
 	        var _this = this;
 	        e.preventDefault();
+	        console.log('revert triggered');
 	        this.setState({
 	            blinds: [
 	                {
@@ -20770,16 +20769,17 @@ var a = (function (exports) {
 	            ],
 	            active: false
 	        }, function () {
+	            console.log('active state after revert', _this.state.active);
+	            console.log('state after revert', _this.state);
 	            _this.props.toggleBlinds(_this.state.active);
 	        });
 	    };
 	    Blinds.prototype.render = function () {
 	        var _this = this;
-	        console.log('blinds', this.props);
 	        var blinds = this.state.blinds.map(function (data) {
 	            return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.content, onClick: function (e) { return _this.handleClick(data.id, e); }}));
 	        });
-	        return (react_4("div", {className: "page-wrapper"}, blinds, react_4("button", {onClick: this.revert}, " revert ")));
+	        return (react_4("div", {className: "page-wrapper"}, blinds, react_4("button", {className: 'revert-button', onClick: this.revert}, " revert ")));
 	    };
 	    return Blinds;
 	}(react_2));
@@ -20792,6 +20792,7 @@ var a = (function (exports) {
 	                opacity: "0",
 	                transition: "1000ms",
 	                height: "0px",
+	                fontSize: '0px'
 	            },
 	            selected: {
 	                transition: "1000ms",
@@ -20806,7 +20807,6 @@ var a = (function (exports) {
 	            : (baseStyle = "wrapper-flip");
 	        var activeStyle = null;
 	        if (this.props.active) {
-	            console.log('render props active');
 	            this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
 	        }
 	        return (react_4("div", {className: baseStyle, style: activeStyle, onClick: this.props.onClick}, react_4("h1", null, this.props.content, " ")));
@@ -22491,7 +22491,6 @@ var a = (function (exports) {
 	    PhotoGallery.prototype.render = function () {
 	        var _this = this;
 	        var width = this.state.width;
-	        console.log('photogallery', this.props);
 	        if (this.props.blinds.active) {
 	            return (react_4(Measure$1, {bounds: true, onResize: function (contentRect) { return _this.setState({ width: contentRect.bounds.width }); }}, function (_a) {
 	                var measureRef = _a.measureRef;
@@ -22576,14 +22575,13 @@ var a = (function (exports) {
 	                albums: action.albums
 	            });
 	        case OPEN_BLINDS:
-	            console.log('blinds');
 	            return Object.assign({}, state, {
 	                blinds: {
 	                    active: true
 	                }
 	            });
 	        case CLOSE_BLINDS:
-	            console.log('blinds');
+	            console.log('BLINDS ARE CLOSED');
 	            return Object.assign({}, state, {
 	                blinds: {
 	                    active: false

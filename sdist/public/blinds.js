@@ -55,7 +55,6 @@ var Blinds = /** @class */ (function (_super) {
     Blinds.prototype.handleClick = function (id, e) {
         var _this = this;
         e.preventDefault();
-        console.log('clicked');
         var freeze = this.state.blinds;
         for (var i = 0; i < freeze.length; i++) {
             for (var k in freeze[i]) {
@@ -77,6 +76,7 @@ var Blinds = /** @class */ (function (_super) {
     Blinds.prototype.revert = function (e) {
         var _this = this;
         e.preventDefault();
+        console.log('revert triggered');
         this.setState({
             blinds: [
                 {
@@ -107,18 +107,19 @@ var Blinds = /** @class */ (function (_super) {
             ],
             active: false
         }, function () {
+            console.log('active state after revert', _this.state.active);
+            console.log('state after revert', _this.state);
             _this.props.toggleBlinds(_this.state.active);
         });
     };
     Blinds.prototype.render = function () {
         var _this = this;
-        console.log('blinds', this.props);
         var blinds = this.state.blinds.map(function (data) {
             return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.content, onClick: function (e) { return _this.handleClick(data.id, e); } }));
         });
         return (React.createElement("div", { className: "page-wrapper" },
             blinds,
-            React.createElement("button", { onClick: this.revert }, " revert ")));
+            React.createElement("button", { className: 'revert-button', onClick: this.revert }, " revert ")));
     };
     return Blinds;
 }(React.Component));
@@ -131,6 +132,7 @@ var Blind = /** @class */ (function (_super) {
                 opacity: "0",
                 transition: "1000ms",
                 height: "0px",
+                fontSize: '0px'
             },
             selected: {
                 transition: "1000ms",
@@ -146,7 +148,6 @@ var Blind = /** @class */ (function (_super) {
             : (baseStyle = "wrapper-flip");
         var activeStyle = null;
         if (this.props.active) {
-            console.log('render props active');
             this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
         }
         return (React.createElement("div", { className: baseStyle, style: activeStyle, onClick: this.props.onClick },
