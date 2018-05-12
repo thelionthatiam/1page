@@ -1,6 +1,8 @@
 import * as React from "react";
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
+import { connect, Provider } from 'react-redux';
+import { toggleBlinds } from './actions'
 
 interface Mock {
     id:number;
@@ -35,13 +37,15 @@ const data = [
         selected: false
     }
 ]
-export default class Blinds extends React.Component {
+class Blinds extends React.Component {
     state: {
         blinds:Mock[];
         active:boolean;
     }
 
-
+    props: {
+        toggleBlinds:(boolean) => Function
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -68,7 +72,11 @@ export default class Blinds extends React.Component {
         this.setState({
             active: true,
             blinds: freeze
+        }, () => {
+            console.log(this.state.blinds, 'handleclick callback')
+            this.props.toggleBlinds(this.state.active)
         });
+        
     }
 
     revert(e) {
@@ -106,6 +114,7 @@ export default class Blinds extends React.Component {
     }
 
     render() {
+        console.log('blinds', this.props)
         let blinds = this.state.blinds.map(data => {
             return (
                 <Blind 
@@ -167,3 +176,24 @@ class Blind extends React.Component {
         );
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        blinds: state.all.blinds// this data structure needs to happen
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleBlinds: (isOpen) => dispatch(toggleBlinds(isOpen))
+    }
+}
+
+const BlindsAction = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Blinds)
+
+
+export default BlindsAction;

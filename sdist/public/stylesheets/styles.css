@@ -50,12 +50,7 @@ body {
   margin: 0; }
 
 .page-wrapper {
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  align-items: center;
-  background: papayawhip; }
+  color: papayawhip; }
 
 .title-wrapper {
   width: 100%;
@@ -81,7 +76,8 @@ body {
   align-items: center; }
 
 .title {
-  color: papayawhip; }
+  text-align: center;
+  color: white; }
 
 .title-icon {
   width: 100px;
@@ -91,7 +87,7 @@ body {
 .title-wrapper:hover > h1 {
   color: #211A08; }
 
-img {
+.img {
   width: 100%;
   overflow: hidden; }
 
@@ -146,3 +142,9 @@ img {
 .wrapper-flip:after {
   border-bottom-width: 0px;
   border-top-width: 60px; }
+
+.photo-container {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px; }

@@ -58,6 +58,23 @@ function fetchPhotos() {
     };
 }
 exports.fetchPhotos = fetchPhotos;
+// OPEN BLINDS 
+exports.OPEN_BLINDS = 'OPEN_BLINDS';
+exports.CLOSE_BLINDS = 'CLOSE_BLINDS';
+function toggleBlinds(isOpen) {
+    console.log('toggleblinds', isOpen);
+    if (isOpen) {
+        return {
+            type: exports.OPEN_BLINDS
+        };
+    }
+    else {
+        return {
+            type: exports.CLOSE_BLINDS
+        };
+    }
+}
+exports.toggleBlinds = toggleBlinds;
 // SAMPLE THUNK
 exports.REQ_TEST = 'REQ_TEST';
 exports.RES_TEST = 'RES_TEST';

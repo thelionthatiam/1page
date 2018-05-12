@@ -11,6 +11,8 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var react_redux_1 = require("react-redux");
+var actions_1 = require("./actions");
 var data = [
     {
         id: 1,
@@ -51,6 +53,7 @@ var Blinds = /** @class */ (function (_super) {
         return _this;
     }
     Blinds.prototype.handleClick = function (id, e) {
+        var _this = this;
         e.preventDefault();
         console.log('clicked');
         var freeze = this.state.blinds;
@@ -67,6 +70,9 @@ var Blinds = /** @class */ (function (_super) {
         this.setState({
             active: true,
             blinds: freeze
+        }, function () {
+            console.log(_this.state.blinds, 'handleclick callback');
+            _this.props.toggleBlinds(_this.state.active);
         });
     };
     Blinds.prototype.revert = function (e) {
@@ -104,6 +110,7 @@ var Blinds = /** @class */ (function (_super) {
     };
     Blinds.prototype.render = function () {
         var _this = this;
+        console.log('blinds', this.props);
         var blinds = this.state.blinds.map(function (data) {
             return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.content, onClick: function (e) { return _this.handleClick(data.id, e); } }));
         });
@@ -113,7 +120,6 @@ var Blinds = /** @class */ (function (_super) {
     };
     return Blinds;
 }(React.Component));
-exports.default = Blinds;
 var Blind = /** @class */ (function (_super) {
     __extends(Blind, _super);
     function Blind(props) {
@@ -148,4 +154,16 @@ var Blind = /** @class */ (function (_super) {
     };
     return Blind;
 }(React.Component));
+var mapStateToProps = function (state) {
+    return {
+        blinds: state.all.blinds // this data structure needs to happen
+    };
+};
+var mapDispatchToProps = function (dispatch) {
+    return {
+        toggleBlinds: function (isOpen) { return dispatch(actions_1.toggleBlinds(isOpen)); }
+    };
+};
+var BlindsAction = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(Blinds);
+exports.default = BlindsAction;
 //# sourceMappingURL=blinds.js.map

@@ -20,6 +20,7 @@ var redux_1 = require("redux");
 // COMPONENTS
 var photos_1 = require("./photos");
 var blinds_1 = require("./blinds");
+var photo_gallery_1 = require("./photo-gallery");
 //ACTIONS
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
@@ -46,7 +47,10 @@ var ErrorBoundary = /** @class */ (function (_super) {
     return ErrorBoundary;
 }(React.Component));
 var initialState = {
-    albums: []
+    albums: [],
+    blinds: {
+        active: false
+    }
 };
 function reduce(state, action) {
     if (state === void 0) { state = initialState; }
@@ -64,6 +68,20 @@ function reduce(state, action) {
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
+            });
+        case actions_1.OPEN_BLINDS:
+            console.log('blinds');
+            return Object.assign({}, state, {
+                blinds: {
+                    active: true
+                }
+            });
+        case actions_1.CLOSE_BLINDS:
+            console.log('blinds');
+            return Object.assign({}, state, {
+                blinds: {
+                    active: false
+                }
             });
         case actions_1.REQ_TEST:
             return Object.assign({}, state, {
@@ -96,9 +114,14 @@ function photos() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
         React.createElement(photos_1.default, null)), document.getElementById('root'));
 }
-exports.photos = photos;
 function blinds() {
-    ReactDOM.render(React.createElement(blinds_1.default, null), document.getElementById('blinds'));
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(blinds_1.default, null)), document.getElementById('blinds'));
 }
 exports.blinds = blinds;
+function photoGallery() {
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(photo_gallery_1.default, null)), document.getElementById('photoGallery'));
+}
+exports.photoGallery = photoGallery;
 //# sourceMappingURL=index.js.map

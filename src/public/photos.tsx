@@ -75,7 +75,7 @@ class PhotoContainer extends React.Component {
                             item.photos.map((item) => {
                             return <div
                                 key={item.id}>
-                                <img src={"/imgs/" + item.photo + ".jpg"}/>
+                                <img className = 'img' src={"/imgs/" + item.photo + ".jpg"}/>
                             </div>
                         }):
                         null

@@ -54,7 +54,7 @@ var PhotoContainer = /** @class */ (function (_super) {
                     item.photos.length > 0 ?
                         item.photos.map(function (item) {
                             return React.createElement("div", { key: item.id },
-                                React.createElement("img", { src: "/imgs/" + item.photo + ".jpg" }));
+                                React.createElement("img", { className: 'img', src: "/imgs/" + item.photo + ".jpg" }));
                         }) :
                         null);
             });

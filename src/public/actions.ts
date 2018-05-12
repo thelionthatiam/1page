@@ -61,9 +61,22 @@ export function fetchPhotos() {
     }
 }
 
+// OPEN BLINDS 
 
-
-
+export const OPEN_BLINDS = 'OPEN_BLINDS';
+export const CLOSE_BLINDS = 'CLOSE_BLINDS';
+export function toggleBlinds(isOpen) {
+    console.log('toggleblinds', isOpen)
+    if (isOpen) {
+        return {
+            type: OPEN_BLINDS
+        }
+    } else {
+        return {
+            type: CLOSE_BLINDS
+        }
+    }
+}
 
 // SAMPLE THUNK
 export const REQ_TEST = 'REQ_TEST';

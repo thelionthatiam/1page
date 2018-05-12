@@ -10,6 +10,7 @@ import { WSAEPFNOSUPPORT } from 'constants';
 // COMPONENTS
 import Photos from './photos'
 import Blinds from './blinds'
+import PhotoGallery from './photo-gallery'
 //ACTIONS
 import { POPULATE, populate } from './user-data';
 import { 
@@ -17,6 +18,8 @@ import {
     RES_PHOTOS,
     REQ_TEST,
     RES_TEST,
+    OPEN_BLINDS,
+    CLOSE_BLINDS,
     GEN_ERR,
     CLEAR_ERR,
 } from './actions'
@@ -45,7 +48,10 @@ class ErrorBoundary extends React.Component {
 }
 
 let initialState = {
-    albums:[]
+    albums:[],
+    blinds: {
+        active:false
+    }
 }
 
 function reduce(state = initialState, action) {
@@ -63,6 +69,20 @@ function reduce(state = initialState, action) {
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
+            })
+        case OPEN_BLINDS:
+            console.log('blinds')
+            return Object.assign({}, state, {
+                blinds: {
+                    active: true
+                }
+            })
+        case CLOSE_BLINDS:
+            console.log('blinds')
+            return Object.assign({}, state, {
+                blinds: {
+                    active: false
+                }
             })
         case REQ_TEST:
             return Object.assign({}, state, {
@@ -105,11 +125,22 @@ function photos() {
 
 function blinds() {
     ReactDOM.render(
-        <Blinds/>,
+        <Provider store={store}>
+            <Blinds/>
+        </Provider>,
         document.getElementById('blinds')
+    )
+}
+
+function photoGallery() {
+    ReactDOM.render(
+        <Provider store = { store }>
+            <PhotoGallery/>
+        </Provider>,
+        document.getElementById('photoGallery')
     )
 }
 
 
 
-export { store, populate, photos, blinds };
+export { store, populate, photoGallery, blinds};
