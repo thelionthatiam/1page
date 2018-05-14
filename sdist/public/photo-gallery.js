@@ -65,7 +65,7 @@ var PhotoGallery = /** @class */ (function (_super) {
             }));
         }
         else {
-            return (React.createElement("h1", null, "blinds are closed"));
+            return (React.createElement("h1", null));
         }
     };
     return PhotoGallery;

@@ -61,7 +61,7 @@ class PhotoGallery extends React.Component {
                 </Measure>
             )
         } else {
-            return (<h1>blinds are closed</h1>)
+            return (<h1></h1>)
         }
     }
 }

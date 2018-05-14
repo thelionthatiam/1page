@@ -20693,8 +20693,9 @@ var a = (function (exports) {
 	    Blinds.prototype.handleClick = function (id, e) {
 	        var _this = this;
 	        e.preventDefault();
+	        var currentState = this.state.active;
 	        this.setState({
-	            active: true,
+	            active: !currentState,
 	        }, function () {
 	            console.log(_this.state.active);
 	            _this.props.toggleBlinds(id, _this.state.active);
@@ -20714,10 +20715,10 @@ var a = (function (exports) {
 	        var blinds = this.props.albums.map(function (data) {
 	            if (_this.props.albums.length !== 0) {
 	                // console.log('id check', data.id)
-	                return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, onClick: function (e) { return _this.handleClick(data.id, e); }}));
+	                return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); }}));
 	            }
 	        });
-	        return (react_4("div", {className: "page-wrapper"}, blinds, react_4("button", {className: 'revert-button', onClick: this.revert}, " revert ")));
+	        return (react_4("div", {className: "page-wrapper"}, blinds));
 	    };
 	    return Blinds;
 	}(react_2));
@@ -20728,12 +20729,12 @@ var a = (function (exports) {
 	        this.state = {
 	            off: {
 	                opacity: "0",
-	                transition: "1000ms",
+	                transition: "200ms",
 	                height: "0px",
 	                fontSize: '0px'
 	            },
 	            selected: {
-	                transition: "1000ms",
+	                transition: "200ms",
 	                top: "0"
 	            },
 	        };
@@ -20747,7 +20748,8 @@ var a = (function (exports) {
 	        if (this.props.active) {
 	            this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
 	        }
-	        return (react_4("div", {className: baseStyle, style: activeStyle, onClick: this.props.onClick}, react_4("h1", null, this.props.content, " ")));
+	        console.log('active', this.props.active, 'selected', this.props.selected);
+	        return (react_4("div", null, react_4("div", {className: baseStyle, style: activeStyle, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, react_4("p", {className: 'album-title'}, this.props.content)))));
 	    };
 	    return Blind;
 	}(react_2));
@@ -22460,7 +22462,7 @@ var a = (function (exports) {
 	            }));
 	        }
 	        else {
-	            return (react_4("h1", null, "blinds are closed"));
+	            return (react_4("h1", null));
 	        }
 	    };
 	    return PhotoGallery;

@@ -32,8 +32,9 @@ class Blinds extends React.Component {
 
     handleClick(id, e) {
         e.preventDefault();
+        let currentState = this.state.active
         this.setState({
-            active: true,
+            active: !currentState,
         }, () => {
             console.log(this.state.active)
             this.props.toggleBlinds(id, this.state.active)
@@ -61,6 +62,7 @@ class Blinds extends React.Component {
                         active={this.state.active}
                         selected={data.selected}
                         content={data.title}
+                        description={data.description}
                         onClick={e => this.handleClick(data.id, e)}
                     />
                 );
@@ -70,7 +72,7 @@ class Blinds extends React.Component {
         return(
             <div className = "page-wrapper" >
                 { blinds }
-                < button className = 'revert-button' onClick = { this.revert } > revert </button>
+                {/* {this.state.active ? < img className = 'small-icon'  src = '/icons/white/x.svg' onClick = { this.revert } />: null } */}
             </div>
         );
     }
@@ -82,12 +84,12 @@ class Blind extends React.Component {
         this.state = {
             off: {
                 opacity: "0",
-                transition: "1000ms",
+                transition: "200ms",
                 height: "0px",
                 fontSize: '0px'
             },
             selected: {
-                transition: "1000ms",
+                transition: "200ms",
                 top: "0"
             },
         };
@@ -103,14 +105,25 @@ class Blind extends React.Component {
         if (this.props.active) {
             this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
         }            
-    
+        console.log('active', this.props.active, 'selected', this.props.selected)
         return (
-            <div
-                className= { baseStyle }
-                style = { activeStyle }
-                onClick = { this.props.onClick }
-                >
-                <h1>{ this.props.content } </h1>
+            <div>
+                
+                <div
+                    className= { baseStyle }
+                    style = { activeStyle }
+                    onClick = { this.props.onClick }
+                    >
+                      
+                            <div className='album-title-wrapper'>
+                                <p className='album-title'>{this.props.content}</p>
+                                {/* <div className='line'></div>
+                                <img className='small-icon' src='/icons/white/x.svg' /> */}
+                            </div>
+                    
+                </div>
+                {/* {this.props.selected && this.props.active ? <p className="description">{this.props.description}</p>:null} */}
+                
             </div>
         );
     }

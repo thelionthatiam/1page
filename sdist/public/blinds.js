@@ -31,8 +31,9 @@ var Blinds = /** @class */ (function (_super) {
     Blinds.prototype.handleClick = function (id, e) {
         var _this = this;
         e.preventDefault();
+        var currentState = this.state.active;
         this.setState({
-            active: true,
+            active: !currentState,
         }, function () {
             console.log(_this.state.active);
             _this.props.toggleBlinds(id, _this.state.active);
@@ -52,12 +53,10 @@ var Blinds = /** @class */ (function (_super) {
         var blinds = this.props.albums.map(function (data) {
             if (_this.props.albums.length !== 0) {
                 // console.log('id check', data.id)
-                return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, onClick: function (e) { return _this.handleClick(data.id, e); } }));
+                return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }));
             }
         });
-        return (React.createElement("div", { className: "page-wrapper" },
-            blinds,
-            React.createElement("button", { className: 'revert-button', onClick: this.revert }, " revert ")));
+        return (React.createElement("div", { className: "page-wrapper" }, blinds));
     };
     return Blinds;
 }(React.Component));
@@ -68,12 +67,12 @@ var Blind = /** @class */ (function (_super) {
         _this.state = {
             off: {
                 opacity: "0",
-                transition: "1000ms",
+                transition: "200ms",
                 height: "0px",
                 fontSize: '0px'
             },
             selected: {
-                transition: "1000ms",
+                transition: "200ms",
                 top: "0"
             },
         };
@@ -88,10 +87,11 @@ var Blind = /** @class */ (function (_super) {
         if (this.props.active) {
             this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
         }
-        return (React.createElement("div", { className: baseStyle, style: activeStyle, onClick: this.props.onClick },
-            React.createElement("h1", null,
-                this.props.content,
-                " ")));
+        console.log('active', this.props.active, 'selected', this.props.selected);
+        return (React.createElement("div", null,
+            React.createElement("div", { className: baseStyle, style: activeStyle, onClick: this.props.onClick },
+                React.createElement("div", { className: 'album-title-wrapper' },
+                    React.createElement("p", { className: 'album-title' }, this.props.content)))));
     };
     return Blind;
 }(React.Component));
