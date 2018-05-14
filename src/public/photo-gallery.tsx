@@ -7,15 +7,15 @@ import Measure from 'react-measure';
 import { connect, Provider } from 'react-redux';
 
 const photos = [
-    { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 1, height: 1 },
-    { src: 'https://source.unsplash.com/qDkso9nvCg0/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/iecJiKe_RNg/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/zh7GEuORbUw/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/PpOHJezOalU/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
+    { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 4, height: 3, album_id: 1 },
+    { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 1, height: 1, album_id: 1 },
+    { src: 'https://source.unsplash.com/qDkso9nvCg0/600x799', width: 3, height: 4, album_id: 1 },
+    { src: 'https://source.unsplash.com/iecJiKe_RNg/600x799', width: 3, height: 4, album_id: 2 },
+    { src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799', width: 3, height: 4, album_id: 2 },
+    { src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599', width: 4, height: 3, album_id: 3 },
+    { src: 'https://source.unsplash.com/zh7GEuORbUw/600x799', width: 3, height: 4, album_id: 3 },
+    { src: 'https://source.unsplash.com/PpOHJezOalU/800x599', width: 4, height: 3, album_id: 3 },
+    { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3, album_id: 3 }
 ];
 
 class PhotoGallery extends React.Component {
@@ -25,6 +25,18 @@ class PhotoGallery extends React.Component {
     }
     render() {
         const width = this.state.width;
+        let selectedAlbum = this.props.albums.filter(album => album.selected)
+
+        function thingy(photo) {
+            if (selectedAlbum.length > 0) {
+                console.log('selected album', typeof selectedAlbum[0].id, 'photo album id', typeof photo.album_id)
+                return parseInt(selectedAlbum[0].id) === photo.album_id
+            } 
+        }
+
+        let renderPhotos = photos.filter(thingy)
+        console.log('r photos', renderPhotos)
+
         if (this.props.blinds.active) {
             return (
                 <Measure bounds onResize={(contentRect) => this.setState({ width: contentRect.bounds.width })}>
@@ -43,7 +55,7 @@ class PhotoGallery extends React.Component {
                             if (width >= 1000) {
                                 columns = 4;
                             }
-                            return <div ref={measureRef}><Gallery photos={photos} columns={columns} /></div>
+                            return <div ref={measureRef}><Gallery photos={renderPhotos} columns={columns} /></div>
                         }
                     }
                 </Measure>
@@ -55,9 +67,9 @@ class PhotoGallery extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
-        blinds: state.all.blinds// this data structure needs to happen
+        blinds: state.all.blinds, 
+        albums: state.all.albums
     }
 }
 

@@ -92,7 +92,6 @@ function all(state = initialState, action) {
                 }
             })
         case CLOSE_BLINDS:
-            console.log('BLINDS ARE CLOSED')
             return Object.assign({}, state, {
                 blinds: {
                     active: false

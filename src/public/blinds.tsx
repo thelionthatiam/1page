@@ -118,7 +118,6 @@ class Blind extends React.Component {
 
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         blinds: state.all.blinds, // this data structure needs to happen
         albums: state.all.albums

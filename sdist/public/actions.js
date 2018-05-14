@@ -52,7 +52,6 @@ function fetchPhotos() {
             if (albums.status === 'failed') {
                 return dispatch(recieveError(albums, dispatch));
             }
-            console.log('fetch album data', albums);
             dispatch(resPhotos(albums));
         });
     };

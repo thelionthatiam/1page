@@ -15,15 +15,15 @@ var React = require("react");
 var react_measure_1 = require("react-measure");
 var react_redux_1 = require("react-redux");
 var photos = [
-    { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 1, height: 1 },
-    { src: 'https://source.unsplash.com/qDkso9nvCg0/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/iecJiKe_RNg/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/zh7GEuORbUw/600x799', width: 3, height: 4 },
-    { src: 'https://source.unsplash.com/PpOHJezOalU/800x599', width: 4, height: 3 },
-    { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3 }
+    { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 4, height: 3, album_id: 1 },
+    { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 1, height: 1, album_id: 1 },
+    { src: 'https://source.unsplash.com/qDkso9nvCg0/600x799', width: 3, height: 4, album_id: 1 },
+    { src: 'https://source.unsplash.com/iecJiKe_RNg/600x799', width: 3, height: 4, album_id: 2 },
+    { src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799', width: 3, height: 4, album_id: 2 },
+    { src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599', width: 4, height: 3, album_id: 3 },
+    { src: 'https://source.unsplash.com/zh7GEuORbUw/600x799', width: 3, height: 4, album_id: 3 },
+    { src: 'https://source.unsplash.com/PpOHJezOalU/800x599', width: 4, height: 3, album_id: 3 },
+    { src: 'https://source.unsplash.com/I1ASdgphUH4/800x599', width: 4, height: 3, album_id: 3 }
 ];
 var PhotoGallery = /** @class */ (function (_super) {
     __extends(PhotoGallery, _super);
@@ -35,6 +35,15 @@ var PhotoGallery = /** @class */ (function (_super) {
     PhotoGallery.prototype.render = function () {
         var _this = this;
         var width = this.state.width;
+        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
+        function thingy(photo) {
+            if (selectedAlbum.length > 0) {
+                console.log('selected album', typeof selectedAlbum[0].id, 'photo album id', typeof photo.album_id);
+                return parseInt(selectedAlbum[0].id) === photo.album_id;
+            }
+        }
+        var renderPhotos = photos.filter(thingy);
+        console.log('r photos', renderPhotos);
         if (this.props.blinds.active) {
             return (React.createElement(react_measure_1.default, { bounds: true, onResize: function (contentRect) { return _this.setState({ width: contentRect.bounds.width }); } }, function (_a) {
                 var measureRef = _a.measureRef;
@@ -52,7 +61,7 @@ var PhotoGallery = /** @class */ (function (_super) {
                     columns = 4;
                 }
                 return React.createElement("div", { ref: measureRef },
-                    React.createElement(react_photo_gallery_1.default, { photos: photos, columns: columns }));
+                    React.createElement(react_photo_gallery_1.default, { photos: renderPhotos, columns: columns }));
             }));
         }
         else {
@@ -62,9 +71,9 @@ var PhotoGallery = /** @class */ (function (_super) {
     return PhotoGallery;
 }(React.Component));
 var mapStateToProps = function (state) {
-    console.log(state);
     return {
-        blinds: state.all.blinds // this data structure needs to happen
+        blinds: state.all.blinds,
+        albums: state.all.albums
     };
 };
 var PhotoGalleryActions = react_redux_1.connect(mapStateToProps)(PhotoGallery);

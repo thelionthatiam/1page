@@ -96,7 +96,6 @@ var Blind = /** @class */ (function (_super) {
     return Blind;
 }(React.Component));
 var mapStateToProps = function (state) {
-    console.log(state);
     return {
         blinds: state.all.blinds,
         albums: state.all.albums
