@@ -20712,13 +20712,37 @@ var a = (function (exports) {
 	    };
 	    Blinds.prototype.render = function () {
 	        var _this = this;
+	        var duration = 400;
+	        var transitionStyles = {
+	            entering: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            entered: {
+	                opacity: 1,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            exiting: {
+	                opacity: .8,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            exited: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            }
+	        };
 	        var blinds = this.props.albums.map(function (data) {
-	            if (_this.props.albums.length !== 0) {
+	            if (_this.props.albums.length !== 0 && !_this.state.active) {
 	                // console.log('id check', data.id)
 	                return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); }}));
 	            }
+	            else if (_this.props.albums.length !== 0 && _this.state.active && data.selected) {
+	                return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); }}));
+	            }
 	        });
-	        return (react_4("div", {className: "page-wrapper"}, blinds));
+	        return (react_4("div", {className: "page-wrapper"}, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave}, function (state) {
+	            return react_4("div", {style: transitionStyles[state]}, blinds);
+	        })));
 	    };
 	    return Blinds;
 	}(react_2));
@@ -20730,8 +20754,7 @@ var a = (function (exports) {
 	            off: {
 	                opacity: "0",
 	                transition: "200ms",
-	                height: "0px",
-	                fontSize: '0px'
+	                height: "15px"
 	            },
 	            selected: {
 	                transition: "200ms",
@@ -20744,12 +20767,12 @@ var a = (function (exports) {
 	        this.props.number % 2 === 0
 	            ? (baseStyle = "wrapper")
 	            : (baseStyle = "wrapper-flip");
-	        var activeStyle = null;
-	        if (this.props.active) {
-	            this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
-	        }
+	        // let activeStyle = null;
+	        // if (this.props.active) {
+	        //     this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
+	        // }            
 	        console.log('active', this.props.active, 'selected', this.props.selected);
-	        return (react_4("div", null, react_4("div", {className: baseStyle, style: activeStyle, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, react_4("p", {className: 'album-title'}, this.props.content)))));
+	        return (react_4("div", null, react_4("div", {className: baseStyle, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, react_4("p", {className: 'album-title'}, this.props.content)))));
 	    };
 	    return Blind;
 	}(react_2));
@@ -22428,15 +22451,19 @@ var a = (function (exports) {
 	    __extends(PhotoGallery, _super);
 	    function PhotoGallery() {
 	        _super.call(this);
-	        this.state = { width: -1 };
+	        this.state = { width: -2 };
 	    }
+	    PhotoGallery.prototype.componentDidMount = function () {
+	        this.setState({
+	            width: 0
+	        });
+	    };
 	    PhotoGallery.prototype.render = function () {
 	        var _this = this;
 	        var width = this.state.width;
 	        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
 	        function thingy(photo) {
 	            if (selectedAlbum.length > 0) {
-	                console.log('selected album', typeof selectedAlbum[0].id, 'photo album id', typeof photo.album_id);
 	                return parseInt(selectedAlbum[0].id) === photo.album_id;
 	            }
 	        }
@@ -22445,17 +22472,18 @@ var a = (function (exports) {
 	        if (this.props.blinds.active) {
 	            return (react_4(Measure$1, {bounds: true, onResize: function (contentRect) { return _this.setState({ width: contentRect.bounds.width }); }}, function (_a) {
 	                var measureRef = _a.measureRef;
-	                if (width < 1) {
+	                console.log('measure ref', width);
+	                if (width + 1 < 1) {
 	                    return react_4("div", {ref: measureRef});
 	                }
 	                var columns = 1;
-	                if (width >= 480) {
+	                if (width > 480) {
 	                    columns = 2;
 	                }
-	                if (width >= 800) {
+	                if (width > 800) {
 	                    columns = 3;
 	                }
-	                if (width >= 1000) {
+	                if (width > 999) {
 	                    columns = 4;
 	                }
 	                return react_4("div", {ref: measureRef}, react_4(Gallery, {photos: renderPhotos, columns: columns}));

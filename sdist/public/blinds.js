@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var Transition_1 = require("react-transition-group/Transition");
 var react_redux_1 = require("react-redux");
 var actions_1 = require("./actions");
 var Blinds = /** @class */ (function (_super) {
@@ -50,13 +51,38 @@ var Blinds = /** @class */ (function (_super) {
     };
     Blinds.prototype.render = function () {
         var _this = this;
+        var duration = 400;
+        var transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            entered: {
+                opacity: 1,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exiting: {
+                opacity: .8,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exited: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            }
+        };
         var blinds = this.props.albums.map(function (data) {
-            if (_this.props.albums.length !== 0) {
+            if (_this.props.albums.length !== 0 && !_this.state.active) {
                 // console.log('id check', data.id)
                 return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }));
             }
+            else if (_this.props.albums.length !== 0 && _this.state.active && data.selected) {
+                return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }));
+            }
         });
-        return (React.createElement("div", { className: "page-wrapper" }, blinds));
+        return (React.createElement("div", { className: "page-wrapper" },
+            React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave }, function (state) {
+                return React.createElement("div", { style: transitionStyles[state] }, blinds);
+            })));
     };
     return Blinds;
 }(React.Component));
@@ -68,8 +94,7 @@ var Blind = /** @class */ (function (_super) {
             off: {
                 opacity: "0",
                 transition: "200ms",
-                height: "0px",
-                fontSize: '0px'
+                height: "15px"
             },
             selected: {
                 transition: "200ms",
@@ -83,13 +108,15 @@ var Blind = /** @class */ (function (_super) {
         this.props.number % 2 === 0
             ? (baseStyle = "wrapper")
             : (baseStyle = "wrapper-flip");
-        var activeStyle = null;
-        if (this.props.active) {
-            this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
-        }
+        // let activeStyle = null;
+        // if (this.props.active) {
+        //     this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
+        // }            
         console.log('active', this.props.active, 'selected', this.props.selected);
         return (React.createElement("div", null,
-            React.createElement("div", { className: baseStyle, style: activeStyle, onClick: this.props.onClick },
+            React.createElement("div", { className: baseStyle, 
+                // style = { activeStyle }
+                onClick: this.props.onClick },
                 React.createElement("div", { className: 'album-title-wrapper' },
                     React.createElement("p", { className: 'album-title' }, this.props.content)))));
     };

@@ -29,16 +29,20 @@ var PhotoGallery = /** @class */ (function (_super) {
     __extends(PhotoGallery, _super);
     function PhotoGallery() {
         var _this = _super.call(this) || this;
-        _this.state = { width: -1 };
+        _this.state = { width: -2 };
         return _this;
     }
+    PhotoGallery.prototype.componentDidMount = function () {
+        this.setState({
+            width: 0
+        });
+    };
     PhotoGallery.prototype.render = function () {
         var _this = this;
         var width = this.state.width;
         var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
         function thingy(photo) {
             if (selectedAlbum.length > 0) {
-                console.log('selected album', typeof selectedAlbum[0].id, 'photo album id', typeof photo.album_id);
                 return parseInt(selectedAlbum[0].id) === photo.album_id;
             }
         }
@@ -47,17 +51,18 @@ var PhotoGallery = /** @class */ (function (_super) {
         if (this.props.blinds.active) {
             return (React.createElement(react_measure_1.default, { bounds: true, onResize: function (contentRect) { return _this.setState({ width: contentRect.bounds.width }); } }, function (_a) {
                 var measureRef = _a.measureRef;
-                if (width < 1) {
+                console.log('measure ref', width);
+                if (width + 1 < 1) {
                     return React.createElement("div", { ref: measureRef });
                 }
                 var columns = 1;
-                if (width >= 480) {
+                if (width > 480) {
                     columns = 2;
                 }
-                if (width >= 800) {
+                if (width > 800) {
                     columns = 3;
                 }
-                if (width >= 1000) {
+                if (width > 999) {
                     columns = 4;
                 }
                 return React.createElement("div", { ref: measureRef },

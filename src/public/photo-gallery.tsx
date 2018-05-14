@@ -21,19 +21,21 @@ const photos = [
 class PhotoGallery extends React.Component {
     constructor() {
         super();
-        this.state = { width: -1 };
+        this.state = { width: -2 };
+    }
+    componentDidMount() {
+        this.setState({
+            width:0
+        })
     }
     render() {
         const width = this.state.width;
         let selectedAlbum = this.props.albums.filter(album => album.selected)
-
         function thingy(photo) {
             if (selectedAlbum.length > 0) {
-                console.log('selected album', typeof selectedAlbum[0].id, 'photo album id', typeof photo.album_id)
                 return parseInt(selectedAlbum[0].id) === photo.album_id
             } 
         }
-
         let renderPhotos = photos.filter(thingy)
         console.log('r photos', renderPhotos)
 
@@ -42,20 +44,24 @@ class PhotoGallery extends React.Component {
                 <Measure bounds onResize={(contentRect) => this.setState({ width: contentRect.bounds.width })}>
                     {
                         ({ measureRef }) => {
-                            if (width < 1) {
+                            console.log('measure ref', width)
+                            if (width + 1 < 1) {
                                 return <div ref={measureRef}></div>;
                             }
                             let columns = 1;
-                            if (width >= 480) {
+                            if (width > 480) {
                                 columns = 2;
                             }
-                            if (width >= 800) {
+                            if (width > 800) {
                                 columns = 3;
                             }
-                            if (width >= 1000) {
+                            if (width > 999) {
                                 columns = 4;
                             }
-                            return <div ref={measureRef}><Gallery photos={renderPhotos} columns={columns} /></div>
+                            return <div ref={measureRef}><Gallery 
+                            photos={renderPhotos} 
+                            columns={columns}
+                            /></div>
                         }
                     }
                 </Measure>
