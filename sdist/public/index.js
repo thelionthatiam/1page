@@ -52,7 +52,7 @@ var initialState = {
         active: false
     }
 };
-function reduce(state, action) {
+function all(state, action) {
     if (state === void 0) { state = initialState; }
     switch (action.type) {
         case user_data_1.POPULATE:
@@ -65,14 +65,30 @@ function reduce(state, action) {
                 isFetching: true
             });
         case actions_1.RES_PHOTOS:
+            if (action.albums.length !== 0) {
+                action.albums.map(function (album) {
+                    album.selected = false;
+                });
+            }
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
             });
         case actions_1.OPEN_BLINDS:
+            state.albums.map(function (album) {
+                for (var k in album) {
+                    if (album.id !== action.id) {
+                        album.selected = false;
+                    }
+                    else {
+                        album.selected = true;
+                    }
+                }
+            });
             return Object.assign({}, state, {
                 blinds: {
-                    active: true
+                    active: true,
+                    albums: state.albums
                 }
             });
         case actions_1.CLOSE_BLINDS:
@@ -105,7 +121,7 @@ function reduce(state, action) {
     }
 }
 var reducer = redux_1.combineReducers({
-    all: reduce
+    all: all
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;

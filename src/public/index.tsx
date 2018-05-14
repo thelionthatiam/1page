@@ -54,7 +54,7 @@ let initialState = {
     }
 }
 
-function reduce(state = initialState, action) {
+function all(state = initialState, action) {
     switch (action.type) {
         case POPULATE:
             return Object.assign({}, state, {
@@ -66,14 +66,29 @@ function reduce(state = initialState, action) {
                 isFetching: true
             })
         case RES_PHOTOS:
+            if (action.albums.length !== 0) {
+                action.albums.map((album) => {
+                    album.selected = false
+                }) 
+            }
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
             })
         case OPEN_BLINDS:
+            state.albums.map((album) => {
+                for (let k in album) {
+                    if (album.id !== action.id) {
+                        album.selected = false;
+                    } else {
+                        album.selected = true;
+                    }
+                }
+            })
             return Object.assign({}, state, {
                 blinds: {
-                    active: true
+                    active: true,
+                    albums: state.albums
                 }
             })
         case CLOSE_BLINDS:
@@ -107,7 +122,7 @@ function reduce(state = initialState, action) {
 }  
 
 let reducer = combineReducers({
-    all: reduce
+    all
 })
 
 let store = createStore(reducer, composeWithDevTools(

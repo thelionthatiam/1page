@@ -11,7 +11,7 @@ class Blinds extends React.Component {
         blinds:any;
     }
     props: {
-        toggleBlinds:(boolean) => Function;
+        toggleBlinds:(steing, boolean) => Function;
         getPhotos:() => Function;
         albums: any;
     }
@@ -30,34 +30,13 @@ class Blinds extends React.Component {
         this.props.getPhotos()
     }
 
-    addSateToAlbums() {
-        console.log('BLINDS ALBMUMS DATA', this.props.albums)
-        if (this.props.albums.length !== 0) {
-            for (let i = 0; i < this.props.albums.length; i++) {
-                this.props.albums[i].selected = false
-            }
-        }
-    }
-
     handleClick(id, e) {
         e.preventDefault();
-        console.log('id check two ||||||', id)
-        let freeze = this.props.albums;
-        for (let i = 0; i < freeze.length; i++) {
-            for (let k in freeze[i]) {
-                console.log('id check three ||||', freeze[i].id, id)
-                if (freeze[i].id !== id) {
-                    freeze[i].selected = false;
-                } else {
-                    freeze[i].selected = true;
-                }
-            }
-        }
         this.setState({
             active: true,
-            blinds: freeze
         }, () => {
-            this.props.toggleBlinds(this.state.active)
+            console.log(this.state.active)
+            this.props.toggleBlinds(id, this.state.active)
         });
         
     }
@@ -67,12 +46,11 @@ class Blinds extends React.Component {
         this.setState({
             active: false
         }, () => {
-            this.props.toggleBlinds(this.state.active)
+            this.props.toggleBlinds(null, this.state.active)
         });
     }
 
     render() {
-        // this.addSateToAlbums()
         let blinds = this.props.albums.map(data => {
             if (this.props.albums.length !==0) {
                 // console.log('id check', data.id)
@@ -140,6 +118,7 @@ class Blind extends React.Component {
 
 
 const mapStateToProps = state => {
+    console.log(state)
     return {
         blinds: state.all.blinds, // this data structure needs to happen
         albums: state.all.albums
@@ -148,7 +127,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleBlinds: (isOpen) => dispatch(toggleBlinds(isOpen)),
+        toggleBlinds: (id, isOpen) => dispatch(toggleBlinds(id, isOpen)),
         getPhotos: () => dispatch(fetchPhotos())
     }
 }

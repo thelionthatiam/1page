@@ -23,7 +23,7 @@ function recieveError(error, dispatch) {
     };
 }
 exports.recieveError = recieveError;
-// PHOTO THUNK
+// ALBUMS THUNK
 exports.REQ_PHOTOS = 'REQ_PHOTOS';
 exports.RES_PHOTOS = 'RES_PHOTOS';
 function reqPhotos() {
@@ -61,10 +61,11 @@ exports.fetchPhotos = fetchPhotos;
 // OPEN BLINDS 
 exports.OPEN_BLINDS = 'OPEN_BLINDS';
 exports.CLOSE_BLINDS = 'CLOSE_BLINDS';
-function toggleBlinds(isOpen) {
+function toggleBlinds(id, isOpen) {
     if (isOpen) {
         return {
-            type: exports.OPEN_BLINDS
+            type: exports.OPEN_BLINDS,
+            id: id
         };
     }
     else {

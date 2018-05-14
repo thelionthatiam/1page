@@ -62,6 +62,7 @@ var PhotoGallery = /** @class */ (function (_super) {
     return PhotoGallery;
 }(React.Component));
 var mapStateToProps = function (state) {
+    console.log(state);
     return {
         blinds: state.all.blinds // this data structure needs to happen
     };

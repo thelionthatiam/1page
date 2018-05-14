@@ -20567,7 +20567,7 @@ var a = (function (exports) {
 	        route: error.route
 	    };
 	}
-	// PHOTO THUNK
+	// ALBUMS THUNK
 	var REQ_PHOTOS = 'REQ_PHOTOS';
 	var RES_PHOTOS = 'RES_PHOTOS';
 	function reqPhotos() {
@@ -20603,10 +20603,11 @@ var a = (function (exports) {
 	// OPEN BLINDS 
 	var OPEN_BLINDS = 'OPEN_BLINDS';
 	var CLOSE_BLINDS = 'CLOSE_BLINDS';
-	function toggleBlinds(isOpen) {
+	function toggleBlinds(id, isOpen) {
 	    if (isOpen) {
 	        return {
-	            type: OPEN_BLINDS
+	            type: OPEN_BLINDS,
+	            id: id
 	        };
 	    }
 	    else {
@@ -20690,37 +20691,14 @@ var a = (function (exports) {
 	    Blinds.prototype.componentWillMount = function () {
 	        this.props.getPhotos();
 	    };
-	    Blinds.prototype.addSateToAlbums = function () {
-	        var this$1 = this;
-
-	        console.log('BLINDS ALBMUMS DATA', this.props.albums);
-	        if (this.props.albums.length !== 0) {
-	            for (var i = 0; i < this.props.albums.length; i++) {
-	                this$1.props.albums[i].selected = false;
-	            }
-	        }
-	    };
 	    Blinds.prototype.handleClick = function (id, e) {
 	        var _this = this;
 	        e.preventDefault();
-	        console.log('id check two ||||||', id);
-	        var freeze = this.props.albums;
-	        for (var i = 0; i < freeze.length; i++) {
-	            for (var k in freeze[i]) {
-	                console.log('id check three ||||', freeze[i].id, id);
-	                if (freeze[i].id !== id) {
-	                    freeze[i].selected = false;
-	                }
-	                else {
-	                    freeze[i].selected = true;
-	                }
-	            }
-	        }
 	        this.setState({
 	            active: true,
-	            blinds: freeze
 	        }, function () {
-	            _this.props.toggleBlinds(_this.state.active);
+	            console.log(_this.state.active);
+	            _this.props.toggleBlinds(id, _this.state.active);
 	        });
 	    };
 	    Blinds.prototype.revert = function (e) {
@@ -20729,12 +20707,11 @@ var a = (function (exports) {
 	        this.setState({
 	            active: false
 	        }, function () {
-	            _this.props.toggleBlinds(_this.state.active);
+	            _this.props.toggleBlinds(null, _this.state.active);
 	        });
 	    };
 	    Blinds.prototype.render = function () {
 	        var _this = this;
-	        // this.addSateToAlbums()
 	        var blinds = this.props.albums.map(function (data) {
 	            if (_this.props.albums.length !== 0) {
 	                // console.log('id check', data.id)
@@ -20776,6 +20753,7 @@ var a = (function (exports) {
 	    return Blind;
 	}(react_2));
 	var mapStateToProps$1 = function (state) {
+	    console.log(state);
 	    return {
 	        blinds: state.all.blinds,
 	        albums: state.all.albums
@@ -20783,7 +20761,7 @@ var a = (function (exports) {
 	};
 	var mapDispatchToProps$1 = function (dispatch) {
 	    return {
-	        toggleBlinds: function (isOpen) { return dispatch(toggleBlinds(isOpen)); },
+	        toggleBlinds: function (id, isOpen) { return dispatch(toggleBlinds(id, isOpen)); },
 	        getPhotos: function () { return dispatch(fetchPhotos()); }
 	    };
 	};
@@ -22481,6 +22459,7 @@ var a = (function (exports) {
 	    return PhotoGallery;
 	}(react_2));
 	var mapStateToProps$2 = function (state) {
+	    console.log(state);
 	    return {
 	        blinds: state.all.blinds // this data structure needs to happen
 	    };
@@ -22521,7 +22500,7 @@ var a = (function (exports) {
 	        active: false
 	    }
 	};
-	function reduce(state, action) {
+	function all(state, action) {
 	    if (state === void 0) { state = initialState; }
 	    switch (action.type) {
 	        case POPULATE:
@@ -22534,14 +22513,30 @@ var a = (function (exports) {
 	                isFetching: true
 	            });
 	        case RES_PHOTOS:
+	            if (action.albums.length !== 0) {
+	                action.albums.map(function (album) {
+	                    album.selected = false;
+	                });
+	            }
 	            return Object.assign({}, state, {
 	                isFetching: false,
 	                albums: action.albums
 	            });
 	        case OPEN_BLINDS:
+	            state.albums.map(function (album) {
+	                for (var k in album) {
+	                    if (album.id !== action.id) {
+	                        album.selected = false;
+	                    }
+	                    else {
+	                        album.selected = true;
+	                    }
+	                }
+	            });
 	            return Object.assign({}, state, {
 	                blinds: {
-	                    active: true
+	                    active: true,
+	                    albums: state.albums
 	                }
 	            });
 	        case CLOSE_BLINDS:
@@ -22574,7 +22569,7 @@ var a = (function (exports) {
 	    }
 	}
 	var reducer = combineReducers({
-	    all: reduce
+	    all: all
 	});
 	var store = createStore(reducer, reduxDevtoolsExtension_1(applyMiddleware(thunk)));
 	function blinds() {

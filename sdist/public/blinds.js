@@ -28,35 +28,14 @@ var Blinds = /** @class */ (function (_super) {
     Blinds.prototype.componentWillMount = function () {
         this.props.getPhotos();
     };
-    Blinds.prototype.addSateToAlbums = function () {
-        console.log('BLINDS ALBMUMS DATA', this.props.albums);
-        if (this.props.albums.length !== 0) {
-            for (var i = 0; i < this.props.albums.length; i++) {
-                this.props.albums[i].selected = false;
-            }
-        }
-    };
     Blinds.prototype.handleClick = function (id, e) {
         var _this = this;
         e.preventDefault();
-        console.log('id check two ||||||', id);
-        var freeze = this.props.albums;
-        for (var i = 0; i < freeze.length; i++) {
-            for (var k in freeze[i]) {
-                console.log('id check three ||||', freeze[i].id, id);
-                if (freeze[i].id !== id) {
-                    freeze[i].selected = false;
-                }
-                else {
-                    freeze[i].selected = true;
-                }
-            }
-        }
         this.setState({
             active: true,
-            blinds: freeze
         }, function () {
-            _this.props.toggleBlinds(_this.state.active);
+            console.log(_this.state.active);
+            _this.props.toggleBlinds(id, _this.state.active);
         });
     };
     Blinds.prototype.revert = function (e) {
@@ -65,12 +44,11 @@ var Blinds = /** @class */ (function (_super) {
         this.setState({
             active: false
         }, function () {
-            _this.props.toggleBlinds(_this.state.active);
+            _this.props.toggleBlinds(null, _this.state.active);
         });
     };
     Blinds.prototype.render = function () {
         var _this = this;
-        // this.addSateToAlbums()
         var blinds = this.props.albums.map(function (data) {
             if (_this.props.albums.length !== 0) {
                 // console.log('id check', data.id)
@@ -118,6 +96,7 @@ var Blind = /** @class */ (function (_super) {
     return Blind;
 }(React.Component));
 var mapStateToProps = function (state) {
+    console.log(state);
     return {
         blinds: state.all.blinds,
         albums: state.all.albums
@@ -125,7 +104,7 @@ var mapStateToProps = function (state) {
 };
 var mapDispatchToProps = function (dispatch) {
     return {
-        toggleBlinds: function (isOpen) { return dispatch(actions_1.toggleBlinds(isOpen)); },
+        toggleBlinds: function (id, isOpen) { return dispatch(actions_1.toggleBlinds(id, isOpen)); },
         getPhotos: function () { return dispatch(actions_1.fetchPhotos()); }
     };
 };

@@ -24,7 +24,7 @@ export function recieveError(error, dispatch) {
 }
 
 
-// PHOTO THUNK
+// ALBUMS THUNK
 export const REQ_PHOTOS = 'REQ_PHOTOS';
 export const RES_PHOTOS = 'RES_PHOTOS';
 
@@ -62,13 +62,13 @@ export function fetchPhotos() {
 }
 
 // OPEN BLINDS 
-
 export const OPEN_BLINDS = 'OPEN_BLINDS';
 export const CLOSE_BLINDS = 'CLOSE_BLINDS';
-export function toggleBlinds(isOpen) {
+export function toggleBlinds(id, isOpen) {
     if (isOpen) {
         return {
-            type: OPEN_BLINDS
+            type: OPEN_BLINDS,
+            id: id
         }
     } else {
         return {
