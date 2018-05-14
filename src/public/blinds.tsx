@@ -2,65 +2,50 @@ import * as React from "react";
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import { connect, Provider } from 'react-redux';
-import { toggleBlinds } from './actions'
+import { toggleBlinds, fetchPhotos } from './actions'
 
-interface Mock {
-    id:number;
-    content:string;
-    selected:boolean;
-}
 
-const data = [
-    {
-        id: 1,
-        content: "a",
-        selected: false
-    },
-    {
-        id: 2,
-        content: "b",
-        selected: false
-    },
-    {
-        id: 3,
-        content: "c",
-        selected: false
-    },
-    {
-        id: 4,
-        content: "d",
-        selected: false
-    },
-    {
-        id: 5,
-        content: "e",
-        selected: false
-    }
-]
 class Blinds extends React.Component {
     state: {
-        blinds:Mock[];
         active:boolean;
+        blinds:any;
+    }
+    props: {
+        toggleBlinds:(boolean) => Function;
+        getPhotos:() => Function;
+        albums: any;
     }
 
-    props: {
-        toggleBlinds:(boolean) => Function
-    }
     constructor(props) {
         super(props);
         this.state = {
-            blinds: data,
-            active: false
+            active: false,
+            blinds: this.props.albums
         };
         this.handleClick = this.handleClick.bind(this);
         this.revert = this.revert.bind(this);
     }
 
+    componentWillMount() {
+        this.props.getPhotos()
+    }
+
+    addSateToAlbums() {
+        console.log('BLINDS ALBMUMS DATA', this.props.albums)
+        if (this.props.albums.length !== 0) {
+            for (let i = 0; i < this.props.albums.length; i++) {
+                this.props.albums[i].selected = false
+            }
+        }
+    }
+
     handleClick(id, e) {
         e.preventDefault();
-        let freeze = this.state.blinds;
+        console.log('id check two ||||||', id)
+        let freeze = this.props.albums;
         for (let i = 0; i < freeze.length; i++) {
             for (let k in freeze[i]) {
+                console.log('id check three ||||', freeze[i].id, id)
                 if (freeze[i].id !== id) {
                     freeze[i].selected = false;
                 } else {
@@ -79,56 +64,30 @@ class Blinds extends React.Component {
 
     revert(e) {
         e.preventDefault();
-        console.log('revert triggered')
         this.setState({
-            blinds: [
-                {
-                    id: 1,
-                    content: "a",
-                    selected: false
-                },
-                {
-                    id: 2,
-                    content: "b",
-                    selected: false
-                },
-                {
-                    id: 3,
-                    content: "c",
-                    selected: false
-                },
-                {
-                    id: 4,
-                    content: "d",
-                    selected: false
-                },
-                {
-                    id: 5,
-                    content: "e",
-                    selected: false
-                }
-            ],
             active: false
         }, () => {
-            console.log('active state after revert', this.state.active)
-            console.log('state after revert', this.state)
             this.props.toggleBlinds(this.state.active)
         });
     }
 
     render() {
-        let blinds = this.state.blinds.map(data => {
-            return (
-                <Blind 
-                    key = { data.id }
-                    number = { data.id }
-                    active = { this.state.active }
-                    selected = { data.selected }
-                    content = { data.content }
-                    onClick = { e => this.handleClick(data.id, e) }
+        // this.addSateToAlbums()
+        let blinds = this.props.albums.map(data => {
+            if (this.props.albums.length !==0) {
+                // console.log('id check', data.id)
+                return (
+                    <Blind
+                        key={data.id}
+                        number={data.id}
+                        active={this.state.active}
+                        selected={data.selected}
+                        content={data.title}
+                        onClick={e => this.handleClick(data.id, e)}
                     />
                 );
-    });
+            }
+        });
 
         return(
             <div className = "page-wrapper" >
@@ -182,13 +141,15 @@ class Blind extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        blinds: state.all.blinds// this data structure needs to happen
+        blinds: state.all.blinds, // this data structure needs to happen
+        albums: state.all.albums
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleBlinds: (isOpen) => dispatch(toggleBlinds(isOpen))
+        toggleBlinds: (isOpen) => dispatch(toggleBlinds(isOpen)),
+        getPhotos: () => dispatch(fetchPhotos())
     }
 }
 

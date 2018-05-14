@@ -20676,50 +20676,38 @@ var a = (function (exports) {
 	};
 	var Photos = connect(mapStateToProps, mapDispatchToProps)(PhotoContainer);
 
-	var data = [
-	    {
-	        id: 1,
-	        content: "a",
-	        selected: false
-	    },
-	    {
-	        id: 2,
-	        content: "b",
-	        selected: false
-	    },
-	    {
-	        id: 3,
-	        content: "c",
-	        selected: false
-	    },
-	    {
-	        id: 4,
-	        content: "d",
-	        selected: false
-	    },
-	    {
-	        id: 5,
-	        content: "e",
-	        selected: false
-	    }
-	];
 	var Blinds = (function (_super) {
 	    __extends(Blinds, _super);
 	    function Blinds(props) {
 	        _super.call(this, props);
 	        this.state = {
-	            blinds: data,
-	            active: false
+	            active: false,
+	            blinds: this.props.albums
 	        };
 	        this.handleClick = this.handleClick.bind(this);
 	        this.revert = this.revert.bind(this);
 	    }
+	    Blinds.prototype.componentWillMount = function () {
+	        this.props.getPhotos();
+	    };
+	    Blinds.prototype.addSateToAlbums = function () {
+	        var this$1 = this;
+
+	        console.log('BLINDS ALBMUMS DATA', this.props.albums);
+	        if (this.props.albums.length !== 0) {
+	            for (var i = 0; i < this.props.albums.length; i++) {
+	                this$1.props.albums[i].selected = false;
+	            }
+	        }
+	    };
 	    Blinds.prototype.handleClick = function (id, e) {
 	        var _this = this;
 	        e.preventDefault();
-	        var freeze = this.state.blinds;
+	        console.log('id check two ||||||', id);
+	        var freeze = this.props.albums;
 	        for (var i = 0; i < freeze.length; i++) {
 	            for (var k in freeze[i]) {
+	                console.log('id check three ||||', freeze[i].id, id);
 	                if (freeze[i].id !== id) {
 	                    freeze[i].selected = false;
 	                }
@@ -20738,46 +20726,20 @@ var a = (function (exports) {
 	    Blinds.prototype.revert = function (e) {
 	        var _this = this;
 	        e.preventDefault();
-	        console.log('revert triggered');
 	        this.setState({
-	            blinds: [
-	                {
-	                    id: 1,
-	                    content: "a",
-	                    selected: false
-	                },
-	                {
-	                    id: 2,
-	                    content: "b",
-	                    selected: false
-	                },
-	                {
-	                    id: 3,
-	                    content: "c",
-	                    selected: false
-	                },
-	                {
-	                    id: 4,
-	                    content: "d",
-	                    selected: false
-	                },
-	                {
-	                    id: 5,
-	                    content: "e",
-	                    selected: false
-	                }
-	            ],
 	            active: false
 	        }, function () {
-	            console.log('active state after revert', _this.state.active);
-	            console.log('state after revert', _this.state);
 	            _this.props.toggleBlinds(_this.state.active);
 	        });
 	    };
 	    Blinds.prototype.render = function () {
 	        var _this = this;
-	        var blinds = this.state.blinds.map(function (data) {
-	            return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.content, onClick: function (e) { return _this.handleClick(data.id, e); }}));
+	        // this.addSateToAlbums()
+	        var blinds = this.props.albums.map(function (data) {
+	            if (_this.props.albums.length !== 0) {
+	                // console.log('id check', data.id)
+	                return (react_4(Blind, {key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, onClick: function (e) { return _this.handleClick(data.id, e); }}));
+	            }
 	        });
 	        return (react_4("div", {className: "page-wrapper"}, blinds, react_4("button", {className: 'revert-button', onClick: this.revert}, " revert ")));
 	    };
@@ -20815,12 +20777,14 @@ var a = (function (exports) {
 	}(react_2));
 	var mapStateToProps$1 = function (state) {
 	    return {
-	        blinds: state.all.blinds // this data structure needs to happen
+	        blinds: state.all.blinds,
+	        albums: state.all.albums
 	    };
 	};
 	var mapDispatchToProps$1 = function (dispatch) {
 	    return {
-	        toggleBlinds: function (isOpen) { return dispatch(toggleBlinds(isOpen)); }
+	        toggleBlinds: function (isOpen) { return dispatch(toggleBlinds(isOpen)); },
+	        getPhotos: function () { return dispatch(fetchPhotos()); }
 	    };
 	};
 	var BlindsAction = connect(mapStateToProps$1, mapDispatchToProps$1)(Blinds);
