@@ -20,7 +20,6 @@ var redux_1 = require("redux");
 // COMPONENTS
 var photos_1 = require("./photos");
 var blinds_1 = require("./blinds");
-var photo_gallery_1 = require("./photo-gallery");
 //ACTIONS
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
@@ -48,9 +47,7 @@ var ErrorBoundary = /** @class */ (function (_super) {
 }(React.Component));
 var initialState = {
     albums: [],
-    blinds: {
-        active: false
-    }
+    blinds: {}
 };
 function all(state, action) {
     if (state === void 0) { state = initialState; }
@@ -80,18 +77,23 @@ function all(state, action) {
                     if (album.id !== action.id) {
                         album.selected = false;
                     }
-                    else {
+                    else if (album.id === action.id) {
                         album.selected = true;
+                    }
+                    else {
+                        console.log("error");
                     }
                 }
             });
             return Object.assign({}, state, {
                 blinds: {
-                    active: true,
                     albums: state.albums
                 }
             });
         case actions_1.CLOSE_BLINDS:
+            state.albums.map(function (album) {
+                album.selected = false;
+            });
             return Object.assign({}, state, {
                 blinds: {
                     active: false
@@ -133,9 +135,4 @@ function blinds() {
         React.createElement(blinds_1.default, null)), document.getElementById('blinds'));
 }
 exports.blinds = blinds;
-function photoGallery() {
-    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(photo_gallery_1.default, null)), document.getElementById('photoGallery'));
-}
-exports.photoGallery = photoGallery;
 //# sourceMappingURL=index.js.map

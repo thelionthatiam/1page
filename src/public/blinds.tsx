@@ -3,13 +3,11 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import { connect, Provider } from 'react-redux';
 import { toggleBlinds, fetchPhotos } from './actions'
-
+import Gallery from 'react-photo-gallery';
+import Lightbox from 'react-images';
+import Measure from 'react-measure';
 
 class Blinds extends React.Component {
-    state: {
-        active:boolean;
-        blinds:any;
-    }
     props: {
         toggleBlinds:(steing, boolean) => Function;
         getPhotos:() => Function;
@@ -18,12 +16,7 @@ class Blinds extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            active: false,
-            blinds: this.props.albums
-        };
         this.handleClick = this.handleClick.bind(this);
-        this.revert = this.revert.bind(this);
     }
 
     componentWillMount() {
@@ -32,26 +25,23 @@ class Blinds extends React.Component {
 
     handleClick(id, e) {
         e.preventDefault();
-        let currentState = this.state.active
-        this.setState({
-            active: !currentState,
-        }, () => {
-            console.log(this.state.active)
-            this.props.toggleBlinds(id, this.state.active)
-        });
+        let selectedAlbum = this.props.albums.filter(album => album.selected)
+        if (selectedAlbum.length !== 0) {
+            if (selectedAlbum[0].id === id ) {
+                this.props.toggleBlinds(id, false)
+            } else {
+                this.props.toggleBlinds(id, true)
+            }
+            
+        } else {
+            this.props.toggleBlinds(id, true)
+        }
         
     }
 
-    revert(e) {
-        e.preventDefault();
-        this.setState({
-            active: false
-        }, () => {
-            this.props.toggleBlinds(null, this.state.active)
-        });
+    findCurrentSelection() {
+        let selectedAlbum = this.props.albums.filter(album => album.selected)
     }
-
-    componentWillLeave()
 
     render() {
         let duration = 400;
@@ -75,30 +65,32 @@ class Blinds extends React.Component {
             }
         };
         let blinds = this.props.albums.map(data => {
-            if (this.props.albums.length !==0 && !this.state.active) {
-                // console.log('id check', data.id)
+            if (this.props.albums.length !==0) {
+                let blindStyle = "wrapper";
+                let photoWrapperStyle = 'album-wrapper'
+                if (data.id % 2 === 0) {
+                    blindStyle = "wrapper";
+                    photoWrapperStyle = 'album-wrapper'
+                } else {
+                    blindStyle = "wrapper-flip";
+                    photoWrapperStyle = 'album-wrapper-flip'
+                }
+            
                 return (
-                    <Blind
-                        key={data.id}
-                        number={data.id}
-                        active={this.state.active}
-                        selected={data.selected}
-                        content={data.title}
-                        description={data.description}
-                        onClick={e => this.handleClick(data.id, e)}
-                    />
-                );
-            } else if (this.props.albums.length !== 0 && this.state.active && data.selected) {
-                return (
-                    <Blind
-                        key={data.id}
-                        number={data.id}
-                        active={this.state.active}
-                        selected={data.selected}
-                        content={data.title}
-                        description={data.description}
-                        onClick={e => this.handleClick(data.id, e)}
-                    />
+                    <div key={data.id}>
+                        <Blind
+                            style={blindStyle}
+                            selected={data.selected}
+                            content={data.title}
+                            description={data.description}
+                            onClick={e => this.handleClick(data.id, e)}
+                        />
+                        <PhotoContainer
+                            style = {photoWrapperStyle}
+                            album = {data}
+                            selected = {data.selected}
+                        />
+                    </div>
                 );
             }
         });
@@ -141,22 +133,11 @@ class Blind extends React.Component {
     }
 
     render() {
-        let baseStyle = "wrapper";
-        this.props.number % 2 === 0
-            ? (baseStyle = "wrapper")
-            : (baseStyle = "wrapper-flip");
-
-        // let activeStyle = null;
-        // if (this.props.active) {
-        //     this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
-        // }            
-        console.log('active', this.props.active, 'selected', this.props.selected)
         return (
             <div>
                 
                 <div
-                    className= { baseStyle }
-                    // style = { activeStyle }
+                    className= { this.props.style }
                     onClick = { this.props.onClick }
                     >
                       
@@ -165,14 +146,81 @@ class Blind extends React.Component {
                                 {/* <div className='line'></div>
                                 <img className='small-icon' src='/icons/white/x.svg' /> */}
                             </div>
-                    
                 </div>
-                {/* {this.props.selected && this.props.active ? <p className="description">{this.props.description}</p>:null} */}
                 
             </div>
         );
     }
 }
+
+class PhotoContainer extends React.Component {
+    props: {
+        getPhotos: () => Object;
+        album: any;
+    }
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        let duration = 200;
+
+        let transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            entered: {
+                opacity: 1,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exiting: {
+                opacity: .8,
+                transition: `opacity ${duration}ms ease-in-out`,
+            },
+            exited: {
+                opacity: 0,
+                transition: `opacity ${duration}ms ease-in-out`,
+            }
+        };
+    
+        let items = <h1></h1>
+        if (this.props.album.length !== 0 && this.props.selected) {
+            let style = {
+                marginTop: "15px",
+                marginBottom: "15px"
+            }
+            items =  this.props.album.photos.map((photo) => {
+                            return <div
+                                key={photo.id}
+                                style = {style}
+                                >
+                                <img className='img' src={"/imgs/" + photo.src + ".jpg"} />
+                            </div>
+                        }) 
+                        
+        } 
+        
+        return (
+            
+            <div className={this.props.style}>
+                <Transition
+                    in={true}
+                    timeout={duration}
+                    unmountOnExit={true}
+                    mountOnEnter={true}
+                    appear={true}>
+                    {state =>
+                        <div style={transitionStyles[state]}>
+                            {items}
+                        </div>
+                    }
+                </Transition>
+            </div>
+        )
+    }
+}
+
 
 
 const mapStateToProps = state => {
@@ -193,6 +241,7 @@ const BlindsAction = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Blinds)
+
 
 
 export default BlindsAction;

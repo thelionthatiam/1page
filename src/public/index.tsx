@@ -49,9 +49,7 @@ class ErrorBoundary extends React.Component {
 
 let initialState = {
     albums:[],
-    blinds: {
-        active:false
-    }
+    blinds: {}
 }
 
 function all(state = initialState, action) {
@@ -67,7 +65,7 @@ function all(state = initialState, action) {
             })
         case RES_PHOTOS:
             if (action.albums.length !== 0) {
-                action.albums.map((album) => {
+                action.albums.map(album => {
                     album.selected = false
                 }) 
             }
@@ -80,18 +78,22 @@ function all(state = initialState, action) {
                 for (let k in album) {
                     if (album.id !== action.id) {
                         album.selected = false;
-                    } else {
+                    } else if (album.id === action.id) {
                         album.selected = true;
+                    } else {
+                        console.log("error")
                     }
                 }
             })
             return Object.assign({}, state, {
                 blinds: {
-                    active: true,
                     albums: state.albums
                 }
             })
         case CLOSE_BLINDS:
+            state.albums.map((album) => {
+                    album.selected = false
+            })
             return Object.assign({}, state, {
                 blinds: {
                     active: false
@@ -145,15 +147,15 @@ function blinds() {
     )
 }
 
-function photoGallery() {
-    ReactDOM.render(
-        <Provider store = { store }>
-            <PhotoGallery/>
-        </Provider>,
-        document.getElementById('photoGallery')
-    )
-}
+// function photoGallery() {
+//     ReactDOM.render(
+//         <Provider store = { store }>
+//             <PhotoGallery/>
+//         </Provider>,
+//         document.getElementById('photoGallery')
+//     )
+// }
 
 
 
-export { store, populate, photoGallery, blinds};
+export { store, populate, blinds};

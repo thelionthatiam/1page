@@ -109,14 +109,7 @@ body{
 
 
 
-.album-wrapper {
-  width:100%;
-  max-width:900px;
-  display:flex;
-  flex-direction:column;
-  align-content: center;
-  align-items: center;
-}
+
 
 .title {
   text-align:center;
@@ -200,6 +193,29 @@ $p-color: $lightPink;
   border-right-color: transparent;
 }
 
+.album-wrapper {
+  width: 50vw;
+  max-width: 1000px;
+  min-width: 260px;
+  max-width:900px;
+  display:flex;
+  flex-direction:row;
+  align-content: center;
+  align-items: center;
+  transform:translateX($p-offset)
+}
+
+.album-wrapper-flip {
+  width: 50vw;
+  max-width: 1000px;
+  min-width: 260px;
+  max-width:900px;
+  display:flex;
+  flex-direction:row;
+  align-content: center;
+  align-items: center;
+}
+
 .album-title-wrapper {
   display:flex;
   align-items: center;
@@ -255,7 +271,9 @@ $p-color: $lightPink;
   margin-left: auto;
   margin-right: auto;
   margin-top:2vh;
-  max-width:1200px;
+  width: 50vw;
+  max-width: 1000px;
+  min-width: 260px;
 }
 
 // @media all and (max-width:400px) {

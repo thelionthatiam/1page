@@ -18,36 +18,29 @@ var Blinds = /** @class */ (function (_super) {
     __extends(Blinds, _super);
     function Blinds(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {
-            active: false,
-            blinds: _this.props.albums
-        };
         _this.handleClick = _this.handleClick.bind(_this);
-        _this.revert = _this.revert.bind(_this);
         return _this;
     }
     Blinds.prototype.componentWillMount = function () {
         this.props.getPhotos();
     };
     Blinds.prototype.handleClick = function (id, e) {
-        var _this = this;
         e.preventDefault();
-        var currentState = this.state.active;
-        this.setState({
-            active: !currentState,
-        }, function () {
-            console.log(_this.state.active);
-            _this.props.toggleBlinds(id, _this.state.active);
-        });
+        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
+        if (selectedAlbum.length !== 0) {
+            if (selectedAlbum[0].id === id) {
+                this.props.toggleBlinds(id, false);
+            }
+            else {
+                this.props.toggleBlinds(id, true);
+            }
+        }
+        else {
+            this.props.toggleBlinds(id, true);
+        }
     };
-    Blinds.prototype.revert = function (e) {
-        var _this = this;
-        e.preventDefault();
-        this.setState({
-            active: false
-        }, function () {
-            _this.props.toggleBlinds(null, _this.state.active);
-        });
+    Blinds.prototype.findCurrentSelection = function () {
+        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
     };
     Blinds.prototype.render = function () {
         var _this = this;
@@ -71,12 +64,20 @@ var Blinds = /** @class */ (function (_super) {
             }
         };
         var blinds = this.props.albums.map(function (data) {
-            if (_this.props.albums.length !== 0 && !_this.state.active) {
-                // console.log('id check', data.id)
-                return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }));
-            }
-            else if (_this.props.albums.length !== 0 && _this.state.active && data.selected) {
-                return (React.createElement(Blind, { key: data.id, number: data.id, active: _this.state.active, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }));
+            if (_this.props.albums.length !== 0) {
+                var blindStyle = "wrapper";
+                var photoWrapperStyle = 'album-wrapper';
+                if (data.id % 2 === 0) {
+                    blindStyle = "wrapper";
+                    photoWrapperStyle = 'album-wrapper';
+                }
+                else {
+                    blindStyle = "wrapper-flip";
+                    photoWrapperStyle = 'album-wrapper-flip';
+                }
+                return (React.createElement("div", { key: data.id },
+                    React.createElement(Blind, { style: blindStyle, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); } }),
+                    React.createElement(PhotoContainer, { style: photoWrapperStyle, album: data, selected: data.selected })));
             }
         });
         return (React.createElement("div", { className: "page-wrapper" },
@@ -104,23 +105,55 @@ var Blind = /** @class */ (function (_super) {
         return _this;
     }
     Blind.prototype.render = function () {
-        var baseStyle = "wrapper";
-        this.props.number % 2 === 0
-            ? (baseStyle = "wrapper")
-            : (baseStyle = "wrapper-flip");
-        // let activeStyle = null;
-        // if (this.props.active) {
-        //     this.props.selected ? activeStyle = this.state.selected : activeStyle = this.state.off;
-        // }            
-        console.log('active', this.props.active, 'selected', this.props.selected);
         return (React.createElement("div", null,
-            React.createElement("div", { className: baseStyle, 
-                // style = { activeStyle }
-                onClick: this.props.onClick },
+            React.createElement("div", { className: this.props.style, onClick: this.props.onClick },
                 React.createElement("div", { className: 'album-title-wrapper' },
                     React.createElement("p", { className: 'album-title' }, this.props.content)))));
     };
     return Blind;
+}(React.Component));
+var PhotoContainer = /** @class */ (function (_super) {
+    __extends(PhotoContainer, _super);
+    function PhotoContainer(props) {
+        return _super.call(this, props) || this;
+    }
+    PhotoContainer.prototype.render = function () {
+        var duration = 200;
+        var transitionStyles = {
+            entering: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            entered: {
+                opacity: 1,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exiting: {
+                opacity: .8,
+                transition: "opacity " + duration + "ms ease-in-out",
+            },
+            exited: {
+                opacity: 0,
+                transition: "opacity " + duration + "ms ease-in-out",
+            }
+        };
+        var items = React.createElement("h1", null);
+        if (this.props.album.length !== 0 && this.props.selected) {
+            var style_1 = {
+                marginTop: "15px",
+                marginBottom: "15px"
+            };
+            items = this.props.album.photos.map(function (photo) {
+                return React.createElement("div", { key: photo.id, style: style_1 },
+                    React.createElement("img", { className: 'img', src: "/imgs/" + photo.src + ".jpg" }));
+            });
+        }
+        return (React.createElement("div", { className: this.props.style },
+            React.createElement(Transition_1.default, { in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true }, function (state) {
+                return React.createElement("div", { style: transitionStyles[state] }, items);
+            })));
+    };
+    return PhotoContainer;
 }(React.Component));
 var mapStateToProps = function (state) {
     return {
