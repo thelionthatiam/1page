@@ -4,7 +4,7 @@ import Transition from 'react-transition-group/Transition';
 import { connect, Provider } from 'react-redux';
 import { toggleBlinds, fetchPhotos } from './actions'
 import Gallery from 'react-photo-gallery';
-import Lightbox from 'react-images';
+import { PhotoIcon, X } from './svg/icons'
 import Measure from 'react-measure';
 
 class Blinds extends React.Component {
@@ -64,11 +64,11 @@ class Blinds extends React.Component {
                 transition: `opacity ${duration}ms ease-in-out`,
             }
         };
-        let blinds = this.props.albums.map(data => {
+        let blinds = this.props.albums.map((album, index) => {
             if (this.props.albums.length !==0) {
                 let blindStyle = "wrapper";
                 let photoWrapperStyle = 'album-wrapper'
-                if (data.id % 2 === 0) {
+                if (index % 2 === 0) {
                     blindStyle = "wrapper";
                     photoWrapperStyle = 'album-wrapper'
                 } else {
@@ -77,40 +77,42 @@ class Blinds extends React.Component {
                 }
             
                 return (
-                    <div key={data.id}>
+                    <div key={album.id}>
                         <Blind
                             style={blindStyle}
-                            selected={data.selected}
-                            content={data.title}
-                            description={data.description}
-                            onClick={e => this.handleClick(data.id, e)}
+                            selected={album.selected}
+                            content={album.title}
+                            description={album.description}
+                            onClick={e => this.handleClick(album.id, e)}
                         />
+                        <div className={photoWrapperStyle}>
                         <PhotoContainer
-                            style = {photoWrapperStyle}
-                            album = {data}
-                            selected = {data.selected}
+                            album = {album}
+                            selected = {album.selected}
                         />
+                        </div>
                     </div>
                 );
             }
         });
 
         return(
-            <div className = "page-wrapper" >
+            <div>
                 <Transition
                     in={true}
                     timeout={duration}
                     unmountOnExit={true}
                     mountOnEnter={true}
                     appear={true}
-                    componentWillLeave={this.componentWillLeave}>
+                    componentWillLeave={this.componentWillLeave}
+                    >
                     {state =>
-                        <div style={transitionStyles[state]}>
+                        <div style={transitionStyles[state]} className='page-wrapper'>
                             {blinds}
                         </div>
                     }
                 </Transition>
-                {/* {this.state.active ? < img className = 'small-icon'  src = '/icons/white/x.svg' onClick = { this.revert } />: null } */}
+                
             </div>
         );
     }
@@ -134,21 +136,29 @@ class Blind extends React.Component {
 
     render() {
         return (
-            <div>
-                
-                <div
-                    className= { this.props.style }
-                    onClick = { this.props.onClick }
-                    >
-                      
-                            <div className='album-title-wrapper'>
-                                <p className='album-title'>{this.props.content}</p>
-                                {/* <div className='line'></div>
-                                <img className='small-icon' src='/icons/white/x.svg' /> */}
-                            </div>
-                </div>
-                
-            </div>
+            <div
+                className= { this.props.style }
+                onClick = { this.props.onClick }
+                >
+                    
+                        <div className='album-title-wrapper'>
+                            {
+                                this.props.selected
+                                    ?
+                                    <p className='album-title album-title-selected'>{this.props.content}</p>
+                                    :
+                                    <p className='album-title'>{this.props.content}</p>
+                            }
+                            <div className='spacer'></div>
+                            {
+                                this.props.selected 
+                                ? 
+                                <div className = 'centered'>< div className='small-dot'></div></div> 
+                                : 
+                                <div className = 'centered'>< div className='no-dot'></div></div> 
+                            }
+                        </div>
+            </div>  
         );
     }
 }
@@ -158,10 +168,45 @@ class PhotoContainer extends React.Component {
         getPhotos: () => Object;
         album: any;
     }
+    state: {
+        currentImage:number;
+    }
     constructor(props) {
         super(props)
+        this.state = { currentImage: 0 };
+        this.closeLightbox = this.closeLightbox.bind(this);
+        this.openLightbox = this.openLightbox.bind(this);
+        this.gotoNext = this.gotoNext.bind(this);
+        this.gotoPrevious = this.gotoPrevious.bind(this);
+        this.gotoSelected = this.gotoSelected.bind(this);
     }
-
+    openLightbox(event, obj) {
+        this.setState({
+            // currentImage: obj.index,
+            lightboxIsOpen: true,
+        });
+    }
+    closeLightbox() {
+        this.setState({
+            currentImage: 0,
+            lightboxIsOpen: false,
+        });
+    }
+    gotoPrevious() {
+        this.setState({
+            currentImage: this.state.currentImage - 1,
+        });
+    }
+    gotoNext() {
+        this.setState({
+            currentImage: this.state.currentImage + 1,
+        });
+    }
+    gotoSelected(event, number) {
+        this.setState({
+            currentImage:number
+        })
+    }
     render() {
         let duration = 200;
 
@@ -169,41 +214,43 @@ class PhotoContainer extends React.Component {
             entering: {
                 opacity: 0,
                 transition: `opacity ${duration}ms ease-in-out`,
+                width:'100%'
             },
             entered: {
                 opacity: 1,
                 transition: `opacity ${duration}ms ease-in-out`,
+                width:'100%'
             },
             exiting: {
                 opacity: .8,
                 transition: `opacity ${duration}ms ease-in-out`,
+                width:'100%'
             },
             exited: {
                 opacity: 0,
                 transition: `opacity ${duration}ms ease-in-out`,
+                width:'100%'
             }
         };
     
         let items = <h1></h1>
         if (this.props.album.length !== 0 && this.props.selected) {
-            let style = {
-                marginTop: "15px",
-                marginBottom: "15px"
-            }
-            items =  this.props.album.photos.map((photo) => {
-                            return <div
-                                key={photo.id}
-                                style = {style}
-                                >
-                                <img className='img' src={"/imgs/" + photo.src + ".jpg"} />
-                            </div>
-                        }) 
-                        
-        } 
+            items =  this.props.album.photos.map((photo, index) => {
+                    if (index < 1) {
+                        return <div className='photo-container-medium' key={photo.id}>
+                            <img  
+                            onClick={this.openLightbox} 
+                            className='img' 
+                            src={"/imgs/" + photo.src + ".jpg"} 
+                            />
+                        </div>
+                    }      
+            })
+        }
         
         return (
             
-            <div className={this.props.style}>
+           
                 <Transition
                     in={true}
                     timeout={duration}
@@ -213,19 +260,150 @@ class PhotoContainer extends React.Component {
                     {state =>
                         <div style={transitionStyles[state]}>
                             {items}
+                            {
+                                this.props.selected
+                                    ?
+                                    <div className='album-info'>
+                                        <p className='small-text album-description'>{this.props.album.description}</p>
+                                        {/* <div className='line'></div> */}
+                                        <p>{this.props.album.date}</p>
+                                        <Lightbox
+                                            photos={this.props.album.photos}
+                                            isOpen={this.state.lightboxIsOpen}
+                                            onClose={this.closeLightbox}
+                                            gotoPrevious={this.gotoPrevious}
+                                            gotoNext={this.gotoNext}
+                                            gotoSelected={this.gotoSelected}
+                                            currentImage={this.state.currentImage}
+                                        />
+                                    </div>
+                                    :
+                                    null
+                            }
                         </div>
                     }
+                    
                 </Transition>
-            </div>
+                
+                /* <Lightbox images={this.props.album.photos}
+                    onClose={this.closeLightbox}
+                    onClickPrev={this.gotoPrevious}
+                    onClickNext={this.gotoNext}
+                    currentImage={this.state.currentImage}
+                    isOpen={this.state.lightboxIsOpen}
+                /> */
+            
         )
     }
 }
 
+class Lightbox extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            rendered:true
+        } 
+    }
 
+    componentDidMount() {
+        setTimeout(
+            () => {
+            this.setState({
+                rendered: true
+            })
+        },3000)      
+    }
+
+    componentWillUnmount() {
+        this.setState({
+            rendered:false
+        })
+    }
+
+    render() {
+        let img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
+        {
+            return this.props.isOpen
+                ? 
+                    <div 
+                        className='lightbox-wrapper'
+                        scroll="no"
+                        >
+                        <div className='lightbox-title-wrapper'>
+                            <PhotoIcon 
+                                styles=
+                                {this.state.rendered 
+                                   ? 
+                                   'svg-icon lightbox-icon-show'
+                                   :
+                                   'svg-icon lightbox-icon'
+                                }
+                                />
+                            <X styles = {'aline'}/> 
+                        </div>
+                        <div 
+                            className='lightbox-photo-wrapper'
+                            onClick = {this.props.onClose}
+                            >
+                            <img 
+                                className='lightbox-img' 
+                                src={img}
+                                id = {this.props.currentImage}
+
+                                />
+                            
+                        
+                        </div>
+                        <DotBox 
+                            photos = {this.props.photos}
+                            gotoSelected = {this.props.gotoSelected}
+                            currentImage = {this.props.currentImage}
+                            />
+                        {/* <button onClick = {this.props.onClose}>close</button>
+                        <button onClick={this.props.gotoNext}>next</button>
+                        <button onClick={this.props.gotoPrevious}>prev</button> */}
+                    </div>
+                :
+                null
+        }
+        
+    }
+}
+
+function DotBox(props) {
+
+    let style = {
+        background: '#ff6347'
+    }
+
+    return (
+        <div className = 'dot-box-wrapper'>
+            {
+                props.photos.map((photo, index) => {
+                    return (
+                        <div 
+                            className = 'lightbox-dot' 
+                            key = {index}
+                            onClick = {(event) => props.gotoSelected(event, index)}
+                            style = {
+                                index === props.currentImage
+                                ?
+                                style
+                                :
+                                null
+                            }
+                            > 
+                        </div>
+                    )
+                })
+            }
+        </div>
+    )
+}
 
 const mapStateToProps = state => {
     return {
-        blinds: state.all.blinds, // this data structure needs to happen
+        blinds: state.all.blinds, 
         albums: state.all.albums
     }
 }

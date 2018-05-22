@@ -20676,6 +20676,13 @@ var a = (function (exports) {
 	};
 	var Photos = connect(mapStateToProps, mapDispatchToProps)(PhotoContainer);
 
+	function PhotoIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 479.04 415.75"}, react_4("title", null, "photos-icon"), react_4("polyline", {className: 'aline', points: "7.94 204.88 240.52 340.7 473.1 204.88"}), react_4("polyline", {points: "7.94 275.88 240.52 411.7 473.1 275.88"}), react_4("polygon", {points: "6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88"})));
+	}
+	function X(props) {
+	    return (react_4("svg", {className: props.styles, viewBox: "0 0 12 12", version: "1.1", xmlns: "http://www.w3.org/2000/svg"}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1", stroke: "black", "stroke-width": "2"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11", stroke: "black", "stroke-width": "2"})));
+	}
+
 	var Blinds = (function (_super) {
 	    __extends(Blinds, _super);
 	    function Blinds(props) {
@@ -20724,11 +20731,11 @@ var a = (function (exports) {
 	                transition: "opacity " + duration + "ms ease-in-out",
 	            }
 	        };
-	        var blinds = this.props.albums.map(function (data) {
+	        var blinds = this.props.albums.map(function (album, index) {
 	            if (_this.props.albums.length !== 0) {
 	                var blindStyle = "wrapper";
 	                var photoWrapperStyle = 'album-wrapper';
-	                if (data.id % 2 === 0) {
+	                if (index % 2 === 0) {
 	                    blindStyle = "wrapper";
 	                    photoWrapperStyle = 'album-wrapper';
 	                }
@@ -20736,11 +20743,11 @@ var a = (function (exports) {
 	                    blindStyle = "wrapper-flip";
 	                    photoWrapperStyle = 'album-wrapper-flip';
 	                }
-	                return (react_4("div", {key: data.id}, react_4(Blind, {style: blindStyle, selected: data.selected, content: data.title, description: data.description, onClick: function (e) { return _this.handleClick(data.id, e); }}), react_4(PhotoContainer$1, {style: photoWrapperStyle, album: data, selected: data.selected})));
+	                return (react_4("div", {key: album.id}, react_4(Blind, {style: blindStyle, selected: album.selected, content: album.title, description: album.description, onClick: function (e) { return _this.handleClick(album.id, e); }}), react_4("div", {className: photoWrapperStyle}, react_4(PhotoContainer$1, {album: album, selected: album.selected}))));
 	            }
 	        });
-	        return (react_4("div", {className: "page-wrapper"}, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave}, function (state) {
-	            return react_4("div", {style: transitionStyles[state]}, blinds);
+	        return (react_4("div", null, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave}, function (state) {
+	            return react_4("div", {style: transitionStyles[state], className: 'page-wrapper'}, blinds);
 	        })));
 	    };
 	    return Blinds;
@@ -20762,7 +20769,15 @@ var a = (function (exports) {
 	        };
 	    }
 	    Blind.prototype.render = function () {
-	        return (react_4("div", null, react_4("div", {className: this.props.style, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, react_4("p", {className: 'album-title'}, this.props.content)))));
+	        return (react_4("div", {className: this.props.style, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, this.props.selected
+	            ?
+	                react_4("p", {className: 'album-title album-title-selected'}, this.props.content)
+	            :
+	                react_4("p", {className: 'album-title'}, this.props.content), react_4("div", {className: 'spacer'}), this.props.selected
+	            ?
+	                react_4("div", {className: 'centered'}, react_4("div", {className: 'small-dot'}))
+	            :
+	                react_4("div", {className: 'centered'}, react_4("div", {className: 'no-dot'})))));
 	    };
 	    return Blind;
 	}(react_2));
@@ -20770,43 +20785,132 @@ var a = (function (exports) {
 	    __extends(PhotoContainer, _super);
 	    function PhotoContainer(props) {
 	        _super.call(this, props);
+	        this.state = { currentImage: 0 };
+	        this.closeLightbox = this.closeLightbox.bind(this);
+	        this.openLightbox = this.openLightbox.bind(this);
+	        this.gotoNext = this.gotoNext.bind(this);
+	        this.gotoPrevious = this.gotoPrevious.bind(this);
+	        this.gotoSelected = this.gotoSelected.bind(this);
 	    }
+	    PhotoContainer.prototype.openLightbox = function (event, obj) {
+	        this.setState({
+	            // currentImage: obj.index,
+	            lightboxIsOpen: true,
+	        });
+	    };
+	    PhotoContainer.prototype.closeLightbox = function () {
+	        this.setState({
+	            currentImage: 0,
+	            lightboxIsOpen: false,
+	        });
+	    };
+	    PhotoContainer.prototype.gotoPrevious = function () {
+	        this.setState({
+	            currentImage: this.state.currentImage - 1,
+	        });
+	    };
+	    PhotoContainer.prototype.gotoNext = function () {
+	        this.setState({
+	            currentImage: this.state.currentImage + 1,
+	        });
+	    };
+	    PhotoContainer.prototype.gotoSelected = function (event, number) {
+	        this.setState({
+	            currentImage: number
+	        });
+	    };
 	    PhotoContainer.prototype.render = function () {
+	        var _this = this;
 	        var duration = 200;
 	        var transitionStyles = {
 	            entering: {
 	                opacity: 0,
 	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
 	            },
 	            entered: {
 	                opacity: 1,
 	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
 	            },
 	            exiting: {
 	                opacity: .8,
 	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
 	            },
 	            exited: {
 	                opacity: 0,
 	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
 	            }
 	        };
 	        var items = react_4("h1", null);
 	        if (this.props.album.length !== 0 && this.props.selected) {
-	            var style_1 = {
-	                marginTop: "15px",
-	                marginBottom: "15px"
-	            };
-	            items = this.props.album.photos.map(function (photo) {
-	                return react_4("div", {key: photo.id, style: style_1}, react_4("img", {className: 'img', src: "/imgs/" + photo.src + ".jpg"}));
+	            items = this.props.album.photos.map(function (photo, index) {
+	                if (index < 1) {
+	                    return react_4("div", {className: 'photo-container-medium', key: photo.id}, react_4("img", {onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg"}));
+	                }
 	            });
 	        }
-	        return (react_4("div", {className: this.props.style}, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
-	            return react_4("div", {style: transitionStyles[state]}, items);
-	        })));
+	        return (react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
+	            return react_4("div", {style: transitionStyles[state]}, items, _this.props.selected
+	                ?
+	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", null, _this.props.album.date), react_4(Lightbox, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
+	                :
+	                    null);
+	        }));
 	    };
 	    return PhotoContainer;
 	}(react_2));
+	var Lightbox = (function (_super) {
+	    __extends(Lightbox, _super);
+	    function Lightbox(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            rendered: true
+	        };
+	    }
+	    Lightbox.prototype.componentDidMount = function () {
+	        var _this = this;
+	        setTimeout(function () {
+	            _this.setState({
+	                rendered: true
+	            });
+	        }, 3000);
+	    };
+	    Lightbox.prototype.componentWillUnmount = function () {
+	        this.setState({
+	            rendered: false
+	        });
+	    };
+	    Lightbox.prototype.render = function () {
+	        var img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
+	        {
+	            return this.props.isOpen
+	                ?
+	                    react_4("div", {className: 'lightbox-wrapper', scroll: "no"}, react_4("div", {className: 'lightbox-title-wrapper'}, react_4(PhotoIcon, {styles: this.state.rendered
+	                        ?
+	                            'svg-icon lightbox-icon-show'
+	                        :
+	                            'svg-icon lightbox-icon'}), react_4(X, {styles: 'aline'})), react_4("div", {className: 'lightbox-photo-wrapper', onClick: this.props.onClose}, react_4("img", {className: 'lightbox-img', src: img, id: this.props.currentImage})), react_4(DotBox, {photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage}))
+	                :
+	                    null;
+	        }
+	    };
+	    return Lightbox;
+	}(react_2));
+	function DotBox(props) {
+	    var style = {
+	        background: '#ff6347'
+	    };
+	    return (react_4("div", {className: 'dot-box-wrapper'}, props.photos.map(function (photo, index) {
+	        return (react_4("div", {className: 'lightbox-dot', key: index, onClick: function (event) { return props.gotoSelected(event, index); }, style: index === props.currentImage
+	            ?
+	                style
+	            :
+	                null}));
+	    })));
+	}
 	var mapStateToProps$1 = function (state) {
 	    return {
 	        blinds: state.all.blinds,

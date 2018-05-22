@@ -14,7 +14,8 @@ module.exports = {
       file: 'sdist/public/rollup/bundle.js',
       format: 'iife',
       name: 'a',
-      sourcemap:true
+      sourcemap:true,
+      exports:'named'
     },
     watch: {
       include: 'src/public/**'
@@ -33,13 +34,15 @@ module.exports = {
       globals(),
       builtins(),
       commonjs({
-        include: [
-          'node_modules/**'
-        ],
         exclude: [
           'node_modules/process-es6/**'
         ],
+        include: [
+          'node_modules/**',
+          'node_modules/asap/**'
+        ],
         namedExports: {
+          'node_modules/asap/raw.js': ['rawAsap'],
           'node_modules/react/index.js': ['Children', 'Component', 'PropTypes', 'createElement', 'cloneElement', 'PureComponent'],
           'node_modules/react-dom/index.js': ['render', 'hydrate', 'unmountComponentAtNode'],
           'node_modules/aphrodite/no-important.js': ['StyleSheet', 'css'],

@@ -17,7 +17,7 @@ $lightGrey:lightGrey;
 $lightBlue:#325872;
 $almostBlack:#211A08;
 $almostWhite:rgba(214, 214, 214, 0.295);
-$white: papayawhip;
+$white: hsl(37, 100%, 92%);
 $lightPink:#FBD6DB;
 $pink:#F1AAAF;
 
@@ -82,7 +82,7 @@ input[text] {
 body{
     border:0;
     margin:0;
-    background:$pink;
+    background:$white;
 }
 
 .page-wrapper {
@@ -108,9 +108,6 @@ body{
 }
 
 
-
-
-
 .title {
   text-align:center;
   padding:10px;
@@ -129,8 +126,14 @@ body{
 }
 
 .img {
-  width:100%;
-  overflow: hidden;
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  display:flex;
+  flex-direction :column;
+  justify-content : center;
+  align-items : center;
 }
 
 
@@ -159,7 +162,7 @@ $p-color: $lightPink;
   position: relative;
   width: 50vw;
   max-width: 1000px;
-  min-width: 260px;
+  min-width: 240px;
   height: $p-height;
   background: $p-color;
   margin-top: 5px;
@@ -168,7 +171,7 @@ $p-color: $lightPink;
   opacity: 1;
   display:flex;
   flex-direction:column;
-  justify-content:flex-end;
+  justify-content:center;
 }
 
 %p:before {
@@ -196,24 +199,108 @@ $p-color: $lightPink;
 .album-wrapper {
   width: 50vw;
   max-width: 1000px;
-  min-width: 260px;
+  min-width: 240px;
   max-width:900px;
+  overflow:hidden;
   display:flex;
   flex-direction:row;
   align-content: center;
   align-items: center;
-  transform:translateX($p-offset)
+  margin-left:$p-offset;
 }
-
 .album-wrapper-flip {
   width: 50vw;
   max-width: 1000px;
-  min-width: 260px;
+  min-width: 240px;
   max-width:900px;
+  overflow:hidden;
   display:flex;
   flex-direction:row;
   align-content: center;
   align-items: center;
+}
+
+.photo-container-medium {
+  display:flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  max-height:50vh;
+  margin-top:15px;
+  margin-bottom:15px;
+  overflow:hidden;
+}
+
+.album-info {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  margin-bottom:15px;
+}
+
+.album-description {
+  flex:.4;
+  //border-right:1px solid $red;
+}
+
+@media all and (max-width:750px) {
+  .album-description {
+    flex:1;
+  }
+}
+
+.centered {
+  height:100%;
+  width:25px;
+  display: flex;
+  justify-content: center;
+}
+
+.no-dot {
+  border-radius:50px;
+  width:0px;
+  height:0px;
+  background-color:$pink;
+  transition:200ms;
+  position: relative;
+  left:60px;
+  // transition-delay:500ms;
+}
+.small-dot {
+  border-radius:50px;
+  width:20px;
+  height:20px;
+  background-color:$red;
+  transition:200ms;
+  transition-delay:000ms;
+  position: relative;
+  left:60px;
+}
+
+@media all and (max-width: 390px) {
+  .no-dot {
+    border-radius:50px;
+    width:0px;
+    height:0px;
+    background-color:$pink;
+    transition:200ms;
+    position: relative;
+    left:40px;
+    z-index:2;
+    // transition-delay:500ms;
+  }
+  .small-dot {
+    border-radius:50px;
+    width:10px;
+    height:10px;
+    background-color:$red;
+    transition:200ms;
+    transition-delay:000ms;
+    position: relative;
+    left:40px;
+    z-index:2;
+  }
 }
 
 .album-title-wrapper {
@@ -225,17 +312,37 @@ $p-color: $lightPink;
 
 .line {
   height:1px;
-  background:$pink;
+  background:$red;
+  flex-grow:1;
+  opacity:.2
+}
+
+.spacer {
+  height:1px;
+  background:transparent;
   flex-grow:1;
 }
 
 .album-title {
+  font-family: 'Crimson Text', serif;
   text-align:left;
+  text-transform:uppercase;
   padding:2px;
   letter-spacing: 2px;
   font-weight:100;
   color:$pink;
+  font-weight:800;
   font-size:10px;
+}
+
+@media all and (max-width:750px) {
+  .album-title {
+    color:$red;
+  }
+}
+
+.album-title-selected {
+  color:$red;
 }
 
 .description {
@@ -250,6 +357,13 @@ $p-color: $lightPink;
 
 .wrapper {
   @extend %p;
+}
+
+
+.wrapper:hover > .album-title-wrapper > .album-title,
+.wrapper-flip:hover > .album-title-wrapper > .album-title {
+  color:$red;
+  cursor:pointer;
 }
 
 .wrapper-flip:before {
@@ -276,29 +390,129 @@ $p-color: $lightPink;
   min-width: 260px;
 }
 
-// @media all and (max-width:400px) {
-//   body {
-//     margin: 0;
-//     padding: 0; 
-//   }
-// }
 
-.revert-button {
-  z-index: 10;
+// LIGHTBOX
+.lightbox-wrapper {
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  top:0;
+  left:0;
+  display:flex;
+  justify-content: space-around;
+  align-content:center;
+  align-items:center;
+  background-color: $white;
+  z-index:100;
+  overflow:hidden;
+}
+
+.lightbox-photo-wrapper {
+  position:absolute;
+  left:70px;
+  top: 70px;
+  right:70px;
+  bottom:70px;
+  display:flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  overflow:hidden;
+}
+
+.lightbox-photo-wrapper:hover ~ .revert {
+  display: none;
 }
 
 
 
+@media all and (max-width:750px) {
+  .lightbox-photo-wrapper {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.lightbox-img {
+  // width:100%;
+  // flex:1 1 auto;
+  display:flex;
+  flex-direction :column;
+  justify-content : center;
+  align-items : center;
+  max-width: 100%; 
+  max-height:100%;
+  width: auto;
+  height: auto;
+}
 
 
+.lightbox-title-wrapper {
+  position:absolute; 
+  top:0;
+  left:0;
+}
 
 
+.svg-icon {
+  fill:none;
+  stroke:$red;
+  stroke-miterlimit: 10;
+  stroke-width: 7px;
+  transition: all 0.4s;
+}
 
+.lightbox-icon {
+  width:50px;
+  margin:10px;
+  transition: all 0.4s;
+  stroke-dasharray: 0, 600;
+  stroke-dashoffset: -100;
+}
 
+.lightbox-icon-show {
+  width:50px;
+  margin:10px;
+  stroke-dasharray: 1000, 0;
+  stroke-dashoffset: 0;
+  transition: all 0.4s;
+}
 
+.lightbox-icon-show:hober {
+  stroke-width:14px;
+  transition: all 0.4s;
+}
 
+.aline {
+  stroke:$lightBlue;
+}
 
+.dot-box-wrapper {
+  align-self:flex-end;
+  display:flex;
+  align-items: center;
+  align-content:center;
+  justify-content: space-between;
+  margin-bottom:15px;
+}
 
+.lightbox-dot {
+  border-radius:30px;
+  width:15px;
+  height:15px;
+  border:1px solid $red;
+  background-color:transparent;
+  transition:200ms;
+  transition-delay:000ms;
 
+  margin-left:5px;
+  margin-right:5px;
+  transition:200ms;
+}
 
-
+.lightbox-dot:hover {
+  background:#e5a69b;
+  transition:200ms;
+}
