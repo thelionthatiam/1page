@@ -425,7 +425,6 @@ $p-color: $lightPink;
 }
 
 
-
 @media all and (max-width:750px) {
   .lightbox-photo-wrapper {
     top: 0;
@@ -436,14 +435,12 @@ $p-color: $lightPink;
 }
 
 .lightbox-img {
-  // width:100%;
-  // flex:1 1 auto;
   display:flex;
   flex-direction :column;
   justify-content : center;
   align-items : center;
   max-width: 100%; 
-  max-height:100%;
+  max-height: 100%;
   width: auto;
   height: auto;
 }
@@ -454,7 +451,6 @@ $p-color: $lightPink;
   top:0;
   left:0;
 }
-
 
 .svg-icon {
   fill:none;
@@ -480,14 +476,34 @@ $p-color: $lightPink;
   transition: all 0.4s;
 }
 
-.lightbox-icon-show:hober {
+.lightbox-icon-show:hover {
   stroke-width:14px;
-  transition: all 0.4s;
+  transition: all 0.2s;
 }
 
 .aline {
   stroke:$lightBlue;
 }
+
+.x-icon {
+  stroke:$lightBlue;
+  width:40px;
+  stroke-dasharray: 0, 20;
+  stroke-dashoffset:-6.5;
+}
+
+// .lightbox-photo-wrapper:hover ~ .x-icon {
+//     stroke-dasharray:14.5, 20;
+//   stroke-dashoffset:0;
+// }
+
+.x-icon-hover {
+  stroke:$lightBlue;
+  width:40px;
+  stroke-dasharray:14.5, 20;
+  stroke-dashoffset:0;
+}
+
 
 .dot-box-wrapper {
   align-self:flex-end;

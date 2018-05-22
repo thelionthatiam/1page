@@ -20680,7 +20680,7 @@ var a = (function (exports) {
 	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 479.04 415.75"}, react_4("title", null, "photos-icon"), react_4("polyline", {className: 'aline', points: "7.94 204.88 240.52 340.7 473.1 204.88"}), react_4("polyline", {points: "7.94 275.88 240.52 411.7 473.1 275.88"}), react_4("polygon", {points: "6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88"})));
 	}
 	function X(props) {
-	    return (react_4("svg", {className: props.styles, viewBox: "0 0 12 12", version: "1.1", xmlns: "http://www.w3.org/2000/svg"}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1", stroke: "black", "stroke-width": "2"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11", stroke: "black", "stroke-width": "2"})));
+	    return (react_4("svg", {className: props.styles, viewBox: "0 0 20 20", version: "1.1", xmlns: "http://www.w3.org/2000/svg"}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11"})));
 	}
 
 	var Blinds = (function (_super) {
@@ -20867,8 +20867,11 @@ var a = (function (exports) {
 	    function Lightbox(props) {
 	        _super.call(this, props);
 	        this.state = {
-	            rendered: true
+	            rendered: true,
+	            xStyle: 'x-icon'
 	        };
+	        this.showX = this.showX.bind(this);
+	        this.hideX = this.hideX.bind(this);
 	    }
 	    Lightbox.prototype.componentDidMount = function () {
 	        var _this = this;
@@ -20883,6 +20886,16 @@ var a = (function (exports) {
 	            rendered: false
 	        });
 	    };
+	    Lightbox.prototype.showX = function () {
+	        this.setState({
+	            xStyle: 'x-icon-hover'
+	        });
+	    };
+	    Lightbox.prototype.hideX = function () {
+	        this.setState({
+	            xStyle: 'x-icon'
+	        });
+	    };
 	    Lightbox.prototype.render = function () {
 	        var img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
 	        {
@@ -20892,7 +20905,7 @@ var a = (function (exports) {
 	                        ?
 	                            'svg-icon lightbox-icon-show'
 	                        :
-	                            'svg-icon lightbox-icon'}), react_4(X, {styles: 'aline'})), react_4("div", {className: 'lightbox-photo-wrapper', onClick: this.props.onClose}, react_4("img", {className: 'lightbox-img', src: img, id: this.props.currentImage})), react_4(DotBox, {photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage}))
+	                            'svg-icon lightbox-icon'}), react_4(X, {styles: this.state.xStyle})), react_4("div", {className: 'lightbox-photo-wrapper', onClick: this.props.onClose}, react_4("img", {className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX})), react_4(DotBox, {photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage}))
 	                :
 	                    null;
 	        }

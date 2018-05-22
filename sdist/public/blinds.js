@@ -226,8 +226,11 @@ var Lightbox = /** @class */ (function (_super) {
     function Lightbox(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            rendered: true
+            rendered: true,
+            xStyle: 'x-icon'
         };
+        _this.showX = _this.showX.bind(_this);
+        _this.hideX = _this.hideX.bind(_this);
         return _this;
     }
     Lightbox.prototype.componentDidMount = function () {
@@ -243,6 +246,16 @@ var Lightbox = /** @class */ (function (_super) {
             rendered: false
         });
     };
+    Lightbox.prototype.showX = function () {
+        this.setState({
+            xStyle: 'x-icon-hover'
+        });
+    };
+    Lightbox.prototype.hideX = function () {
+        this.setState({
+            xStyle: 'x-icon'
+        });
+    };
     Lightbox.prototype.render = function () {
         var img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
         {
@@ -255,9 +268,9 @@ var Lightbox = /** @class */ (function (_super) {
                                         'svg-icon lightbox-icon-show'
                                     :
                                         'svg-icon lightbox-icon' }),
-                            React.createElement(icons_1.X, { styles: 'aline' })),
+                            React.createElement(icons_1.X, { styles: this.state.xStyle })),
                         React.createElement("div", { className: 'lightbox-photo-wrapper', onClick: this.props.onClose },
-                            React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage })),
+                            React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX })),
                         React.createElement(DotBox, { photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage }))
                 :
                     null;

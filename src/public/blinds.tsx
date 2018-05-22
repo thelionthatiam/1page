@@ -301,8 +301,11 @@ class Lightbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            rendered:true
+            rendered:true,
+            xStyle:'x-icon'
         } 
+        this.showX = this.showX.bind(this)
+        this.hideX = this.hideX.bind(this)
     }
 
     componentDidMount() {
@@ -317,6 +320,18 @@ class Lightbox extends React.Component {
     componentWillUnmount() {
         this.setState({
             rendered:false
+        })
+    }
+
+    showX() {
+        this.setState({
+            xStyle: 'x-icon-hover'
+        })
+    }
+
+    hideX() {
+        this.setState({
+            xStyle: 'x-icon'
         })
     }
 
@@ -339,7 +354,7 @@ class Lightbox extends React.Component {
                                    'svg-icon lightbox-icon'
                                 }
                                 />
-                            <X styles = {'aline'}/> 
+                            <X styles = {this.state.xStyle}/> 
                         </div>
                         <div 
                             className='lightbox-photo-wrapper'
@@ -349,7 +364,8 @@ class Lightbox extends React.Component {
                                 className='lightbox-img' 
                                 src={img}
                                 id = {this.props.currentImage}
-
+                                onMouseOver = {this.showX}
+                                onMouseLeave = {this.hideX}
                                 />
                             
                         

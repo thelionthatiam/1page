@@ -369,12 +369,24 @@ body {
   stroke-dashoffset: 0;
   transition: all 0.4s; }
 
-.lightbox-icon-show:hober {
+.lightbox-icon-show:hover {
   stroke-width: 14px;
-  transition: all 0.4s; }
+  transition: all 0.2s; }
 
 .aline {
   stroke: #325872; }
+
+.x-icon {
+  stroke: #325872;
+  width: 40px;
+  stroke-dasharray: 0, 20;
+  stroke-dashoffset: -6.5; }
+
+.x-icon-hover {
+  stroke: #325872;
+  width: 40px;
+  stroke-dasharray: 14.5, 20;
+  stroke-dashoffset: 0; }
 
 .dot-box-wrapper {
   align-self: flex-end;
