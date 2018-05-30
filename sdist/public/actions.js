@@ -108,4 +108,10 @@ function fetchTestData() {
     };
 }
 exports.fetchTestData = fetchTestData;
+// SCROLL LOCK 
+exports.SCROLL_LOCK = 'SCROLL_LOCK';
+function lockScroll() {
+    return { scroll: false };
+}
+exports.lockScroll = lockScroll;
 //# sourceMappingURL=actions.js.map

@@ -3,7 +3,6 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import { connect, Provider } from 'react-redux';
 import { toggleBlinds, fetchPhotos } from './actions'
-import Gallery from 'react-photo-gallery';
 import { PhotoIcon, X } from './svg/icons'
 import Measure from 'react-measure';
 
@@ -170,15 +169,20 @@ class PhotoContainer extends React.Component {
     }
     state: {
         currentImage:number;
+        expand:boolean;
     }
     constructor(props) {
         super(props)
-        this.state = { currentImage: 0 };
+        this.state = { 
+            currentImage: 0,
+            expand:false    
+        };
         this.closeLightbox = this.closeLightbox.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
         this.gotoSelected = this.gotoSelected.bind(this);
+        this.expand = this.expand.bind(this);
     }
     openLightbox(event, obj) {
         this.setState({
@@ -190,21 +194,41 @@ class PhotoContainer extends React.Component {
         this.setState({
             currentImage: 0,
             lightboxIsOpen: false,
-        });
+        }, () => console.log('closed'));
     }
     gotoPrevious() {
-        this.setState({
-            currentImage: this.state.currentImage - 1,
-        });
+        if (this.state.currentImage - 1 < 0) {
+            this.setState({
+                currentImage: this.props.album.photos.length -1
+            })
+        } else {
+            this.setState({
+                currentImage: this.state.currentImage - 1,
+            });
+        }
     }
     gotoNext() {
-        this.setState({
-            currentImage: this.state.currentImage + 1,
-        });
+        if (this.state.currentImage + 1 >= this.props.album.photos.length) {
+            this.setState({
+                currentImage:0
+            })
+        } else {
+            this.setState({
+                currentImage: this.state.currentImage + 1,
+            });
+        }
     }
     gotoSelected(event, number) {
         this.setState({
             currentImage:number
+        })
+    }
+
+    expand(event) {
+        event.preventDefault()
+
+        this.setState({
+            expand:!this.state.expand
         })
     }
     render() {
@@ -237,12 +261,18 @@ class PhotoContainer extends React.Component {
         if (this.props.album.length !== 0 && this.props.selected) {
             items =  this.props.album.photos.map((photo, index) => {
                     if (index < 1) {
-                        return <div className='photo-container-medium' key={photo.id}>
+                        return <div 
+                        className='photo-container-medium' 
+                        key={photo.id} 
+                        onMouseEnter = {this.expand}
+                        onMouseLeave = {this.expand}
+                        >
                             <img  
                             onClick={this.openLightbox} 
                             className='img' 
                             src={"/imgs/" + photo.src + ".jpg"} 
                             />
+                            <div className={this.state.expand ? 'expand-icon-wrapper' :'expand-icon-wrapper-closed'}></div>
                         </div>
                     }      
             })
@@ -266,7 +296,7 @@ class PhotoContainer extends React.Component {
                                     <div className='album-info'>
                                         <p className='small-text album-description'>{this.props.album.description}</p>
                                         {/* <div className='line'></div> */}
-                                        <p>{this.props.album.date}</p>
+                                        <p className = 'small-text'>{this.props.album.date}</p>
                                         <Lightbox
                                             photos={this.props.album.photos}
                                             isOpen={this.state.lightboxIsOpen}
@@ -325,13 +355,13 @@ class Lightbox extends React.Component {
 
     showX() {
         this.setState({
-            xStyle: 'x-icon-hover'
+            xStyle: 'x-icon-hover bold-stroke'
         })
     }
 
     hideX() {
         this.setState({
-            xStyle: 'x-icon'
+            xStyle: 'x-icon-hover'
         })
     }
 
@@ -354,7 +384,10 @@ class Lightbox extends React.Component {
                                    'svg-icon lightbox-icon'
                                 }
                                 />
-                            <X styles = {this.state.xStyle}/> 
+                            
+                        </div>
+                        <div className = 'lightbox-left-paddle' onClick = {this.props.gotoPrevious}>
+                            <div className = 'left-triangle'></div>
                         </div>
                         <div 
                             className='lightbox-photo-wrapper'
@@ -370,6 +403,15 @@ class Lightbox extends React.Component {
                             
                         
                         </div>
+                        <div className='lightbox-right-paddle' onClick = {this.props.gotoNext}>
+                            <div className='right-triangle'></div>
+                        </div>
+                        <X 
+                            styles={this.state.xStyle} 
+                            onClick={this.props.onClose}
+                            onMouseOver={this.showX}
+                            onMouseLeave={this.hideX}
+                            /> 
                         <DotBox 
                             photos = {this.props.photos}
                             gotoSelected = {this.props.gotoSelected}

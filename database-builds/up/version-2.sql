@@ -14,7 +14,7 @@ CREATE TABLE albums (
 );
 
 -- DUMMY DATA
--- insert into albums(title, date, description) VALUES ('raccons', 'summer 2014', 'here are my favorite raccons from the summer of 2014. enjoy their odd ways.');
+-- insert into albums(title, date, description) VALUES ('raccoons', 'summer 2014', 'here are my favorite raccons from the summer of 2014. enjoy their odd ways.');
 -- insert into albums(title, date, description) VALUES ('gardens', 'winter 2012', 'japanese gardens make my heart sing.');
 -- insert into albums(title, date, description) VALUES ('me', 'now', 'this is my face');
 
@@ -24,15 +24,15 @@ CREATE TABLE photos (
     photo_uuid UUID UNIQUE NOT NULL default uuid_generate_v4(),
     -- unix date?
     -- curated order    
-    photo varchar(100) NOT NULL, 
+    src varchar(100) NOT NULL, 
     timestamp timestamptz NOT NULL default now()
 );
 
 -- DUMMY DATA
--- insert into photos(album_uuid, photo) VALUES ('ddcf7c75-71b7-48d5-8c79-6709ff5e9a57', '1');
--- insert into photos(album_uuid, photo) VALUES ('ddcf7c75-71b7-48d5-8c79-6709ff5e9a57', '2');
--- insert into photos(album_uuid, photo) VALUES ('ddcf7c75-71b7-48d5-8c79-6709ff5e9a57', '3');
--- insert into photos(album_uuid, photo) VALUES ('ddcf7c75-71b7-48d5-8c79-6709ff5e9a57', '4');
--- insert into photos(album_uuid, photo) VALUES ('3cb17067-a76c-4bfa-b811-0bc5c972818e', '5');
--- insert into photos(album_uuid, photo) VALUES ('3cb17067-a76c-4bfa-b811-0bc5c972818e', '6');
--- insert into photos(album_uuid, photo) VALUES ('c7f56698-a428-41c1-a492-fe2ee003571b', '7');
+-- insert into photos(album_uuid, src) VALUES ('9db85f97-fb05-4554-abf6-07de0b6a4500', '1');
+-- insert into photos(album_uuid, src) VALUES ('9db85f97-fb05-4554-abf6-07de0b6a4500', '2');
+-- insert into photos(album_uuid, src) VALUES ('9db85f97-fb05-4554-abf6-07de0b6a4500', '3');
+-- insert into photos(album_uuid, src) VALUES ('9db85f97-fb05-4554-abf6-07de0b6a4500', '4');
+-- insert into photos(album_uuid, src) VALUES ('28439387-e535-4387-ad07-a5e1f2731a2c', '5');
+-- insert into photos(album_uuid, src) VALUES ('28439387-e535-4387-ad07-a5e1f2731a2c', '6');
+-- insert into photos(album_uuid, src) VALUES ('ce82126f-4716-4778-b8a8-eb9ba6e09cd5', '7');

@@ -18,8 +18,9 @@ var redux_devtools_extension_1 = require("redux-devtools-extension");
 var redux_thunk_1 = require("redux-thunk");
 var redux_1 = require("redux");
 // COMPONENTS
-var photos_1 = require("./photos");
 var blinds_1 = require("./blinds");
+var menu_1 = require("./menu");
+var shapely_1 = require("./shapely");
 //ACTIONS
 var user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
@@ -99,6 +100,10 @@ function all(state, action) {
                     active: false
                 }
             });
+        case actions_1.SCROLL_LOCK:
+            return Object.assign({}, state, {
+                action: action
+            });
         case actions_1.REQ_TEST:
             return Object.assign({}, state, {
                 isFetching: true
@@ -126,13 +131,19 @@ var reducer = redux_1.combineReducers({
 });
 var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;
-function photos() {
-    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(photos_1.default, null)), document.getElementById('root'));
-}
 function blinds() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
         React.createElement(blinds_1.default, null)), document.getElementById('blinds'));
 }
 exports.blinds = blinds;
+function menu() {
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(menu_1.default, null)), document.getElementById('menu'));
+}
+exports.menu = menu;
+function shapely() {
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(shapely_1.default, null)), document.getElementById('root'));
+}
+exports.shapely = shapely;
 //# sourceMappingURL=index.js.map

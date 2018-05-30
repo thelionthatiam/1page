@@ -4,6 +4,10 @@ var express = require("express");
 var route_photos_1 = require("./routes/route-photos");
 var index = express.Router();
 index.use('/', route_photos_1.default);
+index.route('/photo')
+    .get(function (req, res) {
+    res.render('photos');
+});
 index.route('/')
     .get(function (req, res) {
     res.render('home');

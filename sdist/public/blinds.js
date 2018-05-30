@@ -129,12 +129,16 @@ var PhotoContainer = /** @class */ (function (_super) {
     __extends(PhotoContainer, _super);
     function PhotoContainer(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { currentImage: 0 };
+        _this.state = {
+            currentImage: 0,
+            expand: false
+        };
         _this.closeLightbox = _this.closeLightbox.bind(_this);
         _this.openLightbox = _this.openLightbox.bind(_this);
         _this.gotoNext = _this.gotoNext.bind(_this);
         _this.gotoPrevious = _this.gotoPrevious.bind(_this);
         _this.gotoSelected = _this.gotoSelected.bind(_this);
+        _this.expand = _this.expand.bind(_this);
         return _this;
     }
     PhotoContainer.prototype.openLightbox = function (event, obj) {
@@ -147,21 +151,41 @@ var PhotoContainer = /** @class */ (function (_super) {
         this.setState({
             currentImage: 0,
             lightboxIsOpen: false,
-        });
+        }, function () { return console.log('closed'); });
     };
     PhotoContainer.prototype.gotoPrevious = function () {
-        this.setState({
-            currentImage: this.state.currentImage - 1,
-        });
+        if (this.state.currentImage - 1 < 0) {
+            this.setState({
+                currentImage: this.props.album.photos.length - 1
+            });
+        }
+        else {
+            this.setState({
+                currentImage: this.state.currentImage - 1,
+            });
+        }
     };
     PhotoContainer.prototype.gotoNext = function () {
-        this.setState({
-            currentImage: this.state.currentImage + 1,
-        });
+        if (this.state.currentImage + 1 >= this.props.album.photos.length) {
+            this.setState({
+                currentImage: 0
+            });
+        }
+        else {
+            this.setState({
+                currentImage: this.state.currentImage + 1,
+            });
+        }
     };
     PhotoContainer.prototype.gotoSelected = function (event, number) {
         this.setState({
             currentImage: number
+        });
+    };
+    PhotoContainer.prototype.expand = function (event) {
+        event.preventDefault();
+        this.setState({
+            expand: !this.state.expand
         });
     };
     PhotoContainer.prototype.render = function () {
@@ -193,8 +217,9 @@ var PhotoContainer = /** @class */ (function (_super) {
         if (this.props.album.length !== 0 && this.props.selected) {
             items = this.props.album.photos.map(function (photo, index) {
                 if (index < 1) {
-                    return React.createElement("div", { className: 'photo-container-medium', key: photo.id },
-                        React.createElement("img", { onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg" }));
+                    return React.createElement("div", { className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand },
+                        React.createElement("img", { onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg" }),
+                        React.createElement("div", { className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed' }));
                 }
             });
         }
@@ -205,7 +230,7 @@ var PhotoContainer = /** @class */ (function (_super) {
                     ?
                         React.createElement("div", { className: 'album-info' },
                             React.createElement("p", { className: 'small-text album-description' }, _this.props.album.description),
-                            React.createElement("p", null, _this.props.album.date),
+                            React.createElement("p", { className: 'small-text' }, _this.props.album.date),
                             React.createElement(Lightbox, { photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage }))
                     :
                         null);
@@ -248,12 +273,12 @@ var Lightbox = /** @class */ (function (_super) {
     };
     Lightbox.prototype.showX = function () {
         this.setState({
-            xStyle: 'x-icon-hover'
+            xStyle: 'x-icon-hover bold-stroke'
         });
     };
     Lightbox.prototype.hideX = function () {
         this.setState({
-            xStyle: 'x-icon'
+            xStyle: 'x-icon-hover'
         });
     };
     Lightbox.prototype.render = function () {
@@ -267,10 +292,14 @@ var Lightbox = /** @class */ (function (_super) {
                                     ?
                                         'svg-icon lightbox-icon-show'
                                     :
-                                        'svg-icon lightbox-icon' }),
-                            React.createElement(icons_1.X, { styles: this.state.xStyle })),
+                                        'svg-icon lightbox-icon' })),
+                        React.createElement("div", { className: 'lightbox-left-paddle', onClick: this.props.gotoPrevious },
+                            React.createElement("div", { className: 'left-triangle' })),
                         React.createElement("div", { className: 'lightbox-photo-wrapper', onClick: this.props.onClose },
                             React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX })),
+                        React.createElement("div", { className: 'lightbox-right-paddle', onClick: this.props.gotoNext },
+                            React.createElement("div", { className: 'right-triangle' })),
+                        React.createElement(icons_1.X, { styles: this.state.xStyle, onClick: this.props.onClose, onMouseOver: this.showX, onMouseLeave: this.hideX }),
                         React.createElement(DotBox, { photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage }))
                 :
                     null;

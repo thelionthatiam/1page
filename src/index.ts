@@ -5,11 +5,14 @@ const index = express.Router()
 
 index.use('/', photoRouter)
 
-index.route('/')
+index.route('/photo')
     .get((req, res) => {    
-        res.render('home')
+        res.render('photos')
     })
 
-
+index.route('/')
+    .get((req, res) => {
+        res.render('home')
+    })
 
 export default index;

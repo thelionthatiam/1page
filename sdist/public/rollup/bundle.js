@@ -20618,69 +20618,55 @@ var a = (function (exports) {
 	// SAMPLE THUNK
 	var REQ_TEST = 'REQ_TEST';
 	var RES_TEST = 'RES_TEST';
-
-	var PhotoContainer = (function (_super) {
-	    __extends(PhotoContainer, _super);
-	    function PhotoContainer(props) {
-	        _super.call(this, props);
-	        this.componentDidMount = this.componentDidMount.bind(this);
-	    }
-	    PhotoContainer.prototype.componentDidMount = function () {
-	        this.props.getPhotos();
-	    };
-	    PhotoContainer.prototype.render = function () {
-	        var duration = 200;
-	        var transitionStyles = {
-	            entering: {
-	                opacity: 0,
-	                transition: "opacity " + duration + "ms ease-in-out",
-	            },
-	            entered: {
-	                opacity: 1,
-	                transition: "opacity " + duration + "ms ease-in-out",
-	            },
-	            exiting: {
-	                opacity: .8,
-	                transition: "opacity " + duration + "ms ease-in-out",
-	            },
-	            exited: {
-	                opacity: 0,
-	                transition: "opacity " + duration + "ms ease-in-out",
-	            }
-	        };
-	        var items = react_4("h1", null, "nothing here yet!");
-	        if (this.props.albums.length !== 0) {
-	            items = this.props.albums.map(function (item) {
-	                return react_4("div", {key: item.id, title: item.title}, react_4("h2", null, item.title), react_4("p", {className: 'small-text'}, item.date), react_4("p", {className: 'small-text margin-bottom'}, item.description), item.photos.length > 0 ?
-	                    item.photos.map(function (item) {
-	                        return react_4("div", {key: item.id}, react_4("img", {className: 'img', src: "/imgs/" + item.photo + ".jpg"}));
-	                    }) :
-	                    null);
-	            });
-	        }
-	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'title-wrapper'}, react_4("img", {className: 'title-icon', src: '/icons/titles/photo-icon.svg'}), react_4("h1", {className: 'title'}, "THIS IS A BEATIFUL TITLE")), react_4("div", {className: 'album-wrapper'}, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
-	            return react_4("div", {style: transitionStyles[state]}, items);
-	        }))));
-	    };
-	    return PhotoContainer;
-	}(react_2));
-	var mapStateToProps = function (state) {
-	    return {
-	        albums: state.all.albums // this data structure needs to happen
-	    };
-	};
-	var mapDispatchToProps = function (dispatch) {
-	    return {
-	        getPhotos: function () { return dispatch(fetchPhotos()); }
-	    };
-	};
-	var Photos = connect(mapStateToProps, mapDispatchToProps)(PhotoContainer);
+	// SCROLL LOCK 
+	var SCROLL_LOCK = 'SCROLL_LOCK';
 
 	function PhotoIcon(props) {
 	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 479.04 415.75"}, react_4("title", null, "photos-icon"), react_4("polyline", {className: 'aline', points: "7.94 204.88 240.52 340.7 473.1 204.88"}), react_4("polyline", {points: "7.94 275.88 240.52 411.7 473.1 275.88"}), react_4("polygon", {points: "6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88"})));
 	}
 	function X(props) {
-	    return (react_4("svg", {className: props.styles, viewBox: "0 0 20 20", version: "1.1", xmlns: "http://www.w3.org/2000/svg"}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11"})));
+	    return (react_4("svg", {className: props.styles, viewBox: "0 0 20 20", version: "1.1", xmlns: "http://www.w3.org/2000/svg", onClick: props.onClick, onMouseOver: props.onMouseOver, onMouseLeave: props.onMouseLeave}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11"})));
+	}
+	function Hamburger(props) {
+	    return (react_4("div", {className: props.class === "menu-svg open" ? "menu-icon-open" : "menu-icon", onClick: props.openMenu}, react_4("svg", {className: props.class, width: "24", height: "24", id: "hamburger", viewBox: "0 0 24 16"}, react_4("line", {className: "a", fill: "none", strokeWidth: "2", x1: "0", y1: "1", x2: "24", y2: "1"}), react_4("line", {className: "b", fill: "none", strokeWidth: "2", x1: "0", y1: "8", x2: "24", y2: "8"}), react_4("line", {className: "c", fill: "none", strokeWidth: "2", x1: "0", y1: "15", x2: "24", y2: "15"}))));
+	}
+	function Home(props) {
+	    return (react_4("a", {href: '/'}, react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("polygon", {className: "st0", points: "9,169.3 9,373.3 391,373.3 391,169.3 200.5,29.5 "}))));
+	}
+	function CurrentWork(props) {
+	    return (react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("g", null, react_4("g", null, react_4("path", {d: "M15.4,246.4c15.2-27.6,30.4-55.3,45.6-82.9c2.2-3.9,4.3-7.9,6.5-11.8c2.3-4.2-4.1-8-6.5-3.8 c-15.2,27.6-30.4,55.3-45.6,82.9c-2.2,3.9-4.3,7.9-6.5,11.8C6.6,246.8,13.1,250.6,15.4,246.4L15.4,246.4z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M60.6,150.7c11.6,38.3,23.1,76.7,34.7,115c1.6,5.3,3.2,10.7,4.8,16c1.4,4.6,8.6,2.6,7.2-2c-11.6-38.3-23.1-76.7-34.7-115 c-1.6-5.3-3.2-10.7-4.8-16C66.4,144.1,59.2,146.1,60.6,150.7L60.6,150.7z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M66.6,151.3c32.9-22.9,65.7-45.7,98.6-68.6c4.6-3.2,9.2-6.4,13.7-9.6c3.9-2.7,0.2-9.2-3.8-6.5 c-32.9,22.9-65.7,45.7-98.6,68.6c-4.6,3.2-9.2,6.4-13.7,9.6C58.9,147.5,62.7,154,66.6,151.3L66.6,151.3z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M176.8,68.8c8.1,26.7,16.1,53.5,24.2,80.2c1.4,4.6,8.6,2.6,7.2-2c-8.1-26.7-16.1-53.5-24.2-80.2 C182.7,62.2,175.4,64.2,176.8,68.8L176.8,68.8z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M126.6,210.5c23.4-16.3,46.9-32.6,70.3-48.9c3.4-2.4,6.8-4.7,10.2-7.1c3.9-2.7,0.2-9.2-3.8-6.5 c-23.4,16.3-46.9,32.6-70.3,48.9c-3.4,2.4-6.8,4.7-10.2,7.1C118.9,206.7,122.7,213.3,126.6,210.5L126.6,210.5z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M204.3,154.9c20.5,7.9,41,15.8,61.6,23.7c32.9,12.7,65.8,25.3,98.7,38c7.5,2.9,15,5.8,22.5,8.7c4.5,1.7,6.5-5.5,2-7.2 c-20.5-7.9-41-15.8-61.6-23.7c-32.9-12.7-65.8-25.3-98.7-38c-7.5-2.9-15-5.8-22.5-8.7C201.7,145.9,199.8,153.2,204.3,154.9 L204.3,154.9z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M231.8,335.3c17.9-12.4,35.8-24.8,53.6-37.3c28.3-19.7,56.6-39.4,85-59.1c6.5-4.5,13-9.1,19.6-13.6 c3.9-2.7,0.2-9.2-3.8-6.5c-17.9,12.4-35.8,24.8-53.6,37.3c-28.3,19.7-56.6,39.4-85,59.1c-6.5,4.5-13,9.1-19.6,13.6 C224,331.5,227.8,338,231.8,335.3L231.8,335.3z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M123.1,211.7c26.2,10.1,52.4,20.2,78.5,30.2c3.7,1.4,7.5,2.9,11.2,4.3c4.5,1.7,6.5-5.5,2-7.2 c-26.2-10.1-52.4-20.2-78.5-30.2c-3.7-1.4-7.5-2.9-11.2-4.3C120.6,202.7,118.7,210,123.1,211.7L123.1,211.7z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M141.2,299.6c22.1-15.3,44.1-30.6,66.2-46c3.2-2.2,6.4-4.5,9.6-6.7c3.9-2.7,0.2-9.2-3.8-6.5c-22.1,15.3-44.1,30.6-66.2,46 c-3.2,2.2-6.4,4.5-9.6,6.7C133.5,295.9,137.2,302.4,141.2,299.6L141.2,299.6z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M137.7,300.9c26.1,10,52.2,20.1,78.2,30.1c3.8,1.5,7.5,2.9,11.3,4.4c4.5,1.7,6.5-5.5,2-7.2c-26.1-10-52.2-20.1-78.2-30.1 c-3.8-1.5-7.5-2.9-11.3-4.4C135.2,292,133.3,299.2,137.7,300.9L137.7,300.9z"})))));
+	}
+	function About(props) {
+	    return (react_4("svg", {className: props.class, version: "1.1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("g", null, react_4("circle", {cx: "200", cy: "200", r: "189.5"}))));
+	}
+	function Repository(props) {
+	    return (
+	    // <a href = '/photo'>
+	    react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400", onClick: props.onClick}, react_4("polyline", {points: "28,389 200,13 371,389 "})));
+	}
+	function HomeOne(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#b4252d', fill: '#f08372'}, react_4("path", {d: "M90.07,336l8.1,66.9-8.36,13.86h-.09L63.19,472.82l.73-.12L48,498.51l-18.43-2.34L9.79,329.86l60-61.56c-1.1-6.73,258.53,29.13,457.19-87.2l69.07,45.82,33.11,176.61-19.65,3.21-19.21-20.06,1.27-.21-38.35-49.05-.68.11L540,325.32,527.8,265.14l68.27-38.22C354.48,386,9.16,326,9.79,329.86"}), react_4("path", {d: "M89.32,336l7.62,63c.47,3.9.57,3.54-1.44,6.88l-4.74,7.86c-.76,1.27-1.59,2.49-1.71,2.71-4.62,8.43-8.29,17.53-12.4,26.21L62.54,472.44a.76.76,0,0,0,.85,1.1l.73-.11-.85-1.11L50.42,493.11c-.85,1.38-1.64,2.85-2.58,4.17s.61.46-.9.35c-4.72-.36-9.45-1.2-14.14-1.8a14.78,14.78,0,0,0-2.46-.31c-1,.06-.63-.6-.06.63a2.66,2.66,0,0,1-.09-.75c-.12-1.39-.33-2.79-.5-4.18l-2.15-18.13-14-118-2.25-18.95c-.19-1.67-.34-3.35-.59-5-.18-1.19-.08-1.11-.16-1,.8-1.5,2.87-2.94,4-4.14l7.73-7.93,21.86-22.42,19.62-20.12c1.83-1.88,3.8-3.7,5.53-5.68.34-.39,1.66-1.57,1.13-1.31,1.4-.68,4.52-.44,6.3-.46,5,0,9.92.14,14.87.28,40.67,1.12,81.29,1.34,121.92-1.17,61-3.78,121.9-12.84,180.72-29.66A609.41,609.41,0,0,0,489,202q11.58-5.52,22.87-11.6,5.67-3.06,11.27-6.27c1.59-.91,2.63-2.31,4.06-2,1.73.36,4.09,2.71,5.53,3.67L543,192.58l48,31.84c1.3.86,3.52,1.79,4.53,3-.25-.3-.06-.05.11,1,.66,4.13,1.54,8.24,2.31,12.35L619.38,355.3l8.11,43.31a22.66,22.66,0,0,0,.8,4.27,2.09,2.09,0,0,1,.15.79s.81-.93.29-.82c-.7.15-1.42.23-2.13.35L612,405.58a14.55,14.55,0,0,1-2,.32c-1,0-.41.07-.1.23-1-.49-1.94-2-2.67-2.79l-16.46-17.19-.33,1.25,1.27-.2c.62-.1.64-.87.33-1.26l-38.35-49.05a.75.75,0,0,0-.73-.19c-.34.05-.07.1-1.09-.8s-2.07-2-3.1-3c-2.46-2.38-5.13-4.66-7.43-7.19-1.26-1.4-1.57-4.64-2.13-7.41L531,277.21c-.75-3.73-2.4-8.12-2.41-11.95,0,0-.89.53.49,0a32.17,32.17,0,0,0,4.32-2.42l35-19.57,28.09-15.73-.76-1.29c-46.93,30.8-98.47,54-152,70.81-50.78,16-103.23,26.41-156.06,32.63a1115,1115,0,0,1-137,7.34q-49.9-.29-99.68-4.54c-9.69-.81-19.38-1.75-29.07-2.69-2.76-.26-5.53-.55-8.3-.75-.85-.06-3.06-.57-3.87-.07-.37.24-.78.29-.77.86a.75.75,0,0,0,1.5,0c0,.95-.81.44.43.57.72.07,1.47.06,2.19.1,2.64.17,5.27.45,7.9.7,9.24.89,18.48,1.8,27.73,2.59q48.17,4.13,96.56,4.69a1126.59,1126.59,0,0,0,133.71-6.33C329.89,326.64,380.4,317.31,429.5,303c52-15.19,102.53-36.09,149-64.09q9.09-5.48,18-11.31a.75.75,0,0,0-.76-1.29l-68.27,38.22a.77.77,0,0,0-.34.85l5.39,26.7,4.11,20.4c.79,3.88,1.11,8.36,2.45,12.1,1,2.91,4.12,4.92,6.34,7.07,1.88,1.82,3.74,4.29,5.91,5.73.34.22,2.34,1.39,1.48.68,2.38,2,4.27,5.45,6.17,7.89l11.73,15L591.06,387l.33-1.25-1.27.21a.76.76,0,0,0-.33,1.25l8.24,8.6,6.29,6.57c1.25,1.31,2.65,3.41,4.19,4.38,2,1.25,4.39.19,6.76-.2l14.11-2.31a.76.76,0,0,0,.52-.92L609.61,295.06l-11.12-59.3c-.46-2.43-.39-7.3-1.89-9.38-.79-1.08-3-2-4-2.69l-11-7.32-54.15-35.92a.74.74,0,0,0-.76,0c-70.95,41.39-151,64.8-231.9,76.84-60.12,8.95-121,11.48-181.69,10.16-13.26-.29-26.92-1.7-40.17-.73a9.83,9.83,0,0,0-3.09.53c-.37.16-.41.52-.67.71s.37-.44-.34.33c-5.62,6.21-11.73,12-17.58,18L24.51,313.68,14.3,324.16c-1.33,1.35-4.17,3.3-5,5.07-1,2.26.38,6.49.67,8.89l3.12,26.34,15.3,128.87.34,2.84a.78.78,0,0,0,.75.75L48,499.26a.76.76,0,0,0,.65-.37l16-25.81a.76.76,0,0,0-.85-1.1l-.73.12.85,1.1c8.72-18.44,16.85-37.31,26.21-55.43.59-1.13-.16.26.56-.93l4.28-7.09c1.57-2.6,3.86-5,3.88-8.06,0-4.17-1-8.65-1.54-12.79l-2.48-20.47L90.82,336c-.12-.94-1.62-.95-1.5,0Z"})));
+	}
+	function HomeTwo(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#f4e795', fill: '#fdc500'}, react_4("path", {d: "M133.38,109.29a322.53,322.53,0,0,0,135.85-65c22.89-18.62,49.59-42,77.78-33.35,29.85,9.2,37.59,46.78,43.19,77.51C409.47,194.21,464,293.23,543.09,366.06c18.6,17.13,39.82,35.09,43.75,60.07,6.73,42.75-38.9,73.35-77.88,92.15l-178.27,86c-39.73,19.16-91.13,37-124.15,7.8-12.92-11.44-19.85-28-26.2-44.07A2679.59,2679.59,0,0,1,49.39,132.24c23.93-9.51,67.69-15.18,91.63-24.69"}), react_4("path", {d: "M133.58,110a325.15,325.15,0,0,0,81.88-29.5,321.7,321.7,0,0,0,37.85-23.16c11.9-8.47,22.84-18.14,34.48-26.95,11.37-8.61,24-17,38.22-19.74a42.3,42.3,0,0,1,37.32,10.76c17.19,16.41,21.68,43,25.8,65.29a508.68,508.68,0,0,0,56,156.11c27.29,48.8,62.52,91.7,103.63,129.46,19.37,17.8,40.73,39.07,37.69,67.72-2.71,25.62-23.92,44.91-44.05,58.5-24.49,16.54-52.32,28-78.85,40.84l-93.63,45.17c-27.38,13.2-54.59,28.22-83.93,36.65-25.24,7.25-54.89,9.74-76.68-7.73-11.36-9.11-18.38-22.11-24-35.27-6.48-15.09-12.19-30.56-18-45.91Q149.7,485.92,133.84,439,102,344.6,77.17,248,64.84,200,54.3,151.61q-1.23-5.58-2.41-11.18c-.37-1.74-1.8-4.88-1.39-6.53.46-1.8,1.13-1.74,2.94-2.38,5.41-1.91,11-3.47,16.51-4.91,12.61-3.28,25.38-5.91,38.07-8.86,11.19-2.6,22.47-5.29,33.19-9.48.89-.35.51-1.8-.39-1.45C111.26,118.36,78.74,120,49.19,131.51a.77.77,0,0,0-.52.93Q68.47,226.64,95,319.26t59.57,183q8.35,22.83,17.11,45.5c5.19,13.41,10.05,27.13,16.45,40,10.87,21.89,28.61,37.27,53.45,40s50.13-5.63,72.73-15.22c28.62-12.14,56.34-26.71,84.33-40.21l90.94-43.86c23.33-11.25,47-22.12,67.14-38.74,16.11-13.3,30.6-31.22,31.54-53,1.07-24.88-15.71-44.26-32.71-60.29-19.91-18.79-39.5-37.41-57-58.52a502.29,502.29,0,0,1-47.62-68.17A501,501,0,0,1,392.44,96.21c-4.36-21.88-7.19-45.29-19.14-64.65C361.72,12.8,341.1,4.07,319.69,10.71c-26.2,8.12-46,30.38-67.84,45.84a322.55,322.55,0,0,1-77.63,40.36,324.15,324.15,0,0,1-41,11.65c-.94.21-.54,1.65.4,1.45Z"})));
+	}
+	function HomeThree(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#7f7869', fill: '#c69c6d'}, react_4("polygon", {points: "189.48 42.53 265.26 9.5 308.01 359.26 446.95 587.58 389.63 625.48 245.83 394.24 189.48 42.53"}), react_4("path", {d: "M189.86,43.18l75.78-33-1.12-.65,12.91,105.7,22.15,181.21,6.77,55.38c.3,2.44.18,5.52,1,7.85,1.11,3.12,3.78,6.23,5.49,9L397.6,507.92l39.49,64.91,5.52,9.07c.89,1.46,1.84,4,3.12,5.13a3.1,3.1,0,0,1,.55.89c-.42-1.21.6-.92-1.2,0-4.49,2.29-8.68,5.74-12.88,8.52l-36.88,24.38a44.17,44.17,0,0,0-4.58,3c-1.46,1.26-1.42.26-.51,1.19a18.2,18.2,0,0,1-1.89-3l-29.7-47.77L265,423.7l-14-22.55c-1.27-2-3.9-5.57-4.48-7.24-1-3-1.09-6.78-1.59-9.89l-3.76-23.46L214.05,191.17,191.43,50l-1.22-7.67c-.16-.95-1.6-.54-1.45.4l15.55,97.08L232.2,313.87l10,62.25,2.51,15.63a10.22,10.22,0,0,0,1.32,4.17c7.73,13.57,16.55,26.62,24.79,39.88l45,72.32,71.91,115.62,1.31,2.11a.75.75,0,0,0,1,.27l57.33-37.89a.76.76,0,0,0,.27-1L387.72,488.8,312.17,364.65c-1-1.61-2-3.19-2.94-4.83-.47-.85-.49-.78-.49-.79-.91-3.06-.84-6.8-1.22-9.95L301,295.62,280.13,125c-4.63-37.89-8.78-75.87-13.9-113.7-.08-.58-.14-1.17-.21-1.76a.77.77,0,0,0-1.13-.65l-75.79,33C188.22,42.27,189,43.56,189.86,43.18Z"})));
+	}
+	function HomeFour(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#005890', fill: '#0071bc'}, react_4("polygon", {points: "203.47 10.13 109.79 521.2 185.7 588.37 367.86 615.1 550.25 171.24 513.52 88.33 203.47 10.13"}), react_4("path", {d: "M202.74,9.94,196.87,42,182,123.23,162,232.14,140.84,347.68l-18.27,99.64L111.08,510c-.54,2.94-2.47,7.8-2,10.8.24,1.45,1.62,2.2,2.77,3.21l14.48,12.82,41.73,36.93,14.49,12.82c1.28,1.13,2.16,2.1,3.7,2.6,3,1,6.68,1,9.78,1.44l18.47,2.71,53.2,7.81L362.09,615l5.57.81a.79.79,0,0,0,.93-.52l15.91-38.73,39.14-95.25,48.83-118.84,45.46-110.64,28.91-70.36c1.09-2.65,4.19-7.28,4.16-10.25,0-.91-.9-2.17-1.25-3L546.1,160l-11.76-26.56L521.9,105.41,517.16,94.7c-.82-1.85-1.46-4.27-2.63-5.93-2-2.89-8.78-3.17-12.09-4L410.13,61.48,286.65,30.34l-79-19.93-4-1a.75.75,0,0,0-.4,1.45l51.38,13L366,51.91,473.63,79.05l31.86,8a67,67,0,0,1,7,1.77c.67.25.9.43.41-.09.77.82,1.18,2.66,1.62,3.67l21.1,47.63L546,163.51c1,2.18,1.84,4.45,2.92,6.59.41.82.47,1.83.56,1-.41,3.47-3.17,7.71-4.48,10.9L533.94,209l-36.5,88.83L451.5,409.6,407.17,517.47l-31.52,76.71-7.46,18.17a13.54,13.54,0,0,1-1.05,2.55c.8-1.16.94-.31-.73-.76a38.53,38.53,0,0,0-4.68-.69l-101-14.82-52.94-7.76-16.37-2.41c-1.46-.21-2.95-.36-4.4-.64-.45-.09-1.47-.33-.92-.06-3.48-1.72-6.88-6.08-9.76-8.63l-20-17.68L116,525.65a39.29,39.29,0,0,0-4.7-4.16c-.85-.53-.86-1.18-.71-.2-.15-.93.44-2.41.6-3.32l3.56-19.4,14.48-79,20.55-112.09,22.18-121L191,82.24l11.6-63.3,1.58-8.61C204.36,9.39,202.92,9,202.74,9.94Z"})));
+	}
+	function HomeFive(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#fff', fill: '#bcb19a'}, react_4("path", {d: "M420.58,6.93c11.78,133.47,3.93,186.46-15.7,274.78L609,340.59,157.58,631.07,83,199.28c96.82,1.86,308.1-120.6,337.58-192.35"}), react_4("path", {d: "M419.83,6.93c3.68,41.9,6.4,84,5.3,126.08a625.54,625.54,0,0,1-9.85,94.29c-3.26,18.16-7.12,36.2-11.12,54.21a.76.76,0,0,0,.52.92l69,19.91,109.94,31.71,25.17,7.26-.18-1.37-56.9,36.62L420.56,461,274.49,555,172.67,620.47l-11.4,7.33a15.58,15.58,0,0,0-3.08,2c-1.61,1.87.11-1.06.11,1.08a37.85,37.85,0,0,0-1-6l-2.8-16.22L131,472.9,101.59,302.52,84.19,201.77c-.09-.49-.63-2-.43-2.5-.28.67,1.19.78,2.45.77,3.07,0,6.15-.16,9.22-.4,14.24-1.07,28.33-4,42.11-7.65,34.2-9.12,67.15-23,98.81-38.7a731.06,731.06,0,0,0,98-58.16c25.28-17.89,50.39-37.63,70.2-61.64,6.63-8,12.71-16.7,16.74-26.36.37-.89-1.08-1.28-1.45-.4-7.66,18.37-22.39,33.68-36.65,47.13-19.62,18.51-41.38,34.75-63.78,49.73-49.32,33-103.14,61.31-159.52,80.09-24.61,8.2-50.77,15.26-76.91,14.85a.76.76,0,0,0-.72.95l7.42,43,17.82,103.18L129,470l18.71,108.32,6.11,35.39,1.91,11c.29,1.7.25,4.23,1,5.8a3.18,3.18,0,0,1,.13.76.75.75,0,0,0,1.1.44l45-28.94,108-69.48,130.15-83.75,112.56-72.43,37.35-24,11.5-7.4c1.92-1.24,4.5-2.38,6.16-4a4.65,4.65,0,0,1,.74-.47.76.76,0,0,0-.18-1.37l-49.26-14.21-94-27.11-39.24-11.32-13.25-3.82c-2.14-.62-5.44-.93-7.34-2.12-1-.65-.52,0-.66-.49-.25-.89,1.65-5.86,2-7.27q.9-4.09,1.78-8.19c2.19-10.19,4.29-20.41,6.22-30.66,3.61-19.19,6.56-38.5,8.48-57.94,4.81-48.55,3-97.47-.64-146q-.9-11.89-2-23.77c-.08-.95-1.58-1-1.5,0Z"})));
+	}
+	function HomeSix(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#006837', fill: '#7cb593'}, react_4("polygon", {points: "163.88 145.14 622.59 313.58 476.43 533.36 15 350.49 163.88 145.14"}), react_4("path", {d: "M163.68,145.87l27.89,10.24,71.27,26.17,96.05,35.26,102.22,37.54,89.43,32.84,58.94,21.64,7.72,2.83c1.13.42,3.12,1.63,4.33,1.59,1.4,0,.44-.58.14-.37-1.34.94-2.52,3.79-3.41,5.13l-42,63.22-59.3,89.17-39,58.6c-.57.85-1.3,2.65-2.16,3.25,1.16-.82.26-.49-1-1.07-4.48-2.1-9.28-3.68-13.88-5.51l-60.42-23.94-89.86-35.61L209.36,426.71l-94.88-37.6-70.65-28c-9.53-3.78-19-7.8-28.61-11.34,1.85.68-.45,1.24.83.54.55-.3,1.15-1.58,1.51-2.08l5.93-8.18,21.26-29.33,61.34-84.61,50.6-69.78,7.84-10.82c.56-.78-.74-1.53-1.3-.76l-50.5,69.66L32.87,324.57,14.35,350.12c-.31.43.05.94.45,1.1l45.93,18.2L171,413.12,303.94,465.8l115.69,45.85,37.83,15,11.85,4.7c1.85.73,4.14,2.14,6.13,2.43a3.33,3.33,0,0,1,.79.31.76.76,0,0,0,.85-.34l49.65-74.66,78.45-118L623.24,314a.76.76,0,0,0-.45-1.1l-45.56-16.73L467.79,255.94,335.34,207.3,220.75,165.23l-38-14L171.05,147c-1.88-.69-4.15-2-6.15-2.26a4.73,4.73,0,0,1-.82-.3C163.17,144.09,162.78,145.53,163.68,145.87Z"})));
+	}
+	function HomeSeven(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#927fba', fill: '#bacfed'}, react_4("polygon", {points: "156.19 121.99 195.26 197.64 582.74 352.41 543.68 276.76 156.19 121.99"}), react_4("path", {d: "M155.54,122.37,179.62,169l13.1,25.38c1,1.94,1.4,3.33,3.18,4.33,6.49,3.65,14.45,5.77,21.34,8.53L261.63,225l126.24,50.43,127.38,50.88,44.65,17.83,14.2,5.67c2.34.94,5,2.51,7.5,3a5.4,5.4,0,0,1,.94.37c.66.27,1.12-.58.85-1.1l-24.07-46.62L546.21,280c-1-1.93-1.4-3.33-3.18-4.33-6.48-3.65-14.44-5.77-21.34-8.52l-44.38-17.73L351.06,199,223.68,148.15,179,130.31l-14.2-5.67c-2.33-.93-5-2.54-7.51-3a5,5,0,0,1-.94-.37c-.9-.36-1.29,1.09-.4,1.44l54.07,21.6,122.05,48.75L462,244.92l77.42,30.92c1.16.47,3.12.83,4.1,1.64-.81-.67-.17.2,0,.62.55,1,1.07,2.07,1.61,3.1l5.62,10.89L580,348.72l2.1,4.07.84-1.1-54.06-21.6L406.82,281.34,277,229.48l-77.41-30.92c-1.17-.46-3.12-.83-4.11-1.64.82.67.17-.2-.05-.62-.55-1-1.07-2.07-1.61-3.1l-5.62-10.88-29.24-56.64-2.1-4.07C156.39,120.75,155.1,121.51,155.54,122.37Z"}), react_4("polygon", {points: "624.11 248.82 543.67 276.74 156.19 121.97 255.18 101.46 624.11 248.82"}), react_4("path", {d: "M623.91,248.1l-49.57,17.2-26.76,9.29c-1,.34-2,.74-3,1-.33.1-1.58.33-.75.39a5.12,5.12,0,0,1-1.15-.46c-7.51-2.5-14.84-5.92-22.19-8.86l-44.66-17.84L349.2,198.26,223,147.84,178.8,130.2l-14-5.58c-2-.79-5.34-3-7.5-3a3.44,3.44,0,0,1-.94-.38v1.45L203,113.05l33.53-7,12.27-2.54c1.91-.4,4.21-1.28,6.17-1.28.86,0-.45-.12.57.11a17.44,17.44,0,0,1,2.47,1l10.33,4.12L307.15,123,428.77,171.6l126.71,50.61,45.25,18.08,14.49,5.78c2.44,1,5.12,2.52,7.7,3.08a7.53,7.53,0,0,1,1,.39c.9.36,1.29-1.09.4-1.44l-55.92-22.34L444.48,176.27,318.69,126l-43.62-17.42-13.17-5.27c-1.9-.75-4.16-2.13-6.19-2.47-2.26-.37-5.12.78-7.36,1.24L219.94,108l-60.12,12.45-3.83.8c-.8.16-.62,1.2,0,1.45l54.73,21.86L333,193.41l130.45,52.11L539.78,276c1.09.43,2.68,1.46,3.89,1.5s3.12-1,4.31-1.45l11.4-4L620,251l4.33-1.5C625.21,249.23,624.82,247.78,623.91,248.1Z"}), react_4("polygon", {points: "582.15 353.91 499.32 380.87 96.25 219.88 198.39 200.63 582.15 353.91"}), react_4("path", {d: "M582,353.19,530.2,370l-27.68,9c-2.69.88-2.46,1.41-4.47.52-23.1-10.15-47-18.77-70.42-28.12l-131.5-52.53L165.44,246.72l-45.81-18.3-14.48-5.79c-2.14-.85-5.37-2.93-7.69-3.07a3.94,3.94,0,0,1-1-.4v1.45l49.1-9.26,34.81-6.56,12-2.26c1.83-.34,4.13-1.2,6-1.13.15,0-.32,0,.56.24a24.78,24.78,0,0,1,2.63,1l11,4.39,40.84,16.32,126.51,50.53,131.36,52.46,46.95,18.75,14.8,5.92c2.55,1,5.26,2.52,7.93,3.16a9.42,9.42,0,0,1,1.06.43c.89.35,1.28-1.1.39-1.45l-57.88-23.12L396,278.77l-131.1-52.36-45.13-18-14-5.59c-2.11-.84-4.52-2.27-6.76-2.7s-4.89.58-7.12,1l-28.85,5.43-62.85,11.85-4.18.79c-.81.15-.61,1.2,0,1.45l56.5,22.56,127,50.72,135.32,54.05,80.12,32c1.18.47,2.87,1.56,4.15,1.66s2.87-.8,4-1.18l11.34-3.69,63.16-20.56,4.72-1.53C583.27,354.34,582.88,352.89,582,353.19Z"}), react_4("polygon", {points: "540.44 459.03 498.99 382.42 96 221.47 137.46 298.07 540.44 459.03"}), react_4("path", {d: "M541.09,458.65,515,410.37l-13.62-25.18c-1.06-1.95-1.4-3-3.22-3.91-7.11-3.67-15.22-6.08-22.64-9L429.3,353.79,297.23,301l-131.5-52.53-46.06-18.39-14.74-5.89c-2.45-1-5.14-2.53-7.72-3.08a7.36,7.36,0,0,1-1-.41c-.65-.26-1.13.58-.85,1.1l26.13,48.29,13.63,25.17c1,2,1.39,3,3.21,3.92,7.12,3.66,15.22,6.08,22.64,9l46.19,18.45,132.06,52.75L470.72,432l46,18.4,14.75,5.89c2.44,1,5.13,2.53,7.71,3.08a6.24,6.24,0,0,1,1,.4c.9.36,1.29-1.09.4-1.44l-56.31-22.5L358.16,385.42,223.3,331.56l-81.05-32.38c-1.3-.51-3.46-.93-4.57-1.82.71.57.35.09.08-.3-.6-.9-1-1.95-1.57-2.9l-5.76-10.64L99,225.45l-2.36-4.36-.85,1.1,56.32,22.49,126.16,50.4,134.86,53.86,81.05,32.37c1.3.52,3.47.93,4.57,1.83-.71-.58-.34-.1-.08.3a31.14,31.14,0,0,1,1.57,2.9L506,397,537.43,455l2.36,4.37C540.25,460.26,541.55,459.5,541.09,458.65Z"}), react_4("polygon", {points: "54.64 325.06 137.46 298.09 540.45 459.05 438.32 478.31 54.64 325.06"}), react_4("path", {d: "M54.83,325.78l51.75-16.85L134.05,300c2.77-.9,2.65-1.48,4.68-.59,23,10.12,46.88,18.72,70.24,28.06L340.61,380l130.83,52.25L517,450.49l14.51,5.8c2.15.86,5.38,2.94,7.72,3.08a4.71,4.71,0,0,1,1,.4v-1.44l-49.1,9.26-34.8,6.56-12,2.26c-1.83.34-4.12,1.2-6,1.13-.15,0,.32,0-.56-.24a23.62,23.62,0,0,1-2.63-1.05l-11-4.38-40.83-16.31L256.89,405,125.56,352.58,78.62,333.83l-14.81-5.91c-2.54-1-5.25-2.52-7.92-3.16a9.42,9.42,0,0,1-1.06-.43c-.89-.35-1.28,1.1-.39,1.45l57.87,23.12,128.4,51.28,131.08,52.36,45.11,18,14,5.59c2.11.84,4.52,2.27,6.76,2.7s4.89-.58,7.12-1l28.85-5.44,62.84-11.85,4.18-.79c.8-.15.6-1.2,0-1.44l-56.32-22.5L357.24,385.07l-135.1-54L141.83,299c-1.18-.47-2.88-1.57-4.17-1.66s-2.85.8-4,1.17l-11.72,3.82L59.16,322.8l-4.72,1.53C53.52,324.63,53.91,326.08,54.83,325.78Z"}), react_4("polygon", {points: "478.8 556.22 440.01 480.68 54.37 326.64 93.15 402.18 478.8 556.22"}), react_4("path", {d: "M479.45,555.84l-23.9-46.55-12.91-25.14c-1-1.92-1.43-3.46-3.18-4.49-2.11-1.26-4.86-2-7.14-2.86l-13.93-5.56L374.47,453.7,248.32,403.31l-126.93-50.7L77.31,335l-14.26-5.7c-2.38-.95-5-2.49-7.54-3a7.52,7.52,0,0,1-.95-.38c-.65-.26-1.11.58-.84,1.1l23.9,46.55,12.9,25.14c1,1.92,1.43,3.46,3.18,4.5,2.12,1.25,4.87,1.94,7.15,2.85l13.92,5.56,43.92,17.54,126.16,50.39,126.92,50.7,44.08,17.6,14.26,5.7c2.38,1,5,2.49,7.54,3a7,7,0,0,1,1,.38c.89.36,1.28-1.09.4-1.45L425.05,534,303.33,485.33,174.4,433.83l-77-30.76c-1.12-.45-3.07-.82-4-1.61.89.74.09-.33-.1-.72-.53-1.08-1.1-2.15-1.65-3.22l-5.65-11L57.1,330.33,55,326.27l-.84,1.1,53.94,21.54,121.72,48.62L358.77,449l77,30.76c1.13.45,3.07.82,4,1.61-.88-.74-.09.33.11.72.53,1.08,1.1,2.15,1.64,3.22l5.66,11,28.84,56.19,2.09,4.07C478.59,557.45,479.89,556.7,479.45,555.84Z"})));
+	}
+	function HomeEight(props) {
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.dimension, height: props.dimension, stroke: '#28649e'}, react_4("path", {className: 'stretch-test', d: "M5.9,262.38C26.51,279.21,51.09,283.07,77,282c10.31-.42,20.54-.92,30.2-4.94,9.93-4.13,18.53-10.91,25.93-18.63,16.15-16.84,26.05-38.34,40.93-56.16,16.33-19.56,38.14-29.69,63.47-31.1,52-2.91,101.87,26.35,153.89,15.31,23.28-4.95,43.86-17.61,64-29.68,22.34-13.36,44.94-25.1,70.64-30.48,25.11-5.26,55.72-6.42,75.26,13.16,8.34,8.36,13.7,19.9,12.45,31.86-1.35,13-9.34,24.75-16.05,35.59-12.28,19.87-26.41,39.89-31.17,63.19-4.89,23.88,3,46.76,15,67.24,13.4,22.8,31.8,43,41.09,68.11,8.19,22.1,8.8,50.6-10.09,67.58-15.8,14.2-40.77,16.77-58.63,5-10.08-6.63-17.79-16.21-27.33-23.54a91.65,91.65,0,0,0-29-15.39c-9.51-2.87-19.87-3.74-29.5-.88a46.23,46.23,0,0,0-13.66,7c-5.24,3.74-10.37,7.87-17.13,8-12.64.22-22.75-11.52-28.09-21.76-5.1-9.76-8.3-20.5-14.55-29.65-10.62-15.54-30.35-21.17-47.41-12.59-8.82,4.43-14.69,12.45-17.7,21.72a82.89,82.89,0,0,0-3.16,32.43c1.19,11.26,7.78,22.76,12.5,32.91.82,1.75,3.4.23,2.59-1.51C336,462.76,329,450.19,329.24,436.56c.23-12.52,1.42-26.69,9.65-36.76,6.79-8.33,17.95-12.32,28.52-11.43,12.18,1,21.14,8.47,27.1,18.78,9.89,17.11,14.73,42.72,36.95,48.41,11.08,2.84,18.54-3.82,27.2-9.49,10.15-6.65,22.21-7.84,33.88-5.17,11.43,2.62,22.06,8.33,31.41,15.31,9.62,7.2,17.32,16.65,27.18,23.54,15.63,10.91,36.33,11.4,53.11,2.71,18.86-9.76,27.72-29.86,27-50.54-.9-24.62-13.51-46.06-27-65.9-14.46-21.28-31-42.89-35.26-68.94-4.23-25.61,7.17-49.11,20.1-70.41,6.26-10.31,13-20.34,18.87-30.87,5.57-10,10.27-21,8.8-32.63-2.66-21.28-21.55-36.34-41.43-41C551,116.55,524.05,122,501,130.35s-43.11,22-64.19,34c-22.93,13.08-46.5,22.23-73.3,21.56-28.09-.71-55-9.48-82.51-14.39-22.56-4-46.64-5.87-68.85,1-21.85,6.76-37.21,22.19-49.95,40.57-13.49,19.45-24.88,41.39-44.94,55.08a60.41,60.41,0,0,1-29.9,10.3c-14.1,1.12-28.79,1.56-42.74-1.07A81.88,81.88,0,0,1,8,260.25c-1.49-1.21-3.62.9-2.12,2.13Z"})));
 	}
 
 	var Blinds = (function (_super) {
@@ -20743,7 +20729,7 @@ var a = (function (exports) {
 	                    blindStyle = "wrapper-flip";
 	                    photoWrapperStyle = 'album-wrapper-flip';
 	                }
-	                return (react_4("div", {key: album.id}, react_4(Blind, {style: blindStyle, selected: album.selected, content: album.title, description: album.description, onClick: function (e) { return _this.handleClick(album.id, e); }}), react_4("div", {className: photoWrapperStyle}, react_4(PhotoContainer$1, {album: album, selected: album.selected}))));
+	                return (react_4("div", {key: album.id}, react_4(Blind, {style: blindStyle, selected: album.selected, content: album.title, description: album.description, onClick: function (e) { return _this.handleClick(album.id, e); }}), react_4("div", {className: photoWrapperStyle}, react_4(PhotoContainer, {album: album, selected: album.selected}))));
 	            }
 	        });
 	        return (react_4("div", null, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave}, function (state) {
@@ -20781,16 +20767,20 @@ var a = (function (exports) {
 	    };
 	    return Blind;
 	}(react_2));
-	var PhotoContainer$1 = (function (_super) {
+	var PhotoContainer = (function (_super) {
 	    __extends(PhotoContainer, _super);
 	    function PhotoContainer(props) {
 	        _super.call(this, props);
-	        this.state = { currentImage: 0 };
+	        this.state = {
+	            currentImage: 0,
+	            expand: false
+	        };
 	        this.closeLightbox = this.closeLightbox.bind(this);
 	        this.openLightbox = this.openLightbox.bind(this);
 	        this.gotoNext = this.gotoNext.bind(this);
 	        this.gotoPrevious = this.gotoPrevious.bind(this);
 	        this.gotoSelected = this.gotoSelected.bind(this);
+	        this.expand = this.expand.bind(this);
 	    }
 	    PhotoContainer.prototype.openLightbox = function (event, obj) {
 	        this.setState({
@@ -20802,21 +20792,41 @@ var a = (function (exports) {
 	        this.setState({
 	            currentImage: 0,
 	            lightboxIsOpen: false,
-	        });
+	        }, function () { return console.log('closed'); });
 	    };
 	    PhotoContainer.prototype.gotoPrevious = function () {
-	        this.setState({
-	            currentImage: this.state.currentImage - 1,
-	        });
+	        if (this.state.currentImage - 1 < 0) {
+	            this.setState({
+	                currentImage: this.props.album.photos.length - 1
+	            });
+	        }
+	        else {
+	            this.setState({
+	                currentImage: this.state.currentImage - 1,
+	            });
+	        }
 	    };
 	    PhotoContainer.prototype.gotoNext = function () {
-	        this.setState({
-	            currentImage: this.state.currentImage + 1,
-	        });
+	        if (this.state.currentImage + 1 >= this.props.album.photos.length) {
+	            this.setState({
+	                currentImage: 0
+	            });
+	        }
+	        else {
+	            this.setState({
+	                currentImage: this.state.currentImage + 1,
+	            });
+	        }
 	    };
 	    PhotoContainer.prototype.gotoSelected = function (event, number) {
 	        this.setState({
 	            currentImage: number
+	        });
+	    };
+	    PhotoContainer.prototype.expand = function (event) {
+	        event.preventDefault();
+	        this.setState({
+	            expand: !this.state.expand
 	        });
 	    };
 	    PhotoContainer.prototype.render = function () {
@@ -20848,14 +20858,14 @@ var a = (function (exports) {
 	        if (this.props.album.length !== 0 && this.props.selected) {
 	            items = this.props.album.photos.map(function (photo, index) {
 	                if (index < 1) {
-	                    return react_4("div", {className: 'photo-container-medium', key: photo.id}, react_4("img", {onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg"}));
+	                    return react_4("div", {className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand}, react_4("img", {onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg"}), react_4("div", {className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed'}));
 	                }
 	            });
 	        }
 	        return (react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
 	            return react_4("div", {style: transitionStyles[state]}, items, _this.props.selected
 	                ?
-	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", null, _this.props.album.date), react_4(Lightbox, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
+	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", {className: 'small-text'}, _this.props.album.date), react_4(Lightbox, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
 	                :
 	                    null);
 	        }));
@@ -20888,12 +20898,12 @@ var a = (function (exports) {
 	    };
 	    Lightbox.prototype.showX = function () {
 	        this.setState({
-	            xStyle: 'x-icon-hover'
+	            xStyle: 'x-icon-hover bold-stroke'
 	        });
 	    };
 	    Lightbox.prototype.hideX = function () {
 	        this.setState({
-	            xStyle: 'x-icon'
+	            xStyle: 'x-icon-hover'
 	        });
 	    };
 	    Lightbox.prototype.render = function () {
@@ -20905,7 +20915,7 @@ var a = (function (exports) {
 	                        ?
 	                            'svg-icon lightbox-icon-show'
 	                        :
-	                            'svg-icon lightbox-icon'}), react_4(X, {styles: this.state.xStyle})), react_4("div", {className: 'lightbox-photo-wrapper', onClick: this.props.onClose}, react_4("img", {className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX})), react_4(DotBox, {photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage}))
+	                            'svg-icon lightbox-icon'})), react_4("div", {className: 'lightbox-left-paddle', onClick: this.props.gotoPrevious}, react_4("div", {className: 'left-triangle'})), react_4("div", {className: 'lightbox-photo-wrapper', onClick: this.props.onClose}, react_4("img", {className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX})), react_4("div", {className: 'lightbox-right-paddle', onClick: this.props.gotoNext}, react_4("div", {className: 'right-triangle'})), react_4(X, {styles: this.state.xStyle, onClick: this.props.onClose, onMouseOver: this.showX, onMouseLeave: this.hideX}), react_4(DotBox, {photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage}))
 	                :
 	                    null;
 	        }
@@ -20924,19 +20934,464 @@ var a = (function (exports) {
 	                null}));
 	    })));
 	}
-	var mapStateToProps$1 = function (state) {
+	var mapStateToProps = function (state) {
 	    return {
 	        blinds: state.all.blinds,
 	        albums: state.all.albums
 	    };
 	};
-	var mapDispatchToProps$1 = function (dispatch) {
+	var mapDispatchToProps = function (dispatch) {
 	    return {
 	        toggleBlinds: function (id, isOpen) { return dispatch(toggleBlinds(id, isOpen)); },
 	        getPhotos: function () { return dispatch(fetchPhotos()); }
 	    };
 	};
-	var BlindsAction = connect(mapStateToProps$1, mapDispatchToProps$1)(Blinds);
+	var BlindsAction = connect(mapStateToProps, mapDispatchToProps)(Blinds);
+
+	var Dial = (function (_super) {
+	    __extends(Dial, _super);
+	    function Dial(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            position: 0,
+	            items: [
+	                {
+	                    position: 0,
+	                    selected: false,
+	                    title: 'moving',
+	                    class: 'di1 item'
+	                },
+	                {
+	                    position: 1,
+	                    selected: false,
+	                    title: 'photos',
+	                    class: 'di2 item'
+	                },
+	                {
+	                    position: 2,
+	                    selected: false,
+	                    title: 'whatever',
+	                    class: 'di3 item'
+	                },
+	                {
+	                    position: 3,
+	                    selected: false,
+	                    title: 'asdf',
+	                    class: 'di4 item'
+	                },
+	                {
+	                    position: 4,
+	                    selected: false,
+	                    title: 'ldsfga;',
+	                    class: 'di5 item'
+	                },
+	                {
+	                    position: 5,
+	                    selected: false,
+	                    title: '^_^',
+	                    class: 'di6 item'
+	                },
+	                {
+	                    position: 6,
+	                    selected: false,
+	                    title: '-_-',
+	                    class: 'di7 item'
+	                },
+	                {
+	                    position: 7,
+	                    selected: false,
+	                    title: '0.o',
+	                    class: 'di8 item'
+	                }
+	            ],
+	            rotation: 0,
+	            scrollStatus: ''
+	        };
+	        this.incriment = 360 / this.state.items.length;
+	        this.nextPosition = this.nextPosition.bind(this);
+	        this.prevPosition = this.prevPosition.bind(this);
+	        this.handleScroll = this.handleScroll.bind(this);
+	        this._timeout = null;
+	    }
+	    Dial.prototype.componentDidMount = function () {
+	        window.addEventListener('wheel', this.handleScroll);
+	        this.setRotation();
+	    };
+	    Dial.prototype.componentWillUnmount = function () {
+	        window.removeEventListener('wheel', this.handleScroll);
+	    };
+	    Dial.prototype.handleScroll = function (event) {
+	        var _this = this;
+	        if (this._timeout) {
+	            clearTimeout(this._timeout);
+	        }
+	        this._timeout = setTimeout(function () {
+	            _this._timeout = null;
+	            _this.setState({
+	                scrollStatus: 'scroll stopped'
+	            }, function () {
+	                var rotation = _this.state.rotation;
+	                // let rounds = Math.floor(rotation/360)
+	                // let absRotation = rotation - (rounds*360)
+	                var position = Math.round(8 * (rotation / 360));
+	                _this.setPosition(position);
+	            });
+	        }, 500);
+	        if (this.state.scrollStatus !== 'scrolling') {
+	            this.setState({
+	                scrollStatus: 'scrolling'
+	            });
+	        }
+	        if (event.deltaY > 0) {
+	            this.scrollPos();
+	        }
+	        else {
+	            this.scrollNeg();
+	        }
+	    };
+	    Dial.prototype.scrollPos = function () {
+	        this.setState({
+	            rotation: this.state.rotation + 1
+	        });
+	    };
+	    Dial.prototype.scrollNeg = function () {
+	        this.setState({
+	            rotation: this.state.rotation - 1
+	        });
+	    };
+	    Dial.prototype.setPosition = function (position) {
+	        var _this = this;
+	        this.setState({
+	            position: position
+	        }, function () { return _this.setRotation(); });
+	    };
+	    Dial.prototype.nextPosition = function () {
+	        var _this = this;
+	        this.setState({
+	            position: this.state.position + 1
+	        }, function () { return _this.setRotation(); });
+	    };
+	    Dial.prototype.prevPosition = function () {
+	        var _this = this;
+	        this.setState({
+	            position: this.state.position - 1
+	        }, function () { return _this.setRotation(); });
+	    };
+	    Dial.prototype.setRotation = function () {
+	        var _this = this;
+	        this.setState({
+	            rotation: this.state.position * this.incriment
+	        }, function () {
+	            var updatedItems = [];
+	            var position = _this.state.position;
+	            for (var i = 0; i < _this.state.items.length; i++) {
+	                _this.state.items[i].selected = false;
+	                if (position >= 0) {
+	                    // console.log('raw', position)
+	                    if (position === 0) {
+	                        _this.state.items[0].selected = true;
+	                    }
+	                    else if (_this.state.items[i].position !== Math.abs(position - 8)) {
+	                        _this.state.items[i].selected = false;
+	                    }
+	                    else if (_this.state.items[i].position === Math.abs(position - 8)) {
+	                        //  console.log('s', Math.abs(position - 8), 'p', this.state.items[i].position)
+	                        _this.state.items[i].selected = true;
+	                    }
+	                }
+	                else {
+	                    {
+	                        // console.log('war', position)
+	                        if (position === 0) {
+	                            _this.state.items[0].selected = true;
+	                        }
+	                        else if (_this.state.items[i].position !== Math.abs(position)) {
+	                            _this.state.items[i].selected = false;
+	                        }
+	                        else if (_this.state.items[i].position === Math.abs(position)) {
+	                            //  console.log('s', Math.abs(position), 'p', this.state.items[i].position)
+	                            _this.state.items[i].selected = true;
+	                        }
+	                    }
+	                }
+	                updatedItems.push(_this.state.items[i]);
+	            }
+	            _this.setState({
+	                items: updatedItems
+	            });
+	        });
+	    };
+	    Dial.prototype.render = function () {
+	        var style = {
+	            transform: "rotate(" + this.state.rotation + "deg)"
+	        };
+	        var opStyle = {
+	            transform: "rotate(-" + this.state.rotation + "deg)"
+	        };
+	        if (this.state.rotation < 0) {
+	            opStyle = {
+	                transform: "rotate(" + Math.abs(this.state.rotation) + "deg)"
+	            };
+	        }
+	        console.log(this.state.items);
+	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'selected-repository'}, react_4(PhotoIcon, {styles: 'r-menu-icons selected'}), react_4("p", {className: 'r-menu-titles'}, "moving")), react_4("div", {className: 'dial', style: style}, this.state.items.map(function (item, index) {
+	            return (react_4("div", {className: item.class, style: opStyle, key: index}, react_4(PhotoIcon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'}), react_4("p", null, index), react_4("p", null, item.position)));
+	        }), react_4("div", {className: 'showDial'})), react_4("div", null, react_4("button", {onClick: this.prevPosition}, "prev"), react_4("button", {onClick: this.nextPosition}, "next"))));
+	    };
+	    return Dial;
+	}(react_2));
+
+	var HamburgerMenu = (function (_super) {
+	    __extends(HamburgerMenu, _super);
+	    function HamburgerMenu(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            isClosed: true,
+	            risClosed: true
+	        };
+	        this.openMenu = this.openMenu.bind(this);
+	        this.rightOpenMenu = this.rightOpenMenu.bind(this);
+	        this.scrollLock = this.scrollLock.bind(this);
+	    }
+	    HamburgerMenu.prototype.openMenu = function (e) {
+	        var _this = this;
+	        e.preventDefault();
+	        this.setState({
+	            isClosed: !this.state.isClosed
+	        }, function () {
+	            if (_this.state.isClosed) {
+	                _this.setState({
+	                    risClosed: true
+	                });
+	                _this.scrollUnlock();
+	            }
+	            else {
+	                _this.scrollLock();
+	            }
+	        });
+	    };
+	    HamburgerMenu.prototype.rightOpenMenu = function (e) {
+	        e.preventDefault();
+	        this.setState({
+	            risClosed: !this.state.risClosed
+	        });
+	    };
+	    HamburgerMenu.prototype.scrollLock = function () {
+	        document.body.classList.add('scroll-lock');
+	    };
+	    HamburgerMenu.prototype.scrollUnlock = function () {
+	        document.body.classList.remove('scroll-lock');
+	    };
+	    HamburgerMenu.prototype.render = function () {
+	        return (react_4("div", null, react_4("div", {className: this.state.isClosed ? null : "curtain", onClick: this.openMenu}), react_4(Hamburger, {openMenu: this.openMenu, class: this.state.isClosed
+	            ?
+	                "menu-svg"
+	            :
+	                "menu-svg open"}), react_4("div", {className: this.state.isClosed
+	            ?
+	                'left-menu-wrapper'
+	            :
+	                'left-menu-wrapper menu-open'}, react_4("div", {className: 'menu-icons-wrapper'}, react_4(Home, {class: "menu-icons current-menu-icon"}), react_4(Repository, {class: "menu-icons", onClick: this.rightOpenMenu}), react_4(About, {class: "menu-icons"}), react_4(CurrentWork, {class: "menu-icons skinny-stroke"}))), react_4("div", {className: this.state.risClosed
+	            ?
+	                'right-menu-wrapper'
+	            :
+	                'right-menu-wrapper menu-open'}, react_4(Dial, null))));
+	    };
+	    return HamburgerMenu;
+	}(react_2));
+
+	//
+	var randomDimension = function () { return Math.random() * 300 + 500; };
+	var Shapely = (function (_super) {
+	    __extends(Shapely, _super);
+	    function Shapely(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            x: 0,
+	            y: 0
+	        };
+	        this.rawShapes = [
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeTwo
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeThree
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeFour
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeFive
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeSix
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeOne
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeEight
+	            },
+	            {
+	                top: Math.random() * 100,
+	                left: Math.random() * 100,
+	                speed: Math.random(),
+	                dimension: randomDimension(),
+	                color: '#' + Math.random().toString(16).slice(-6),
+	                shape: HomeSeven
+	            } ];
+	    }
+	    Shapely.prototype._onMouseMove = function (e) {
+	        var clientW = document.getElementById("root").clientWidth;
+	        var clientH = document.getElementById("root").offsetHeight;
+	        var width = (((clientW + e.clientX) / clientW) - 1) * 100;
+	        var height = (((clientH + e.clientY) / clientH) - 1) * 100;
+	        this.setState({
+	            x: width,
+	            y: height
+	        });
+	    };
+	    Shapely.prototype.distance = function (circle) {
+	        var clientH = document.getElementById("root").offsetHeight;
+	        var height = (((clientH + circle.dimension) / clientH) - 1) * 100;
+	        var clientW = document.getElementById("root").clientWidth;
+	        var width = (((clientW + circle.dimension) / clientW) - 1) * 100;
+	        var magY = (circle.top + (height / 2) - this.state.y);
+	        var magX = (circle.left + (width / 2) - this.state.x);
+	        return {
+	            mag: Math.sqrt(Math.pow(Math.abs(magY), 2) + Math.pow(magX, 2)),
+	            magY: magY,
+	            magX: magX
+	        };
+	    };
+	    Shapely.prototype.render = function () {
+	        var _this = this;
+	        var circles = this.rawShapes.map(function (circle, index) {
+	            var distance = _this.distance(circle);
+	            var top = parseFloat(circle.top) + '%';
+	            var left = parseFloat(circle.left) + '%';
+	            if (distance.mag < 20 && distance.mag !== 0) {
+	                if (distance.magY <= 0) {
+	                    var h = Math.pow((distance.magY + 10), 2) - 98;
+	                    top = parseFloat(circle.top + h / 100) + '%';
+	                }
+	                else {
+	                    var h = Math.pow((distance.magY - 10), 2) - 98;
+	                    top = parseFloat(circle.top - h / 100) + '%';
+	                }
+	                if (distance.magX <= 0) {
+	                    var w = Math.pow((distance.magX + 10), 2) - 99;
+	                    left = parseFloat(circle.left + w / 100) + '%';
+	                }
+	                else {
+	                    var w = Math.pow((distance.magX - 10), 2) - 99;
+	                    left = parseFloat(circle.left - w / 100) + '%';
+	                }
+	            }
+	            return (react_4(Circle, {key: index, name: circle, speed: circle.speed, top: top, left: left, color: circle.color, dimension: circle.dimension, shape: circle.shape}));
+	        });
+	        return (react_4("div", {className: "shapely-wrapper", onMouseMove: this._onMouseMove.bind(this)}, circles));
+	    };
+	    return Shapely;
+	}(react_2));
+	var Circle = (function (_super) {
+	    __extends(Circle, _super);
+	    function Circle(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            speed: this.props.speed || 1,
+	            top: this.props.top || '0%',
+	            left: this.props.left,
+	            right: this.props.right,
+	            position: 'absolute',
+	            zIndex: this.props.index || '0',
+	            backgroundRepeat: 'no-repeat',
+	            backgroundPosition: 'center',
+	            backgroundColor: 'transparent',
+	            backgroundImage: "url(" + this.props.image + ")",
+	            borderRadius: '0',
+	            border: 'transparent',
+	            transition: '200ms',
+	            stroke: 'papayawhip',
+	        };
+	        // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)
+	        this.top = this.getTop();
+	    }
+	    Circle.prototype.throttle = function (fn, wait) {
+	        var time = Date.now();
+	        return function () {
+	            if ((time + wait - Date.now()) < 0) {
+	                fn();
+	                time = Date.now();
+	            }
+	        };
+	    };
+	    // componentDidMount() {
+	    //     window.addEventListener('scroll', this.handleScroll)
+	    // }
+	    // componentWillUnmount() {
+	    //     window.removeEventListener('scroll', this.handleScroll)
+	    // }
+	    Circle.prototype.componentWillReceiveProps = function (props) {
+	        this.setState({
+	            top: props.top,
+	            left: props.left
+	        });
+	    };
+	    Circle.prototype.getTop = function () {
+	        var top = this.props.top;
+	        return top.indexOf('%') > -1 ?
+	            window.innerHeight * (top.replace('%', '') / 100) :
+	            parseInt(top, 10);
+	    };
+	    // handleScroll() {
+	    //     const speed = this.props.speed;
+	    //     const top = this.top;
+	    //     const pageTop = window.scrollY
+	    //     const newTop = (top - (pageTop * speed))
+	    //     this.refs.parallaxElement.style.top = `${newTop}px`
+	    // }
+	    Circle.prototype.render = function () {
+	        var Shape = this.props.shape;
+	        return (react_4(Shape, {styles: 'svg-icon', style: this.state, width: this.props.dimension, height: this.props.dimension}));
+	    };
+	    return Circle;
+	}(react_2));
 
 	var POPULATE = 'POPULATE';
 	function populate(userData) {
@@ -21020,6 +21475,10 @@ var a = (function (exports) {
 	                    active: false
 	                }
 	            });
+	        case SCROLL_LOCK:
+	            return Object.assign({}, state, {
+	                action: action
+	            });
 	        case REQ_TEST:
 	            return Object.assign({}, state, {
 	                isFetching: true
@@ -21049,10 +21508,18 @@ var a = (function (exports) {
 	function blinds() {
 	    reactDom_1(react_4(Provider, {store: store}, react_4(BlindsAction, null)), document.getElementById('blinds'));
 	}
+	function menu() {
+	    reactDom_1(react_4(Provider, {store: store}, react_4(HamburgerMenu, null)), document.getElementById('menu'));
+	}
+	function shapely() {
+	    reactDom_1(react_4(Provider, {store: store}, react_4(Shapely, null)), document.getElementById('root'));
+	}
 
 	exports.store = store;
 	exports.populate = populate;
 	exports.blinds = blinds;
+	exports.menu = menu;
+	exports.shapely = shapely;
 
 	return exports;
 

@@ -111,3 +111,12 @@ export function fetchTestData() {
             })
     }
 }
+
+
+// SCROLL LOCK 
+
+export const SCROLL_LOCK = 'SCROLL_LOCK'
+
+export function lockScroll() {
+    return {scroll: false}
+}

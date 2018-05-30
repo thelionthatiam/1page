@@ -8,9 +8,9 @@ import thunkMiddleware from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { WSAEPFNOSUPPORT } from 'constants';
 // COMPONENTS
-import Photos from './photos'
 import Blinds from './blinds'
-import PhotoGallery from './photo-gallery'
+import HamburgerMenu from './menu'
+import Shapely from './shapely'
 //ACTIONS
 import { POPULATE, populate } from './user-data';
 import { 
@@ -22,6 +22,7 @@ import {
     CLOSE_BLINDS,
     GEN_ERR,
     CLEAR_ERR,
+    SCROLL_LOCK
 } from './actions'
 
 
@@ -99,6 +100,10 @@ function all(state = initialState, action) {
                     active: false
                 }
             })
+        case SCROLL_LOCK:
+            return Object.assign({}, state, {
+                action
+            })
         case REQ_TEST:
             return Object.assign({}, state, {
                 isFetching:true
@@ -130,14 +135,6 @@ let store = createStore(reducer, composeWithDevTools(
     applyMiddleware(thunkMiddleware)
 ))
 
-function photos() {
-  ReactDOM.render(
-    <Provider store = { store }>
-        <Photos/>
-    </Provider>,
-  document.getElementById('root'));
-}
-
 function blinds() {
     ReactDOM.render(
         <Provider store={store}>
@@ -147,15 +144,23 @@ function blinds() {
     )
 }
 
-// function photoGallery() {
-//     ReactDOM.render(
-//         <Provider store = { store }>
-//             <PhotoGallery/>
-//         </Provider>,
-//         document.getElementById('photoGallery')
-//     )
-// }
+function menu() {
+    ReactDOM.render(
+        <Provider store = { store }>
+            <HamburgerMenu />
+        </Provider>,
+        document.getElementById('menu')
+    )
+}
+
+function shapely() {
+    ReactDOM.render(
+        <Provider store={store}>
+            <Shapely />
+        </Provider>,
+        document.getElementById('root')
+    )
+}
 
 
-
-export { store, populate, blinds};
+export { store, populate, blinds, menu, shapely};
