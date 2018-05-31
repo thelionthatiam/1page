@@ -21,7 +21,7 @@ var Dial = /** @class */ (function (_super) {
             items: [
                 {
                     position: 0,
-                    selected: false,
+                    selected: true,
                     title: 'moving',
                     class: 'di1 item'
                 },
@@ -126,6 +126,7 @@ var Dial = /** @class */ (function (_super) {
     };
     Dial.prototype.setPosition = function (position) {
         var _this = this;
+        console.log('sent pos', position);
         this.setState({
             position: position
         }, function () { return _this.setRotation(); });
@@ -152,7 +153,6 @@ var Dial = /** @class */ (function (_super) {
             for (var i = 0; i < _this.state.items.length; i++) {
                 _this.state.items[i].selected = false;
                 if (position >= 0) {
-                    // console.log('raw', position)
                     if (position === 0) {
                         _this.state.items[0].selected = true;
                     }
@@ -160,13 +160,11 @@ var Dial = /** @class */ (function (_super) {
                         _this.state.items[i].selected = false;
                     }
                     else if (_this.state.items[i].position === Math.abs(position - 8)) {
-                        //  console.log('s', Math.abs(position - 8), 'p', this.state.items[i].position)
                         _this.state.items[i].selected = true;
                     }
                 }
                 else {
                     {
-                        // console.log('war', position)
                         if (position === 0) {
                             _this.state.items[0].selected = true;
                         }
@@ -174,7 +172,6 @@ var Dial = /** @class */ (function (_super) {
                             _this.state.items[i].selected = false;
                         }
                         else if (_this.state.items[i].position === Math.abs(position)) {
-                            //  console.log('s', Math.abs(position), 'p', this.state.items[i].position)
                             _this.state.items[i].selected = true;
                         }
                     }
@@ -187,6 +184,7 @@ var Dial = /** @class */ (function (_super) {
         });
     };
     Dial.prototype.render = function () {
+        var _this = this;
         var style = {
             transform: "rotate(" + this.state.rotation + "deg)"
         };
@@ -198,19 +196,25 @@ var Dial = /** @class */ (function (_super) {
                 transform: "rotate(" + Math.abs(this.state.rotation) + "deg)"
             };
         }
-        console.log(this.state.items);
+        var selected = this.state.items.filter(function (item) {
+            // console.log('item', item)
+            return item.selected === true;
+        });
+        // console.log('selected?', selected, typeof selected)
+        var showSelected = (React.createElement("div", { className: 'selected-repository' },
+            React.createElement(icons_1.PhotoIcon, { styles: 'r-menu-icons selected' }),
+            React.createElement("p", { className: 'r-menu-titles' }, selected[0].title)));
         return (React.createElement("div", { className: 'page-wrapper' },
-            React.createElement("div", { className: 'selected-repository' },
-                React.createElement(icons_1.PhotoIcon, { styles: 'r-menu-icons selected' }),
-                React.createElement("p", { className: 'r-menu-titles' }, "moving")),
+            React.createElement("div", { className: 'r-menu-back' },
+                React.createElement(icons_1.LeftArrow, { style: 'r-menu-back-icon' })),
+            showSelected,
             React.createElement("div", { className: 'dial', style: style },
                 this.state.items.map(function (item, index) {
-                    return (React.createElement("div", { className: item.class, style: opStyle, key: index },
-                        React.createElement(icons_1.PhotoIcon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' }),
-                        React.createElement("p", null, index),
-                        React.createElement("p", null, item.position)));
+                    return (React.createElement("div", { className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); } },
+                        React.createElement(icons_1.PhotoIcon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' })));
                 }),
-                React.createElement("div", { className: 'showDial' })),
+                React.createElement("div", { className: 'showDial' },
+                    React.createElement(icons_1.Repository, { class: "menu-icons" }))),
             React.createElement("div", null,
                 React.createElement("button", { onClick: this.prevPosition }, "prev"),
                 React.createElement("button", { onClick: this.nextPosition }, "next"))));

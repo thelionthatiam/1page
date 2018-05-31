@@ -4,7 +4,8 @@ import {
     Repository,
     Home,
     About,
-    CurrentWork
+    CurrentWork,
+    LeftArrow
 
 } from './svg/icons'
 
@@ -37,7 +38,7 @@ export default class Dial extends React.Component {
             items: [
                 {
                     position:0,
-                    selected:false,
+                    selected:true,
                     title:'moving',
                     class: 'di1 item'
                 }, 
@@ -146,6 +147,7 @@ export default class Dial extends React.Component {
     }
 
     setPosition(position) {
+        console.log('sent pos', position)
         this.setState({
             position: position
         }, () => this.setRotation())
@@ -173,28 +175,21 @@ export default class Dial extends React.Component {
             for (let i = 0; i < this.state.items.length; i++) {
                 this.state.items[i].selected = false
                 if (position >= 0) {
-                    
-                        
-                        // console.log('raw', position)
                         if (position === 0) {
                             this.state.items[0].selected = true
                         } else if (this.state.items[i].position !== Math.abs(position - 8)) {
                             this.state.items[i].selected = false
                         } else if (this.state.items[i].position === Math.abs(position - 8)) {
-                        //  console.log('s', Math.abs(position - 8), 'p', this.state.items[i].position)
                             this.state.items[i].selected = true
                         } 
 
                 } else {
                     {
-
-                        // console.log('war', position)
                         if (position === 0) {
                             this.state.items[0].selected = true
                         } else if (this.state.items[i].position !== Math.abs(position)) {
                             this.state.items[i].selected = false
                         } else if (this.state.items[i].position === Math.abs(position)) {
-                        //  console.log('s', Math.abs(position), 'p', this.state.items[i].position)
                             this.state.items[i].selected = true
                         }
                     }
@@ -221,50 +216,38 @@ export default class Dial extends React.Component {
                 transform: `rotate(${Math.abs(this.state.rotation)}deg)`
             }
         }
-
-        console.log(this.state.items)
+        let selected = this.state.items.filter(item => {
+            // console.log('item', item)
+            return item.selected === true
+        })
+        // console.log('selected?', selected, typeof selected)
+        let showSelected = (
+                <div className = 'selected-repository' >
+                    <PhotoIcon styles='r-menu-icons selected' />
+                    <p className='r-menu-titles'>{selected[0].title}</p>
+                </div>
+            )
+        
         return (
             <div className='page-wrapper'>
-                <div className = 'selected-repository'>
-                    <PhotoIcon styles = 'r-menu-icons selected'/>
-                    <p className = 'r-menu-titles'>moving</p>
+                <div className = 'r-menu-back'>
+                    <LeftArrow style = 'r-menu-back-icon'/>
                 </div>
+                {showSelected}
                 <div className='dial' style={style}>
                     {this.state.items.map((item, index) => {
                         return (
-                            <div className={item.class} style={opStyle} key = {index} >
+                            <div className={item.class} 
+                                 style={opStyle}
+                                 key = {index} 
+                                 onClick = {() => this.setPosition(-1*item.position)} >
                                 <PhotoIcon styles={item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'} />
-                                <p>{index}</p>
-                                <p>{item.position}</p>
-
                             </div>
                         )
                     })}
-                    {/* <div className='di2 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons selected-mini'/>
+                    <div className='showDial'>
+                        <Repository class={"menu-icons"}/>
                     </div>
-                    <div className='di3 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di4 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di5 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di6 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di7 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di8 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div>
-                    <div className='di1 item' style={opStyle} >
-                        <PhotoIcon styles = 'r-menu-icons'/>
-                    </div> */}
-                    <div className='showDial'></div>
                 </div>
                 <div>
                     <button onClick={this.prevPosition} >prev</button>

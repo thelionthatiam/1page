@@ -20668,6 +20668,9 @@ var a = (function (exports) {
 	function HomeEight(props) {
 	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.dimension, height: props.dimension, stroke: '#28649e'}, react_4("path", {className: 'stretch-test', d: "M5.9,262.38C26.51,279.21,51.09,283.07,77,282c10.31-.42,20.54-.92,30.2-4.94,9.93-4.13,18.53-10.91,25.93-18.63,16.15-16.84,26.05-38.34,40.93-56.16,16.33-19.56,38.14-29.69,63.47-31.1,52-2.91,101.87,26.35,153.89,15.31,23.28-4.95,43.86-17.61,64-29.68,22.34-13.36,44.94-25.1,70.64-30.48,25.11-5.26,55.72-6.42,75.26,13.16,8.34,8.36,13.7,19.9,12.45,31.86-1.35,13-9.34,24.75-16.05,35.59-12.28,19.87-26.41,39.89-31.17,63.19-4.89,23.88,3,46.76,15,67.24,13.4,22.8,31.8,43,41.09,68.11,8.19,22.1,8.8,50.6-10.09,67.58-15.8,14.2-40.77,16.77-58.63,5-10.08-6.63-17.79-16.21-27.33-23.54a91.65,91.65,0,0,0-29-15.39c-9.51-2.87-19.87-3.74-29.5-.88a46.23,46.23,0,0,0-13.66,7c-5.24,3.74-10.37,7.87-17.13,8-12.64.22-22.75-11.52-28.09-21.76-5.1-9.76-8.3-20.5-14.55-29.65-10.62-15.54-30.35-21.17-47.41-12.59-8.82,4.43-14.69,12.45-17.7,21.72a82.89,82.89,0,0,0-3.16,32.43c1.19,11.26,7.78,22.76,12.5,32.91.82,1.75,3.4.23,2.59-1.51C336,462.76,329,450.19,329.24,436.56c.23-12.52,1.42-26.69,9.65-36.76,6.79-8.33,17.95-12.32,28.52-11.43,12.18,1,21.14,8.47,27.1,18.78,9.89,17.11,14.73,42.72,36.95,48.41,11.08,2.84,18.54-3.82,27.2-9.49,10.15-6.65,22.21-7.84,33.88-5.17,11.43,2.62,22.06,8.33,31.41,15.31,9.62,7.2,17.32,16.65,27.18,23.54,15.63,10.91,36.33,11.4,53.11,2.71,18.86-9.76,27.72-29.86,27-50.54-.9-24.62-13.51-46.06-27-65.9-14.46-21.28-31-42.89-35.26-68.94-4.23-25.61,7.17-49.11,20.1-70.41,6.26-10.31,13-20.34,18.87-30.87,5.57-10,10.27-21,8.8-32.63-2.66-21.28-21.55-36.34-41.43-41C551,116.55,524.05,122,501,130.35s-43.11,22-64.19,34c-22.93,13.08-46.5,22.23-73.3,21.56-28.09-.71-55-9.48-82.51-14.39-22.56-4-46.64-5.87-68.85,1-21.85,6.76-37.21,22.19-49.95,40.57-13.49,19.45-24.88,41.39-44.94,55.08a60.41,60.41,0,0,1-29.9,10.3c-14.1,1.12-28.79,1.56-42.74-1.07A81.88,81.88,0,0,1,8,260.25c-1.49-1.21-3.62.9-2.12,2.13Z"})));
 	}
+	function LeftArrow(props) {
+	    return (react_4("svg", {className: props.style, viewBox: "0 0 50 80"}, react_4("polyline", {className: props.style, fill: "none", points: "45.63,75.8 0.375,38.087 45.63,0.375 "})));
+	}
 
 	var Blinds = (function (_super) {
 	    __extends(Blinds, _super);
@@ -20957,7 +20960,7 @@ var a = (function (exports) {
 	            items: [
 	                {
 	                    position: 0,
-	                    selected: false,
+	                    selected: true,
 	                    title: 'moving',
 	                    class: 'di1 item'
 	                },
@@ -21061,6 +21064,7 @@ var a = (function (exports) {
 	    };
 	    Dial.prototype.setPosition = function (position) {
 	        var _this = this;
+	        console.log('sent pos', position);
 	        this.setState({
 	            position: position
 	        }, function () { return _this.setRotation(); });
@@ -21087,7 +21091,6 @@ var a = (function (exports) {
 	            for (var i = 0; i < _this.state.items.length; i++) {
 	                _this.state.items[i].selected = false;
 	                if (position >= 0) {
-	                    // console.log('raw', position)
 	                    if (position === 0) {
 	                        _this.state.items[0].selected = true;
 	                    }
@@ -21095,13 +21098,11 @@ var a = (function (exports) {
 	                        _this.state.items[i].selected = false;
 	                    }
 	                    else if (_this.state.items[i].position === Math.abs(position - 8)) {
-	                        //  console.log('s', Math.abs(position - 8), 'p', this.state.items[i].position)
 	                        _this.state.items[i].selected = true;
 	                    }
 	                }
 	                else {
 	                    {
-	                        // console.log('war', position)
 	                        if (position === 0) {
 	                            _this.state.items[0].selected = true;
 	                        }
@@ -21109,7 +21110,6 @@ var a = (function (exports) {
 	                            _this.state.items[i].selected = false;
 	                        }
 	                        else if (_this.state.items[i].position === Math.abs(position)) {
-	                            //  console.log('s', Math.abs(position), 'p', this.state.items[i].position)
 	                            _this.state.items[i].selected = true;
 	                        }
 	                    }
@@ -21122,6 +21122,7 @@ var a = (function (exports) {
 	        });
 	    };
 	    Dial.prototype.render = function () {
+	        var _this = this;
 	        var style = {
 	            transform: "rotate(" + this.state.rotation + "deg)"
 	        };
@@ -21133,10 +21134,15 @@ var a = (function (exports) {
 	                transform: "rotate(" + Math.abs(this.state.rotation) + "deg)"
 	            };
 	        }
-	        console.log(this.state.items);
-	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'selected-repository'}, react_4(PhotoIcon, {styles: 'r-menu-icons selected'}), react_4("p", {className: 'r-menu-titles'}, "moving")), react_4("div", {className: 'dial', style: style}, this.state.items.map(function (item, index) {
-	            return (react_4("div", {className: item.class, style: opStyle, key: index}, react_4(PhotoIcon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'}), react_4("p", null, index), react_4("p", null, item.position)));
-	        }), react_4("div", {className: 'showDial'})), react_4("div", null, react_4("button", {onClick: this.prevPosition}, "prev"), react_4("button", {onClick: this.nextPosition}, "next"))));
+	        var selected = this.state.items.filter(function (item) {
+	            // console.log('item', item)
+	            return item.selected === true;
+	        });
+	        // console.log('selected?', selected, typeof selected)
+	        var showSelected = (react_4("div", {className: 'selected-repository'}, react_4(PhotoIcon, {styles: 'r-menu-icons selected'}), react_4("p", {className: 'r-menu-titles'}, selected[0].title)));
+	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'r-menu-back'}, react_4(LeftArrow, {style: 'r-menu-back-icon'})), showSelected, react_4("div", {className: 'dial', style: style}, this.state.items.map(function (item, index) {
+	            return (react_4("div", {className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); }}, react_4(PhotoIcon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'})));
+	        }), react_4("div", {className: 'showDial'}, react_4(Repository, {class: "menu-icons"}))), react_4("div", null, react_4("button", {onClick: this.prevPosition}, "prev"), react_4("button", {onClick: this.nextPosition}, "next"))));
 	    };
 	    return Dial;
 	}(react_2));
