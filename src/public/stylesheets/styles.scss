@@ -25,6 +25,7 @@ $whiteGhost: #efdcbe;
 $lightPink:#FBD6DB;
 $pink:#F1AAAF;
 $yellow:#FDCE6C;
+$deccaf: #deccaf;
 
 
 h1,h2,h3,h4,h5,h6,p,li,a,button,input,label {
@@ -142,7 +143,7 @@ body{
   left:20px;
   width:50px;
   stroke: #EC7724;
-  z-index: 200;
+  z-index: 99;
 }
 
 .menu-icon-open {
@@ -810,7 +811,7 @@ $p-color: $lightPink;
   top:0;
   left:0;
   display:flex;
-  justify-content: space-around;
+  justify-content: center;
   align-content:center;
   align-items:center;
   background-color: $white;
@@ -848,7 +849,7 @@ $p-color: $lightPink;
 	width: 0;
 	height: 0;
 	border-top: 20px solid transparent;
-	border-right: 20px solid $red;
+	border-right: 20px solid $deccaf;
 	border-bottom: 20px solid transparent;
 }
 
@@ -869,8 +870,16 @@ $p-color: $lightPink;
 	width: 0;
 	height: 0;
 	border-top: 20px solid transparent;
-	border-left: 20px solid $red;
+	border-left: 20px solid $deccaf;
 	border-bottom: 20px solid transparent;
+}
+
+.lightbox-right-paddle:hover > .right-triangle {
+  border-left: 20px solid #bfac8c;
+}
+
+.lightbox-left-paddle:hover > .left-triangle {
+  border-right:20px solid #bfac8c;
 }
 
 .lightbox-photo-wrapper:hover ~ .revert {
@@ -880,10 +889,16 @@ $p-color: $lightPink;
 
 @media all and (max-width:750px) {
   .lightbox-photo-wrapper {
-    top: 0;
+    top: 70px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 70px;
+  }
+  .lightbox-left-paddle {
+    display:none;
+  }
+  .lightbox-right-paddle {
+    display:none;
   }
 }
 
@@ -928,6 +943,7 @@ $p-color: $lightPink;
   stroke-dasharray: 1000, 0;
   stroke-dashoffset: 0;
   transition: all 0.4s;
+  stroke:$deccaf;
 }
 
 .lightbox-icon-show:hover {
@@ -940,7 +956,7 @@ $p-color: $lightPink;
 }
 
 .x-icon {
-  stroke:$lightBlue;
+  stroke:$deccaf;
   width:40px;
   stroke-dasharray: 0, 20;
   stroke-dashoffset:-6.5;
@@ -957,20 +973,21 @@ $p-color: $lightPink;
 // }
 
 .x-icon-hover {
-  stroke:$lightBlue;
+  stroke:$deccaf;
   width:40px;
   stroke-dasharray:14.5, 20;
   stroke-dashoffset:0;
   position:absolute;
   right:0;
   top:10px;
-  transition:200ms;
+  transition:100ms;
   cursor:pointer;
 }
 
 .bold-stroke {
-  stroke-width:1.5px;
-  stroke:$red;
+  stroke-width:1.2px;
+  stroke:$lightBlue;
+  transition:100ms;
 }
 
 
@@ -987,7 +1004,7 @@ $p-color: $lightPink;
   border-radius:30px;
   width:15px;
   height:15px;
-  border:1px solid $red;
+  border:1px solid $deccaf;
   background-color:transparent;
   transition:200ms;
   transition-delay:000ms;
@@ -998,7 +1015,7 @@ $p-color: $lightPink;
 }
 
 .lightbox-dot:hover {
-  background:#e5a69b;
+  background:$deccaf;
   transition:200ms;
 }
 

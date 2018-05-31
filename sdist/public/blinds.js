@@ -15,6 +15,7 @@ var Transition_1 = require("react-transition-group/Transition");
 var react_redux_1 = require("react-redux");
 var actions_1 = require("./actions");
 var icons_1 = require("./svg/icons");
+var react_easy_swipe_1 = require("react-easy-swipe");
 var Blinds = /** @class */ (function (_super) {
     __extends(Blinds, _super);
     function Blinds(props) {
@@ -252,12 +253,56 @@ var Lightbox = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             rendered: true,
-            xStyle: 'x-icon'
+            xStyle: 'x-icon',
+            left: false,
+            right: false
         };
         _this.showX = _this.showX.bind(_this);
         _this.hideX = _this.hideX.bind(_this);
+        _this.onSwipeEnd = _this.onSwipeEnd.bind(_this);
+        _this.onSwipeStart = _this.onSwipeStart.bind(_this);
+        _this.onSwipeMove = _this.onSwipeMove.bind(_this);
         return _this;
     }
+    Lightbox.prototype.onSwipeStart = function (event) {
+        //console.log('Start swiping...', event);
+        // this.start()
+    };
+    Lightbox.prototype.onSwipeMove = function (position, event) {
+        //console.log(`Moved ${position.x} pixels horizontally`, event);
+        if (position.x < -100) {
+            this.setState({ right: false });
+            this.setState({ left: true });
+        }
+        else if (position.x < 0) {
+            this.setState({ left: false });
+            this.setState({ right: false });
+        }
+        else if (position.x < 100) {
+            this.setState({ left: false });
+            this.setState({ right: false });
+        }
+        else if (position.x >= 100) {
+            this.setState({ left: false });
+            this.setState({ right: true });
+        }
+        // console.log(`Moved ${position.y} pixels vertically`, event);
+    };
+    Lightbox.prototype.onSwipeEnd = function (event) {
+        //console.log('state', this.state.left, this.state.right)
+        if (this.state.left) {
+            console.log(this.state.left, 'left');
+            this.props.gotoPrevious();
+            this.setState({ left: false });
+            this.setState({ right: false });
+        }
+        else if (this.state.right) {
+            console.log(this.state.right, 'right');
+            this.props.gotoNext();
+            this.setState({ left: false });
+            this.setState({ right: false });
+        }
+    };
     Lightbox.prototype.componentDidMount = function () {
         var _this = this;
         setTimeout(function () {
@@ -295,8 +340,9 @@ var Lightbox = /** @class */ (function (_super) {
                                         'svg-icon lightbox-icon' })),
                         React.createElement("div", { className: 'lightbox-left-paddle', onClick: this.props.gotoPrevious },
                             React.createElement("div", { className: 'left-triangle' })),
-                        React.createElement("div", { className: 'lightbox-photo-wrapper', onClick: this.props.onClose },
-                            React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX })),
+                        React.createElement(react_easy_swipe_1.default, { onSwipeStart: this.onSwipeStart, onSwipeMove: this.onSwipeMove, onSwipeEnd: this.onSwipeEnd },
+                            React.createElement("div", { className: 'lightbox-photo-wrapper', onClick: this.props.onClose },
+                                React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX }))),
                         React.createElement("div", { className: 'lightbox-right-paddle', onClick: this.props.gotoNext },
                             React.createElement("div", { className: 'right-triangle' })),
                         React.createElement(icons_1.X, { styles: this.state.xStyle, onClick: this.props.onClose, onMouseOver: this.showX, onMouseLeave: this.hideX }),
@@ -309,7 +355,7 @@ var Lightbox = /** @class */ (function (_super) {
 }(React.Component));
 function DotBox(props) {
     var style = {
-        background: '#ff6347'
+        background: '#deccaf'
     };
     return (React.createElement("div", { className: 'dot-box-wrapper' }, props.photos.map(function (photo, index) {
         return (React.createElement("div", { className: 'lightbox-dot', key: index, onClick: function (event) { return props.gotoSelected(event, index); }, style: index === props.currentImage

@@ -5,6 +5,7 @@ import { connect, Provider } from 'react-redux';
 import { toggleBlinds, fetchPhotos } from './actions'
 import { PhotoIcon, X } from './svg/icons'
 import Measure from 'react-measure';
+import Swipe from 'react-easy-swipe';
 
 class Blinds extends React.Component {
     props: {
@@ -110,8 +111,8 @@ class Blinds extends React.Component {
                             {blinds}
                         </div>
                     }
+                   
                 </Transition>
-                
             </div>
         );
     }
@@ -332,10 +333,55 @@ class Lightbox extends React.Component {
         super(props)
         this.state = {
             rendered:true,
-            xStyle:'x-icon'
+            xStyle:'x-icon',
+            left:false,
+            right:false
         } 
         this.showX = this.showX.bind(this)
         this.hideX = this.hideX.bind(this)
+        
+        this.onSwipeEnd = this.onSwipeEnd.bind(this);
+        this.onSwipeStart = this.onSwipeStart.bind(this);
+        this.onSwipeMove = this.onSwipeMove.bind(this);
+
+    }
+
+    onSwipeStart(event) {
+        //console.log('Start swiping...', event);
+        // this.start()
+    }
+
+    onSwipeMove(position, event) {
+        //console.log(`Moved ${position.x} pixels horizontally`, event);
+        if (position.x < -100) {
+            this.setState({ right: false })
+            this.setState({left:true})
+        } else if (position.x < 0) {
+            this.setState({ left: false })
+            this.setState({ right: false })
+        } else if (position.x < 100) {
+            this.setState({ left: false })
+            this.setState({right:false})
+        } else if (position.x >= 100) {
+            this.setState({ left: false })
+            this.setState({right:true})
+        }
+        // console.log(`Moved ${position.y} pixels vertically`, event);
+    }
+
+    onSwipeEnd(event) {
+        //console.log('state', this.state.left, this.state.right)
+        if(this.state.left){
+            console.log(this.state.left, 'left')
+            this.props.gotoPrevious()
+            this.setState({ left: false })
+            this.setState({ right: false })
+        } else if (this.state.right) {
+            console.log(this.state.right, 'right')
+            this.props.gotoNext()
+            this.setState({ left: false })
+            this.setState({ right: false })
+        }
     }
 
     componentDidMount() {
@@ -389,20 +435,25 @@ class Lightbox extends React.Component {
                         <div className = 'lightbox-left-paddle' onClick = {this.props.gotoPrevious}>
                             <div className = 'left-triangle'></div>
                         </div>
-                        <div 
-                            className='lightbox-photo-wrapper'
-                            onClick = {this.props.onClose}
-                            >
-                            <img 
-                                className='lightbox-img' 
-                                src={img}
-                                id = {this.props.currentImage}
-                                onMouseOver = {this.showX}
-                                onMouseLeave = {this.hideX}
-                                />
+                        <Swipe
+                            onSwipeStart={this.onSwipeStart}
+                            onSwipeMove={this.onSwipeMove}
+                            onSwipeEnd={this.onSwipeEnd}>
+                            <div 
+                                className='lightbox-photo-wrapper'
+                                onClick = {this.props.onClose}
+                                >
+                                <img 
+                                    className='lightbox-img' 
+                                    src={img}
+                                    id = {this.props.currentImage}
+                                    onMouseOver = {this.showX}
+                                    onMouseLeave = {this.hideX}
+                                    />
+                                
                             
-                        
-                        </div>
+                            </div>
+                        </Swipe>
                         <div className='lightbox-right-paddle' onClick = {this.props.gotoNext}>
                             <div className='right-triangle'></div>
                         </div>
@@ -431,7 +482,7 @@ class Lightbox extends React.Component {
 function DotBox(props) {
 
     let style = {
-        background: '#ff6347'
+        background: '#deccaf'
     }
 
     return (

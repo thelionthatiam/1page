@@ -38,6 +38,7 @@
     "react": "^16.3.2",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",
+    "react-easy-swipe": "0.0.16",
     "react-images": "^0.5.17",
     "react-measure": "^2.0.2",
     "react-photo-gallery": "^6.0.25",
