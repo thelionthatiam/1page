@@ -124,6 +124,14 @@ body{
   font-family: 'Roboto'
 }
 
+@media all and (max-height:600px) {
+  .home-title {
+    top:32%;
+    right:-210px;
+    font-size:180px;
+  }
+}
+
 .home-title-period {
   color:#90B193;
 }
@@ -219,7 +227,7 @@ $multiplier: 1.5;
 }
 
 .left-menu-wrapper{
-  height:100%;
+  height:100vh;
   width:30vw;
   z-index:100;
   position: fixed;
@@ -427,6 +435,44 @@ $corner: $dialD/7.6;
 	bottom:0;
 	margin-top: auto;
 	margin-bottom: auto;
+}
+
+@media all and (max-width:1000px) {
+  .left-menu-wrapper{
+    width:50vw;
+    height:100vh;
+    transform:translate(-50vw);
+  }
+  .right-menu-wrapper{
+    width:50vw;
+    transform:translate(50vw);
+  }
+  .menu-open {
+    transform:translate(0)
+  }
+
+  .menu-icon-open {
+    transform: translate(0vw);
+  }
+}
+
+@media all and (max-width:600px) {
+  .left-menu-wrapper{
+    width:100vw;
+    height:100vh;
+    transform:translate(-100vw);
+  }
+  .right-menu-wrapper{
+    width:100vw;
+    transform:translate(100vw);
+  }
+  .menu-open {
+    transform:translate(0)
+  }
+
+  .menu-icon-open {
+    transform: translate(0vw);
+  }
 }
 
 
