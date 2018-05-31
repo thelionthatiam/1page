@@ -4,12 +4,12 @@ export function PhotoIcon(props) {
 
     return (
         <svg className={props.styles} 
-        id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 479.04 415.75"
+        id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
         >
-            <title>photos-icon</title>
-            <polyline className = 'aline' points="7.94 204.88 240.52 340.7 473.1 204.88" />
-            <polyline  points="7.94 275.88 240.52 411.7 473.1 275.88" />
-            <polygon  points="6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88" />
+            <title>repository-icon-photos</title>
+            <polyline points="62.75 194 205.25 299 335.25 206.5" />
+            <polyline points="62.75 254 205.25 359 335.25 266.5" />
+            <polygon points="62.75 136.5 195.25 44 335.25 149 205.25 241.5 62.75 136.5" />
         </svg>
     )
 }
@@ -68,19 +68,73 @@ export function CurlIcon(props) {
     )
 }
 
-// export function PhotoIcon(props) {
+export function DeltaIcon(props) {
 
-//     return (
-//         <svg className={props.styles}
-//             id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
-//         >
-//             <title>photos-icon</title>
-//             <polyline className='aline' points="7.94 204.88 240.52 340.7 473.1 204.88" />
-//             <polyline points="7.94 275.88 240.52 411.7 473.1 275.88" />
-//             <polygon points="6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88" />
-//         </svg>
-//     )
-// }
+    return (
+        <svg className={props.styles}
+            id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
+        >
+            <title>repository-icon-delta</title>
+            <polyline points="57.74 349 191.5 56 325.26 349" />
+        </svg>
+    )
+}
+
+export function MovementIcon(props) {
+
+    return (
+        <svg className={props.styles}
+            id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
+        >
+            <title>repository-icon-movement</title>
+            <circle cx="302.18" cy="121.01" r="48.82" />
+            <polyline points="52.19 263.62 91.58 227.04 201.33 336.78 237.91 300.2" />
+            <polyline  points="123.94 191.86 163.34 155.28 273.09 265.03 309.67 228.44" />
+            <line x1="145.44" y1="280.89" x2="269.26" y2="157.08" />
+        </svg>
+    )
+}
+
+export function ObjectsIcon(props) {
+
+    return (
+        <svg className={props.styles}
+            id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
+        >
+            <title>repository-icon-objects</title>
+            <polygon points="214.5 39.5 83.17 132.98 83.17 266.52 214.5 360 345.83 266.52 345.83 132.98 214.5 39.5" />
+            <polyline points="83.17 132.98 214.5 228.68 214.5 360 214.5 228.68 345.83 132.98" />
+            </svg>
+    )
+}
+
+export function ParallelIcon(props) {
+
+    return (
+        <svg className={props.styles}
+            id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
+        >
+            <title>repository-icon-parallel</title>
+            <path d="M320.75,66.49c0,4.2-.67,28.62-20.79,47.51-19.55,18.36-43.12,18-47.5,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.12,18.89-20.75,43.31-20.79,47.51v0c0,4.2-.67,28.62-20.78,47.51-19.56,18.36-43.13,18-47.51,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.11,18.89-20.75,43.31-20.79,47.51" />
+            <path d="M351.93,97.67c0,4.2-.68,28.62-20.79,47.51-19.55,18.36-43.12,18-47.51,17.81v0c-4.38-.16-27.95-.55-47.51,17.81-20.11,18.89-20.74,43.31-20.78,47.51v0c0,4.2-.67,28.62-20.79,47.5-19.55,18.37-43.12,18-47.51,17.82v0c-4.38-.16-27.95-.55-47.5,17.81C79.42,330.38,78.79,354.8,78.75,359" />
+        </svg>
+    )
+}
+
+export function TieFighterIcon(props) {
+    return (
+        <svg className={props.styles}
+            id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
+        >
+            <title>repository-icon-tie-fighter</title>
+            <line x1="65.87" y1="46.96" x2="335" y2="46.96" />
+            <line x1="65.87" y1="202.78" x2="335" y2="202.78" />
+            <line x1="65.87" y1="342.5" x2="335" y2="342.5" />
+            <line x1="200.44" y1="46.96" x2="200.44" y2="342.5" />
+        </svg>
+    )
+}
+
 
 export function X(props) {
     return (
@@ -119,7 +173,8 @@ export function Home(props) {
     return (
         <a href = '/'>
             <svg className = {props.class} version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 400 400">
-                <polygon className="st0" points="9,169.3 9,373.3 391,373.3 391,169.3 200.5,29.5 " />
+                <title>repository-icon-home</title>
+                <polygon points="44 357 44 192.54 197.5 50 351 192.54 351 357 44 357" />
             </svg>
         </a>
 

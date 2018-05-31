@@ -22,50 +22,66 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 0,
                     selected: true,
-                    title: 'moving',
-                    class: 'di1 item'
+                    title: 'photo',
+                    class: 'di1 item',
+                    icon: icons_1.PhotoIcon,
+                    link: '/photo'
                 },
                 {
                     position: 1,
                     selected: false,
-                    title: 'photos',
-                    class: 'di2 item'
+                    title: 'video',
+                    class: 'di2 item',
+                    icon: icons_1.VideoIcon,
+                    link: '/photo'
                 },
                 {
                     position: 2,
                     selected: false,
                     title: 'whatever',
-                    class: 'di3 item'
+                    class: 'di3 item',
+                    icon: icons_1.CrowdIcon,
+                    link: '/photo'
                 },
                 {
                     position: 3,
                     selected: false,
                     title: 'asdf',
-                    class: 'di4 item'
+                    class: 'di4 item',
+                    icon: icons_1.DeltaIcon,
+                    link: '/photo'
                 },
                 {
                     position: 4,
                     selected: false,
                     title: 'ldsfga;',
-                    class: 'di5 item'
+                    class: 'di5 item',
+                    icon: icons_1.MovementIcon,
+                    link: '/photo'
                 },
                 {
                     position: 5,
                     selected: false,
                     title: '^_^',
-                    class: 'di6 item'
+                    class: 'di6 item',
+                    icon: icons_1.ObjectsIcon,
+                    link: '/photo'
                 },
                 {
                     position: 6,
                     selected: false,
                     title: '-_-',
-                    class: 'di7 item'
+                    class: 'di7 item',
+                    icon: icons_1.ParallelIcon,
+                    link: '/photo'
                 },
                 {
                     position: 7,
                     selected: false,
                     title: '0.o',
-                    class: 'di8 item'
+                    class: 'di8 item',
+                    icon: icons_1.TieFighterIcon,
+                    link: '/photo'
                 }
             ],
             rotation: 0,
@@ -200,18 +216,19 @@ var Dial = /** @class */ (function (_super) {
             // console.log('item', item)
             return item.selected === true;
         });
-        // console.log('selected?', selected, typeof selected)
+        var SelectedIcon = selected[0].icon;
         var showSelected = (React.createElement("div", { className: 'selected-repository' },
-            React.createElement(icons_1.PhotoIcon, { styles: 'r-menu-icons selected' }),
-            React.createElement("p", { className: 'r-menu-titles' }, selected[0].title)));
+            React.createElement(SelectedIcon, { styles: 'r-menu-icons selected' }),
+            React.createElement("a", { href: selected[0].link, className: 'r-menu-titles' }, selected[0].title)));
         return (React.createElement("div", { className: 'page-wrapper' },
             React.createElement("div", { className: 'r-menu-back' },
                 React.createElement(icons_1.LeftArrow, { style: 'r-menu-back-icon' })),
             showSelected,
             React.createElement("div", { className: 'dial', style: style },
                 this.state.items.map(function (item, index) {
+                    var Icon = item.icon;
                     return (React.createElement("div", { className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); } },
-                        React.createElement(icons_1.PhotoIcon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' })));
+                        React.createElement(Icon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' })));
                 }),
                 React.createElement("div", { className: 'showDial' },
                     React.createElement(icons_1.Repository, { class: "menu-icons" }))),

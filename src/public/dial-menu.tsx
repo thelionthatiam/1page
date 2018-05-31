@@ -1,6 +1,14 @@
 import * as React from 'react';
 import {
-    PhotoIcon, 
+    PhotoIcon,
+    VideoIcon,
+    CrowdIcon,
+    CurlIcon,
+    DeltaIcon,
+    MovementIcon,
+    ObjectsIcon,
+    ParallelIcon,
+    TieFighterIcon,
     Repository,
     Home,
     About,
@@ -14,6 +22,8 @@ interface Item {
     selected:boolean;
     title:string;
     class:string;
+    icon:React.Component;
+    link:string;
 }
 
 
@@ -39,50 +49,66 @@ export default class Dial extends React.Component {
                 {
                     position:0,
                     selected:true,
-                    title:'moving',
-                    class: 'di1 item'
+                    title:'photo',
+                    class: 'di1 item',
+                    icon: PhotoIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:1,
                     selected:false,
-                    title:'photos',
-                    class: 'di2 item'
+                    title:'video',
+                    class: 'di2 item',
+                    icon: VideoIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:2,
                     selected:false,
                     title:'whatever',
-                    class: 'di3 item'
+                    class: 'di3 item',
+                    icon:CrowdIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:3,
                     selected:false,
                     title:'asdf',
-                    class: 'di4 item'
+                    class: 'di4 item',
+                    icon:DeltaIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:4,
                     selected:false,
                     title:'ldsfga;',
-                    class: 'di5 item'
+                    class: 'di5 item',
+                    icon:MovementIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:5,
                     selected:false,
                     title:'^_^',
-                    class: 'di6 item'
+                    class: 'di6 item',
+                    icon:ObjectsIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:6,
                     selected:false,
                     title:'-_-',
-                    class: 'di7 item'
+                    class: 'di7 item',
+                    icon:ParallelIcon,
+                    link: '/photo'
                 }, 
                 {
                     position:7,
                     selected:false,
                     title:'0.o',
-                    class: 'di8 item'
+                    class: 'di8 item',
+                    icon:TieFighterIcon,
+                    link: '/photo'
                 }
             ],
             rotation: 0,
@@ -220,11 +246,11 @@ export default class Dial extends React.Component {
             // console.log('item', item)
             return item.selected === true
         })
-        // console.log('selected?', selected, typeof selected)
+        let SelectedIcon = selected[0].icon
         let showSelected = (
                 <div className = 'selected-repository' >
-                    <PhotoIcon styles='r-menu-icons selected' />
-                    <p className='r-menu-titles'>{selected[0].title}</p>
+                    <SelectedIcon styles='r-menu-icons selected' />
+                    <a href = {selected[0].link} className='r-menu-titles'>{selected[0].title}</a>
                 </div>
             )
         
@@ -236,12 +262,13 @@ export default class Dial extends React.Component {
                 {showSelected}
                 <div className='dial' style={style}>
                     {this.state.items.map((item, index) => {
+                        let Icon = item.icon
                         return (
                             <div className={item.class} 
                                  style={opStyle}
                                  key = {index} 
                                  onClick = {() => this.setPosition(-1*item.position)} >
-                                <PhotoIcon styles={item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'} />
+                                <Icon styles={item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'} />
                             </div>
                         )
                     })}

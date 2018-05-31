@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 function PhotoIcon(props) {
-    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 479.04 415.75" },
-        React.createElement("title", null, "photos-icon"),
-        React.createElement("polyline", { className: 'aline', points: "7.94 204.88 240.52 340.7 473.1 204.88" }),
-        React.createElement("polyline", { points: "7.94 275.88 240.52 411.7 473.1 275.88" }),
-        React.createElement("polygon", { points: "6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88" })));
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-photos"),
+        React.createElement("polyline", { points: "62.75 194 205.25 299 335.25 206.5" }),
+        React.createElement("polyline", { points: "62.75 254 205.25 359 335.25 266.5" }),
+        React.createElement("polygon", { points: "62.75 136.5 195.25 44 335.25 149 205.25 241.5 62.75 136.5" })));
 }
 exports.PhotoIcon = PhotoIcon;
 function VideoIcon(props) {
@@ -40,18 +40,44 @@ function CurlIcon(props) {
         React.createElement("path", { d: "M43,142a24,24,0,0,0,7.2,9.6c7.63,6,16.54,5.08,19.2,4.8,8-.83,13.49-4.77,16.8-7.2,6.08-4.46,5.54-6.58,12-12a46.89,46.89,0,0,1,16.79-9.6,38.22,38.22,0,0,1,24,0,35.28,35.28,0,0,1,24,31.2c.42,4.1,1.71,15.33-4.8,24A47,47,0,0,1,151,190c-4.79,3.87-6.64,3.83-9.6,7.2a19,19,0,0,0-4.8,9.6,18.43,18.43,0,0,0,2.4,12c4,6.68,11,8.66,14.4,9.6,4,1.11,7.19,1.16,19.2,0,13.92-1.36,16.08-2,21.6-2.4,7.4-.48,16.39-.9,26.4,2.4A53,53,0,0,1,247,247.58c7.86,11,9,22,9.59,28.8,1,10.59,2.24,24.81-7.19,36-12.8,15.18-35,12.48-38.4,12-2-.28-22.68-3.51-33.6-21.6-12.27-20.33-2.72-43.72,0-50.4,15.27-37.4,58.38-51,79.19-57.59a154.13,154.13,0,0,1,45.6-7.2,103.85,103.85,0,0,1,26.4,2.4c10.65,2.51,14.77,5.5,16.8,7.2a31.42,31.42,0,0,1,9.6,14.4c1,3,3.41,10.62,0,19.2-.83,2.08-4.7,11-14.4,14.39-11.81,4.14-22.14-3.43-24-4.8a32,32,0,0,1-9.6-12c-1.1-2.15-3.6-7.49-4.8-24a200.06,200.06,0,0,1,0-28.8c.38-5.3,1.05-10.73,2.4-21.6,1.53-12.33,1.86-13.08,2.4-19.2,1.11-12.58,1.67-18.88,0-24-3.54-10.85-12.85-16.71-16.8-19.2-12.47-7.84-25.41-7.45-33.6-7.19a75.62,75.62,0,0,0-16.79,2.4" })));
 }
 exports.CurlIcon = CurlIcon;
-// export function PhotoIcon(props) {
-//     return (
-//         <svg className={props.styles}
-//             id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
-//         >
-//             <title>photos-icon</title>
-//             <polyline className='aline' points="7.94 204.88 240.52 340.7 473.1 204.88" />
-//             <polyline points="7.94 275.88 240.52 411.7 473.1 275.88" />
-//             <polygon points="6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88" />
-//         </svg>
-//     )
-// }
+function DeltaIcon(props) {
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-delta"),
+        React.createElement("polyline", { points: "57.74 349 191.5 56 325.26 349" })));
+}
+exports.DeltaIcon = DeltaIcon;
+function MovementIcon(props) {
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-movement"),
+        React.createElement("circle", { cx: "302.18", cy: "121.01", r: "48.82" }),
+        React.createElement("polyline", { points: "52.19 263.62 91.58 227.04 201.33 336.78 237.91 300.2" }),
+        React.createElement("polyline", { points: "123.94 191.86 163.34 155.28 273.09 265.03 309.67 228.44" }),
+        React.createElement("line", { x1: "145.44", y1: "280.89", x2: "269.26", y2: "157.08" })));
+}
+exports.MovementIcon = MovementIcon;
+function ObjectsIcon(props) {
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-objects"),
+        React.createElement("polygon", { points: "214.5 39.5 83.17 132.98 83.17 266.52 214.5 360 345.83 266.52 345.83 132.98 214.5 39.5" }),
+        React.createElement("polyline", { points: "83.17 132.98 214.5 228.68 214.5 360 214.5 228.68 345.83 132.98" })));
+}
+exports.ObjectsIcon = ObjectsIcon;
+function ParallelIcon(props) {
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-parallel"),
+        React.createElement("path", { d: "M320.75,66.49c0,4.2-.67,28.62-20.79,47.51-19.55,18.36-43.12,18-47.5,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.12,18.89-20.75,43.31-20.79,47.51v0c0,4.2-.67,28.62-20.78,47.51-19.56,18.36-43.13,18-47.51,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.11,18.89-20.75,43.31-20.79,47.51" }),
+        React.createElement("path", { d: "M351.93,97.67c0,4.2-.68,28.62-20.79,47.51-19.55,18.36-43.12,18-47.51,17.81v0c-4.38-.16-27.95-.55-47.51,17.81-20.11,18.89-20.74,43.31-20.78,47.51v0c0,4.2-.67,28.62-20.79,47.5-19.55,18.37-43.12,18-47.51,17.82v0c-4.38-.16-27.95-.55-47.5,17.81C79.42,330.38,78.79,354.8,78.75,359" })));
+}
+exports.ParallelIcon = ParallelIcon;
+function TieFighterIcon(props) {
+    return (React.createElement("svg", { className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400" },
+        React.createElement("title", null, "repository-icon-tie-fighter"),
+        React.createElement("line", { x1: "65.87", y1: "46.96", x2: "335", y2: "46.96" }),
+        React.createElement("line", { x1: "65.87", y1: "202.78", x2: "335", y2: "202.78" }),
+        React.createElement("line", { x1: "65.87", y1: "342.5", x2: "335", y2: "342.5" }),
+        React.createElement("line", { x1: "200.44", y1: "46.96", x2: "200.44", y2: "342.5" })));
+}
+exports.TieFighterIcon = TieFighterIcon;
 function X(props) {
     return (React.createElement("svg", { className: props.styles, viewBox: "0 0 20 20", version: "1.1", xmlns: "http://www.w3.org/2000/svg", onClick: props.onClick, onMouseOver: props.onMouseOver, onMouseLeave: props.onMouseLeave },
         React.createElement("line", { x1: "1", y1: "11", x2: "11", y2: "1" }),
@@ -69,7 +95,8 @@ exports.Hamburger = Hamburger;
 function Home(props) {
     return (React.createElement("a", { href: '/' },
         React.createElement("svg", { className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400" },
-            React.createElement("polygon", { className: "st0", points: "9,169.3 9,373.3 391,373.3 391,169.3 200.5,29.5 " }))));
+            React.createElement("title", null, "repository-icon-home"),
+            React.createElement("polygon", { points: "44 357 44 192.54 197.5 50 351 192.54 351 357 44 357" }))));
 }
 exports.Home = Home;
 function CurrentWork(props) {

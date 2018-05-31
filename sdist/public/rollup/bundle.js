@@ -20622,20 +20622,29 @@ var a = (function (exports) {
 	var SCROLL_LOCK = 'SCROLL_LOCK';
 
 	function PhotoIcon(props) {
-	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 479.04 415.75"}, react_4("title", null, "photos-icon"), react_4("polyline", {className: 'aline', points: "7.94 204.88 240.52 340.7 473.1 204.88"}), react_4("polyline", {points: "7.94 275.88 240.52 411.7 473.1 275.88"}), react_4("polygon", {points: "6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88"})));
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-photos"), react_4("polyline", {points: "62.75 194 205.25 299 335.25 206.5"}), react_4("polyline", {points: "62.75 254 205.25 359 335.25 266.5"}), react_4("polygon", {points: "62.75 136.5 195.25 44 335.25 149 205.25 241.5 62.75 136.5"})));
 	}
-	// export function PhotoIcon(props) {
-	//     return (
-	//         <svg className={props.styles}
-	//             id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"
-	//         >
-	//             <title>photos-icon</title>
-	//             <polyline className='aline' points="7.94 204.88 240.52 340.7 473.1 204.88" />
-	//             <polyline points="7.94 275.88 240.52 411.7 473.1 275.88" />
-	//             <polygon points="6.94 139.88 239.52 4.05 472.1 139.88 239.52 275.7 6.94 139.88" />
-	//         </svg>
-	//     )
-	// }
+	function VideoIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-video"), react_4("rect", {x: "38", y: "104.13", width: "180.73", height: "180.73"}), react_4("polygon", {points: "362 119.56 362 271.64 219.26 195.6 362 119.56"})));
+	}
+	function CrowdIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-crowd"), react_4("circle", {cx: "82.48", cy: "121.61", r: "42.96"}), react_4("circle", {cx: "187.98", cy: "121.61", r: "42.96"}), react_4("circle", {cx: "293.44", cy: "121.61", r: "42.96"}), react_4("polyline", {points: "30 247.38 83.27 196.43 134.23 247.38 187.5 196.43 240.77 247.38 294.04 196.43 345 247.38"}), react_4("polyline", {points: "30 321.5 83.27 270.55 134.23 321.5 187.5 270.55 240.77 321.5 294.04 270.55 345 321.5"})));
+	}
+	function DeltaIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-delta"), react_4("polyline", {points: "57.74 349 191.5 56 325.26 349"})));
+	}
+	function MovementIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-movement"), react_4("circle", {cx: "302.18", cy: "121.01", r: "48.82"}), react_4("polyline", {points: "52.19 263.62 91.58 227.04 201.33 336.78 237.91 300.2"}), react_4("polyline", {points: "123.94 191.86 163.34 155.28 273.09 265.03 309.67 228.44"}), react_4("line", {x1: "145.44", y1: "280.89", x2: "269.26", y2: "157.08"})));
+	}
+	function ObjectsIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-objects"), react_4("polygon", {points: "214.5 39.5 83.17 132.98 83.17 266.52 214.5 360 345.83 266.52 345.83 132.98 214.5 39.5"}), react_4("polyline", {points: "83.17 132.98 214.5 228.68 214.5 360 214.5 228.68 345.83 132.98"})));
+	}
+	function ParallelIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-parallel"), react_4("path", {d: "M320.75,66.49c0,4.2-.67,28.62-20.79,47.51-19.55,18.36-43.12,18-47.5,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.12,18.89-20.75,43.31-20.79,47.51v0c0,4.2-.67,28.62-20.78,47.51-19.56,18.36-43.13,18-47.51,17.81v0c-4.39-.16-28-.55-47.51,17.81-20.11,18.89-20.75,43.31-20.79,47.51"}), react_4("path", {d: "M351.93,97.67c0,4.2-.68,28.62-20.79,47.51-19.55,18.36-43.12,18-47.51,17.81v0c-4.38-.16-27.95-.55-47.51,17.81-20.11,18.89-20.74,43.31-20.78,47.51v0c0,4.2-.67,28.62-20.79,47.5-19.55,18.37-43.12,18-47.51,17.82v0c-4.38-.16-27.95-.55-47.5,17.81C79.42,330.38,78.79,354.8,78.75,359"})));
+	}
+	function TieFighterIcon(props) {
+	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-tie-fighter"), react_4("line", {x1: "65.87", y1: "46.96", x2: "335", y2: "46.96"}), react_4("line", {x1: "65.87", y1: "202.78", x2: "335", y2: "202.78"}), react_4("line", {x1: "65.87", y1: "342.5", x2: "335", y2: "342.5"}), react_4("line", {x1: "200.44", y1: "46.96", x2: "200.44", y2: "342.5"})));
+	}
 	function X(props) {
 	    return (react_4("svg", {className: props.styles, viewBox: "0 0 20 20", version: "1.1", xmlns: "http://www.w3.org/2000/svg", onClick: props.onClick, onMouseOver: props.onMouseOver, onMouseLeave: props.onMouseLeave}, react_4("line", {x1: "1", y1: "11", x2: "11", y2: "1"}), react_4("line", {x1: "1", y1: "1", x2: "11", y2: "11"})));
 	}
@@ -20643,7 +20652,7 @@ var a = (function (exports) {
 	    return (react_4("div", {className: props.class === "menu-svg open" ? "menu-icon-open" : "menu-icon", onClick: props.openMenu}, react_4("svg", {className: props.class, width: "24", height: "24", id: "hamburger", viewBox: "0 0 24 16"}, react_4("line", {className: "a", fill: "none", strokeWidth: "2", x1: "0", y1: "1", x2: "24", y2: "1"}), react_4("line", {className: "b", fill: "none", strokeWidth: "2", x1: "0", y1: "8", x2: "24", y2: "8"}), react_4("line", {className: "c", fill: "none", strokeWidth: "2", x1: "0", y1: "15", x2: "24", y2: "15"}))));
 	}
 	function Home(props) {
-	    return (react_4("a", {href: '/'}, react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("polygon", {className: "st0", points: "9,169.3 9,373.3 391,373.3 391,169.3 200.5,29.5 "}))));
+	    return (react_4("a", {href: '/'}, react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-home"), react_4("polygon", {points: "44 357 44 192.54 197.5 50 351 192.54 351 357 44 357"}))));
 	}
 	function CurrentWork(props) {
 	    return (react_4("svg", {className: props.class, version: "1.1", id: "Layer_1", xmlns: "http://www.w3.org/2000/svg", x: "0px", y: "0px", viewBox: "0 0 400 400"}, react_4("g", null, react_4("g", null, react_4("path", {d: "M15.4,246.4c15.2-27.6,30.4-55.3,45.6-82.9c2.2-3.9,4.3-7.9,6.5-11.8c2.3-4.2-4.1-8-6.5-3.8 c-15.2,27.6-30.4,55.3-45.6,82.9c-2.2,3.9-4.3,7.9-6.5,11.8C6.6,246.8,13.1,250.6,15.4,246.4L15.4,246.4z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M60.6,150.7c11.6,38.3,23.1,76.7,34.7,115c1.6,5.3,3.2,10.7,4.8,16c1.4,4.6,8.6,2.6,7.2-2c-11.6-38.3-23.1-76.7-34.7-115 c-1.6-5.3-3.2-10.7-4.8-16C66.4,144.1,59.2,146.1,60.6,150.7L60.6,150.7z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M66.6,151.3c32.9-22.9,65.7-45.7,98.6-68.6c4.6-3.2,9.2-6.4,13.7-9.6c3.9-2.7,0.2-9.2-3.8-6.5 c-32.9,22.9-65.7,45.7-98.6,68.6c-4.6,3.2-9.2,6.4-13.7,9.6C58.9,147.5,62.7,154,66.6,151.3L66.6,151.3z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M176.8,68.8c8.1,26.7,16.1,53.5,24.2,80.2c1.4,4.6,8.6,2.6,7.2-2c-8.1-26.7-16.1-53.5-24.2-80.2 C182.7,62.2,175.4,64.2,176.8,68.8L176.8,68.8z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M126.6,210.5c23.4-16.3,46.9-32.6,70.3-48.9c3.4-2.4,6.8-4.7,10.2-7.1c3.9-2.7,0.2-9.2-3.8-6.5 c-23.4,16.3-46.9,32.6-70.3,48.9c-3.4,2.4-6.8,4.7-10.2,7.1C118.9,206.7,122.7,213.3,126.6,210.5L126.6,210.5z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M204.3,154.9c20.5,7.9,41,15.8,61.6,23.7c32.9,12.7,65.8,25.3,98.7,38c7.5,2.9,15,5.8,22.5,8.7c4.5,1.7,6.5-5.5,2-7.2 c-20.5-7.9-41-15.8-61.6-23.7c-32.9-12.7-65.8-25.3-98.7-38c-7.5-2.9-15-5.8-22.5-8.7C201.7,145.9,199.8,153.2,204.3,154.9 L204.3,154.9z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M231.8,335.3c17.9-12.4,35.8-24.8,53.6-37.3c28.3-19.7,56.6-39.4,85-59.1c6.5-4.5,13-9.1,19.6-13.6 c3.9-2.7,0.2-9.2-3.8-6.5c-17.9,12.4-35.8,24.8-53.6,37.3c-28.3,19.7-56.6,39.4-85,59.1c-6.5,4.5-13,9.1-19.6,13.6 C224,331.5,227.8,338,231.8,335.3L231.8,335.3z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M123.1,211.7c26.2,10.1,52.4,20.2,78.5,30.2c3.7,1.4,7.5,2.9,11.2,4.3c4.5,1.7,6.5-5.5,2-7.2 c-26.2-10.1-52.4-20.2-78.5-30.2c-3.7-1.4-7.5-2.9-11.2-4.3C120.6,202.7,118.7,210,123.1,211.7L123.1,211.7z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M141.2,299.6c22.1-15.3,44.1-30.6,66.2-46c3.2-2.2,6.4-4.5,9.6-6.7c3.9-2.7,0.2-9.2-3.8-6.5c-22.1,15.3-44.1,30.6-66.2,46 c-3.2,2.2-6.4,4.5-9.6,6.7C133.5,295.9,137.2,302.4,141.2,299.6L141.2,299.6z"}))), react_4("g", null, react_4("g", null, react_4("path", {d: "M137.7,300.9c26.1,10,52.2,20.1,78.2,30.1c3.8,1.5,7.5,2.9,11.3,4.4c4.5,1.7,6.5-5.5,2-7.2c-26.1-10-52.2-20.1-78.2-30.1 c-3.8-1.5-7.5-2.9-11.3-4.4C135.2,292,133.3,299.2,137.7,300.9L137.7,300.9z"})))));
@@ -20973,50 +20982,66 @@ var a = (function (exports) {
 	                {
 	                    position: 0,
 	                    selected: true,
-	                    title: 'moving',
-	                    class: 'di1 item'
+	                    title: 'photo',
+	                    class: 'di1 item',
+	                    icon: PhotoIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 1,
 	                    selected: false,
-	                    title: 'photos',
-	                    class: 'di2 item'
+	                    title: 'video',
+	                    class: 'di2 item',
+	                    icon: VideoIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 2,
 	                    selected: false,
 	                    title: 'whatever',
-	                    class: 'di3 item'
+	                    class: 'di3 item',
+	                    icon: CrowdIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 3,
 	                    selected: false,
 	                    title: 'asdf',
-	                    class: 'di4 item'
+	                    class: 'di4 item',
+	                    icon: DeltaIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 4,
 	                    selected: false,
 	                    title: 'ldsfga;',
-	                    class: 'di5 item'
+	                    class: 'di5 item',
+	                    icon: MovementIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 5,
 	                    selected: false,
 	                    title: '^_^',
-	                    class: 'di6 item'
+	                    class: 'di6 item',
+	                    icon: ObjectsIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 6,
 	                    selected: false,
 	                    title: '-_-',
-	                    class: 'di7 item'
+	                    class: 'di7 item',
+	                    icon: ParallelIcon,
+	                    link: '/photo'
 	                },
 	                {
 	                    position: 7,
 	                    selected: false,
 	                    title: '0.o',
-	                    class: 'di8 item'
+	                    class: 'di8 item',
+	                    icon: TieFighterIcon,
+	                    link: '/photo'
 	                }
 	            ],
 	            rotation: 0,
@@ -21150,10 +21175,11 @@ var a = (function (exports) {
 	            // console.log('item', item)
 	            return item.selected === true;
 	        });
-	        // console.log('selected?', selected, typeof selected)
-	        var showSelected = (react_4("div", {className: 'selected-repository'}, react_4(PhotoIcon, {styles: 'r-menu-icons selected'}), react_4("p", {className: 'r-menu-titles'}, selected[0].title)));
+	        var SelectedIcon = selected[0].icon;
+	        var showSelected = (react_4("div", {className: 'selected-repository'}, react_4(SelectedIcon, {styles: 'r-menu-icons selected'}), react_4("a", {href: selected[0].link, className: 'r-menu-titles'}, selected[0].title)));
 	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'r-menu-back'}, react_4(LeftArrow, {style: 'r-menu-back-icon'})), showSelected, react_4("div", {className: 'dial', style: style}, this.state.items.map(function (item, index) {
-	            return (react_4("div", {className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); }}, react_4(PhotoIcon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'})));
+	            var Icon = item.icon;
+	            return (react_4("div", {className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); }}, react_4(Icon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'})));
 	        }), react_4("div", {className: 'showDial'}, react_4(Repository, {class: "menu-icons"}))), react_4("div", null, react_4("button", {onClick: this.prevPosition}, "prev"), react_4("button", {onClick: this.nextPosition}, "next"))));
 	    };
 	    return Dial;
