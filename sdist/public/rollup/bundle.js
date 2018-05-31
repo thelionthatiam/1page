@@ -102,6 +102,11 @@ var a = (function (exports) {
 		return to;
 	};
 
+	var objectAssign$1 = /*#__PURE__*/Object.freeze({
+		default: objectAssign,
+		__moduleExports: objectAssign
+	});
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -154,6 +159,11 @@ var a = (function (exports) {
 
 	var invariant_1 = invariant;
 
+	var invariant$1 = /*#__PURE__*/Object.freeze({
+		default: invariant_1,
+		__moduleExports: invariant_1
+	});
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -169,6 +179,11 @@ var a = (function (exports) {
 	}
 
 	var emptyObject_1 = emptyObject;
+
+	var emptyObject$1 = /*#__PURE__*/Object.freeze({
+		default: emptyObject_1,
+		__moduleExports: emptyObject_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -205,6 +220,13 @@ var a = (function (exports) {
 
 	var emptyFunction_1 = emptyFunction;
 
+	var emptyFunction$1 = /*#__PURE__*/Object.freeze({
+		default: emptyFunction_1,
+		__moduleExports: emptyFunction_1
+	});
+
+	var emptyFunction$2 = ( emptyFunction$1 && emptyFunction_1 ) || emptyFunction$1;
+
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
 	 * This can be used to log issues in development environments in critical
@@ -212,7 +234,7 @@ var a = (function (exports) {
 	 * same logic and follow the same code paths.
 	 */
 
-	var warning = emptyFunction_1;
+	var warning = emptyFunction$2;
 
 	{
 	  var printWarning = function printWarning(format) {
@@ -260,6 +282,11 @@ var a = (function (exports) {
 
 	var warning_1 = warning;
 
+	var warning$1 = /*#__PURE__*/Object.freeze({
+		default: warning_1,
+		__moduleExports: warning_1
+	});
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -271,10 +298,21 @@ var a = (function (exports) {
 
 	var ReactPropTypesSecret_1 = ReactPropTypesSecret;
 
+	var ReactPropTypesSecret$1 = /*#__PURE__*/Object.freeze({
+		default: ReactPropTypesSecret_1,
+		__moduleExports: ReactPropTypesSecret_1
+	});
+
+	var require$$0 = ( invariant$1 && invariant_1 ) || invariant$1;
+
+	var require$$1 = ( warning$1 && warning_1 ) || warning$1;
+
+	var require$$2 = ( ReactPropTypesSecret$1 && ReactPropTypesSecret_1 ) || ReactPropTypesSecret$1;
+
 	{
-	  var invariant$1 = invariant_1;
-	  var warning$1 = warning_1;
-	  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
+	  var invariant$2 = require$$0;
+	  var warning$2 = require$$1;
+	  var ReactPropTypesSecret$2 = require$$2;
 	  var loggedTypeFailures = {};
 	}
 
@@ -300,12 +338,12 @@ var a = (function (exports) {
 	        try {
 	          // This is intentionally an invariant that gets caught. It's the same
 	          // behavior as without this statement except with a better message.
-	          invariant$1(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
-	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
+	          invariant$2(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$2);
 	        } catch (ex) {
 	          error = ex;
 	        }
-	        warning$1(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+	        warning$2(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
 	        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
 	          // Only monitor this failure once because there tends to be a lot of the
 	          // same error.
@@ -313,7 +351,7 @@ var a = (function (exports) {
 
 	          var stack = getStack ? getStack() : '';
 
-	          warning$1(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+	          warning$2(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
 	        }
 	      }
 	    }
@@ -322,6 +360,17 @@ var a = (function (exports) {
 
 	var checkPropTypes_1 = checkPropTypes;
 
+	var checkPropTypes$1 = /*#__PURE__*/Object.freeze({
+		default: checkPropTypes_1,
+		__moduleExports: checkPropTypes_1
+	});
+
+	var assign = ( objectAssign$1 && objectAssign ) || objectAssign$1;
+
+	var require$$2$1 = ( emptyObject$1 && emptyObject_1 ) || emptyObject$1;
+
+	var checkPropTypes$2 = ( checkPropTypes$1 && checkPropTypes_1 ) || checkPropTypes$1;
+
 	var react_development = createCommonjsModule(function (module) {
 
 
@@ -329,12 +378,12 @@ var a = (function (exports) {
 	{
 	  (function() {
 
-	var _assign = objectAssign;
-	var invariant = invariant_1;
-	var emptyObject = emptyObject_1;
-	var warning = warning_1;
-	var emptyFunction = emptyFunction_1;
-	var checkPropTypes = checkPropTypes_1;
+	var _assign = assign;
+	var invariant = require$$0;
+	var emptyObject = require$$2$1;
+	var warning = require$$1;
+	var emptyFunction = emptyFunction$2;
+	var checkPropTypes = checkPropTypes$2;
 
 	// TODO: this is special because it gets imported during build.
 
@@ -1740,10 +1789,17 @@ var a = (function (exports) {
 	}
 	});
 
+	var react_development$1 = /*#__PURE__*/Object.freeze({
+		default: react_development,
+		__moduleExports: react_development
+	});
+
+	var require$$0$1 = ( react_development$1 && react_development ) || react_development$1;
+
 	var react = createCommonjsModule(function (module) {
 
 	{
-	  module.exports = react_development;
+	  module.exports = require$$0$1;
 	}
 	});
 	var react_1 = react.Children;
@@ -1784,6 +1840,11 @@ var a = (function (exports) {
 	};
 
 	var ExecutionEnvironment_1 = ExecutionEnvironment;
+
+	var ExecutionEnvironment$1 = /*#__PURE__*/Object.freeze({
+		default: ExecutionEnvironment_1,
+		__moduleExports: ExecutionEnvironment_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1848,7 +1909,7 @@ var a = (function (exports) {
 	        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
 	      }
 	      return {
-	        remove: emptyFunction_1
+	        remove: emptyFunction$2
 	      };
 	    }
 	  },
@@ -1857,6 +1918,11 @@ var a = (function (exports) {
 	};
 
 	var EventListener_1 = EventListener;
+
+	var EventListener$1 = /*#__PURE__*/Object.freeze({
+		default: EventListener_1,
+		__moduleExports: EventListener_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1892,6 +1958,11 @@ var a = (function (exports) {
 	}
 
 	var getActiveElement_1 = getActiveElement;
+
+	var getActiveElement$1 = /*#__PURE__*/Object.freeze({
+		default: getActiveElement_1,
+		__moduleExports: getActiveElement_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1955,6 +2026,11 @@ var a = (function (exports) {
 
 	var shallowEqual_1 = shallowEqual;
 
+	var shallowEqual$1 = /*#__PURE__*/Object.freeze({
+		default: shallowEqual_1,
+		__moduleExports: shallowEqual_1
+	});
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -1976,6 +2052,13 @@ var a = (function (exports) {
 
 	var isNode_1 = isNode;
 
+	var isNode$1 = /*#__PURE__*/Object.freeze({
+		default: isNode_1,
+		__moduleExports: isNode_1
+	});
+
+	var isNode$2 = ( isNode$1 && isNode_1 ) || isNode$1;
+
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -1992,10 +2075,17 @@ var a = (function (exports) {
 	 * @return {boolean} Whether or not the object is a DOM text node.
 	 */
 	function isTextNode(object) {
-	  return isNode_1(object) && object.nodeType == 3;
+	  return isNode$2(object) && object.nodeType == 3;
 	}
 
 	var isTextNode_1 = isTextNode;
+
+	var isTextNode$1 = /*#__PURE__*/Object.freeze({
+		default: isTextNode_1,
+		__moduleExports: isTextNode_1
+	});
+
+	var isTextNode$2 = ( isTextNode$1 && isTextNode_1 ) || isTextNode$1;
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2018,9 +2108,9 @@ var a = (function (exports) {
 	    return false;
 	  } else if (outerNode === innerNode) {
 	    return true;
-	  } else if (isTextNode_1(outerNode)) {
+	  } else if (isTextNode$2(outerNode)) {
 	    return false;
-	  } else if (isTextNode_1(innerNode)) {
+	  } else if (isTextNode$2(innerNode)) {
 	    return containsNode(outerNode, innerNode.parentNode);
 	  } else if ('contains' in outerNode) {
 	    return outerNode.contains(innerNode);
@@ -2032,6 +2122,11 @@ var a = (function (exports) {
 	}
 
 	var containsNode_1 = containsNode;
+
+	var containsNode$1 = /*#__PURE__*/Object.freeze({
+		default: containsNode_1,
+		__moduleExports: containsNode_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2055,6 +2150,11 @@ var a = (function (exports) {
 	}
 
 	var focusNode_1 = focusNode;
+
+	var focusNode$1 = /*#__PURE__*/Object.freeze({
+		default: focusNode_1,
+		__moduleExports: focusNode_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2085,6 +2185,13 @@ var a = (function (exports) {
 
 	var hyphenate_1 = hyphenate;
 
+	var hyphenate$1 = /*#__PURE__*/Object.freeze({
+		default: hyphenate_1,
+		__moduleExports: hyphenate_1
+	});
+
+	var hyphenate$2 = ( hyphenate$1 && hyphenate_1 ) || hyphenate$1;
+
 	var msPattern = /^ms-/;
 
 	/**
@@ -2104,10 +2211,15 @@ var a = (function (exports) {
 	 * @return {string}
 	 */
 	function hyphenateStyleName(string) {
-	  return hyphenate_1(string).replace(msPattern, '-ms-');
+	  return hyphenate$2(string).replace(msPattern, '-ms-');
 	}
 
 	var hyphenateStyleName_1 = hyphenateStyleName;
+
+	var hyphenateStyleName$1 = /*#__PURE__*/Object.freeze({
+		default: hyphenateStyleName_1,
+		__moduleExports: hyphenateStyleName_1
+	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2137,6 +2249,13 @@ var a = (function (exports) {
 
 	var camelize_1 = camelize;
 
+	var camelize$1 = /*#__PURE__*/Object.freeze({
+		default: camelize_1,
+		__moduleExports: camelize_1
+	});
+
+	var camelize$2 = ( camelize$1 && camelize_1 ) || camelize$1;
+
 	var msPattern$1 = /^-ms-/;
 
 	/**
@@ -2157,10 +2276,31 @@ var a = (function (exports) {
 	 * @return {string}
 	 */
 	function camelizeStyleName(string) {
-	  return camelize_1(string.replace(msPattern$1, 'ms-'));
+	  return camelize$2(string.replace(msPattern$1, 'ms-'));
 	}
 
 	var camelizeStyleName_1 = camelizeStyleName;
+
+	var camelizeStyleName$1 = /*#__PURE__*/Object.freeze({
+		default: camelizeStyleName_1,
+		__moduleExports: camelizeStyleName_1
+	});
+
+	var require$$3 = ( ExecutionEnvironment$1 && ExecutionEnvironment_1 ) || ExecutionEnvironment$1;
+
+	var require$$6 = ( EventListener$1 && EventListener_1 ) || EventListener$1;
+
+	var require$$7 = ( getActiveElement$1 && getActiveElement_1 ) || getActiveElement$1;
+
+	var require$$8 = ( shallowEqual$1 && shallowEqual_1 ) || shallowEqual$1;
+
+	var require$$9 = ( containsNode$1 && containsNode_1 ) || containsNode$1;
+
+	var require$$10 = ( focusNode$1 && focusNode_1 ) || focusNode$1;
+
+	var require$$13 = ( hyphenateStyleName$1 && hyphenateStyleName_1 ) || hyphenateStyleName$1;
+
+	var require$$14 = ( camelizeStyleName$1 && camelizeStyleName_1 ) || camelizeStyleName$1;
 
 	var reactDom_development = createCommonjsModule(function (module) {
 
@@ -2170,20 +2310,20 @@ var a = (function (exports) {
 	  (function() {
 
 	var React = react;
-	var invariant = invariant_1;
-	var warning = warning_1;
-	var ExecutionEnvironment = ExecutionEnvironment_1;
-	var _assign = objectAssign;
-	var emptyFunction = emptyFunction_1;
-	var EventListener = EventListener_1;
-	var getActiveElement = getActiveElement_1;
-	var shallowEqual = shallowEqual_1;
-	var containsNode = containsNode_1;
-	var focusNode = focusNode_1;
-	var emptyObject = emptyObject_1;
-	var checkPropTypes = checkPropTypes_1;
-	var hyphenateStyleName = hyphenateStyleName_1;
-	var camelizeStyleName = camelizeStyleName_1;
+	var invariant = require$$0;
+	var warning = require$$1;
+	var ExecutionEnvironment = require$$3;
+	var _assign = assign;
+	var emptyFunction = emptyFunction$2;
+	var EventListener = require$$6;
+	var getActiveElement = require$$7;
+	var shallowEqual = require$$8;
+	var containsNode = require$$9;
+	var focusNode = require$$10;
+	var emptyObject = require$$2$1;
+	var checkPropTypes = checkPropTypes$2;
+	var hyphenateStyleName = require$$13;
+	var camelizeStyleName = require$$14;
 
 	/**
 	 * WARNING: DO NOT manually require this module.
@@ -17511,10 +17651,17 @@ var a = (function (exports) {
 	}
 	});
 
+	var reactDom_development$1 = /*#__PURE__*/Object.freeze({
+		default: reactDom_development,
+		__moduleExports: reactDom_development
+	});
+
+	var require$$0$2 = ( reactDom_development$1 && reactDom_development ) || reactDom_development$1;
+
 	var reactDom = createCommonjsModule(function (module) {
 
 	{
-	  module.exports = reactDom_development;
+	  module.exports = require$$0$2;
 	}
 	});
 	var reactDom_1 = reactDom.render;
@@ -17660,10 +17807,10 @@ var a = (function (exports) {
 	      componentName = componentName || ANONYMOUS;
 	      propFullName = propFullName || propName;
 
-	      if (secret !== ReactPropTypesSecret_1) {
+	      if (secret !== require$$2) {
 	        if (throwOnDirectAccess) {
 	          // New behavior only for users of `prop-types` package
-	          invariant_1(
+	          require$$0(
 	            false,
 	            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
 	            'Use `PropTypes.checkPropTypes()` to call them. ' +
@@ -17677,7 +17824,7 @@ var a = (function (exports) {
 	            // Avoid spamming the console because they are often not actionable except for lib authors
 	            manualPropTypeWarningCount < 3
 	          ) {
-	            warning_1(
+	            require$$1(
 	              false,
 	              'You are manually calling a React.PropTypes validation ' +
 	              'function for the `%s` prop on `%s`. This is deprecated ' +
@@ -17729,7 +17876,7 @@ var a = (function (exports) {
 	  }
 
 	  function createAnyTypeChecker() {
-	    return createChainableTypeChecker(emptyFunction_1.thatReturnsNull);
+	    return createChainableTypeChecker(emptyFunction$2.thatReturnsNull);
 	  }
 
 	  function createArrayOfTypeChecker(typeChecker) {
@@ -17743,7 +17890,7 @@ var a = (function (exports) {
 	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
 	      }
 	      for (var i = 0; i < propValue.length; i++) {
-	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret_1);
+	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', require$$2);
 	        if (error instanceof Error) {
 	          return error;
 	        }
@@ -17779,8 +17926,8 @@ var a = (function (exports) {
 
 	  function createEnumTypeChecker(expectedValues) {
 	    if (!Array.isArray(expectedValues)) {
-	      warning_1(false, 'Invalid argument supplied to oneOf, expected an instance of array.');
-	      return emptyFunction_1.thatReturnsNull;
+	      require$$1(false, 'Invalid argument supplied to oneOf, expected an instance of array.');
+	      return emptyFunction$2.thatReturnsNull;
 	    }
 
 	    function validate(props, propName, componentName, location, propFullName) {
@@ -17809,7 +17956,7 @@ var a = (function (exports) {
 	      }
 	      for (var key in propValue) {
 	        if (propValue.hasOwnProperty(key)) {
-	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
 	          if (error instanceof Error) {
 	            return error;
 	          }
@@ -17822,28 +17969,28 @@ var a = (function (exports) {
 
 	  function createUnionTypeChecker(arrayOfTypeCheckers) {
 	    if (!Array.isArray(arrayOfTypeCheckers)) {
-	      warning_1(false, 'Invalid argument supplied to oneOfType, expected an instance of array.');
-	      return emptyFunction_1.thatReturnsNull;
+	      require$$1(false, 'Invalid argument supplied to oneOfType, expected an instance of array.');
+	      return emptyFunction$2.thatReturnsNull;
 	    }
 
 	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	      var checker = arrayOfTypeCheckers[i];
 	      if (typeof checker !== 'function') {
-	        warning_1(
+	        require$$1(
 	          false,
 	          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
 	          'received %s at index %s.',
 	          getPostfixForTypeWarning(checker),
 	          i
 	        );
-	        return emptyFunction_1.thatReturnsNull;
+	        return emptyFunction$2.thatReturnsNull;
 	      }
 	    }
 
 	    function validate(props, propName, componentName, location, propFullName) {
 	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	        var checker = arrayOfTypeCheckers[i];
-	        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
+	        if (checker(props, propName, componentName, location, propFullName, require$$2) == null) {
 	          return null;
 	        }
 	      }
@@ -17875,7 +18022,7 @@ var a = (function (exports) {
 	        if (!checker) {
 	          continue;
 	        }
-	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
 	        if (error) {
 	          return error;
 	        }
@@ -17894,7 +18041,7 @@ var a = (function (exports) {
 	      }
 	      // We need to check all keys in case some are required but missing from
 	      // props.
-	      var allKeys = objectAssign({}, props[propName], shapeTypes);
+	      var allKeys = assign({}, props[propName], shapeTypes);
 	      for (var key in allKeys) {
 	        var checker = shapeTypes[key];
 	        if (!checker) {
@@ -17904,7 +18051,7 @@ var a = (function (exports) {
 	            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
 	          );
 	        }
-	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
 	        if (error) {
 	          return error;
 	        }
@@ -18041,11 +18188,18 @@ var a = (function (exports) {
 	    return propValue.constructor.name;
 	  }
 
-	  ReactPropTypes.checkPropTypes = checkPropTypes_1;
+	  ReactPropTypes.checkPropTypes = checkPropTypes$2;
 	  ReactPropTypes.PropTypes = ReactPropTypes;
 
 	  return ReactPropTypes;
 	};
+
+	var factoryWithTypeCheckers$1 = /*#__PURE__*/Object.freeze({
+		default: factoryWithTypeCheckers,
+		__moduleExports: factoryWithTypeCheckers
+	});
+
+	var require$$0$3 = ( factoryWithTypeCheckers$1 && factoryWithTypeCheckers ) || factoryWithTypeCheckers$1;
 
 	var propTypes = createCommonjsModule(function (module) {
 	/**
@@ -18070,8 +18224,13 @@ var a = (function (exports) {
 	  // By explicitly using `prop-types` you are opting into new development behavior.
 	  // http://fb.me/prop-types-in-prod
 	  var throwOnDirectAccess = true;
-	  module.exports = factoryWithTypeCheckers(isValidElement, throwOnDirectAccess);
+	  module.exports = require$$0$3(isValidElement, throwOnDirectAccess);
 	}
+	});
+
+	var propTypes$1 = /*#__PURE__*/Object.freeze({
+		default: propTypes,
+		__moduleExports: propTypes
 	});
 
 	var subscriptionShape = propTypes.shape({
@@ -18093,7 +18252,7 @@ var a = (function (exports) {
 	 * @param {String} message The warning message.
 	 * @returns {void}
 	 */
-	function warning$2(message) {
+	function warning$3(message) {
 	  /* eslint-disable no-console */
 	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
 	    console.error(message);
@@ -18122,7 +18281,7 @@ var a = (function (exports) {
 	  }
 	  didWarnAboutReceivingStore = true;
 
-	  warning$2('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
+	  warning$3('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
 	}
 
 	function createProvider() {
@@ -18267,7 +18426,7 @@ var a = (function (exports) {
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	var invariant$2 = function(condition, format, a, b, c, d, e, f) {
+	var invariant$3 = function(condition, format, a, b, c, d, e, f) {
 	  {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
@@ -18295,7 +18454,7 @@ var a = (function (exports) {
 	  }
 	};
 
-	var browser = invariant$2;
+	var browser = invariant$3;
 
 	function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18683,7 +18842,7 @@ var a = (function (exports) {
 	  }
 	}
 
-	function shallowEqual$1(objA, objB) {
+	function shallowEqual$2(objA, objB) {
 	  if (is$1(objA, objB)) { return true; }
 
 	  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
@@ -19195,7 +19354,7 @@ var a = (function (exports) {
 	 * @param {String} message The warning message.
 	 * @returns {void}
 	 */
-	function warning$3(message) {
+	function warning$4(message) {
 	  /* eslint-disable no-console */
 	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
 	    console.error(message);
@@ -19283,7 +19442,7 @@ var a = (function (exports) {
 
 	    {
 	      if (typeof reducers[key] === 'undefined') {
-	        warning$3('No reducer provided for key "' + key + '"');
+	        warning$4('No reducer provided for key "' + key + '"');
 	      }
 	    }
 
@@ -19316,7 +19475,7 @@ var a = (function (exports) {
 	    {
 	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
 	      if (warningMessage) {
-	        warning$3(warningMessage);
+	        warning$4(warningMessage);
 	      }
 	    }
 
@@ -19479,7 +19638,7 @@ var a = (function (exports) {
 	function isCrushed() {}
 
 	if (typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-	  warning$3('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+	  warning$4('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 	}
 
 	var es = /*#__PURE__*/Object.freeze({
@@ -19492,7 +19651,7 @@ var a = (function (exports) {
 
 	function verifyPlainObject(value, displayName, methodName) {
 	  if (!isPlainObject(value)) {
-	    warning$2(methodName + '() in ' + displayName + ' must return a plain object. Instead received ' + value + '.');
+	    warning$3(methodName + '() in ' + displayName + ' must return a plain object. Instead received ' + value + '.');
 	  }
 	}
 
@@ -19643,7 +19802,7 @@ var a = (function (exports) {
 	    throw new Error('Unexpected value for ' + methodName + ' in ' + displayName + '.');
 	  } else if (methodName === 'mapStateToProps' || methodName === 'mapDispatchToProps') {
 	    if (!selector.hasOwnProperty('dependsOnOwnProps')) {
-	      warning$2('The selector for ' + methodName + ' of ' + displayName + ' did not specify a value for dependsOnOwnProps.');
+	      warning$3('The selector for ' + methodName + ' of ' + displayName + ' did not specify a value for dependsOnOwnProps.');
 	    }
 	  }
 	}
@@ -19815,11 +19974,11 @@ var a = (function (exports) {
 	        _ref2$areStatesEqual = _ref2.areStatesEqual,
 	        areStatesEqual = _ref2$areStatesEqual === undefined ? strictEqual : _ref2$areStatesEqual,
 	        _ref2$areOwnPropsEqua = _ref2.areOwnPropsEqual,
-	        areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual$1 : _ref2$areOwnPropsEqua,
+	        areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual$2 : _ref2$areOwnPropsEqua,
 	        _ref2$areStatePropsEq = _ref2.areStatePropsEqual,
-	        areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual$1 : _ref2$areStatePropsEq,
+	        areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual$2 : _ref2$areStatePropsEq,
 	        _ref2$areMergedPropsE = _ref2.areMergedPropsEqual,
-	        areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual$1 : _ref2$areMergedPropsE,
+	        areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual$2 : _ref2$areMergedPropsE,
 	        extraOptions = _objectWithoutProperties$2(_ref2, ['pure', 'areStatesEqual', 'areOwnPropsEqual', 'areStatePropsEqual', 'areMergedPropsEqual']);
 
 	    var initMapStateToProps = match(mapStateToProps, mapStateToPropsFactories, 'mapStateToProps');
@@ -19899,6 +20058,8 @@ var a = (function (exports) {
 	var thunk = createThunkMiddleware();
 	thunk.withExtraArgument = createThunkMiddleware;
 
+	var require$$1$1 = ( propTypes$1 && propTypes ) || propTypes$1;
+
 	var PropTypes = createCommonjsModule(function (module, exports) {
 
 	exports.__esModule = true;
@@ -19907,7 +20068,7 @@ var a = (function (exports) {
 
 
 
-	var _propTypes2 = _interopRequireDefault(propTypes);
+	var _propTypes2 = _interopRequireDefault(require$$1$1);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19951,10 +20112,20 @@ var a = (function (exports) {
 	})]);
 	});
 
-	unwrapExports(PropTypes);
+	var PropTypes$1 = unwrapExports(PropTypes);
 	var PropTypes_1 = PropTypes.classNamesShape;
 	var PropTypes_2 = PropTypes.timeoutsShape;
 	var PropTypes_3 = PropTypes.transitionTimeout;
+
+	var PropTypes$2 = /*#__PURE__*/Object.freeze({
+		default: PropTypes$1,
+		__moduleExports: PropTypes,
+		classNamesShape: PropTypes_1,
+		timeoutsShape: PropTypes_2,
+		transitionTimeout: PropTypes_3
+	});
+
+	var _PropTypes = ( PropTypes$2 && PropTypes$1 ) || PropTypes$2;
 
 	var Transition_1 = createCommonjsModule(function (module, exports) {
 
@@ -19963,7 +20134,7 @@ var a = (function (exports) {
 
 
 
-	var PropTypes$$1 = _interopRequireWildcard(propTypes);
+	var PropTypes = _interopRequireWildcard(require$$1$1);
 
 
 
@@ -20361,7 +20532,7 @@ var a = (function (exports) {
 	}(_react2.default.Component);
 
 	Transition.contextTypes = {
-	  transitionGroup: PropTypes$$1.object
+	  transitionGroup: PropTypes.object
 	};
 	Transition.childContextTypes = {
 	  transitionGroup: function transitionGroup() {}
@@ -20383,12 +20554,12 @@ var a = (function (exports) {
 	   * </Transition>
 	   * ```
 	   */
-	  children: PropTypes$$1.oneOfType([PropTypes$$1.func.isRequired, PropTypes$$1.element.isRequired]).isRequired,
+	  children: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.element.isRequired]).isRequired,
 
 	  /**
 	   * Show the component; triggers the enter or exit states
 	   */
-	  in: PropTypes$$1.bool,
+	  in: PropTypes.bool,
 
 	  /**
 	   * By default the child component is mounted immediately along with
@@ -20396,13 +20567,13 @@ var a = (function (exports) {
 	   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
 	   * mounted, even on "exited", unless you also specify `unmountOnExit`.
 	   */
-	  mountOnEnter: PropTypes$$1.bool,
+	  mountOnEnter: PropTypes.bool,
 
 	  /**
 	   * By default the child component stays mounted after it reaches the `'exited'` state.
 	   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
 	   */
-	  unmountOnExit: PropTypes$$1.bool,
+	  unmountOnExit: PropTypes.bool,
 
 	  /**
 	   * Normally a component is not transitioned if it is shown when the `<Transition>` component mounts.
@@ -20411,17 +20582,17 @@ var a = (function (exports) {
 	   *
 	   * > Note: there are no specific "appear" states. `appear` only adds an additional `enter` transition.
 	   */
-	  appear: PropTypes$$1.bool,
+	  appear: PropTypes.bool,
 
 	  /**
 	   * Enable or disable enter transitions.
 	   */
-	  enter: PropTypes$$1.bool,
+	  enter: PropTypes.bool,
 
 	  /**
 	   * Enable or disable exit transitions.
 	   */
-	  exit: PropTypes$$1.bool,
+	  exit: PropTypes.bool,
 
 	  /**
 	   * The duration of the transition, in milliseconds.
@@ -20446,7 +20617,7 @@ var a = (function (exports) {
 	      args[_key - 1] = arguments$1[_key];
 	    }
 
-	    var pt = PropTypes.timeoutsShape;
+	    var pt = _PropTypes.timeoutsShape;
 	    if (!props.addEndListener) { pt = pt.isRequired; }
 	    return pt.apply(undefined, [props].concat(args));
 	  },
@@ -20463,7 +20634,7 @@ var a = (function (exports) {
 	   * }}
 	   * ```
 	   */
-	  addEndListener: PropTypes$$1.func,
+	  addEndListener: PropTypes.func,
 
 	  /**
 	   * Callback fired before the "entering" status is applied. An extra parameter
@@ -20471,7 +20642,7 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool) -> void
 	   */
-	  onEnter: PropTypes$$1.func,
+	  onEnter: PropTypes.func,
 
 	  /**
 	   * Callback fired after the "entering" status is applied. An extra parameter
@@ -20479,7 +20650,7 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool)
 	   */
-	  onEntering: PropTypes$$1.func,
+	  onEntering: PropTypes.func,
 
 	  /**
 	   * Callback fired after the "entered" status is applied. An extra parameter
@@ -20487,28 +20658,28 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool) -> void
 	   */
-	  onEntered: PropTypes$$1.func,
+	  onEntered: PropTypes.func,
 
 	  /**
 	   * Callback fired before the "exiting" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExit: PropTypes$$1.func,
+	  onExit: PropTypes.func,
 
 	  /**
 	   * Callback fired after the "exiting" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExiting: PropTypes$$1.func,
+	  onExiting: PropTypes.func,
 
 	  /**
 	   * Callback fired after the "exited" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExited: PropTypes$$1.func
+	  onExited: PropTypes.func
 	};
 
 	// Name the function so it is clearer in the documentation
@@ -20698,7 +20869,7 @@ var a = (function (exports) {
 	  if (typeof undefined === "function" && undefined.amd) {
 	    undefined(['exports', 'react', 'prop-types'], factory);
 	  } else {
-	    factory(exports, react, propTypes);
+	    factory(exports, react, require$$1$1);
 	  }
 	})(commonjsGlobal, function (exports, _react, _propTypes) {
 
@@ -21002,14 +21173,21 @@ var a = (function (exports) {
 	});
 	});
 
-	unwrapExports(reactSwipe);
+	var reactSwipe$1 = unwrapExports(reactSwipe);
+
+	var reactSwipe$2 = /*#__PURE__*/Object.freeze({
+		default: reactSwipe$1,
+		__moduleExports: reactSwipe
+	});
+
+	var require$$0$4 = ( reactSwipe$2 && reactSwipe$1 ) || reactSwipe$2;
 
 	var lib = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 	  if (typeof undefined === "function" && undefined.amd) {
 	    undefined(['exports', './react-swipe'], factory);
 	  } else {
-	    factory(exports, reactSwipe);
+	    factory(exports, require$$0$4);
 	  }
 	})(commonjsGlobal, function (exports, _reactSwipe) {
 
@@ -21220,7 +21398,7 @@ var a = (function (exports) {
 	        if (this.props.album.length !== 0 && this.props.selected) {
 	            items = this.props.album.photos.map(function (photo, index) {
 	                if (index < 1) {
-	                    return react_4("div", {className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand}, react_4("img", {onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg"}), react_4("div", {className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed'}));
+	                    return react_4("div", {className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand}, react_4("img", {onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".JPG"}), react_4("div", {className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed'}));
 	                }
 	            });
 	        }

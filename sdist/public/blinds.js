@@ -219,7 +219,7 @@ var PhotoContainer = /** @class */ (function (_super) {
             items = this.props.album.photos.map(function (photo, index) {
                 if (index < 1) {
                     return React.createElement("div", { className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand },
-                        React.createElement("img", { onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".jpg" }),
+                        React.createElement("img", { onClick: _this.openLightbox, className: 'img', src: "/imgs/" + photo.src + ".JPG" }),
                         React.createElement("div", { className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed' }));
                 }
             });

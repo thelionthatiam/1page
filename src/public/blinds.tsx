@@ -271,7 +271,7 @@ class PhotoContainer extends React.Component {
                             <img  
                             onClick={this.openLightbox} 
                             className='img' 
-                            src={"/imgs/" + photo.src + ".jpg"} 
+                            src={"/imgs/" + photo.src + ".JPG"} 
                             />
                             <div className={this.state.expand ? 'expand-icon-wrapper' :'expand-icon-wrapper-closed'}></div>
                         </div>
