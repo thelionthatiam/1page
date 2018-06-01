@@ -59,4 +59,4 @@ app.listen(4000, 'localhost',() => console.log('start'))
 
 // server
 
-// app.listen(8000, '172.31.21.162, () => console.log('started on cloud'))
+// app.listen(8000, '172.31.21.162', () => console.log('started on cloud'))

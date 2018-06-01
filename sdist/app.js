@@ -46,5 +46,5 @@ app.use('/', index_1.default);
 // localhost
 app.listen(4000, 'localhost', function () { return console.log('start'); });
 // server
-// app.listen(8000, '172.31.21.162, () => console.log('started on cloud'))
+// app.listen(8000, '172.31.21.162', () => console.log('started on cloud'))
 //# sourceMappingURL=app.js.map
