@@ -102,11 +102,6 @@ var a = (function (exports) {
 		return to;
 	};
 
-	var objectAssign$1 = /*#__PURE__*/Object.freeze({
-		default: objectAssign,
-		__moduleExports: objectAssign
-	});
-
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -159,11 +154,6 @@ var a = (function (exports) {
 
 	var invariant_1 = invariant;
 
-	var invariant$1 = /*#__PURE__*/Object.freeze({
-		default: invariant_1,
-		__moduleExports: invariant_1
-	});
-
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -179,11 +169,6 @@ var a = (function (exports) {
 	}
 
 	var emptyObject_1 = emptyObject;
-
-	var emptyObject$1 = /*#__PURE__*/Object.freeze({
-		default: emptyObject_1,
-		__moduleExports: emptyObject_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -220,13 +205,6 @@ var a = (function (exports) {
 
 	var emptyFunction_1 = emptyFunction;
 
-	var emptyFunction$1 = /*#__PURE__*/Object.freeze({
-		default: emptyFunction_1,
-		__moduleExports: emptyFunction_1
-	});
-
-	var emptyFunction$2 = ( emptyFunction$1 && emptyFunction_1 ) || emptyFunction$1;
-
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
 	 * This can be used to log issues in development environments in critical
@@ -234,7 +212,7 @@ var a = (function (exports) {
 	 * same logic and follow the same code paths.
 	 */
 
-	var warning = emptyFunction$2;
+	var warning = emptyFunction_1;
 
 	{
 	  var printWarning = function printWarning(format) {
@@ -282,11 +260,6 @@ var a = (function (exports) {
 
 	var warning_1 = warning;
 
-	var warning$1 = /*#__PURE__*/Object.freeze({
-		default: warning_1,
-		__moduleExports: warning_1
-	});
-
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -298,21 +271,10 @@ var a = (function (exports) {
 
 	var ReactPropTypesSecret_1 = ReactPropTypesSecret;
 
-	var ReactPropTypesSecret$1 = /*#__PURE__*/Object.freeze({
-		default: ReactPropTypesSecret_1,
-		__moduleExports: ReactPropTypesSecret_1
-	});
-
-	var require$$0 = ( invariant$1 && invariant_1 ) || invariant$1;
-
-	var require$$1 = ( warning$1 && warning_1 ) || warning$1;
-
-	var require$$2 = ( ReactPropTypesSecret$1 && ReactPropTypesSecret_1 ) || ReactPropTypesSecret$1;
-
 	{
-	  var invariant$2 = require$$0;
-	  var warning$2 = require$$1;
-	  var ReactPropTypesSecret$2 = require$$2;
+	  var invariant$1 = invariant_1;
+	  var warning$1 = warning_1;
+	  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
 	  var loggedTypeFailures = {};
 	}
 
@@ -338,12 +300,12 @@ var a = (function (exports) {
 	        try {
 	          // This is intentionally an invariant that gets caught. It's the same
 	          // behavior as without this statement except with a better message.
-	          invariant$2(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
-	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$2);
+	          invariant$1(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+	          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
 	        } catch (ex) {
 	          error = ex;
 	        }
-	        warning$2(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+	        warning$1(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
 	        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
 	          // Only monitor this failure once because there tends to be a lot of the
 	          // same error.
@@ -351,7 +313,7 @@ var a = (function (exports) {
 
 	          var stack = getStack ? getStack() : '';
 
-	          warning$2(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+	          warning$1(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
 	        }
 	      }
 	    }
@@ -360,17 +322,6 @@ var a = (function (exports) {
 
 	var checkPropTypes_1 = checkPropTypes;
 
-	var checkPropTypes$1 = /*#__PURE__*/Object.freeze({
-		default: checkPropTypes_1,
-		__moduleExports: checkPropTypes_1
-	});
-
-	var assign = ( objectAssign$1 && objectAssign ) || objectAssign$1;
-
-	var require$$2$1 = ( emptyObject$1 && emptyObject_1 ) || emptyObject$1;
-
-	var checkPropTypes$2 = ( checkPropTypes$1 && checkPropTypes_1 ) || checkPropTypes$1;
-
 	var react_development = createCommonjsModule(function (module) {
 
 
@@ -378,12 +329,12 @@ var a = (function (exports) {
 	{
 	  (function() {
 
-	var _assign = assign;
-	var invariant = require$$0;
-	var emptyObject = require$$2$1;
-	var warning = require$$1;
-	var emptyFunction = emptyFunction$2;
-	var checkPropTypes = checkPropTypes$2;
+	var _assign = objectAssign;
+	var invariant = invariant_1;
+	var emptyObject = emptyObject_1;
+	var warning = warning_1;
+	var emptyFunction = emptyFunction_1;
+	var checkPropTypes = checkPropTypes_1;
 
 	// TODO: this is special because it gets imported during build.
 
@@ -1789,17 +1740,10 @@ var a = (function (exports) {
 	}
 	});
 
-	var react_development$1 = /*#__PURE__*/Object.freeze({
-		default: react_development,
-		__moduleExports: react_development
-	});
-
-	var require$$0$1 = ( react_development$1 && react_development ) || react_development$1;
-
 	var react = createCommonjsModule(function (module) {
 
 	{
-	  module.exports = require$$0$1;
+	  module.exports = react_development;
 	}
 	});
 	var react_1 = react.Children;
@@ -1840,11 +1784,6 @@ var a = (function (exports) {
 	};
 
 	var ExecutionEnvironment_1 = ExecutionEnvironment;
-
-	var ExecutionEnvironment$1 = /*#__PURE__*/Object.freeze({
-		default: ExecutionEnvironment_1,
-		__moduleExports: ExecutionEnvironment_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1909,7 +1848,7 @@ var a = (function (exports) {
 	        console.error('Attempted to listen to events during the capture phase on a ' + 'browser that does not support the capture phase. Your application ' + 'will not receive some events.');
 	      }
 	      return {
-	        remove: emptyFunction$2
+	        remove: emptyFunction_1
 	      };
 	    }
 	  },
@@ -1918,11 +1857,6 @@ var a = (function (exports) {
 	};
 
 	var EventListener_1 = EventListener;
-
-	var EventListener$1 = /*#__PURE__*/Object.freeze({
-		default: EventListener_1,
-		__moduleExports: EventListener_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -1958,11 +1892,6 @@ var a = (function (exports) {
 	}
 
 	var getActiveElement_1 = getActiveElement;
-
-	var getActiveElement$1 = /*#__PURE__*/Object.freeze({
-		default: getActiveElement_1,
-		__moduleExports: getActiveElement_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2026,11 +1955,6 @@ var a = (function (exports) {
 
 	var shallowEqual_1 = shallowEqual;
 
-	var shallowEqual$1 = /*#__PURE__*/Object.freeze({
-		default: shallowEqual_1,
-		__moduleExports: shallowEqual_1
-	});
-
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -2052,13 +1976,6 @@ var a = (function (exports) {
 
 	var isNode_1 = isNode;
 
-	var isNode$1 = /*#__PURE__*/Object.freeze({
-		default: isNode_1,
-		__moduleExports: isNode_1
-	});
-
-	var isNode$2 = ( isNode$1 && isNode_1 ) || isNode$1;
-
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
 	 *
@@ -2075,17 +1992,10 @@ var a = (function (exports) {
 	 * @return {boolean} Whether or not the object is a DOM text node.
 	 */
 	function isTextNode(object) {
-	  return isNode$2(object) && object.nodeType == 3;
+	  return isNode_1(object) && object.nodeType == 3;
 	}
 
 	var isTextNode_1 = isTextNode;
-
-	var isTextNode$1 = /*#__PURE__*/Object.freeze({
-		default: isTextNode_1,
-		__moduleExports: isTextNode_1
-	});
-
-	var isTextNode$2 = ( isTextNode$1 && isTextNode_1 ) || isTextNode$1;
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2108,9 +2018,9 @@ var a = (function (exports) {
 	    return false;
 	  } else if (outerNode === innerNode) {
 	    return true;
-	  } else if (isTextNode$2(outerNode)) {
+	  } else if (isTextNode_1(outerNode)) {
 	    return false;
-	  } else if (isTextNode$2(innerNode)) {
+	  } else if (isTextNode_1(innerNode)) {
 	    return containsNode(outerNode, innerNode.parentNode);
 	  } else if ('contains' in outerNode) {
 	    return outerNode.contains(innerNode);
@@ -2122,11 +2032,6 @@ var a = (function (exports) {
 	}
 
 	var containsNode_1 = containsNode;
-
-	var containsNode$1 = /*#__PURE__*/Object.freeze({
-		default: containsNode_1,
-		__moduleExports: containsNode_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2150,11 +2055,6 @@ var a = (function (exports) {
 	}
 
 	var focusNode_1 = focusNode;
-
-	var focusNode$1 = /*#__PURE__*/Object.freeze({
-		default: focusNode_1,
-		__moduleExports: focusNode_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2185,13 +2085,6 @@ var a = (function (exports) {
 
 	var hyphenate_1 = hyphenate;
 
-	var hyphenate$1 = /*#__PURE__*/Object.freeze({
-		default: hyphenate_1,
-		__moduleExports: hyphenate_1
-	});
-
-	var hyphenate$2 = ( hyphenate$1 && hyphenate_1 ) || hyphenate$1;
-
 	var msPattern = /^ms-/;
 
 	/**
@@ -2211,15 +2104,10 @@ var a = (function (exports) {
 	 * @return {string}
 	 */
 	function hyphenateStyleName(string) {
-	  return hyphenate$2(string).replace(msPattern, '-ms-');
+	  return hyphenate_1(string).replace(msPattern, '-ms-');
 	}
 
 	var hyphenateStyleName_1 = hyphenateStyleName;
-
-	var hyphenateStyleName$1 = /*#__PURE__*/Object.freeze({
-		default: hyphenateStyleName_1,
-		__moduleExports: hyphenateStyleName_1
-	});
 
 	/**
 	 * Copyright (c) 2013-present, Facebook, Inc.
@@ -2249,13 +2137,6 @@ var a = (function (exports) {
 
 	var camelize_1 = camelize;
 
-	var camelize$1 = /*#__PURE__*/Object.freeze({
-		default: camelize_1,
-		__moduleExports: camelize_1
-	});
-
-	var camelize$2 = ( camelize$1 && camelize_1 ) || camelize$1;
-
 	var msPattern$1 = /^-ms-/;
 
 	/**
@@ -2276,31 +2157,10 @@ var a = (function (exports) {
 	 * @return {string}
 	 */
 	function camelizeStyleName(string) {
-	  return camelize$2(string.replace(msPattern$1, 'ms-'));
+	  return camelize_1(string.replace(msPattern$1, 'ms-'));
 	}
 
 	var camelizeStyleName_1 = camelizeStyleName;
-
-	var camelizeStyleName$1 = /*#__PURE__*/Object.freeze({
-		default: camelizeStyleName_1,
-		__moduleExports: camelizeStyleName_1
-	});
-
-	var require$$3 = ( ExecutionEnvironment$1 && ExecutionEnvironment_1 ) || ExecutionEnvironment$1;
-
-	var require$$6 = ( EventListener$1 && EventListener_1 ) || EventListener$1;
-
-	var require$$7 = ( getActiveElement$1 && getActiveElement_1 ) || getActiveElement$1;
-
-	var require$$8 = ( shallowEqual$1 && shallowEqual_1 ) || shallowEqual$1;
-
-	var require$$9 = ( containsNode$1 && containsNode_1 ) || containsNode$1;
-
-	var require$$10 = ( focusNode$1 && focusNode_1 ) || focusNode$1;
-
-	var require$$13 = ( hyphenateStyleName$1 && hyphenateStyleName_1 ) || hyphenateStyleName$1;
-
-	var require$$14 = ( camelizeStyleName$1 && camelizeStyleName_1 ) || camelizeStyleName$1;
 
 	var reactDom_development = createCommonjsModule(function (module) {
 
@@ -2310,20 +2170,20 @@ var a = (function (exports) {
 	  (function() {
 
 	var React = react;
-	var invariant = require$$0;
-	var warning = require$$1;
-	var ExecutionEnvironment = require$$3;
-	var _assign = assign;
-	var emptyFunction = emptyFunction$2;
-	var EventListener = require$$6;
-	var getActiveElement = require$$7;
-	var shallowEqual = require$$8;
-	var containsNode = require$$9;
-	var focusNode = require$$10;
-	var emptyObject = require$$2$1;
-	var checkPropTypes = checkPropTypes$2;
-	var hyphenateStyleName = require$$13;
-	var camelizeStyleName = require$$14;
+	var invariant = invariant_1;
+	var warning = warning_1;
+	var ExecutionEnvironment = ExecutionEnvironment_1;
+	var _assign = objectAssign;
+	var emptyFunction = emptyFunction_1;
+	var EventListener = EventListener_1;
+	var getActiveElement = getActiveElement_1;
+	var shallowEqual = shallowEqual_1;
+	var containsNode = containsNode_1;
+	var focusNode = focusNode_1;
+	var emptyObject = emptyObject_1;
+	var checkPropTypes = checkPropTypes_1;
+	var hyphenateStyleName = hyphenateStyleName_1;
+	var camelizeStyleName = camelizeStyleName_1;
 
 	/**
 	 * WARNING: DO NOT manually require this module.
@@ -17651,17 +17511,10 @@ var a = (function (exports) {
 	}
 	});
 
-	var reactDom_development$1 = /*#__PURE__*/Object.freeze({
-		default: reactDom_development,
-		__moduleExports: reactDom_development
-	});
-
-	var require$$0$2 = ( reactDom_development$1 && reactDom_development ) || reactDom_development$1;
-
 	var reactDom = createCommonjsModule(function (module) {
 
 	{
-	  module.exports = require$$0$2;
+	  module.exports = reactDom_development;
 	}
 	});
 	var reactDom_1 = reactDom.render;
@@ -17807,10 +17660,10 @@ var a = (function (exports) {
 	      componentName = componentName || ANONYMOUS;
 	      propFullName = propFullName || propName;
 
-	      if (secret !== require$$2) {
+	      if (secret !== ReactPropTypesSecret_1) {
 	        if (throwOnDirectAccess) {
 	          // New behavior only for users of `prop-types` package
-	          require$$0(
+	          invariant_1(
 	            false,
 	            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
 	            'Use `PropTypes.checkPropTypes()` to call them. ' +
@@ -17824,7 +17677,7 @@ var a = (function (exports) {
 	            // Avoid spamming the console because they are often not actionable except for lib authors
 	            manualPropTypeWarningCount < 3
 	          ) {
-	            require$$1(
+	            warning_1(
 	              false,
 	              'You are manually calling a React.PropTypes validation ' +
 	              'function for the `%s` prop on `%s`. This is deprecated ' +
@@ -17876,7 +17729,7 @@ var a = (function (exports) {
 	  }
 
 	  function createAnyTypeChecker() {
-	    return createChainableTypeChecker(emptyFunction$2.thatReturnsNull);
+	    return createChainableTypeChecker(emptyFunction_1.thatReturnsNull);
 	  }
 
 	  function createArrayOfTypeChecker(typeChecker) {
@@ -17890,7 +17743,7 @@ var a = (function (exports) {
 	        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
 	      }
 	      for (var i = 0; i < propValue.length; i++) {
-	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', require$$2);
+	        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret_1);
 	        if (error instanceof Error) {
 	          return error;
 	        }
@@ -17926,8 +17779,8 @@ var a = (function (exports) {
 
 	  function createEnumTypeChecker(expectedValues) {
 	    if (!Array.isArray(expectedValues)) {
-	      require$$1(false, 'Invalid argument supplied to oneOf, expected an instance of array.');
-	      return emptyFunction$2.thatReturnsNull;
+	      warning_1(false, 'Invalid argument supplied to oneOf, expected an instance of array.');
+	      return emptyFunction_1.thatReturnsNull;
 	    }
 
 	    function validate(props, propName, componentName, location, propFullName) {
@@ -17956,7 +17809,7 @@ var a = (function (exports) {
 	      }
 	      for (var key in propValue) {
 	        if (propValue.hasOwnProperty(key)) {
-	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
+	          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
 	          if (error instanceof Error) {
 	            return error;
 	          }
@@ -17969,28 +17822,28 @@ var a = (function (exports) {
 
 	  function createUnionTypeChecker(arrayOfTypeCheckers) {
 	    if (!Array.isArray(arrayOfTypeCheckers)) {
-	      require$$1(false, 'Invalid argument supplied to oneOfType, expected an instance of array.');
-	      return emptyFunction$2.thatReturnsNull;
+	      warning_1(false, 'Invalid argument supplied to oneOfType, expected an instance of array.');
+	      return emptyFunction_1.thatReturnsNull;
 	    }
 
 	    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	      var checker = arrayOfTypeCheckers[i];
 	      if (typeof checker !== 'function') {
-	        require$$1(
+	        warning_1(
 	          false,
 	          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
 	          'received %s at index %s.',
 	          getPostfixForTypeWarning(checker),
 	          i
 	        );
-	        return emptyFunction$2.thatReturnsNull;
+	        return emptyFunction_1.thatReturnsNull;
 	      }
 	    }
 
 	    function validate(props, propName, componentName, location, propFullName) {
 	      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
 	        var checker = arrayOfTypeCheckers[i];
-	        if (checker(props, propName, componentName, location, propFullName, require$$2) == null) {
+	        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
 	          return null;
 	        }
 	      }
@@ -18022,7 +17875,7 @@ var a = (function (exports) {
 	        if (!checker) {
 	          continue;
 	        }
-	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
 	        if (error) {
 	          return error;
 	        }
@@ -18041,7 +17894,7 @@ var a = (function (exports) {
 	      }
 	      // We need to check all keys in case some are required but missing from
 	      // props.
-	      var allKeys = assign({}, props[propName], shapeTypes);
+	      var allKeys = objectAssign({}, props[propName], shapeTypes);
 	      for (var key in allKeys) {
 	        var checker = shapeTypes[key];
 	        if (!checker) {
@@ -18051,7 +17904,7 @@ var a = (function (exports) {
 	            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
 	          );
 	        }
-	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, require$$2);
+	        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
 	        if (error) {
 	          return error;
 	        }
@@ -18188,18 +18041,11 @@ var a = (function (exports) {
 	    return propValue.constructor.name;
 	  }
 
-	  ReactPropTypes.checkPropTypes = checkPropTypes$2;
+	  ReactPropTypes.checkPropTypes = checkPropTypes_1;
 	  ReactPropTypes.PropTypes = ReactPropTypes;
 
 	  return ReactPropTypes;
 	};
-
-	var factoryWithTypeCheckers$1 = /*#__PURE__*/Object.freeze({
-		default: factoryWithTypeCheckers,
-		__moduleExports: factoryWithTypeCheckers
-	});
-
-	var require$$0$3 = ( factoryWithTypeCheckers$1 && factoryWithTypeCheckers ) || factoryWithTypeCheckers$1;
 
 	var propTypes = createCommonjsModule(function (module) {
 	/**
@@ -18224,13 +18070,8 @@ var a = (function (exports) {
 	  // By explicitly using `prop-types` you are opting into new development behavior.
 	  // http://fb.me/prop-types-in-prod
 	  var throwOnDirectAccess = true;
-	  module.exports = require$$0$3(isValidElement, throwOnDirectAccess);
+	  module.exports = factoryWithTypeCheckers(isValidElement, throwOnDirectAccess);
 	}
-	});
-
-	var propTypes$1 = /*#__PURE__*/Object.freeze({
-		default: propTypes,
-		__moduleExports: propTypes
 	});
 
 	var subscriptionShape = propTypes.shape({
@@ -18252,7 +18093,7 @@ var a = (function (exports) {
 	 * @param {String} message The warning message.
 	 * @returns {void}
 	 */
-	function warning$3(message) {
+	function warning$2(message) {
 	  /* eslint-disable no-console */
 	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
 	    console.error(message);
@@ -18281,7 +18122,7 @@ var a = (function (exports) {
 	  }
 	  didWarnAboutReceivingStore = true;
 
-	  warning$3('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
+	  warning$2('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
 	}
 
 	function createProvider() {
@@ -18426,7 +18267,7 @@ var a = (function (exports) {
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	var invariant$3 = function(condition, format, a, b, c, d, e, f) {
+	var invariant$2 = function(condition, format, a, b, c, d, e, f) {
 	  {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
@@ -18454,7 +18295,7 @@ var a = (function (exports) {
 	  }
 	};
 
-	var browser = invariant$3;
+	var browser = invariant$2;
 
 	function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18842,7 +18683,7 @@ var a = (function (exports) {
 	  }
 	}
 
-	function shallowEqual$2(objA, objB) {
+	function shallowEqual$1(objA, objB) {
 	  if (is$1(objA, objB)) { return true; }
 
 	  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
@@ -19354,7 +19195,7 @@ var a = (function (exports) {
 	 * @param {String} message The warning message.
 	 * @returns {void}
 	 */
-	function warning$4(message) {
+	function warning$3(message) {
 	  /* eslint-disable no-console */
 	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
 	    console.error(message);
@@ -19442,7 +19283,7 @@ var a = (function (exports) {
 
 	    {
 	      if (typeof reducers[key] === 'undefined') {
-	        warning$4('No reducer provided for key "' + key + '"');
+	        warning$3('No reducer provided for key "' + key + '"');
 	      }
 	    }
 
@@ -19475,7 +19316,7 @@ var a = (function (exports) {
 	    {
 	      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
 	      if (warningMessage) {
-	        warning$4(warningMessage);
+	        warning$3(warningMessage);
 	      }
 	    }
 
@@ -19638,7 +19479,7 @@ var a = (function (exports) {
 	function isCrushed() {}
 
 	if (typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
-	  warning$4('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+	  warning$3('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
 	}
 
 	var es = /*#__PURE__*/Object.freeze({
@@ -19651,7 +19492,7 @@ var a = (function (exports) {
 
 	function verifyPlainObject(value, displayName, methodName) {
 	  if (!isPlainObject(value)) {
-	    warning$3(methodName + '() in ' + displayName + ' must return a plain object. Instead received ' + value + '.');
+	    warning$2(methodName + '() in ' + displayName + ' must return a plain object. Instead received ' + value + '.');
 	  }
 	}
 
@@ -19802,7 +19643,7 @@ var a = (function (exports) {
 	    throw new Error('Unexpected value for ' + methodName + ' in ' + displayName + '.');
 	  } else if (methodName === 'mapStateToProps' || methodName === 'mapDispatchToProps') {
 	    if (!selector.hasOwnProperty('dependsOnOwnProps')) {
-	      warning$3('The selector for ' + methodName + ' of ' + displayName + ' did not specify a value for dependsOnOwnProps.');
+	      warning$2('The selector for ' + methodName + ' of ' + displayName + ' did not specify a value for dependsOnOwnProps.');
 	    }
 	  }
 	}
@@ -19974,11 +19815,11 @@ var a = (function (exports) {
 	        _ref2$areStatesEqual = _ref2.areStatesEqual,
 	        areStatesEqual = _ref2$areStatesEqual === undefined ? strictEqual : _ref2$areStatesEqual,
 	        _ref2$areOwnPropsEqua = _ref2.areOwnPropsEqual,
-	        areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual$2 : _ref2$areOwnPropsEqua,
+	        areOwnPropsEqual = _ref2$areOwnPropsEqua === undefined ? shallowEqual$1 : _ref2$areOwnPropsEqua,
 	        _ref2$areStatePropsEq = _ref2.areStatePropsEqual,
-	        areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual$2 : _ref2$areStatePropsEq,
+	        areStatePropsEqual = _ref2$areStatePropsEq === undefined ? shallowEqual$1 : _ref2$areStatePropsEq,
 	        _ref2$areMergedPropsE = _ref2.areMergedPropsEqual,
-	        areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual$2 : _ref2$areMergedPropsE,
+	        areMergedPropsEqual = _ref2$areMergedPropsE === undefined ? shallowEqual$1 : _ref2$areMergedPropsE,
 	        extraOptions = _objectWithoutProperties$2(_ref2, ['pure', 'areStatesEqual', 'areOwnPropsEqual', 'areStatePropsEqual', 'areMergedPropsEqual']);
 
 	    var initMapStateToProps = match(mapStateToProps, mapStateToPropsFactories, 'mapStateToProps');
@@ -20058,8 +19899,6 @@ var a = (function (exports) {
 	var thunk = createThunkMiddleware();
 	thunk.withExtraArgument = createThunkMiddleware;
 
-	var require$$1$1 = ( propTypes$1 && propTypes ) || propTypes$1;
-
 	var PropTypes = createCommonjsModule(function (module, exports) {
 
 	exports.__esModule = true;
@@ -20068,7 +19907,7 @@ var a = (function (exports) {
 
 
 
-	var _propTypes2 = _interopRequireDefault(require$$1$1);
+	var _propTypes2 = _interopRequireDefault(propTypes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20112,20 +19951,10 @@ var a = (function (exports) {
 	})]);
 	});
 
-	var PropTypes$1 = unwrapExports(PropTypes);
+	unwrapExports(PropTypes);
 	var PropTypes_1 = PropTypes.classNamesShape;
 	var PropTypes_2 = PropTypes.timeoutsShape;
 	var PropTypes_3 = PropTypes.transitionTimeout;
-
-	var PropTypes$2 = /*#__PURE__*/Object.freeze({
-		default: PropTypes$1,
-		__moduleExports: PropTypes,
-		classNamesShape: PropTypes_1,
-		timeoutsShape: PropTypes_2,
-		transitionTimeout: PropTypes_3
-	});
-
-	var _PropTypes = ( PropTypes$2 && PropTypes$1 ) || PropTypes$2;
 
 	var Transition_1 = createCommonjsModule(function (module, exports) {
 
@@ -20134,7 +19963,7 @@ var a = (function (exports) {
 
 
 
-	var PropTypes = _interopRequireWildcard(require$$1$1);
+	var PropTypes$$1 = _interopRequireWildcard(propTypes);
 
 
 
@@ -20532,7 +20361,7 @@ var a = (function (exports) {
 	}(_react2.default.Component);
 
 	Transition.contextTypes = {
-	  transitionGroup: PropTypes.object
+	  transitionGroup: PropTypes$$1.object
 	};
 	Transition.childContextTypes = {
 	  transitionGroup: function transitionGroup() {}
@@ -20554,12 +20383,12 @@ var a = (function (exports) {
 	   * </Transition>
 	   * ```
 	   */
-	  children: PropTypes.oneOfType([PropTypes.func.isRequired, PropTypes.element.isRequired]).isRequired,
+	  children: PropTypes$$1.oneOfType([PropTypes$$1.func.isRequired, PropTypes$$1.element.isRequired]).isRequired,
 
 	  /**
 	   * Show the component; triggers the enter or exit states
 	   */
-	  in: PropTypes.bool,
+	  in: PropTypes$$1.bool,
 
 	  /**
 	   * By default the child component is mounted immediately along with
@@ -20567,13 +20396,13 @@ var a = (function (exports) {
 	   * first `in={true}` you can set `mountOnEnter`. After the first enter transition the component will stay
 	   * mounted, even on "exited", unless you also specify `unmountOnExit`.
 	   */
-	  mountOnEnter: PropTypes.bool,
+	  mountOnEnter: PropTypes$$1.bool,
 
 	  /**
 	   * By default the child component stays mounted after it reaches the `'exited'` state.
 	   * Set `unmountOnExit` if you'd prefer to unmount the component after it finishes exiting.
 	   */
-	  unmountOnExit: PropTypes.bool,
+	  unmountOnExit: PropTypes$$1.bool,
 
 	  /**
 	   * Normally a component is not transitioned if it is shown when the `<Transition>` component mounts.
@@ -20582,17 +20411,17 @@ var a = (function (exports) {
 	   *
 	   * > Note: there are no specific "appear" states. `appear` only adds an additional `enter` transition.
 	   */
-	  appear: PropTypes.bool,
+	  appear: PropTypes$$1.bool,
 
 	  /**
 	   * Enable or disable enter transitions.
 	   */
-	  enter: PropTypes.bool,
+	  enter: PropTypes$$1.bool,
 
 	  /**
 	   * Enable or disable exit transitions.
 	   */
-	  exit: PropTypes.bool,
+	  exit: PropTypes$$1.bool,
 
 	  /**
 	   * The duration of the transition, in milliseconds.
@@ -20617,7 +20446,7 @@ var a = (function (exports) {
 	      args[_key - 1] = arguments$1[_key];
 	    }
 
-	    var pt = _PropTypes.timeoutsShape;
+	    var pt = PropTypes.timeoutsShape;
 	    if (!props.addEndListener) { pt = pt.isRequired; }
 	    return pt.apply(undefined, [props].concat(args));
 	  },
@@ -20634,7 +20463,7 @@ var a = (function (exports) {
 	   * }}
 	   * ```
 	   */
-	  addEndListener: PropTypes.func,
+	  addEndListener: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired before the "entering" status is applied. An extra parameter
@@ -20642,7 +20471,7 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool) -> void
 	   */
-	  onEnter: PropTypes.func,
+	  onEnter: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired after the "entering" status is applied. An extra parameter
@@ -20650,7 +20479,7 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool)
 	   */
-	  onEntering: PropTypes.func,
+	  onEntering: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired after the "entered" status is applied. An extra parameter
@@ -20658,28 +20487,28 @@ var a = (function (exports) {
 	   *
 	   * @type Function(node: HtmlElement, isAppearing: bool) -> void
 	   */
-	  onEntered: PropTypes.func,
+	  onEntered: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired before the "exiting" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExit: PropTypes.func,
+	  onExit: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired after the "exiting" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExiting: PropTypes.func,
+	  onExiting: PropTypes$$1.func,
 
 	  /**
 	   * Callback fired after the "exited" status is applied.
 	   *
 	   * @type Function(node: HtmlElement) -> void
 	   */
-	  onExited: PropTypes.func
+	  onExited: PropTypes$$1.func
 	};
 
 	// Name the function so it is clearer in the documentation
@@ -20858,7 +20687,7 @@ var a = (function (exports) {
 	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.width, height: props.height, stroke: '#927fba', fill: '#bacfed'}, react_4("polygon", {points: "156.19 121.99 195.26 197.64 582.74 352.41 543.68 276.76 156.19 121.99"}), react_4("path", {d: "M155.54,122.37,179.62,169l13.1,25.38c1,1.94,1.4,3.33,3.18,4.33,6.49,3.65,14.45,5.77,21.34,8.53L261.63,225l126.24,50.43,127.38,50.88,44.65,17.83,14.2,5.67c2.34.94,5,2.51,7.5,3a5.4,5.4,0,0,1,.94.37c.66.27,1.12-.58.85-1.1l-24.07-46.62L546.21,280c-1-1.93-1.4-3.33-3.18-4.33-6.48-3.65-14.44-5.77-21.34-8.52l-44.38-17.73L351.06,199,223.68,148.15,179,130.31l-14.2-5.67c-2.33-.93-5-2.54-7.51-3a5,5,0,0,1-.94-.37c-.9-.36-1.29,1.09-.4,1.44l54.07,21.6,122.05,48.75L462,244.92l77.42,30.92c1.16.47,3.12.83,4.1,1.64-.81-.67-.17.2,0,.62.55,1,1.07,2.07,1.61,3.1l5.62,10.89L580,348.72l2.1,4.07.84-1.1-54.06-21.6L406.82,281.34,277,229.48l-77.41-30.92c-1.17-.46-3.12-.83-4.11-1.64.82.67.17-.2-.05-.62-.55-1-1.07-2.07-1.61-3.1l-5.62-10.88-29.24-56.64-2.1-4.07C156.39,120.75,155.1,121.51,155.54,122.37Z"}), react_4("polygon", {points: "624.11 248.82 543.67 276.74 156.19 121.97 255.18 101.46 624.11 248.82"}), react_4("path", {d: "M623.91,248.1l-49.57,17.2-26.76,9.29c-1,.34-2,.74-3,1-.33.1-1.58.33-.75.39a5.12,5.12,0,0,1-1.15-.46c-7.51-2.5-14.84-5.92-22.19-8.86l-44.66-17.84L349.2,198.26,223,147.84,178.8,130.2l-14-5.58c-2-.79-5.34-3-7.5-3a3.44,3.44,0,0,1-.94-.38v1.45L203,113.05l33.53-7,12.27-2.54c1.91-.4,4.21-1.28,6.17-1.28.86,0-.45-.12.57.11a17.44,17.44,0,0,1,2.47,1l10.33,4.12L307.15,123,428.77,171.6l126.71,50.61,45.25,18.08,14.49,5.78c2.44,1,5.12,2.52,7.7,3.08a7.53,7.53,0,0,1,1,.39c.9.36,1.29-1.09.4-1.44l-55.92-22.34L444.48,176.27,318.69,126l-43.62-17.42-13.17-5.27c-1.9-.75-4.16-2.13-6.19-2.47-2.26-.37-5.12.78-7.36,1.24L219.94,108l-60.12,12.45-3.83.8c-.8.16-.62,1.2,0,1.45l54.73,21.86L333,193.41l130.45,52.11L539.78,276c1.09.43,2.68,1.46,3.89,1.5s3.12-1,4.31-1.45l11.4-4L620,251l4.33-1.5C625.21,249.23,624.82,247.78,623.91,248.1Z"}), react_4("polygon", {points: "582.15 353.91 499.32 380.87 96.25 219.88 198.39 200.63 582.15 353.91"}), react_4("path", {d: "M582,353.19,530.2,370l-27.68,9c-2.69.88-2.46,1.41-4.47.52-23.1-10.15-47-18.77-70.42-28.12l-131.5-52.53L165.44,246.72l-45.81-18.3-14.48-5.79c-2.14-.85-5.37-2.93-7.69-3.07a3.94,3.94,0,0,1-1-.4v1.45l49.1-9.26,34.81-6.56,12-2.26c1.83-.34,4.13-1.2,6-1.13.15,0-.32,0,.56.24a24.78,24.78,0,0,1,2.63,1l11,4.39,40.84,16.32,126.51,50.53,131.36,52.46,46.95,18.75,14.8,5.92c2.55,1,5.26,2.52,7.93,3.16a9.42,9.42,0,0,1,1.06.43c.89.35,1.28-1.1.39-1.45l-57.88-23.12L396,278.77l-131.1-52.36-45.13-18-14-5.59c-2.11-.84-4.52-2.27-6.76-2.7s-4.89.58-7.12,1l-28.85,5.43-62.85,11.85-4.18.79c-.81.15-.61,1.2,0,1.45l56.5,22.56,127,50.72,135.32,54.05,80.12,32c1.18.47,2.87,1.56,4.15,1.66s2.87-.8,4-1.18l11.34-3.69,63.16-20.56,4.72-1.53C583.27,354.34,582.88,352.89,582,353.19Z"}), react_4("polygon", {points: "540.44 459.03 498.99 382.42 96 221.47 137.46 298.07 540.44 459.03"}), react_4("path", {d: "M541.09,458.65,515,410.37l-13.62-25.18c-1.06-1.95-1.4-3-3.22-3.91-7.11-3.67-15.22-6.08-22.64-9L429.3,353.79,297.23,301l-131.5-52.53-46.06-18.39-14.74-5.89c-2.45-1-5.14-2.53-7.72-3.08a7.36,7.36,0,0,1-1-.41c-.65-.26-1.13.58-.85,1.1l26.13,48.29,13.63,25.17c1,2,1.39,3,3.21,3.92,7.12,3.66,15.22,6.08,22.64,9l46.19,18.45,132.06,52.75L470.72,432l46,18.4,14.75,5.89c2.44,1,5.13,2.53,7.71,3.08a6.24,6.24,0,0,1,1,.4c.9.36,1.29-1.09.4-1.44l-56.31-22.5L358.16,385.42,223.3,331.56l-81.05-32.38c-1.3-.51-3.46-.93-4.57-1.82.71.57.35.09.08-.3-.6-.9-1-1.95-1.57-2.9l-5.76-10.64L99,225.45l-2.36-4.36-.85,1.1,56.32,22.49,126.16,50.4,134.86,53.86,81.05,32.37c1.3.52,3.47.93,4.57,1.83-.71-.58-.34-.1-.08.3a31.14,31.14,0,0,1,1.57,2.9L506,397,537.43,455l2.36,4.37C540.25,460.26,541.55,459.5,541.09,458.65Z"}), react_4("polygon", {points: "54.64 325.06 137.46 298.09 540.45 459.05 438.32 478.31 54.64 325.06"}), react_4("path", {d: "M54.83,325.78l51.75-16.85L134.05,300c2.77-.9,2.65-1.48,4.68-.59,23,10.12,46.88,18.72,70.24,28.06L340.61,380l130.83,52.25L517,450.49l14.51,5.8c2.15.86,5.38,2.94,7.72,3.08a4.71,4.71,0,0,1,1,.4v-1.44l-49.1,9.26-34.8,6.56-12,2.26c-1.83.34-4.12,1.2-6,1.13-.15,0,.32,0-.56-.24a23.62,23.62,0,0,1-2.63-1.05l-11-4.38-40.83-16.31L256.89,405,125.56,352.58,78.62,333.83l-14.81-5.91c-2.54-1-5.25-2.52-7.92-3.16a9.42,9.42,0,0,1-1.06-.43c-.89-.35-1.28,1.1-.39,1.45l57.87,23.12,128.4,51.28,131.08,52.36,45.11,18,14,5.59c2.11.84,4.52,2.27,6.76,2.7s4.89-.58,7.12-1l28.85-5.44,62.84-11.85,4.18-.79c.8-.15.6-1.2,0-1.44l-56.32-22.5L357.24,385.07l-135.1-54L141.83,299c-1.18-.47-2.88-1.57-4.17-1.66s-2.85.8-4,1.17l-11.72,3.82L59.16,322.8l-4.72,1.53C53.52,324.63,53.91,326.08,54.83,325.78Z"}), react_4("polygon", {points: "478.8 556.22 440.01 480.68 54.37 326.64 93.15 402.18 478.8 556.22"}), react_4("path", {d: "M479.45,555.84l-23.9-46.55-12.91-25.14c-1-1.92-1.43-3.46-3.18-4.49-2.11-1.26-4.86-2-7.14-2.86l-13.93-5.56L374.47,453.7,248.32,403.31l-126.93-50.7L77.31,335l-14.26-5.7c-2.38-.95-5-2.49-7.54-3a7.52,7.52,0,0,1-.95-.38c-.65-.26-1.11.58-.84,1.1l23.9,46.55,12.9,25.14c1,1.92,1.43,3.46,3.18,4.5,2.12,1.25,4.87,1.94,7.15,2.85l13.92,5.56,43.92,17.54,126.16,50.39,126.92,50.7,44.08,17.6,14.26,5.7c2.38,1,5,2.49,7.54,3a7,7,0,0,1,1,.38c.89.36,1.28-1.09.4-1.45L425.05,534,303.33,485.33,174.4,433.83l-77-30.76c-1.12-.45-3.07-.82-4-1.61.89.74.09-.33-.1-.72-.53-1.08-1.1-2.15-1.65-3.22l-5.65-11L57.1,330.33,55,326.27l-.84,1.1,53.94,21.54,121.72,48.62L358.77,449l77,30.76c1.13.45,3.07.82,4,1.61-.88-.74-.09.33.11.72.53,1.08,1.1,2.15,1.64,3.22l5.66,11,28.84,56.19,2.09,4.07C478.59,557.45,479.89,556.7,479.45,555.84Z"})));
 	}
 	function HomeEight(props) {
-	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.dimension, height: props.dimension, stroke: '#28649e'}, react_4("path", {className: 'stretch-test', d: "M5.9,262.38C26.51,279.21,51.09,283.07,77,282c10.31-.42,20.54-.92,30.2-4.94,9.93-4.13,18.53-10.91,25.93-18.63,16.15-16.84,26.05-38.34,40.93-56.16,16.33-19.56,38.14-29.69,63.47-31.1,52-2.91,101.87,26.35,153.89,15.31,23.28-4.95,43.86-17.61,64-29.68,22.34-13.36,44.94-25.1,70.64-30.48,25.11-5.26,55.72-6.42,75.26,13.16,8.34,8.36,13.7,19.9,12.45,31.86-1.35,13-9.34,24.75-16.05,35.59-12.28,19.87-26.41,39.89-31.17,63.19-4.89,23.88,3,46.76,15,67.24,13.4,22.8,31.8,43,41.09,68.11,8.19,22.1,8.8,50.6-10.09,67.58-15.8,14.2-40.77,16.77-58.63,5-10.08-6.63-17.79-16.21-27.33-23.54a91.65,91.65,0,0,0-29-15.39c-9.51-2.87-19.87-3.74-29.5-.88a46.23,46.23,0,0,0-13.66,7c-5.24,3.74-10.37,7.87-17.13,8-12.64.22-22.75-11.52-28.09-21.76-5.1-9.76-8.3-20.5-14.55-29.65-10.62-15.54-30.35-21.17-47.41-12.59-8.82,4.43-14.69,12.45-17.7,21.72a82.89,82.89,0,0,0-3.16,32.43c1.19,11.26,7.78,22.76,12.5,32.91.82,1.75,3.4.23,2.59-1.51C336,462.76,329,450.19,329.24,436.56c.23-12.52,1.42-26.69,9.65-36.76,6.79-8.33,17.95-12.32,28.52-11.43,12.18,1,21.14,8.47,27.1,18.78,9.89,17.11,14.73,42.72,36.95,48.41,11.08,2.84,18.54-3.82,27.2-9.49,10.15-6.65,22.21-7.84,33.88-5.17,11.43,2.62,22.06,8.33,31.41,15.31,9.62,7.2,17.32,16.65,27.18,23.54,15.63,10.91,36.33,11.4,53.11,2.71,18.86-9.76,27.72-29.86,27-50.54-.9-24.62-13.51-46.06-27-65.9-14.46-21.28-31-42.89-35.26-68.94-4.23-25.61,7.17-49.11,20.1-70.41,6.26-10.31,13-20.34,18.87-30.87,5.57-10,10.27-21,8.8-32.63-2.66-21.28-21.55-36.34-41.43-41C551,116.55,524.05,122,501,130.35s-43.11,22-64.19,34c-22.93,13.08-46.5,22.23-73.3,21.56-28.09-.71-55-9.48-82.51-14.39-22.56-4-46.64-5.87-68.85,1-21.85,6.76-37.21,22.19-49.95,40.57-13.49,19.45-24.88,41.39-44.94,55.08a60.41,60.41,0,0,1-29.9,10.3c-14.1,1.12-28.79,1.56-42.74-1.07A81.88,81.88,0,0,1,8,260.25c-1.49-1.21-3.62.9-2.12,2.13Z"})));
+	    return (react_4("svg", {xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 637 637", style: props.style, width: props.dimension, height: props.dimension, stroke: '#28649e'}, react_4("path", {d: "M5.9,262.38C26.51,279.21,51.09,283.07,77,282c10.31-.42,20.54-.92,30.2-4.94,9.93-4.13,18.53-10.91,25.93-18.63,16.15-16.84,26.05-38.34,40.93-56.16,16.33-19.56,38.14-29.69,63.47-31.1,52-2.91,101.87,26.35,153.89,15.31,23.28-4.95,43.86-17.61,64-29.68,22.34-13.36,44.94-25.1,70.64-30.48,25.11-5.26,55.72-6.42,75.26,13.16,8.34,8.36,13.7,19.9,12.45,31.86-1.35,13-9.34,24.75-16.05,35.59-12.28,19.87-26.41,39.89-31.17,63.19-4.89,23.88,3,46.76,15,67.24,13.4,22.8,31.8,43,41.09,68.11,8.19,22.1,8.8,50.6-10.09,67.58-15.8,14.2-40.77,16.77-58.63,5-10.08-6.63-17.79-16.21-27.33-23.54a91.65,91.65,0,0,0-29-15.39c-9.51-2.87-19.87-3.74-29.5-.88a46.23,46.23,0,0,0-13.66,7c-5.24,3.74-10.37,7.87-17.13,8-12.64.22-22.75-11.52-28.09-21.76-5.1-9.76-8.3-20.5-14.55-29.65-10.62-15.54-30.35-21.17-47.41-12.59-8.82,4.43-14.69,12.45-17.7,21.72a82.89,82.89,0,0,0-3.16,32.43c1.19,11.26,7.78,22.76,12.5,32.91.82,1.75,3.4.23,2.59-1.51C336,462.76,329,450.19,329.24,436.56c.23-12.52,1.42-26.69,9.65-36.76,6.79-8.33,17.95-12.32,28.52-11.43,12.18,1,21.14,8.47,27.1,18.78,9.89,17.11,14.73,42.72,36.95,48.41,11.08,2.84,18.54-3.82,27.2-9.49,10.15-6.65,22.21-7.84,33.88-5.17,11.43,2.62,22.06,8.33,31.41,15.31,9.62,7.2,17.32,16.65,27.18,23.54,15.63,10.91,36.33,11.4,53.11,2.71,18.86-9.76,27.72-29.86,27-50.54-.9-24.62-13.51-46.06-27-65.9-14.46-21.28-31-42.89-35.26-68.94-4.23-25.61,7.17-49.11,20.1-70.41,6.26-10.31,13-20.34,18.87-30.87,5.57-10,10.27-21,8.8-32.63-2.66-21.28-21.55-36.34-41.43-41C551,116.55,524.05,122,501,130.35s-43.11,22-64.19,34c-22.93,13.08-46.5,22.23-73.3,21.56-28.09-.71-55-9.48-82.51-14.39-22.56-4-46.64-5.87-68.85,1-21.85,6.76-37.21,22.19-49.95,40.57-13.49,19.45-24.88,41.39-44.94,55.08a60.41,60.41,0,0,1-29.9,10.3c-14.1,1.12-28.79,1.56-42.74-1.07A81.88,81.88,0,0,1,8,260.25c-1.49-1.21-3.62.9-2.12,2.13Z"})));
 	}
 	function LeftArrow(props) {
 	    return (react_4("svg", {className: props.style, viewBox: "0 0 50 80"}, react_4("polyline", {className: props.style, fill: "none", points: "45.63,75.8 0.375,38.087 45.63,0.375 "})));
@@ -20869,7 +20698,7 @@ var a = (function (exports) {
 	  if (typeof undefined === "function" && undefined.amd) {
 	    undefined(['exports', 'react', 'prop-types'], factory);
 	  } else {
-	    factory(exports, react, require$$1$1);
+	    factory(exports, react, propTypes);
 	  }
 	})(commonjsGlobal, function (exports, _react, _propTypes) {
 
@@ -21173,21 +21002,14 @@ var a = (function (exports) {
 	});
 	});
 
-	var reactSwipe$1 = unwrapExports(reactSwipe);
-
-	var reactSwipe$2 = /*#__PURE__*/Object.freeze({
-		default: reactSwipe$1,
-		__moduleExports: reactSwipe
-	});
-
-	var require$$0$4 = ( reactSwipe$2 && reactSwipe$1 ) || reactSwipe$2;
+	unwrapExports(reactSwipe);
 
 	var lib = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 	  if (typeof undefined === "function" && undefined.amd) {
 	    undefined(['exports', './react-swipe'], factory);
 	  } else {
-	    factory(exports, require$$0$4);
+	    factory(exports, reactSwipe);
 	  }
 	})(commonjsGlobal, function (exports, _reactSwipe) {
 
@@ -21217,6 +21039,10 @@ var a = (function (exports) {
 	    }
 	    Blinds.prototype.componentWillMount = function () {
 	        this.props.getPhotos();
+	        document.querySelector('body').classList.add('papaya-body');
+	    };
+	    Blinds.prototype.componentWillUnmount = function () {
+	        document.querySelector('body').classList.remove('papaya-body');
 	    };
 	    Blinds.prototype.handleClick = function (id, e) {
 	        e.preventDefault();
@@ -21537,18 +21363,18 @@ var a = (function (exports) {
 	    function Dial(props) {
 	        _super.call(this, props);
 	        this.state = {
-	            position: 0,
+	            position: 1,
 	            items: [
 	                {
-	                    position: 0,
-	                    selected: true,
+	                    position: 7,
+	                    selected: false,
 	                    title: 'photo',
 	                    class: 'di1 item',
 	                    icon: PhotoIcon,
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 1,
+	                    position: 0,
 	                    selected: false,
 	                    title: 'video',
 	                    class: 'di2 item',
@@ -21556,15 +21382,15 @@ var a = (function (exports) {
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 2,
-	                    selected: false,
+	                    position: 1,
+	                    selected: true,
 	                    title: 'whatever',
 	                    class: 'di3 item',
 	                    icon: CrowdIcon,
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 3,
+	                    position: 2,
 	                    selected: false,
 	                    title: 'asdf',
 	                    class: 'di4 item',
@@ -21572,7 +21398,7 @@ var a = (function (exports) {
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 4,
+	                    position: 3,
 	                    selected: false,
 	                    title: 'ldsfga;',
 	                    class: 'di5 item',
@@ -21580,7 +21406,7 @@ var a = (function (exports) {
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 5,
+	                    position: 4,
 	                    selected: false,
 	                    title: '^_^',
 	                    class: 'di6 item',
@@ -21588,7 +21414,7 @@ var a = (function (exports) {
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 6,
+	                    position: 5,
 	                    selected: false,
 	                    title: '-_-',
 	                    class: 'di7 item',
@@ -21596,7 +21422,7 @@ var a = (function (exports) {
 	                    link: '/photo'
 	                },
 	                {
-	                    position: 7,
+	                    position: 6,
 	                    selected: false,
 	                    title: '0.o',
 	                    class: 'di8 item',
@@ -21661,7 +21487,6 @@ var a = (function (exports) {
 	    };
 	    Dial.prototype.setPosition = function (position) {
 	        var _this = this;
-	        console.log('sent pos', position);
 	        this.setState({
 	            position: position
 	        }, function () { return _this.setRotation(); });
@@ -21689,7 +21514,7 @@ var a = (function (exports) {
 	                _this.state.items[i].selected = false;
 	                if (position >= 0) {
 	                    if (position === 0) {
-	                        _this.state.items[0].selected = true;
+	                        _this.state.items[1].selected = true;
 	                    }
 	                    else if (_this.state.items[i].position !== Math.abs(position - 8)) {
 	                        _this.state.items[i].selected = false;
@@ -21701,7 +21526,7 @@ var a = (function (exports) {
 	                else {
 	                    {
 	                        if (position === 0) {
-	                            _this.state.items[0].selected = true;
+	                            _this.state.items[1].selected = true;
 	                        }
 	                        else if (_this.state.items[i].position !== Math.abs(position)) {
 	                            _this.state.items[i].selected = false;
@@ -21740,7 +21565,7 @@ var a = (function (exports) {
 	        return (react_4("div", {className: 'page-wrapper'}, react_4("div", {className: 'r-menu-back'}, react_4(LeftArrow, {style: 'r-menu-back-icon'})), showSelected, react_4("div", {className: 'dial', style: style}, this.state.items.map(function (item, index) {
 	            var Icon = item.icon;
 	            return (react_4("div", {className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); }}, react_4(Icon, {styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons'})));
-	        }), react_4("div", {className: 'showDial'}, react_4(Repository, {class: "menu-icons"}))), react_4("div", null, react_4("button", {onClick: this.prevPosition}, "prev"), react_4("button", {onClick: this.nextPosition}, "next"))));
+	        }), react_4("div", {className: 'showDial', style: opStyle}, react_4(Repository, {class: "menu-icons"})))));
 	    };
 	    return Dial;
 	}(react_2));
@@ -21816,10 +21641,10 @@ var a = (function (exports) {
 	        };
 	        this.rawShapes = [
 	            {
-	                top: Math.random() * 100,
-	                left: Math.random() * 100,
+	                top: 10,
+	                left: 10,
 	                speed: Math.random(),
-	                dimension: randomDimension(),
+	                dimension: 300,
 	                color: '#' + Math.random().toString(16).slice(-6),
 	                shape: HomeTwo
 	            },
@@ -21880,9 +21705,19 @@ var a = (function (exports) {
 	                shape: HomeSeven
 	            } ];
 	    }
+	    Shapely.prototype.componentDidMount = function () {
+	        document.querySelector('body').classList.add('body');
+	    };
+	    Shapely.prototype.componentWillUnmount = function () {
+	        document.querySelector('body').classList.remove('body');
+	    };
 	    Shapely.prototype._onMouseMove = function (e) {
-	        var clientW = document.getElementById("root").clientWidth;
-	        var clientH = document.getElementById("root").offsetHeight;
+	        // let clientW = document.getElementById("root").offsetWidth
+	        // let clientH = document.getElementById("root").offsetHeight
+	        var clientW = document.body.clientWidth;
+	        var clientH = document.body.clientHeight;
+	        console.log('document width', clientW, 'document height', clientH);
+	        console.log('eclientx', e.clientX, 'eclientY', e.clientY);
 	        var width = (((clientW + e.clientX) / clientW) - 1) * 100;
 	        var height = (((clientH + e.clientY) / clientH) - 1) * 100;
 	        this.setState({
@@ -21905,31 +21740,32 @@ var a = (function (exports) {
 	    };
 	    Shapely.prototype.render = function () {
 	        var _this = this;
-	        var circles = this.rawShapes.map(function (circle, index) {
-	            var distance = _this.distance(circle);
-	            var top = parseFloat(circle.top) + '%';
-	            var left = parseFloat(circle.left) + '%';
-	            if (distance.mag < 20 && distance.mag !== 0) {
+	        var shapes = this.rawShapes.map(function (shape, index) {
+	            var distance = _this.distance(shape);
+	            var top = parseFloat(shape.top) + '%';
+	            var left = parseFloat(shape.left) + '%';
+	            var radius = 30;
+	            if (distance.mag < radius && distance.mag !== 0) {
 	                if (distance.magY <= 0) {
-	                    var h = Math.pow((distance.magY + 10), 2) - 98;
-	                    top = parseFloat(circle.top + h / 100) + '%';
+	                    var h = Math.pow((distance.magY + (radius / 2)), 2) - (radius * 5);
+	                    top = parseFloat(shape.top + h / 100) + '%';
 	                }
 	                else {
-	                    var h = Math.pow((distance.magY - 10), 2) - 98;
-	                    top = parseFloat(circle.top - h / 100) + '%';
+	                    var h = Math.pow((distance.magY - (radius / 2)), 2) - (radius * 5);
+	                    top = parseFloat(shape.top - h / 100) + '%';
 	                }
 	                if (distance.magX <= 0) {
-	                    var w = Math.pow((distance.magX + 10), 2) - 99;
-	                    left = parseFloat(circle.left + w / 100) + '%';
+	                    var w = Math.pow((distance.magX + radius / 2), 2) - (radius * 5);
+	                    left = parseFloat(shape.left + w / 100) + '%';
 	                }
 	                else {
-	                    var w = Math.pow((distance.magX - 10), 2) - 99;
-	                    left = parseFloat(circle.left - w / 100) + '%';
+	                    var w = Math.pow((distance.magX - radius / 2), 2) - (radius * 5);
+	                    left = parseFloat(shape.left - w / 100) + '%';
 	                }
 	            }
-	            return (react_4(Circle, {key: index, name: circle, speed: circle.speed, top: top, left: left, color: circle.color, dimension: circle.dimension, shape: circle.shape}));
+	            return (react_4(Circle, {key: index, name: shape, speed: shape.speed, top: top, left: left, color: shape.color, dimension: shape.dimension, shape: shape.shape}));
 	        });
-	        return (react_4("div", {className: "shapely-wrapper", onMouseMove: this._onMouseMove.bind(this)}, circles));
+	        return (react_4("div", {className: "shapely-wrapper", onMouseMove: this._onMouseMove.bind(this)}, shapes));
 	    };
 	    return Shapely;
 	}(react_2));
@@ -21947,11 +21783,11 @@ var a = (function (exports) {
 	            backgroundRepeat: 'no-repeat',
 	            backgroundPosition: 'center',
 	            backgroundColor: 'transparent',
+	            //border: "5px solid white",
 	            backgroundImage: "url(" + this.props.image + ")",
 	            borderRadius: '0',
-	            border: 'transparent',
 	            transition: '200ms',
-	            stroke: 'papayawhip',
+	            stroke: 'black',
 	        };
 	        // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)
 	        this.top = this.getTop();

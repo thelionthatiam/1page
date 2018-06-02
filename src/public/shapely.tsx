@@ -37,10 +37,10 @@ export default class Shapely extends React.Component {
         }
         this.rawShapes = [
             {
-                top: Math.random() * 100,
-                left: Math.random() * 100,
+                top: 10,
+                left: 10,
                 speed:Math.random(),
-                dimension: randomDimension(),
+                dimension: 300,
                 color: '#' + Math.random().toString(16).slice(-6),
                 shape:HomeTwo
             },
@@ -109,15 +109,29 @@ export default class Shapely extends React.Component {
         ]
     }
 
+    componentDidMount() {
+        document.querySelector('body').classList.add('body');
+    }
+    
+    componentWillUnmount () {
+        document.querySelector('body').classList.remove('body');
+    }
+
     _onMouseMove(e) {
-        let clientW = document.getElementById("root").clientWidth
-        let clientH = document.getElementById("root").offsetHeight
+        // let clientW = document.getElementById("root").offsetWidth
+        // let clientH = document.getElementById("root").offsetHeight
+        let clientW = document.body.clientWidth
+        let clientH = document.body.clientHeight
+        console.log('document width', clientW, 'document height', clientH)
+        console.log('eclientx', e.clientX, 'eclientY', e.clientY)
         let width = (((clientW + e.clientX) / clientW) - 1) * 100;
         let height = (((clientH + e.clientY) / clientH) - 1) * 100;
         this.setState({
             x: width,
             y: height
-        })
+        }
+        //,() => {console.log('mouse pos x', this.state.x, 'mouse pos y', this.state.y)}
+        )
     }
 
     distance(circle) {
@@ -137,38 +151,39 @@ export default class Shapely extends React.Component {
     }
 
     render() {
-        let circles = this.rawShapes.map((circle, index) => {
-            let distance = this.distance(circle)
-            let top = parseFloat(circle.top) + '%';
-            let left = parseFloat(circle.left) + '%';
+        let shapes = this.rawShapes.map((shape, index) => {
+            let distance = this.distance(shape)
+            let top = parseFloat(shape.top) + '%';
+            let left = parseFloat(shape.left) + '%';
+            let radius = 30
 
-            if (distance.mag < 20 && distance.mag !== 0) {
+            if (distance.mag < radius && distance.mag !== 0) {
                 if (distance.magY <= 0) {
-                    let h = Math.pow((distance.magY + 10), 2) - 98
-                    top = parseFloat(circle.top + h / 100) + '%';
+                    let h = Math.pow((distance.magY + (radius/2)), 2) - (radius*5)
+                    top = parseFloat(shape.top + h / 100) + '%';
                 } else {
-                    let h = Math.pow((distance.magY - 10), 2) - 98
-                    top = parseFloat(circle.top - h / 100) + '%';
+                    let h = Math.pow((distance.magY - (radius/2)), 2) - (radius*5)
+                    top = parseFloat(shape.top - h / 100) + '%';
                 }
 
                 if (distance.magX <= 0) {
-                    let w = Math.pow((distance.magX + 10), 2) - 99
-                    left = parseFloat(circle.left + w / 100) + '%';
+                    let w = Math.pow((distance.magX + radius/2), 2) - (radius*5)
+                    left = parseFloat(shape.left + w / 100) + '%';
                 } else {
-                    let w = Math.pow((distance.magX - 10), 2) - 99
-                    left = parseFloat(circle.left - w / 100) + '%';
+                    let w = Math.pow((distance.magX - radius/2), 2) - (radius*5)
+                    left = parseFloat(shape.left - w / 100) + '%';
                 }
             }
 
             return (<Circle
                 key={index}
-                name={circle}
-                speed={circle.speed}
+                name= {shape}
+                speed={shape.speed}
                 top={top}
                 left={left}
-                color={circle.color}
-                dimension={circle.dimension}
-                shape = {circle.shape}
+                color={shape.color}
+                dimension={shape.dimension}
+                shape = {shape.shape}
             />)
         })
 
@@ -177,7 +192,7 @@ export default class Shapely extends React.Component {
                 className="shapely-wrapper"
                 onMouseMove={this._onMouseMove.bind(this)}
             >
-                {circles}
+                {shapes}
             </div>
         )
     }
@@ -196,11 +211,11 @@ class Circle extends React.Component {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundColor: 'transparent',
+            //border: "5px solid white",
             backgroundImage: `url(${this.props.image})`,
             borderRadius: '0',
-            border: 'transparent',
             transition: '200ms',
-            stroke:'papayawhip',
+            stroke:'black',
             // transform:`translate(${-this.props.dimension/2}, ${-this.props.dimension/2})`
         }
         // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)
@@ -260,74 +275,3 @@ class Circle extends React.Component {
         )
     }
 }
-
-// {
-//     top: 35,
-//         left: 5,
-//             speed: Math.random(),
-//                 dimension: 300,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeTwo
-// },
-// {
-//     top: 30,
-//         left: 4,
-//             speed: Math.random(),
-//                 dimension: 380,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeThree
-//     //french fry
-
-// },
-// {
-//     top: 55,
-//         left: 20,
-//             speed: Math.random(),
-//                 dimension: 250,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeFour
-// },
-// {
-//     top: 14,
-//         left: 50,
-//             speed: Math.random(),
-//                 dimension: 300,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeFive
-//     // nugget
-// },
-// {
-//     top: 30,
-//         left: 55,
-//             speed: Math.random(),
-//                 dimension: 320,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeSix
-// },
-
-// {
-//     top: 45,
-//         left: 29,
-//             speed: Math.random(),
-//                 dimension: 500,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeOne
-// },
-// {
-//     top: 10,
-//         left: 3,
-//             speed: Math.random(),
-//                 dimension: 1000,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeEight
-//     //string
-// },
-// {
-//     top: 15,
-//         left: 17,
-//             speed: Math.random(),
-//                 dimension: 320,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeSeven
-//     //staircase
-// },

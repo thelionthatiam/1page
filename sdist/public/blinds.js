@@ -25,6 +25,10 @@ var Blinds = /** @class */ (function (_super) {
     }
     Blinds.prototype.componentWillMount = function () {
         this.props.getPhotos();
+        document.querySelector('body').classList.add('papaya-body');
+    };
+    Blinds.prototype.componentWillUnmount = function () {
+        document.querySelector('body').classList.remove('papaya-body');
     };
     Blinds.prototype.handleClick = function (id, e) {
         e.preventDefault();

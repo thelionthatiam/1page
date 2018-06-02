@@ -37,10 +37,10 @@ var Shapely = /** @class */ (function (_super) {
         };
         _this.rawShapes = [
             {
-                top: Math.random() * 100,
-                left: Math.random() * 100,
+                top: 10,
+                left: 10,
                 speed: Math.random(),
-                dimension: randomDimension(),
+                dimension: 300,
                 color: '#' + Math.random().toString(16).slice(-6),
                 shape: icons_1.HomeTwo
             },
@@ -107,15 +107,27 @@ var Shapely = /** @class */ (function (_super) {
         ];
         return _this;
     }
+    Shapely.prototype.componentDidMount = function () {
+        document.querySelector('body').classList.add('body');
+    };
+    Shapely.prototype.componentWillUnmount = function () {
+        document.querySelector('body').classList.remove('body');
+    };
     Shapely.prototype._onMouseMove = function (e) {
-        var clientW = document.getElementById("root").clientWidth;
-        var clientH = document.getElementById("root").offsetHeight;
+        // let clientW = document.getElementById("root").offsetWidth
+        // let clientH = document.getElementById("root").offsetHeight
+        var clientW = document.body.clientWidth;
+        var clientH = document.body.clientHeight;
+        console.log('document width', clientW, 'document height', clientH);
+        console.log('eclientx', e.clientX, 'eclientY', e.clientY);
         var width = (((clientW + e.clientX) / clientW) - 1) * 100;
         var height = (((clientH + e.clientY) / clientH) - 1) * 100;
         this.setState({
             x: width,
             y: height
-        });
+        }
+        //,() => {console.log('mouse pos x', this.state.x, 'mouse pos y', this.state.y)}
+        );
     };
     Shapely.prototype.distance = function (circle) {
         var clientH = document.getElementById("root").offsetHeight;
@@ -132,31 +144,32 @@ var Shapely = /** @class */ (function (_super) {
     };
     Shapely.prototype.render = function () {
         var _this = this;
-        var circles = this.rawShapes.map(function (circle, index) {
-            var distance = _this.distance(circle);
-            var top = parseFloat(circle.top) + '%';
-            var left = parseFloat(circle.left) + '%';
-            if (distance.mag < 20 && distance.mag !== 0) {
+        var shapes = this.rawShapes.map(function (shape, index) {
+            var distance = _this.distance(shape);
+            var top = parseFloat(shape.top) + '%';
+            var left = parseFloat(shape.left) + '%';
+            var radius = 30;
+            if (distance.mag < radius && distance.mag !== 0) {
                 if (distance.magY <= 0) {
-                    var h = Math.pow((distance.magY + 10), 2) - 98;
-                    top = parseFloat(circle.top + h / 100) + '%';
+                    var h = Math.pow((distance.magY + (radius / 2)), 2) - (radius * 5);
+                    top = parseFloat(shape.top + h / 100) + '%';
                 }
                 else {
-                    var h = Math.pow((distance.magY - 10), 2) - 98;
-                    top = parseFloat(circle.top - h / 100) + '%';
+                    var h = Math.pow((distance.magY - (radius / 2)), 2) - (radius * 5);
+                    top = parseFloat(shape.top - h / 100) + '%';
                 }
                 if (distance.magX <= 0) {
-                    var w = Math.pow((distance.magX + 10), 2) - 99;
-                    left = parseFloat(circle.left + w / 100) + '%';
+                    var w = Math.pow((distance.magX + radius / 2), 2) - (radius * 5);
+                    left = parseFloat(shape.left + w / 100) + '%';
                 }
                 else {
-                    var w = Math.pow((distance.magX - 10), 2) - 99;
-                    left = parseFloat(circle.left - w / 100) + '%';
+                    var w = Math.pow((distance.magX - radius / 2), 2) - (radius * 5);
+                    left = parseFloat(shape.left - w / 100) + '%';
                 }
             }
-            return (React.createElement(Circle, { key: index, name: circle, speed: circle.speed, top: top, left: left, color: circle.color, dimension: circle.dimension, shape: circle.shape }));
+            return (React.createElement(Circle, { key: index, name: shape, speed: shape.speed, top: top, left: left, color: shape.color, dimension: shape.dimension, shape: shape.shape }));
         });
-        return (React.createElement("div", { className: "shapely-wrapper", onMouseMove: this._onMouseMove.bind(this) }, circles));
+        return (React.createElement("div", { className: "shapely-wrapper", onMouseMove: this._onMouseMove.bind(this) }, shapes));
     };
     return Shapely;
 }(React.Component));
@@ -175,11 +188,11 @@ var Circle = /** @class */ (function (_super) {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundColor: 'transparent',
+            //border: "5px solid white",
             backgroundImage: "url(" + _this.props.image + ")",
             borderRadius: '0',
-            border: 'transparent',
             transition: '200ms',
-            stroke: 'papayawhip',
+            stroke: 'black',
         };
         // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)
         _this.top = _this.getTop();
@@ -225,72 +238,4 @@ var Circle = /** @class */ (function (_super) {
     };
     return Circle;
 }(React.Component));
-// {
-//     top: 35,
-//         left: 5,
-//             speed: Math.random(),
-//                 dimension: 300,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeTwo
-// },
-// {
-//     top: 30,
-//         left: 4,
-//             speed: Math.random(),
-//                 dimension: 380,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeThree
-//     //french fry
-// },
-// {
-//     top: 55,
-//         left: 20,
-//             speed: Math.random(),
-//                 dimension: 250,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeFour
-// },
-// {
-//     top: 14,
-//         left: 50,
-//             speed: Math.random(),
-//                 dimension: 300,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeFive
-//     // nugget
-// },
-// {
-//     top: 30,
-//         left: 55,
-//             speed: Math.random(),
-//                 dimension: 320,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeSix
-// },
-// {
-//     top: 45,
-//         left: 29,
-//             speed: Math.random(),
-//                 dimension: 500,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeOne
-// },
-// {
-//     top: 10,
-//         left: 3,
-//             speed: Math.random(),
-//                 dimension: 1000,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeEight
-//     //string
-// },
-// {
-//     top: 15,
-//         left: 17,
-//             speed: Math.random(),
-//                 dimension: 320,
-//                     color: '#' + Math.random().toString(16).slice(-6),
-//                         shape: HomeSeven
-//     //staircase
-// },
 //# sourceMappingURL=shapely.js.map

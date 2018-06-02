@@ -21,6 +21,11 @@ class Blinds extends React.Component {
 
     componentWillMount() {
         this.props.getPhotos()
+        document.querySelector('body').classList.add('papaya-body');
+    }
+
+    componentWillUnmount() {
+        document.querySelector('body').classList.remove('papaya-body')
     }
 
     handleClick(id, e) {

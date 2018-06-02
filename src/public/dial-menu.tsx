@@ -44,18 +44,18 @@ export default class Dial extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            position: 0,
+            position: 1,
             items: [
                 {
-                    position:0,
-                    selected:true,
+                    position:7,
+                    selected:false,
                     title:'photo',
                     class: 'di1 item',
                     icon: PhotoIcon,
                     link: '/photo'
                 }, 
                 {
-                    position:1,
+                    position:0,
                     selected:false,
                     title:'video',
                     class: 'di2 item',
@@ -63,15 +63,15 @@ export default class Dial extends React.Component {
                     link: '/photo'
                 }, 
                 {
-                    position:2,
-                    selected:false,
+                    position:1,
+                    selected:true,
                     title:'whatever',
                     class: 'di3 item',
                     icon:CrowdIcon,
                     link: '/photo'
                 }, 
                 {
-                    position:3,
+                    position:2,
                     selected:false,
                     title:'asdf',
                     class: 'di4 item',
@@ -79,7 +79,7 @@ export default class Dial extends React.Component {
                     link: '/photo'
                 }, 
                 {
-                    position:4,
+                    position:3,
                     selected:false,
                     title:'ldsfga;',
                     class: 'di5 item',
@@ -87,7 +87,7 @@ export default class Dial extends React.Component {
                     link: '/photo'
                 }, 
                 {
-                    position:5,
+                    position:4,
                     selected:false,
                     title:'^_^',
                     class: 'di6 item',
@@ -95,7 +95,7 @@ export default class Dial extends React.Component {
                     link: '/photo'
                 }, 
                 {
-                    position:6,
+                    position:5,
                     selected:false,
                     title:'-_-',
                     class: 'di7 item',
@@ -103,7 +103,7 @@ export default class Dial extends React.Component {
                     link: '/photo'
                 }, 
                 {
-                    position:7,
+                    position:6,
                     selected:false,
                     title:'0.o',
                     class: 'di8 item',
@@ -173,7 +173,6 @@ export default class Dial extends React.Component {
     }
 
     setPosition(position) {
-        console.log('sent pos', position)
         this.setState({
             position: position
         }, () => this.setRotation())
@@ -202,8 +201,9 @@ export default class Dial extends React.Component {
                 this.state.items[i].selected = false
                 if (position >= 0) {
                         if (position === 0) {
-                            this.state.items[0].selected = true
-                        } else if (this.state.items[i].position !== Math.abs(position - 8)) {
+                            this.state.items[1].selected = true
+                        } else 
+                        if (this.state.items[i].position !== Math.abs(position - 8)) {
                             this.state.items[i].selected = false
                         } else if (this.state.items[i].position === Math.abs(position - 8)) {
                             this.state.items[i].selected = true
@@ -212,8 +212,9 @@ export default class Dial extends React.Component {
                 } else {
                     {
                         if (position === 0) {
-                            this.state.items[0].selected = true
-                        } else if (this.state.items[i].position !== Math.abs(position)) {
+                            this.state.items[1].selected = true
+                        } else 
+                        if (this.state.items[i].position !== Math.abs(position)) {
                             this.state.items[i].selected = false
                         } else if (this.state.items[i].position === Math.abs(position)) {
                             this.state.items[i].selected = true
@@ -272,14 +273,14 @@ export default class Dial extends React.Component {
                             </div>
                         )
                     })}
-                    <div className='showDial'>
+                    <div className='showDial' style = {opStyle}>
                         <Repository class={"menu-icons"}/>
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     <button onClick={this.prevPosition} >prev</button>
                     <button onClick={this.nextPosition} >next</button>
-                </div>
+                </div> */}
             </div>
         )
     }

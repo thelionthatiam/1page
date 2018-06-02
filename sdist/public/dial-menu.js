@@ -17,18 +17,18 @@ var Dial = /** @class */ (function (_super) {
     function Dial(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            position: 0,
+            position: 1,
             items: [
                 {
-                    position: 0,
-                    selected: true,
+                    position: 7,
+                    selected: false,
                     title: 'photo',
                     class: 'di1 item',
                     icon: icons_1.PhotoIcon,
                     link: '/photo'
                 },
                 {
-                    position: 1,
+                    position: 0,
                     selected: false,
                     title: 'video',
                     class: 'di2 item',
@@ -36,15 +36,15 @@ var Dial = /** @class */ (function (_super) {
                     link: '/photo'
                 },
                 {
-                    position: 2,
-                    selected: false,
+                    position: 1,
+                    selected: true,
                     title: 'whatever',
                     class: 'di3 item',
                     icon: icons_1.CrowdIcon,
                     link: '/photo'
                 },
                 {
-                    position: 3,
+                    position: 2,
                     selected: false,
                     title: 'asdf',
                     class: 'di4 item',
@@ -52,7 +52,7 @@ var Dial = /** @class */ (function (_super) {
                     link: '/photo'
                 },
                 {
-                    position: 4,
+                    position: 3,
                     selected: false,
                     title: 'ldsfga;',
                     class: 'di5 item',
@@ -60,7 +60,7 @@ var Dial = /** @class */ (function (_super) {
                     link: '/photo'
                 },
                 {
-                    position: 5,
+                    position: 4,
                     selected: false,
                     title: '^_^',
                     class: 'di6 item',
@@ -68,7 +68,7 @@ var Dial = /** @class */ (function (_super) {
                     link: '/photo'
                 },
                 {
-                    position: 6,
+                    position: 5,
                     selected: false,
                     title: '-_-',
                     class: 'di7 item',
@@ -76,7 +76,7 @@ var Dial = /** @class */ (function (_super) {
                     link: '/photo'
                 },
                 {
-                    position: 7,
+                    position: 6,
                     selected: false,
                     title: '0.o',
                     class: 'di8 item',
@@ -142,7 +142,6 @@ var Dial = /** @class */ (function (_super) {
     };
     Dial.prototype.setPosition = function (position) {
         var _this = this;
-        console.log('sent pos', position);
         this.setState({
             position: position
         }, function () { return _this.setRotation(); });
@@ -170,7 +169,7 @@ var Dial = /** @class */ (function (_super) {
                 _this.state.items[i].selected = false;
                 if (position >= 0) {
                     if (position === 0) {
-                        _this.state.items[0].selected = true;
+                        _this.state.items[1].selected = true;
                     }
                     else if (_this.state.items[i].position !== Math.abs(position - 8)) {
                         _this.state.items[i].selected = false;
@@ -182,7 +181,7 @@ var Dial = /** @class */ (function (_super) {
                 else {
                     {
                         if (position === 0) {
-                            _this.state.items[0].selected = true;
+                            _this.state.items[1].selected = true;
                         }
                         else if (_this.state.items[i].position !== Math.abs(position)) {
                             _this.state.items[i].selected = false;
@@ -230,11 +229,8 @@ var Dial = /** @class */ (function (_super) {
                     return (React.createElement("div", { className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); } },
                         React.createElement(Icon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' })));
                 }),
-                React.createElement("div", { className: 'showDial' },
-                    React.createElement(icons_1.Repository, { class: "menu-icons" }))),
-            React.createElement("div", null,
-                React.createElement("button", { onClick: this.prevPosition }, "prev"),
-                React.createElement("button", { onClick: this.nextPosition }, "next"))));
+                React.createElement("div", { className: 'showDial', style: opStyle },
+                    React.createElement(icons_1.Repository, { class: "menu-icons" })))));
     };
     return Dial;
 }(React.Component));
