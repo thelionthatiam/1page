@@ -15,4 +15,8 @@ index.route('/')
         res.render('home')
     })
 
+index.route('/about')
+    .get((req, res,) => {
+        res.render('about')
+    })
 export default index;

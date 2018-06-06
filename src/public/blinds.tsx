@@ -437,7 +437,7 @@ class Lightbox extends React.Component {
                                 />
                             
                         </div>
-                        <div className = 'lightbox-left-paddle' onClick = {this.props.gotoPrevious}>
+                        <div className = 'lightbox-left-paddle' onClick = {this.props.gotoPrevious} onMouseOver = {this.hideX}>
                             <div className = 'left-triangle'></div>
                         </div>
                         <Swipe
@@ -459,7 +459,7 @@ class Lightbox extends React.Component {
                             
                             </div>
                         </Swipe>
-                        <div className='lightbox-right-paddle' onClick = {this.props.gotoNext}>
+                        <div className='lightbox-right-paddle' onClick = {this.props.gotoNext} onMouseOver = {this.hideX}>
                             <div className='right-triangle'></div>
                         </div>
                         <X 

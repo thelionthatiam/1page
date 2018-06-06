@@ -37,8 +37,8 @@ export default class Shapely extends React.Component {
         }
         this.rawShapes = [
             {
-                top: 10,
-                left: 10,
+                top: Math.random() * 100,
+                left: Math.random() * 100,
                 speed:Math.random(),
                 dimension: 300,
                 color: '#' + Math.random().toString(16).slice(-6),
@@ -215,7 +215,6 @@ class Circle extends React.Component {
             backgroundImage: `url(${this.props.image})`,
             borderRadius: '0',
             transition: '200ms',
-            stroke:'black',
             // transform:`translate(${-this.props.dimension/2}, ${-this.props.dimension/2})`
         }
         // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)

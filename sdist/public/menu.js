@@ -71,8 +71,10 @@ var HamburgerMenu = /** @class */ (function (_super) {
                 React.createElement("div", { className: 'menu-icons-wrapper' },
                     React.createElement(icons_1.Home, { class: "menu-icons current-menu-icon" }),
                     React.createElement(icons_1.Repository, { class: "menu-icons", onClick: this.rightOpenMenu }),
-                    React.createElement(icons_1.About, { class: "menu-icons" }),
-                    React.createElement(icons_1.CurrentWork, { class: "menu-icons skinny-stroke" }))),
+                    React.createElement("a", { href: '/about' },
+                        React.createElement(icons_1.About, { class: "menu-icons" })),
+                    React.createElement("a", { target: "_blank", href: 'http://ulm.us/' },
+                        React.createElement(icons_1.CurrentWork, { class: "menu-icons skinny-stroke" })))),
             React.createElement("div", { className: this.state.risClosed
                     ?
                         'right-menu-wrapper'

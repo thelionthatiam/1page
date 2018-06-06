@@ -12,5 +12,9 @@ index.route('/')
     .get(function (req, res) {
     res.render('home');
 });
+index.route('/about')
+    .get(function (req, res) {
+    res.render('about');
+});
 exports.default = index;
 //# sourceMappingURL=index.js.map

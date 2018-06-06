@@ -2,7 +2,7 @@
   margin: 0px;
   padding: 0px;
   transition:200ms;
-  // border:1px solid grey;
+  cursor:url('./icons/pointer.svg'), auto;
 }
 
 .body {
@@ -124,21 +124,16 @@ body{
 
 .home-title {
   position:fixed;
-  top:40%;
-  right:-220px;
+  top:50%;
+  bottom:50%;
+  right:-15vh;
   transform: rotate(-90deg);
-  font-size:200px;
+  font-size:30vh;
   color: black;
   font-family: 'Roboto', sans-serif;
+  transition: 0ms;
 }
 
-@media all and (max-height:600px) {
-  .home-title {
-    top:32%;
-    right:-210px;
-    font-size:180px;
-  }
-}
 
 .home-title-period {
   color:#90B193;
@@ -232,6 +227,7 @@ $multiplier: 1.5;
   height:100vh;
   cursor:pointer;
   top:0;
+  left:0;
 }
 
 .left-menu-wrapper{
@@ -259,7 +255,7 @@ $multiplier: 1.5;
 }
 
 .menu-icons {
-  width:60px;
+  width:80px;
   stroke-width:24px;
   stroke: white;
   fill:transparent;
@@ -593,7 +589,6 @@ $p-color: $lightPink;
   width: 50vw;
   max-width: 1000px;
   min-width: 240px;
-  max-width:900px;
   overflow:hidden;
   display:flex;
   flex-direction:row;
@@ -605,7 +600,6 @@ $p-color: $lightPink;
   width: 50vw;
   max-width: 1000px;
   min-width: 240px;
-  max-width:900px;
   overflow:hidden;
   display:flex;
   flex-direction:row;
@@ -618,7 +612,7 @@ $p-color: $lightPink;
   align-content: center;
   align-items: center;
   justify-content: center;
-  //max-height:50vh;
+  max-height:50vh;
   margin-top:15px;
   margin-bottom:15px;
   overflow:hidden;
@@ -842,12 +836,13 @@ $p-color: $lightPink;
   left:0;
   top:70px;
   bottom: 70px;
-  width:70px;
+  width:50vw;
   display:flex;
   flex-direction:column;
   justify-content: center;
-  align-items: center;
-  cursor:pointer;
+  align-items: flex-start;
+  cursor:w-resize;
+  z-index:400;
 }
 
 .left-triangle {
@@ -855,7 +850,8 @@ $p-color: $lightPink;
 	height: 0;
 	border-top: 20px solid transparent;
 	border-right: 20px solid $deccaf;
-	border-bottom: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  margin-left:20px;
 }
 
 .lightbox-right-paddle {
@@ -863,12 +859,13 @@ $p-color: $lightPink;
   right:0;
   top:70px;
   bottom: 70px;
-  width:70px;
+  width:50vw;
   display:flex;
   flex-direction:column;
   justify-content: center;
-  align-items: center;
-  cursor:pointer;
+  align-items: flex-end;
+  cursor:e-resize;
+  z-index:400;
 }
 
 .right-triangle {
@@ -876,7 +873,8 @@ $p-color: $lightPink;
 	height: 0;
 	border-top: 20px solid transparent;
 	border-left: 20px solid $deccaf;
-	border-bottom: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  margin-right:20px;
 }
 
 .lightbox-right-paddle:hover > .right-triangle {
@@ -962,12 +960,12 @@ $p-color: $lightPink;
 
 .x-icon {
   stroke:$deccaf;
-  width:40px;
+  width:50px;
   stroke-dasharray: 0, 20;
   stroke-dashoffset:-6.5;
   position:absolute;
-  right:0;
-  top:0;
+  right:10px;
+  top:20px;
   transition:200ms;
   cursor:pointer;
 }
@@ -983,8 +981,8 @@ $p-color: $lightPink;
   stroke-dasharray:14.5, 20;
   stroke-dashoffset:0;
   position:absolute;
-  right:0;
-  top:10px;
+  right:10px;
+  top:20px;
   transition:100ms;
   cursor:pointer;
 }
@@ -1034,4 +1032,43 @@ $p-color: $lightPink;
 
 .home-shape {
   width:100%;
+}
+
+.stroke-shape {
+  fill:black;
+}
+
+
+// about page
+
+.about-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height:100vh;
+  width:100vw;
+  background:#ffeea2;
+}
+
+.about {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  max-width:500px;
+}
+
+.about-text {
+  p {
+    margin-bottom:2vh;
+    color:#754c24;
+  }
+}
+
+.about-img {
+  stroke:#8c6239;
+  stroke-width:10px;
+  fill:transparent;
+  width:150px;
+  margin-top:4vh;
+  margin-bottom:3vh;
 }

@@ -6,6 +6,7 @@ import {
     CurrentWork,
     About,
     Repository,
+    AFrameIcon
 } from './svg/icons'
 // import {
 //     Route,
@@ -88,8 +89,8 @@ export default class HamburgerMenu extends React.Component {
                         <div className = 'menu-icons-wrapper'>
                             <Home class = {"menu-icons current-menu-icon"}/>
                             <Repository class={"menu-icons"} onClick = {this.rightOpenMenu}/>
-                            <About class={"menu-icons"} />
-                            <CurrentWork class={"menu-icons skinny-stroke"} />
+                            <a href = '/about'><About class={"menu-icons"} /></a>
+                            <a target="_blank" href= 'http://ulm.us/'><AFrameIcon styles={"menu-icons"} /></a>
                         </div>
                     {/* </BrowserRouter> */}
                 </div>

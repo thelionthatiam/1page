@@ -249,10 +249,10 @@ export default class Dial extends React.Component {
         })
         let SelectedIcon = selected[0].icon
         let showSelected = (
-                <div className = 'selected-repository' >
+                <a href={selected[0].link} className='selected-repository' >
                     <SelectedIcon styles='r-menu-icons selected' />
-                    <a href = {selected[0].link} className='r-menu-titles'>{selected[0].title}</a>
-                </div>
+                    <p className='r-menu-titles'>{selected[0].title}</p>
+                </a>
             )
         
         return (
