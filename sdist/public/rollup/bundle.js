@@ -21368,7 +21368,7 @@ var a = (function (exports) {
 	                {
 	                    position: 7,
 	                    selected: false,
-	                    title: 'photo',
+	                    title: 'photos',
 	                    class: 'di1 item',
 	                    icon: PhotoIcon,
 	                    link: '/photo'
@@ -21384,7 +21384,7 @@ var a = (function (exports) {
 	                {
 	                    position: 1,
 	                    selected: true,
-	                    title: 'whatever',
+	                    title: 'social',
 	                    class: 'di3 item',
 	                    icon: CrowdIcon,
 	                    link: '/photo'
@@ -21392,7 +21392,7 @@ var a = (function (exports) {
 	                {
 	                    position: 2,
 	                    selected: false,
-	                    title: 'asdf',
+	                    title: 'sketches',
 	                    class: 'di4 item',
 	                    icon: DeltaIcon,
 	                    link: '/photo'
@@ -21400,7 +21400,7 @@ var a = (function (exports) {
 	                {
 	                    position: 3,
 	                    selected: false,
-	                    title: 'ldsfga;',
+	                    title: 'movement',
 	                    class: 'di5 item',
 	                    icon: MovementIcon,
 	                    link: '/photo'
@@ -21408,7 +21408,7 @@ var a = (function (exports) {
 	                {
 	                    position: 4,
 	                    selected: false,
-	                    title: '^_^',
+	                    title: 'objects',
 	                    class: 'di6 item',
 	                    icon: ObjectsIcon,
 	                    link: '/photo'
@@ -21416,7 +21416,7 @@ var a = (function (exports) {
 	                {
 	                    position: 5,
 	                    selected: false,
-	                    title: '-_-',
+	                    title: 'writing',
 	                    class: 'di7 item',
 	                    icon: ParallelIcon,
 	                    link: '/photo'
@@ -21424,7 +21424,7 @@ var a = (function (exports) {
 	                {
 	                    position: 6,
 	                    selected: false,
-	                    title: '0.o',
+	                    title: 'dreams',
 	                    class: 'di8 item',
 	                    icon: TieFighterIcon,
 	                    link: '/photo'

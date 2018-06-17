@@ -22,7 +22,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 7,
                     selected: false,
-                    title: 'photo',
+                    title: 'photos',
                     class: 'di1 item',
                     icon: icons_1.PhotoIcon,
                     link: '/photo'
@@ -38,7 +38,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 1,
                     selected: true,
-                    title: 'whatever',
+                    title: 'social',
                     class: 'di3 item',
                     icon: icons_1.CrowdIcon,
                     link: '/photo'
@@ -46,7 +46,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 2,
                     selected: false,
-                    title: 'asdf',
+                    title: 'sketches',
                     class: 'di4 item',
                     icon: icons_1.DeltaIcon,
                     link: '/photo'
@@ -54,7 +54,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 3,
                     selected: false,
-                    title: 'ldsfga;',
+                    title: 'movement',
                     class: 'di5 item',
                     icon: icons_1.MovementIcon,
                     link: '/photo'
@@ -62,7 +62,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 4,
                     selected: false,
-                    title: '^_^',
+                    title: 'objects',
                     class: 'di6 item',
                     icon: icons_1.ObjectsIcon,
                     link: '/photo'
@@ -70,7 +70,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 5,
                     selected: false,
-                    title: '-_-',
+                    title: 'writing',
                     class: 'di7 item',
                     icon: icons_1.ParallelIcon,
                     link: '/photo'
@@ -78,7 +78,7 @@ var Dial = /** @class */ (function (_super) {
                 {
                     position: 6,
                     selected: false,
-                    title: '0.o',
+                    title: 'dreams',
                     class: 'di8 item',
                     icon: icons_1.TieFighterIcon,
                     link: '/photo'
@@ -216,9 +216,9 @@ var Dial = /** @class */ (function (_super) {
             return item.selected === true;
         });
         var SelectedIcon = selected[0].icon;
-        var showSelected = (React.createElement("div", { className: 'selected-repository' },
+        var showSelected = (React.createElement("a", { href: selected[0].link, className: 'selected-repository' },
             React.createElement(SelectedIcon, { styles: 'r-menu-icons selected' }),
-            React.createElement("a", { href: selected[0].link, className: 'r-menu-titles' }, selected[0].title)));
+            React.createElement("p", { className: 'r-menu-titles' }, selected[0].title)));
         return (React.createElement("div", { className: 'page-wrapper' },
             React.createElement("div", { className: 'r-menu-back' },
                 React.createElement(icons_1.LeftArrow, { style: 'r-menu-back-icon' })),

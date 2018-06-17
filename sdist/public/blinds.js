@@ -342,12 +342,12 @@ var Lightbox = /** @class */ (function (_super) {
                                         'svg-icon lightbox-icon-show'
                                     :
                                         'svg-icon lightbox-icon' })),
-                        React.createElement("div", { className: 'lightbox-left-paddle', onClick: this.props.gotoPrevious },
+                        React.createElement("div", { className: 'lightbox-left-paddle', onClick: this.props.gotoPrevious, onMouseOver: this.hideX },
                             React.createElement("div", { className: 'left-triangle' })),
                         React.createElement(react_easy_swipe_1.default, { onSwipeStart: this.onSwipeStart, onSwipeMove: this.onSwipeMove, onSwipeEnd: this.onSwipeEnd },
                             React.createElement("div", { className: 'lightbox-photo-wrapper', onClick: this.props.onClose },
                                 React.createElement("img", { className: 'lightbox-img', src: img, id: this.props.currentImage, onMouseOver: this.showX, onMouseLeave: this.hideX }))),
-                        React.createElement("div", { className: 'lightbox-right-paddle', onClick: this.props.gotoNext },
+                        React.createElement("div", { className: 'lightbox-right-paddle', onClick: this.props.gotoNext, onMouseOver: this.hideX },
                             React.createElement("div", { className: 'right-triangle' })),
                         React.createElement(icons_1.X, { styles: this.state.xStyle, onClick: this.props.onClose, onMouseOver: this.showX, onMouseLeave: this.hideX }),
                         React.createElement(DotBox, { photos: this.props.photos, gotoSelected: this.props.gotoSelected, currentImage: this.props.currentImage }))

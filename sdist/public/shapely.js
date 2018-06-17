@@ -37,8 +37,8 @@ var Shapely = /** @class */ (function (_super) {
         };
         _this.rawShapes = [
             {
-                top: 10,
-                left: 10,
+                top: Math.random() * 100,
+                left: Math.random() * 100,
                 speed: Math.random(),
                 dimension: 300,
                 color: '#' + Math.random().toString(16).slice(-6),
@@ -192,7 +192,6 @@ var Circle = /** @class */ (function (_super) {
             backgroundImage: "url(" + _this.props.image + ")",
             borderRadius: '0',
             transition: '200ms',
-            stroke: 'black',
         };
         // this.handleScroll = this.throttle(this.handleScroll.bind(this), 10)
         _this.top = _this.getTop();
