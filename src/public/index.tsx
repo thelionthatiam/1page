@@ -11,6 +11,8 @@ import { WSAEPFNOSUPPORT } from 'constants';
 import Blinds from './blinds'
 import HamburgerMenu from './menu'
 import Shapely from './shapely'
+import { TestApp } from './test'
+import BlindsInTheThick from './blinds-in-the-thick'
 //ACTIONS
 import { POPULATE, populate } from './user-data';
 import { 
@@ -26,27 +28,7 @@ import {
 } from './actions'
 
 
-
 // wrap around erroring component 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  componentDidCatch(error, info) {
-    // Display fallback UI
-    this.setState({ hasError: true });
-    // You can also log the error to an error reporting service
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
-    }
-    return this.props.children;
-  }
-}
 
 let initialState = {
     albums:[],
@@ -70,6 +52,7 @@ function all(state = initialState, action) {
                     album.selected = false
                 }) 
             }
+            console.log('inside res photos')
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
@@ -135,10 +118,21 @@ let store = createStore(reducer, composeWithDevTools(
     applyMiddleware(thunkMiddleware)
 ))
 
-function blinds() {
+
+function test() {
     ReactDOM.render(
         <Provider store={store}>
-            <Blinds/>
+            <TestApp />
+        </Provider>,
+        document.getElementById('test')
+    )
+}
+
+
+function blinds(route:string) {
+    ReactDOM.render(
+        <Provider store={store}>
+            <Blinds route = {route}/>
         </Provider>,
         document.getElementById('blinds')
     )
@@ -162,5 +156,23 @@ function shapely() {
     )
 }
 
+function blindsInTheThick() {
+    ReactDOM.render(
+        <Provider store={store}>
+            <BlindsInTheThick />
+        </Provider>,
+        document.getElementById('whenInTheThick')
+    )
+}
 
-export { store, populate, blinds, menu, shapely};
+
+
+export { 
+    store, 
+    populate, 
+    // blinds, 
+    menu, 
+    shapely, 
+    // test, 
+    // blindsInTheThick
+};

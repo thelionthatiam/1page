@@ -52,7 +52,7 @@ export default class Dial extends React.Component {
                     title:'photos',
                     class: 'di1 item',
                     icon: PhotoIcon,
-                    link: '/photo'
+                    link: '/photos'
                 }, 
                 {
                     position:0,
@@ -60,7 +60,7 @@ export default class Dial extends React.Component {
                     title:'video',
                     class: 'di2 item',
                     icon: VideoIcon,
-                    link: '/photo'
+                    link: '/videos'
                 }, 
                 {
                     position:1,
@@ -68,7 +68,7 @@ export default class Dial extends React.Component {
                     title:'social',
                     class: 'di3 item',
                     icon:CrowdIcon,
-                    link: '/photo'
+                    link: '/social'
                 }, 
                 {
                     position:2,
@@ -76,7 +76,7 @@ export default class Dial extends React.Component {
                     title:'sketches',
                     class: 'di4 item',
                     icon:DeltaIcon,
-                    link: '/photo'
+                    link: '/sketches'
                 }, 
                 {
                     position:3,
@@ -84,7 +84,7 @@ export default class Dial extends React.Component {
                     title:'movement',
                     class: 'di5 item',
                     icon:MovementIcon,
-                    link: '/photo'
+                    link: '/movement'
                 }, 
                 {
                     position:4,
@@ -92,7 +92,7 @@ export default class Dial extends React.Component {
                     title:'objects',
                     class: 'di6 item',
                     icon:ObjectsIcon,
-                    link: '/photo'
+                    link: '/objects'
                 }, 
                 {
                     position:5,
@@ -100,7 +100,7 @@ export default class Dial extends React.Component {
                     title:'writing',
                     class: 'di7 item',
                     icon:ParallelIcon,
-                    link: '/photo'
+                    link: '/writing'
                 }, 
                 {
                     position:6,
@@ -108,7 +108,7 @@ export default class Dial extends React.Component {
                     title:'dreams',
                     class: 'di8 item',
                     icon:TieFighterIcon,
-                    link: '/photo'
+                    link: '/dreams'
                 }
             ],
             rotation: 0,

@@ -33,13 +33,15 @@ exports.reqPhotos = reqPhotos;
 function resPhotos(albums) {
     return {
         type: exports.RES_PHOTOS,
-        albums: albums
+        albums
     };
 }
-function fetchPhotos() {
+function fetchPhotos(route) {
+    console.log('this is the second most important test', route);
+    let fullRoute = '/content' + route;
     return function (dispatch) {
         dispatch(reqPhotos());
-        return fetch("/photos", {
+        return fetch(fullRoute, {
             method: "get",
             credentials: 'same-origin',
             headers: {
@@ -47,8 +49,8 @@ function fetchPhotos() {
                 "Content-Type": "application/json"
             }
         })
-            .then(function (res) { return res.json(); })
-            .then(function (albums) {
+            .then((res) => res.json())
+            .then(albums => {
             if (albums.status === 'failed') {
                 return dispatch(recieveError(albums, dispatch));
             }
@@ -84,7 +86,7 @@ exports.reqTestData = reqTestData;
 function resTestData(test) {
     return {
         type: exports.RES_TEST,
-        test: test
+        test
     };
 }
 function fetchTestData() {
@@ -98,8 +100,8 @@ function fetchTestData() {
                 "Content-Type": "application/json"
             }
         })
-            .then(function (res) { return res.json(); })
-            .then(function (test) {
+            .then((res) => res.json())
+            .then(test => {
             if (test.status === 'failed') {
                 return dispatch(recieveError(test, dispatch));
             }

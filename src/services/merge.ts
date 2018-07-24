@@ -1,6 +1,6 @@
-function isCyclic<C>(obj:C) {
-  var seenObjects:[C] = [];
-  function detect (obj:C) {
+function isCyclic(obj:any) {
+  var seenObjects:any = [];
+  function detect (obj) {
     if (obj && typeof obj === 'object') {
       if (seenObjects.indexOf(obj) !== -1) {
         return true;
@@ -21,7 +21,7 @@ function isCyclic<C>(obj:C) {
 function isScalar<S>(obj:S){return (/string|number|boolean/).test(typeof obj);}
 
 
-function mergeArray<A>(arr1:A, arr2:A) {
+function mergeArray(arr1, arr2) {
   let concatArray = arr1.concat(arr2);
   return concatArray;
 }
@@ -43,7 +43,7 @@ function typeSort<U>(item1:U, item2:U) {
       return item2;
     }
   } else if (item1 instanceof Object && item2 instanceof Object) { // merge object
-    return  merge(item1, item2);
+    // return  merge(item1, item2); // where the hell is this merge function??
   } else if (typeof item1 === "undefined") {
 	  return item2;
   } else {
@@ -52,7 +52,7 @@ function typeSort<U>(item1:U, item2:U) {
 }
 
 
-function deepMerge<E>(one:E, two:E) {
+export function deepMerge<E>(one:E, two:E) {
   if( (!isCyclic(one)) && (!isCyclic(two)) ) {
     for (let prop in two) {
 		one[prop] = typeSort(one[prop], two[prop]);
@@ -63,7 +63,7 @@ function deepMerge<E>(one:E, two:E) {
   return one;
 }
 
-function MergeArray(array:Object[]) { // unfinished
+export function MergeArray(array:Object[]) { // unfinished
   if (array.length === 0) {
     return 'error, no object in array'
   } else if (array.length === 1) {
@@ -76,4 +76,3 @@ function MergeArray(array:Object[]) { // unfinished
   }
 }
 
-export { deepMerge };

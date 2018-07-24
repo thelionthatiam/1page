@@ -44,18 +44,32 @@ export default class PhotoSvc {
             throw ('There was nothing in any album!')
         }
         return albums;
-   
     }
 
-    getPhotos():Promise<Album[]> {
-        return this.querySvc.selectAllAlbums() 
-            .then(albums => {
-                this.albums = albums 
-                return this.querySvc.selectAllPhotos()
-            })
-            .then(photos => {
-                this.photos = photos
-                return this.addPhotosToAlbums(this.albums, this.photos)
-            })
+    getPhotos(category?:string):Promise<Album[]> {
+        if (typeof category === 'string') {
+            console.log('this is now the most important test', 'we are insite the logic')
+            return this.querySvc.selectSpecificAlbums([category])
+                .then(albums => {
+                    this.albums = albums
+                    return this.querySvc.selectAllPhotos()
+                })
+                .then(photos => {
+                    this.photos = photos
+                    return this.addPhotosToAlbums(this.albums, this.photos)
+                })
+        } else {
+            console.log('we are in the general route')
+            return this.querySvc.selectAllAlbums()
+                .then(albums => {
+                    this.albums = albums
+                    return this.querySvc.selectAllPhotos()
+                })
+                .then(photos => {
+                    this.photos = photos
+                    return this.addPhotosToAlbums(this.albums, this.photos)
+                })
+        }
+        
     }
 } 

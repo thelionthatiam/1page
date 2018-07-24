@@ -76,7 +76,11 @@ class Email extends ValueScalar<string> {
   }
 }
 
-class Permission extends ValueScalar {
+class Permission extends ValueScalar<string> {
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : Permission {
     return Permission.create(value);
   }
@@ -98,7 +102,11 @@ class Permission extends ValueScalar {
   }
 }
 
-class CharOnly  extends ValueScalar {
+class CharOnly  extends ValueScalar<string> {
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : CharOnly {
     return CharOnly.create(value);
   }
@@ -120,7 +128,11 @@ class CharOnly  extends ValueScalar {
   }
 }
 
-class NumOnly extends ValueScalar {
+class NumOnly extends ValueScalar<number> {
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : NumOnly {
     return NumOnly.create(value);
   }
@@ -142,7 +154,11 @@ class NumOnly extends ValueScalar {
   }
 }
 
-class UUID extends ValueScalar {
+class UUID extends ValueScalar<string> {
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : UUID {
     return UUID.create(value);
   }
@@ -163,7 +179,11 @@ class UUID extends ValueScalar {
   }
 }
 
-class Bool extends ValueScalar {
+class Bool extends ValueScalar<boolean> {
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : Bool {
     return Bool.create(value);
   }
@@ -184,7 +204,11 @@ class Bool extends ValueScalar {
   }
 }
 
-class String extends ValueScalar {
+class String extends ValueScalar<string>{
+  constructor(value: any) {
+    super(value)
+  }
+
   static fromJSON(value : string) : String {
     return String.create(value);
   }
@@ -206,11 +230,12 @@ class String extends ValueScalar {
   }
 }
 
-class MilitaryTime extends ValueScalar {
+
+class MilitaryTime extends ValueScalar<string> {
   static fromJSON(value: string): MilitaryTime {
     return MilitaryTime.create(value)
   }
-  static create(value:string): MilitaryTime {
+  static create(value: string): MilitaryTime {
     let res = MilitaryTime.validate(value)
 
     if (!res.isOkay)
@@ -218,10 +243,10 @@ class MilitaryTime extends ValueScalar {
     return new MilitaryTime(value)
   }
 
-  static validate(militaryTime:string): ValidationResult {
+  static validate(militaryTime: string): ValidationResult {
     let re = /^([01]\d|2[0-3]):?([0-5]\d):?([0-5]\d)?$/
-    if(re.test(militaryTime)) {
-      return {isOkay:true}
+    if (re.test(militaryTime)) {
+      return { isOkay: true }
     } else {
       throw new ValidationError('invalid type', 'This value -- ' + militaryTime + ' -- is not military time.')
     }
@@ -229,7 +254,7 @@ class MilitaryTime extends ValueScalar {
 }
 
 
-class AlarmState extends ValueScalar {
+class AlarmState extends ValueScalar<string> {
   static fromJSON(value: string): AlarmState {
     return AlarmState.create(value)
   }
@@ -251,6 +276,8 @@ class AlarmState extends ValueScalar {
   }
 
 }
+
+
 
 
 

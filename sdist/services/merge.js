@@ -21,7 +21,7 @@ function isCyclic(obj) {
 }
 function isScalar(obj) { return (/string|number|boolean/).test(typeof obj); }
 function mergeArray(arr1, arr2) {
-    var concatArray = arr1.concat(arr2);
+    let concatArray = arr1.concat(arr2);
     return concatArray;
 }
 function typeSort(item1, item2) {
@@ -46,7 +46,7 @@ function typeSort(item1, item2) {
         }
     }
     else if (item1 instanceof Object && item2 instanceof Object) { // merge object
-        return merge(item1, item2);
+        // return  merge(item1, item2); // where the hell is this merge function??
     }
     else if (typeof item1 === "undefined") {
         return item2;
@@ -57,7 +57,7 @@ function typeSort(item1, item2) {
 }
 function deepMerge(one, two) {
     if ((!isCyclic(one)) && (!isCyclic(two))) {
-        for (var prop in two) {
+        for (let prop in two) {
             one[prop] = typeSort(one[prop], two[prop]);
         }
     }
@@ -75,10 +75,11 @@ function MergeArray(array) {
         return array[0];
     }
     else if (array.length >= 2) {
-        for (var i = 1; i < array.length; i++) {
-            var thisMerge = deepMerge(array[i], array[i - 1]);
+        for (let i = 1; i < array.length; i++) {
+            let thisMerge = deepMerge(array[i], array[i - 1]);
             array.pop();
         }
     }
 }
+exports.MergeArray = MergeArray;
 //# sourceMappingURL=merge.js.map

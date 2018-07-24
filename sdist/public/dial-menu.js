@@ -1,22 +1,11 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = require("react");
-var icons_1 = require("./svg/icons");
-var Dial = /** @class */ (function (_super) {
-    __extends(Dial, _super);
-    function Dial(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
+const React = require("react");
+const icons_1 = require("./svg/icons");
+class Dial extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             position: 1,
             items: [
                 {
@@ -25,7 +14,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'photos',
                     class: 'di1 item',
                     icon: icons_1.PhotoIcon,
-                    link: '/photo'
+                    link: '/photos'
                 },
                 {
                     position: 0,
@@ -33,7 +22,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'video',
                     class: 'di2 item',
                     icon: icons_1.VideoIcon,
-                    link: '/photo'
+                    link: '/videos'
                 },
                 {
                     position: 1,
@@ -41,7 +30,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'social',
                     class: 'di3 item',
                     icon: icons_1.CrowdIcon,
-                    link: '/photo'
+                    link: '/social'
                 },
                 {
                     position: 2,
@@ -49,7 +38,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'sketches',
                     class: 'di4 item',
                     icon: icons_1.DeltaIcon,
-                    link: '/photo'
+                    link: '/sketches'
                 },
                 {
                     position: 3,
@@ -57,7 +46,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'movement',
                     class: 'di5 item',
                     icon: icons_1.MovementIcon,
-                    link: '/photo'
+                    link: '/movement'
                 },
                 {
                     position: 4,
@@ -65,7 +54,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'objects',
                     class: 'di6 item',
                     icon: icons_1.ObjectsIcon,
-                    link: '/photo'
+                    link: '/objects'
                 },
                 {
                     position: 5,
@@ -73,7 +62,7 @@ var Dial = /** @class */ (function (_super) {
                     title: 'writing',
                     class: 'di7 item',
                     icon: icons_1.ParallelIcon,
-                    link: '/photo'
+                    link: '/writing'
                 },
                 {
                     position: 6,
@@ -81,41 +70,39 @@ var Dial = /** @class */ (function (_super) {
                     title: 'dreams',
                     class: 'di8 item',
                     icon: icons_1.TieFighterIcon,
-                    link: '/photo'
+                    link: '/dreams'
                 }
             ],
             rotation: 0,
             scrollStatus: ''
         };
-        _this.incriment = 360 / _this.state.items.length;
-        _this.nextPosition = _this.nextPosition.bind(_this);
-        _this.prevPosition = _this.prevPosition.bind(_this);
-        _this.handleScroll = _this.handleScroll.bind(_this);
-        _this._timeout = null;
-        return _this;
+        this.incriment = 360 / this.state.items.length;
+        this.nextPosition = this.nextPosition.bind(this);
+        this.prevPosition = this.prevPosition.bind(this);
+        this.handleScroll = this.handleScroll.bind(this);
+        this._timeout = null;
     }
-    Dial.prototype.componentDidMount = function () {
+    componentDidMount() {
         window.addEventListener('wheel', this.handleScroll);
         this.setRotation();
-    };
-    Dial.prototype.componentWillUnmount = function () {
+    }
+    componentWillUnmount() {
         window.removeEventListener('wheel', this.handleScroll);
-    };
-    Dial.prototype.handleScroll = function (event) {
-        var _this = this;
+    }
+    handleScroll(event) {
         if (this._timeout) { //if there is already a timeout in process cancel it
             clearTimeout(this._timeout);
         }
-        this._timeout = setTimeout(function () {
-            _this._timeout = null;
-            _this.setState({
+        this._timeout = setTimeout(() => {
+            this._timeout = null;
+            this.setState({
                 scrollStatus: 'scroll stopped'
-            }, function () {
-                var rotation = _this.state.rotation;
+            }, () => {
+                let rotation = this.state.rotation;
                 // let rounds = Math.floor(rotation/360)
                 // let absRotation = rotation - (rounds*360)
-                var position = Math.round(8 * (rotation / 360));
-                _this.setPosition(position);
+                let position = Math.round(8 * (rotation / 360));
+                this.setPosition(position);
             });
         }, 500);
         if (this.state.scrollStatus !== 'scrolling') {
@@ -129,94 +116,89 @@ var Dial = /** @class */ (function (_super) {
         else {
             this.scrollNeg();
         }
-    };
-    Dial.prototype.scrollPos = function () {
+    }
+    scrollPos() {
         this.setState({
             rotation: this.state.rotation + 1
         });
-    };
-    Dial.prototype.scrollNeg = function () {
+    }
+    scrollNeg() {
         this.setState({
             rotation: this.state.rotation - 1
         });
-    };
-    Dial.prototype.setPosition = function (position) {
-        var _this = this;
+    }
+    setPosition(position) {
         this.setState({
             position: position
-        }, function () { return _this.setRotation(); });
-    };
-    Dial.prototype.nextPosition = function () {
-        var _this = this;
+        }, () => this.setRotation());
+    }
+    nextPosition() {
         this.setState({
             position: this.state.position + 1
-        }, function () { return _this.setRotation(); });
-    };
-    Dial.prototype.prevPosition = function () {
-        var _this = this;
+        }, () => this.setRotation());
+    }
+    prevPosition() {
         this.setState({
             position: this.state.position - 1
-        }, function () { return _this.setRotation(); });
-    };
-    Dial.prototype.setRotation = function () {
-        var _this = this;
+        }, () => this.setRotation());
+    }
+    setRotation() {
         this.setState({
             rotation: this.state.position * this.incriment
-        }, function () {
-            var updatedItems = [];
-            var position = _this.state.position;
-            for (var i = 0; i < _this.state.items.length; i++) {
-                _this.state.items[i].selected = false;
+        }, () => {
+            let updatedItems = [];
+            let position = this.state.position;
+            for (let i = 0; i < this.state.items.length; i++) {
+                this.state.items[i].selected = false;
                 if (position >= 0) {
                     if (position === 0) {
-                        _this.state.items[1].selected = true;
+                        this.state.items[1].selected = true;
                     }
-                    else if (_this.state.items[i].position !== Math.abs(position - 8)) {
-                        _this.state.items[i].selected = false;
+                    else if (this.state.items[i].position !== Math.abs(position - 8)) {
+                        this.state.items[i].selected = false;
                     }
-                    else if (_this.state.items[i].position === Math.abs(position - 8)) {
-                        _this.state.items[i].selected = true;
+                    else if (this.state.items[i].position === Math.abs(position - 8)) {
+                        this.state.items[i].selected = true;
                     }
                 }
                 else {
                     {
                         if (position === 0) {
-                            _this.state.items[1].selected = true;
+                            this.state.items[1].selected = true;
                         }
-                        else if (_this.state.items[i].position !== Math.abs(position)) {
-                            _this.state.items[i].selected = false;
+                        else if (this.state.items[i].position !== Math.abs(position)) {
+                            this.state.items[i].selected = false;
                         }
-                        else if (_this.state.items[i].position === Math.abs(position)) {
-                            _this.state.items[i].selected = true;
+                        else if (this.state.items[i].position === Math.abs(position)) {
+                            this.state.items[i].selected = true;
                         }
                     }
                 }
-                updatedItems.push(_this.state.items[i]);
+                updatedItems.push(this.state.items[i]);
             }
-            _this.setState({
+            this.setState({
                 items: updatedItems
             });
         });
-    };
-    Dial.prototype.render = function () {
-        var _this = this;
-        var style = {
-            transform: "rotate(" + this.state.rotation + "deg)"
+    }
+    render() {
+        let style = {
+            transform: `rotate(${this.state.rotation}deg)`
         };
-        var opStyle = {
-            transform: "rotate(-" + this.state.rotation + "deg)"
+        let opStyle = {
+            transform: `rotate(-${this.state.rotation}deg)`
         };
         if (this.state.rotation < 0) {
             opStyle = {
-                transform: "rotate(" + Math.abs(this.state.rotation) + "deg)"
+                transform: `rotate(${Math.abs(this.state.rotation)}deg)`
             };
         }
-        var selected = this.state.items.filter(function (item) {
+        let selected = this.state.items.filter(item => {
             // console.log('item', item)
             return item.selected === true;
         });
-        var SelectedIcon = selected[0].icon;
-        var showSelected = (React.createElement("a", { href: selected[0].link, className: 'selected-repository' },
+        let SelectedIcon = selected[0].icon;
+        let showSelected = (React.createElement("a", { href: selected[0].link, className: 'selected-repository' },
             React.createElement(SelectedIcon, { styles: 'r-menu-icons selected' }),
             React.createElement("p", { className: 'r-menu-titles' }, selected[0].title)));
         return (React.createElement("div", { className: 'page-wrapper' },
@@ -224,15 +206,14 @@ var Dial = /** @class */ (function (_super) {
                 React.createElement(icons_1.LeftArrow, { style: 'r-menu-back-icon' })),
             showSelected,
             React.createElement("div", { className: 'dial', style: style },
-                this.state.items.map(function (item, index) {
-                    var Icon = item.icon;
-                    return (React.createElement("div", { className: item.class, style: opStyle, key: index, onClick: function () { return _this.setPosition(-1 * item.position); } },
+                this.state.items.map((item, index) => {
+                    let Icon = item.icon;
+                    return (React.createElement("div", { className: item.class, style: opStyle, key: index, onClick: () => this.setPosition(-1 * item.position) },
                         React.createElement(Icon, { styles: item.selected ? 'r-menu-icons selected-mini' : 'r-menu-icons' })));
                 }),
                 React.createElement("div", { className: 'showDial', style: opStyle },
                     React.createElement(icons_1.Repository, { class: "menu-icons" })))));
-    };
-    return Dial;
-}(React.Component));
+    }
+}
 exports.default = Dial;
 //# sourceMappingURL=dial-menu.js.map

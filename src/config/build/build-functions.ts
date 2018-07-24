@@ -50,7 +50,7 @@ function applyDefaults(obj:Result) {
   return obj;
 }
 
-function psqlCommand(array:[string]) {
+function psqlCommand(array : string[]) {
   const command = " --command=";
   let finarr = [];
   for (let i = 0; i < array.length; i++) {
@@ -115,7 +115,7 @@ function filesInDir(dir:string, cb:Function) {
   })
 }
 
-function stringOfFiles(dir:string, array:[string], version:number, rev:boolean) {
+function stringOfFiles(dir:string, array:string[], version:number, rev:boolean) {
   let finalArr = [];
   if (rev) {
     for (let i = array.length-1; i >= version;i--) {

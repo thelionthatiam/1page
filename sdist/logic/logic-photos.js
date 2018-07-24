@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var PhotoSvc = /** @class */ (function () {
-    function PhotoSvc(querySvc) {
+class PhotoSvc {
+    constructor(querySvc) {
         this.querySvc = querySvc;
         this.albums = [];
         this.photos = [];
     }
-    PhotoSvc.prototype.addPhotosToAlbums = function (albums, photos) {
-        for (var i = 0; i < albums.length; i++) {
+    addPhotosToAlbums(albums, photos) {
+        for (let i = 0; i < albums.length; i++) {
             albums[i].photos = [];
-            for (var j = 0; j < photos.length; j++) {
+            for (let j = 0; j < photos.length; j++) {
                 if (albums[i].album_uuid === photos[j].album_uuid) {
                     albums[i].photos.push(photos[j]);
                 }
@@ -19,20 +19,33 @@ var PhotoSvc = /** @class */ (function () {
             throw ('There was nothing in any album!');
         }
         return albums;
-    };
-    PhotoSvc.prototype.getPhotos = function () {
-        var _this = this;
-        return this.querySvc.selectAllAlbums()
-            .then(function (albums) {
-            _this.albums = albums;
-            return _this.querySvc.selectAllPhotos();
-        })
-            .then(function (photos) {
-            _this.photos = photos;
-            return _this.addPhotosToAlbums(_this.albums, _this.photos);
-        });
-    };
-    return PhotoSvc;
-}());
+    }
+    getPhotos(category) {
+        if (typeof category === 'string') {
+            console.log('this is now the most important test', 'we are insite the logic');
+            return this.querySvc.selectSpecificAlbums([category])
+                .then(albums => {
+                this.albums = albums;
+                return this.querySvc.selectAllPhotos();
+            })
+                .then(photos => {
+                this.photos = photos;
+                return this.addPhotosToAlbums(this.albums, this.photos);
+            });
+        }
+        else {
+            console.log('we are in the general route');
+            return this.querySvc.selectAllAlbums()
+                .then(albums => {
+                this.albums = albums;
+                return this.querySvc.selectAllPhotos();
+            })
+                .then(photos => {
+                this.photos = photos;
+                return this.addPhotosToAlbums(this.albums, this.photos);
+            });
+        }
+    }
+}
 exports.default = PhotoSvc;
 //# sourceMappingURL=logic-photos.js.map

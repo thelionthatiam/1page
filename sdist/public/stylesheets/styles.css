@@ -192,6 +192,9 @@ body {
   fill: transparent;
   cursor: pointer; }
 
+.aFrame {
+  stroke-width: 15px; }
+
 .current-menu-icon {
   stroke: #90b193; }
 

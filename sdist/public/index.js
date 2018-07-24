@@ -1,57 +1,28 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 // DEPENDENCIES
-var React = require("react");
-var ReactDOM = require("react-dom");
-var react_redux_1 = require("react-redux");
-var redux_devtools_extension_1 = require("redux-devtools-extension");
-var redux_thunk_1 = require("redux-thunk");
-var redux_1 = require("redux");
+const React = require("react");
+const ReactDOM = require("react-dom");
+const react_redux_1 = require("react-redux");
+const redux_devtools_extension_1 = require("redux-devtools-extension");
+const redux_thunk_1 = require("redux-thunk");
+const redux_1 = require("redux");
 // COMPONENTS
-var blinds_1 = require("./blinds");
-var menu_1 = require("./menu");
-var shapely_1 = require("./shapely");
+const blinds_1 = require("./blinds");
+const menu_1 = require("./menu");
+const shapely_1 = require("./shapely");
+const test_1 = require("./test");
+const blinds_in_the_thick_1 = require("./blinds-in-the-thick");
 //ACTIONS
-var user_data_1 = require("./user-data");
+const user_data_1 = require("./user-data");
 exports.populate = user_data_1.populate;
-var actions_1 = require("./actions");
+const actions_1 = require("./actions");
 // wrap around erroring component 
-var ErrorBoundary = /** @class */ (function (_super) {
-    __extends(ErrorBoundary, _super);
-    function ErrorBoundary(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = { hasError: false };
-        return _this;
-    }
-    ErrorBoundary.prototype.componentDidCatch = function (error, info) {
-        // Display fallback UI
-        this.setState({ hasError: true });
-        // You can also log the error to an error reporting service
-    };
-    ErrorBoundary.prototype.render = function () {
-        if (this.state.hasError) {
-            return React.createElement("h1", null, "Something went wrong.");
-        }
-        return this.props.children;
-    };
-    return ErrorBoundary;
-}(React.Component));
-var initialState = {
+let initialState = {
     albums: [],
     blinds: {}
 };
-function all(state, action) {
-    if (state === void 0) { state = initialState; }
+function all(state = initialState, action) {
     switch (action.type) {
         case user_data_1.POPULATE:
             return Object.assign({}, state, {
@@ -64,17 +35,18 @@ function all(state, action) {
             });
         case actions_1.RES_PHOTOS:
             if (action.albums.length !== 0) {
-                action.albums.map(function (album) {
+                action.albums.map(album => {
                     album.selected = false;
                 });
             }
+            console.log('inside res photos');
             return Object.assign({}, state, {
                 isFetching: false,
                 albums: action.albums
             });
         case actions_1.OPEN_BLINDS:
-            state.albums.map(function (album) {
-                for (var k in album) {
+            state.albums.map((album) => {
+                for (let k in album) {
                     if (album.id !== action.id) {
                         album.selected = false;
                     }
@@ -92,7 +64,7 @@ function all(state, action) {
                 }
             });
         case actions_1.CLOSE_BLINDS:
-            state.albums.map(function (album) {
+            state.albums.map((album) => {
                 album.selected = false;
             });
             return Object.assign({}, state, {
@@ -102,7 +74,7 @@ function all(state, action) {
             });
         case actions_1.SCROLL_LOCK:
             return Object.assign({}, state, {
-                action: action
+                action
             });
         case actions_1.REQ_TEST:
             return Object.assign({}, state, {
@@ -126,16 +98,19 @@ function all(state, action) {
             return state;
     }
 }
-var reducer = redux_1.combineReducers({
-    all: all
+let reducer = redux_1.combineReducers({
+    all
 });
-var store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
+let store = redux_1.createStore(reducer, redux_devtools_extension_1.composeWithDevTools(redux_1.applyMiddleware(redux_thunk_1.default)));
 exports.store = store;
-function blinds() {
+function test() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
-        React.createElement(blinds_1.default, null)), document.getElementById('blinds'));
+        React.createElement(test_1.TestApp, null)), document.getElementById('test'));
 }
-exports.blinds = blinds;
+function blinds(route) {
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(blinds_1.default, { route: route })), document.getElementById('blinds'));
+}
 function menu() {
     ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
         React.createElement(menu_1.default, null)), document.getElementById('menu'));
@@ -146,4 +121,8 @@ function shapely() {
         React.createElement(shapely_1.default, null)), document.getElementById('root'));
 }
 exports.shapely = shapely;
+function blindsInTheThick() {
+    ReactDOM.render(React.createElement(react_redux_1.Provider, { store: store },
+        React.createElement(blinds_in_the_thick_1.default, null)), document.getElementById('whenInTheThick'));
+}
 //# sourceMappingURL=index.js.map

@@ -5,16 +5,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.serverErrorFileNotFound = /Failed to lookup/;
 function dbErrTranslator(error) {
     console.log('error from error translator', error);
-    var emailChecker = /(email)/g;
-    var phoneChecker = /(phone)/g;
-    var nameChecker = /(name)/g;
-    var keyChecker = /(key)/g;
-    var checkChecker = /(check)/g;
-    var passChecker = /(password)/g;
-    var lengthChecker = /(value too long)/g;
-    var alarms = /(alarms)/g;
-    var time = /(time)/g;
-    var title = /(title)/g;
+    const emailChecker = /(email)/g;
+    const phoneChecker = /(phone)/g;
+    const nameChecker = /(name)/g;
+    const keyChecker = /(key)/g;
+    const checkChecker = /(check)/g;
+    const passChecker = /(password)/g;
+    const lengthChecker = /(value too long)/g;
+    const alarms = /(alarms)/g;
+    const time = /(time)/g;
+    const title = /(title)/g;
     if (emailChecker.test(error)) {
         if (keyChecker.test(error)) {
             return "The email you put in has already been used. Try again.";
@@ -55,8 +55,8 @@ function dbErrTranslator(error) {
 }
 exports.dbErrTranslator = dbErrTranslator;
 function cardinalityGuess(password) {
-    var cardinality = 0;
-    var lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
+    let cardinality = 0;
+    let lowerCase = /[a-z]/, upperCase = /[A-Z]/, numbers = /\d/, symbols = /[`~!@#$%^&*()\-_=+\[\]\\\{\};"':,<\.>\/?|]/;
     if (password.match(lowerCase)) {
         cardinality = cardinality + 26;
     }
@@ -80,14 +80,14 @@ function scorer(password) {
     if (password.length === 0) {
         return 0;
     }
-    var cardinality = cardinalityGuess(password);
-    var symbolOptions = Math.pow(cardinality, password.length);
-    var entropy = password.length * (Math.log2(cardinality));
+    let cardinality = cardinalityGuess(password);
+    let symbolOptions = Math.pow(cardinality, password.length);
+    let entropy = password.length * (Math.log2(cardinality));
     return round(entropy, 2);
 }
 function passChecker(password) {
-    return new Promise(function (resolve, reject) {
-        var score = scorer(password);
+    return new Promise((resolve, reject) => {
+        let score = scorer(password);
         if (score <= 28) {
             reject('password was < 28 bits = Very Weak; might keep out family members trying to get on to your computer');
         }

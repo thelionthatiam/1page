@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var logic_test_1 = require("../logic/logic-test");
-var express = require("express");
-var testRouter = express.Router();
+const logic_test_1 = require("../logic/logic-test");
+const express = require("express");
+const testRouter = express.Router();
 testRouter.route('/test')
-    .post(function (req, res) {
-    var svc = new logic_test_1.default(req.querySvc, req.body);
+    .post((req, res) => {
+    let svc = new logic_test_1.default(req.querySvc, req.body);
     svc.testPost()
-        .then(function () {
+        .then(() => {
         res.json({ status: "OK" });
     })
-        .catch(function (e) {
+        .catch(e => {
         console.log(e);
         res.json({
             status: "FAILED",
@@ -18,13 +18,13 @@ testRouter.route('/test')
         });
     });
 })
-    .get(function (req, res) {
-    var svc = new logic_test_1.default(req.querySvc, req.body);
+    .get((req, res) => {
+    let svc = new logic_test_1.default(req.querySvc, req.body);
     svc.testGet()
-        .then(function (result) {
+        .then(result => {
         res.json(result);
     })
-        .catch(function (e) {
+        .catch(e => {
         console.log(e);
         res.json({
             status: "FAILED",

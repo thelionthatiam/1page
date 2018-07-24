@@ -1,21 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var pg = require("pg");
-var queries_1 = require("../data-access/queries");
+const pg = require("pg");
+const queries_1 = require("../data-access/queries");
 function init(databaseInformation) {
-    var pool = new pg.Pool(databaseInformation);
-    return function (req, res, next) {
-        var client;
+    const pool = new pg.Pool(databaseInformation);
+    return (req, res, next) => {
+        let client;
         pool.connect()
-            .then(function (client) {
-            req.on('abort', function () {
+            .then((client) => {
+            req.on('abort', () => {
                 client.release();
                 req.querySvc = null;
             });
-            req.on('timeout', function () {
+            req.on('timeout', () => {
                 req.abort();
             });
-            res.on('close', function () {
+            res.on('close', () => {
                 client.release();
                 req.querySvc = null;
             });
@@ -26,7 +26,7 @@ function init(databaseInformation) {
             req.querySvc = new queries_1.default(client);
             next();
         })
-            .catch(function (err) {
+            .catch((err) => {
             return console.error('Error executing query', err.stack);
         });
     };

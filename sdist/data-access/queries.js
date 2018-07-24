@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var QuerySvc = /** @class */ (function () {
-    function QuerySvc(conn) {
+class QuerySvc {
+    constructor(conn) {
         this.conn = conn;
     }
-    QuerySvc.prototype.insertTest = function (values) {
-        var text = 'INSERT INTO test (test) VALUES ($1)';
+    insertTest(values) {
+        const text = 'INSERT INTO test (test) VALUES ($1)';
         return this.conn.query(text, values)
-            .then(function (result) { return null; });
-    };
-    QuerySvc.prototype.selectTest = function () {
-        var text = 'SELECT * FROM test';
+            .then(result => null);
+    }
+    selectTest() {
+        const text = 'SELECT * FROM test';
         return this.conn.query(text)
-            .then(function (result) {
+            .then(result => {
             if (result.rowCount === 0) {
                 console.log('Select test shows nothing in the database');
                 return ['empty'];
@@ -21,11 +21,11 @@ var QuerySvc = /** @class */ (function () {
                 return result.rows;
             }
         });
-    };
-    QuerySvc.prototype.selectAllAlbums = function () {
-        var text = 'SELECT * FROM albums';
+    }
+    selectAllAlbums() {
+        const text = 'SELECT * FROM albums';
         return this.conn.query(text)
-            .then(function (result) {
+            .then(result => {
             if (result.rowCount === 0) {
                 console.log('Select all albums shows nothing in the database');
                 return ['empty'];
@@ -34,11 +34,11 @@ var QuerySvc = /** @class */ (function () {
                 return result.rows;
             }
         });
-    };
-    QuerySvc.prototype.selectAllPhotos = function () {
-        var text = 'SELECT * FROM photos';
+    }
+    selectAllPhotos() {
+        const text = 'SELECT * FROM photos';
         return this.conn.query(text)
-            .then(function (result) {
+            .then(result => {
             if (result.rowCount === 0) {
                 console.log('Select all photos shows nothing in the database');
                 return ['empty'];
@@ -47,9 +47,21 @@ var QuerySvc = /** @class */ (function () {
                 return result.rows;
             }
         });
-    };
-    return QuerySvc;
-}());
+    }
+    selectSpecificAlbums(values) {
+        const text = 'SELECT * FROM albums WHERE category = $1';
+        return this.conn.query(text, values)
+            .then(result => {
+            if (result.rowCount === 0) {
+                console.log('Select all albums shows nothing in the database');
+                return ['empty'];
+            }
+            else {
+                return result.rows;
+            }
+        });
+    }
+}
 exports.default = QuerySvc;
 ;
 //# sourceMappingURL=queries.js.map

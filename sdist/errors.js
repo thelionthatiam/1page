@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var e = require("./services/error-handling");
-var express = require("express");
-var err = express.Router();
+const e = require("./services/error-handling");
+const express = require("express");
+const err = express.Router();
 err.use(function (req, res, next) {
     res.status(404);
     res.render('error', {

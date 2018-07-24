@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "commonjs",
-    "target":"es5",
+    "target":"es6", 
     "allowJs": true,
     "outDir": "sdist",
     "sourceMap":true,
@@ -20,10 +20,6 @@
     "src/**/*",
     "src/config/**/*",
     "views",
-    "public",
-    "typings/*"
-  ],
-  "files": [
-    "typings/*"
+    "public"
   ]
 }

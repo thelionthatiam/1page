@@ -19,8 +19,8 @@ const photos = [
 ];
 
 class PhotoGallery extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = { width: -2 };
     }
     componentDidMount() {

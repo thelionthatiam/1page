@@ -39,10 +39,12 @@ function resPhotos(albums) {
     }
 }
 
-export function fetchPhotos() {
+export function fetchPhotos(route) {
+    console.log('this is the second most important test', route)
+    let fullRoute = '/content' + route
     return function (dispatch) {
         dispatch(reqPhotos())
-        return fetch("/photos", {
+        return fetch(fullRoute, {
             method: "get",
             credentials: 'same-origin',
             headers: {

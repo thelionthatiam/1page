@@ -197,18 +197,6 @@ insert into albums (
     'Poetry booklet.'
 );
 
-insert into albums (
-    category,
-    title,
-    date,
-    description
-) VALUES (
-    'writing',
-    'We Sell Boxes and Bubble Wrap',
-    'London, 2016',
-    'Poetry booklet.'
-);
-
  id |             title             |              album_uuid              | category 
 ----+-------------------------------+--------------------------------------+----------
   4 | concrete cosmos               | 07306f1a-bb91-4990-b1e1-51ec0e2b0343 | photos

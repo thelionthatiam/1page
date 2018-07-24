@@ -3,6 +3,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import Transition from 'react-transition-group/Transition';
 import { connect, Provider } from 'react-redux';
 import { toggleBlinds, fetchPhotos } from './actions'
+import * as PC from './photo-container'; 
 import { PhotoIcon, X } from './svg/icons'
 import Measure from 'react-measure';
 import Swipe from 'react-easy-swipe';
@@ -10,8 +11,9 @@ import Swipe from 'react-easy-swipe';
 class Blinds extends React.Component {
     props: {
         toggleBlinds:(steing, boolean) => Function;
-        getPhotos:() => Function;
+        getPhotos:(string?) => Function;
         albums: any;
+        route:string;
     }
 
     constructor(props) {
@@ -20,7 +22,7 @@ class Blinds extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getPhotos()
+        this.props.getPhotos(this.props.route)
         document.querySelector('body').classList.add('papaya-body');
     }
 
@@ -91,7 +93,7 @@ class Blinds extends React.Component {
                             onClick={e => this.handleClick(album.id, e)}
                         />
                         <div className={photoWrapperStyle}>
-                        <PhotoContainer
+                        <PC.PhotoContainer
                             album = {album}
                             selected = {album.selected}
                         />
@@ -168,353 +170,6 @@ class Blind extends React.Component {
     }
 }
 
-class PhotoContainer extends React.Component {
-    props: {
-        getPhotos: () => Object;
-        album: any;
-    }
-    state: {
-        currentImage:number;
-        expand:boolean;
-    }
-    constructor(props) {
-        super(props)
-        this.state = { 
-            currentImage: 0,
-            expand:false    
-        };
-        this.closeLightbox = this.closeLightbox.bind(this);
-        this.openLightbox = this.openLightbox.bind(this);
-        this.gotoNext = this.gotoNext.bind(this);
-        this.gotoPrevious = this.gotoPrevious.bind(this);
-        this.gotoSelected = this.gotoSelected.bind(this);
-        this.expand = this.expand.bind(this);
-    }
-    openLightbox(event, obj) {
-        this.setState({
-            // currentImage: obj.index,
-            lightboxIsOpen: true,
-        });
-    }
-    closeLightbox() {
-        this.setState({
-            currentImage: 0,
-            lightboxIsOpen: false,
-        }, () => console.log('closed'));
-    }
-    gotoPrevious() {
-        if (this.state.currentImage - 1 < 0) {
-            this.setState({
-                currentImage: this.props.album.photos.length -1
-            })
-        } else {
-            this.setState({
-                currentImage: this.state.currentImage - 1,
-            });
-        }
-    }
-    gotoNext() {
-        if (this.state.currentImage + 1 >= this.props.album.photos.length) {
-            this.setState({
-                currentImage:0
-            })
-        } else {
-            this.setState({
-                currentImage: this.state.currentImage + 1,
-            });
-        }
-    }
-    gotoSelected(event, number) {
-        this.setState({
-            currentImage:number
-        })
-    }
-
-    expand(event) {
-        event.preventDefault()
-
-        this.setState({
-            expand:!this.state.expand
-        })
-    }
-    render() {
-        let duration = 200;
-
-        let transitionStyles = {
-            entering: {
-                opacity: 0,
-                transition: `opacity ${duration}ms ease-in-out`,
-                width:'100%'
-            },
-            entered: {
-                opacity: 1,
-                transition: `opacity ${duration}ms ease-in-out`,
-                width:'100%'
-            },
-            exiting: {
-                opacity: .8,
-                transition: `opacity ${duration}ms ease-in-out`,
-                width:'100%'
-            },
-            exited: {
-                opacity: 0,
-                transition: `opacity ${duration}ms ease-in-out`,
-                width:'100%'
-            }
-        };
-    
-        let items = <h1></h1>
-        if (this.props.album.length !== 0 && this.props.selected) {
-            items =  this.props.album.photos.map((photo, index) => {
-                    if (index < 1) {
-                        return <div 
-                        className='photo-container-medium' 
-                        key={photo.id} 
-                        onMouseEnter = {this.expand}
-                        onMouseLeave = {this.expand}
-                        >
-                            <img  
-                            onClick={this.openLightbox} 
-                            className='img' 
-                            src={"/imgs/" + photo.src + ".JPG"} 
-                            />
-                            <div className={this.state.expand ? 'expand-icon-wrapper' :'expand-icon-wrapper-closed'}></div>
-                        </div>
-                    }      
-            })
-        }
-        
-        return (
-            
-           
-                <Transition
-                    in={true}
-                    timeout={duration}
-                    unmountOnExit={true}
-                    mountOnEnter={true}
-                    appear={true}>
-                    {state =>
-                        <div style={transitionStyles[state]}>
-                            {items}
-                            {
-                                this.props.selected
-                                    ?
-                                    <div className='album-info'>
-                                        <p className='small-text album-description'>{this.props.album.description}</p>
-                                        {/* <div className='line'></div> */}
-                                        <p className = 'small-text'>{this.props.album.date}</p>
-                                        <Lightbox
-                                            photos={this.props.album.photos}
-                                            isOpen={this.state.lightboxIsOpen}
-                                            onClose={this.closeLightbox}
-                                            gotoPrevious={this.gotoPrevious}
-                                            gotoNext={this.gotoNext}
-                                            gotoSelected={this.gotoSelected}
-                                            currentImage={this.state.currentImage}
-                                        />
-                                    </div>
-                                    :
-                                    null
-                            }
-                        </div>
-                    }
-                    
-                </Transition>
-                
-                /* <Lightbox images={this.props.album.photos}
-                    onClose={this.closeLightbox}
-                    onClickPrev={this.gotoPrevious}
-                    onClickNext={this.gotoNext}
-                    currentImage={this.state.currentImage}
-                    isOpen={this.state.lightboxIsOpen}
-                /> */
-            
-        )
-    }
-}
-
-class Lightbox extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            rendered:true,
-            xStyle:'x-icon',
-            left:false,
-            right:false
-        } 
-        this.showX = this.showX.bind(this)
-        this.hideX = this.hideX.bind(this)
-        
-        this.onSwipeEnd = this.onSwipeEnd.bind(this);
-        this.onSwipeStart = this.onSwipeStart.bind(this);
-        this.onSwipeMove = this.onSwipeMove.bind(this);
-
-    }
-
-    onSwipeStart(event) {
-        //console.log('Start swiping...', event);
-        // this.start()
-    }
-
-    onSwipeMove(position, event) {
-        //console.log(`Moved ${position.x} pixels horizontally`, event);
-        if (position.x < -100) {
-            this.setState({ right: false })
-            this.setState({left:true})
-        } else if (position.x < 0) {
-            this.setState({ left: false })
-            this.setState({ right: false })
-        } else if (position.x < 100) {
-            this.setState({ left: false })
-            this.setState({right:false})
-        } else if (position.x >= 100) {
-            this.setState({ left: false })
-            this.setState({right:true})
-        }
-        // console.log(`Moved ${position.y} pixels vertically`, event);
-    }
-
-    onSwipeEnd(event) {
-        //console.log('state', this.state.left, this.state.right)
-        if(this.state.left){
-            console.log(this.state.left, 'left')
-            this.props.gotoPrevious()
-            this.setState({ left: false })
-            this.setState({ right: false })
-        } else if (this.state.right) {
-            console.log(this.state.right, 'right')
-            this.props.gotoNext()
-            this.setState({ left: false })
-            this.setState({ right: false })
-        }
-    }
-
-    componentDidMount() {
-        setTimeout(
-            () => {
-            this.setState({
-                rendered: true
-            })
-        },3000)      
-    }
-
-    componentWillUnmount() {
-        this.setState({
-            rendered:false
-        })
-    }
-
-    showX() {
-        this.setState({
-            xStyle: 'x-icon-hover bold-stroke'
-        })
-    }
-
-    hideX() {
-        this.setState({
-            xStyle: 'x-icon-hover'
-        })
-    }
-
-    render() {
-        let img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
-        {
-            return this.props.isOpen
-                ? 
-                    <div 
-                        className='lightbox-wrapper'
-                        scroll="no"
-                        >
-                        <div className='lightbox-title-wrapper'>
-                            <PhotoIcon 
-                                styles=
-                                {this.state.rendered 
-                                   ? 
-                                   'svg-icon lightbox-icon-show'
-                                   :
-                                   'svg-icon lightbox-icon'
-                                }
-                                />
-                            
-                        </div>
-                        <div className = 'lightbox-left-paddle' onClick = {this.props.gotoPrevious} onMouseOver = {this.hideX}>
-                            <div className = 'left-triangle'></div>
-                        </div>
-                        <Swipe
-                            onSwipeStart={this.onSwipeStart}
-                            onSwipeMove={this.onSwipeMove}
-                            onSwipeEnd={this.onSwipeEnd}>
-                            <div 
-                                className='lightbox-photo-wrapper'
-                                onClick = {this.props.onClose}
-                                >
-                                <img 
-                                    className='lightbox-img' 
-                                    src={img}
-                                    id = {this.props.currentImage}
-                                    onMouseOver = {this.showX}
-                                    onMouseLeave = {this.hideX}
-                                    />
-                                
-                            
-                            </div>
-                        </Swipe>
-                        <div className='lightbox-right-paddle' onClick = {this.props.gotoNext} onMouseOver = {this.hideX}>
-                            <div className='right-triangle'></div>
-                        </div>
-                        <X 
-                            styles={this.state.xStyle} 
-                            onClick={this.props.onClose}
-                            onMouseOver={this.showX}
-                            onMouseLeave={this.hideX}
-                            /> 
-                        <DotBox 
-                            photos = {this.props.photos}
-                            gotoSelected = {this.props.gotoSelected}
-                            currentImage = {this.props.currentImage}
-                            />
-                        {/* <button onClick = {this.props.onClose}>close</button>
-                        <button onClick={this.props.gotoNext}>next</button>
-                        <button onClick={this.props.gotoPrevious}>prev</button> */}
-                    </div>
-                :
-                null
-        }
-        
-    }
-}
-
-function DotBox(props) {
-
-    let style = {
-        background: '#deccaf'
-    }
-
-    return (
-        <div className = 'dot-box-wrapper'>
-            {
-                props.photos.map((photo, index) => {
-                    return (
-                        <div 
-                            className = 'lightbox-dot' 
-                            key = {index}
-                            onClick = {(event) => props.gotoSelected(event, index)}
-                            style = {
-                                index === props.currentImage
-                                ?
-                                style
-                                :
-                                null
-                            }
-                            > 
-                        </div>
-                    )
-                })
-            }
-        </div>
-    )
-}
-
 const mapStateToProps = state => {
     return {
         blinds: state.all.blinds, 
@@ -525,7 +180,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         toggleBlinds: (id, isOpen) => dispatch(toggleBlinds(id, isOpen)),
-        getPhotos: () => dispatch(fetchPhotos())
+        getPhotos: (route) => dispatch(fetchPhotos(route))
     }
 }
 

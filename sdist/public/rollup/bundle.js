@@ -20579,10 +20579,12 @@ var a = (function (exports) {
 	        albums: albums
 	    };
 	}
-	function fetchPhotos() {
+	function fetchPhotos(route) {
+	    console.log('this is the second most important test', route);
+	    var fullRoute = '/content' + route;
 	    return function (dispatch) {
 	        dispatch(reqPhotos());
-	        return fetch("/photos", {
+	        return fetch(fullRoute, {
 	            method: "get",
 	            credentials: 'same-origin',
 	            headers: {
@@ -20626,9 +20628,6 @@ var a = (function (exports) {
 	}
 	function VideoIcon(props) {
 	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-video"), react_4("rect", {x: "38", y: "104.13", width: "180.73", height: "180.73"}), react_4("polygon", {points: "362 119.56 362 271.64 219.26 195.6 362 119.56"})));
-	}
-	function AFrameIcon(props) {
-	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-a-frame"), react_4("polygon", {points: "211.12 153.97 140.25 203.42 221.01 234.73 153.43 280.88 230.9 310.55 371 214.96 211.12 153.97"}), react_4("polyline", {points: "43 234.73 89.15 150.67 123.76 266.05"}), react_4("polyline", {points: "89.15 150.67 189.69 81.45 211.12 153.97"})));
 	}
 	function CrowdIcon(props) {
 	    return (react_4("svg", {className: props.styles, id: "Layer_1", "data-name": "Layer 1", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 400 400"}, react_4("title", null, "repository-icon-crowd"), react_4("circle", {cx: "82.48", cy: "121.61", r: "42.96"}), react_4("circle", {cx: "187.98", cy: "121.61", r: "42.96"}), react_4("circle", {cx: "293.44", cy: "121.61", r: "42.96"}), react_4("polyline", {points: "30 247.38 83.27 196.43 134.23 247.38 187.5 196.43 240.77 247.38 294.04 196.43 345 247.38"}), react_4("polyline", {points: "30 321.5 83.27 270.55 134.23 321.5 187.5 270.55 240.77 321.5 294.04 270.55 345 321.5"})));
@@ -21038,7 +21037,7 @@ var a = (function (exports) {
 	        this.handleClick = this.handleClick.bind(this);
 	    }
 	    Blinds.prototype.componentWillMount = function () {
-	        this.props.getPhotos();
+	        this.props.getPhotos(this.props.route);
 	        document.querySelector('body').classList.add('papaya-body');
 	    };
 	    Blinds.prototype.componentWillUnmount = function () {
@@ -21231,14 +21230,14 @@ var a = (function (exports) {
 	        return (react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
 	            return react_4("div", {style: transitionStyles[state]}, items, _this.props.selected
 	                ?
-	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", {className: 'small-text'}, _this.props.album.date), react_4(Lightbox, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
+	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", {className: 'small-text'}, _this.props.album.date), react_4(Lightbox$1, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
 	                :
 	                    null);
 	        }));
 	    };
 	    return PhotoContainer;
 	}(react_2));
-	var Lightbox = (function (_super) {
+	var Lightbox$1 = (function (_super) {
 	    __extends(Lightbox, _super);
 	    function Lightbox(props) {
 	        _super.call(this, props);
@@ -21317,7 +21316,10 @@ var a = (function (exports) {
 	        });
 	    };
 	    Lightbox.prototype.render = function () {
-	        var img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
+	        var img = 'https://ih1.redbubble.net/image.91369793.6242/flat,1000x1000,075,f.jpg';
+	        if (this.props.photos[this.props.currentImage]) {
+	            img = "/imgs/" + this.props.photos[this.props.currentImage].src + ".jpg";
+	        }
 	        {
 	            return this.props.isOpen
 	                ?
@@ -21353,7 +21355,7 @@ var a = (function (exports) {
 	var mapDispatchToProps = function (dispatch) {
 	    return {
 	        toggleBlinds: function (id, isOpen) { return dispatch(toggleBlinds(id, isOpen)); },
-	        getPhotos: function () { return dispatch(fetchPhotos()); }
+	        getPhotos: function (route) { return dispatch(fetchPhotos(route)); }
 	    };
 	};
 	var BlindsAction = connect(mapStateToProps, mapDispatchToProps)(Blinds);
@@ -21371,7 +21373,7 @@ var a = (function (exports) {
 	                    title: 'photos',
 	                    class: 'di1 item',
 	                    icon: PhotoIcon,
-	                    link: '/photo'
+	                    link: '/photos'
 	                },
 	                {
 	                    position: 0,
@@ -21379,7 +21381,7 @@ var a = (function (exports) {
 	                    title: 'video',
 	                    class: 'di2 item',
 	                    icon: VideoIcon,
-	                    link: '/photo'
+	                    link: '/videos'
 	                },
 	                {
 	                    position: 1,
@@ -21387,7 +21389,7 @@ var a = (function (exports) {
 	                    title: 'social',
 	                    class: 'di3 item',
 	                    icon: CrowdIcon,
-	                    link: '/photo'
+	                    link: '/social'
 	                },
 	                {
 	                    position: 2,
@@ -21395,7 +21397,7 @@ var a = (function (exports) {
 	                    title: 'sketches',
 	                    class: 'di4 item',
 	                    icon: DeltaIcon,
-	                    link: '/photo'
+	                    link: '/sketches'
 	                },
 	                {
 	                    position: 3,
@@ -21403,7 +21405,7 @@ var a = (function (exports) {
 	                    title: 'movement',
 	                    class: 'di5 item',
 	                    icon: MovementIcon,
-	                    link: '/photo'
+	                    link: '/movement'
 	                },
 	                {
 	                    position: 4,
@@ -21411,7 +21413,7 @@ var a = (function (exports) {
 	                    title: 'objects',
 	                    class: 'di6 item',
 	                    icon: ObjectsIcon,
-	                    link: '/photo'
+	                    link: '/objects'
 	                },
 	                {
 	                    position: 5,
@@ -21419,7 +21421,7 @@ var a = (function (exports) {
 	                    title: 'writing',
 	                    class: 'di7 item',
 	                    icon: ParallelIcon,
-	                    link: '/photo'
+	                    link: '/writing'
 	                },
 	                {
 	                    position: 6,
@@ -21427,7 +21429,7 @@ var a = (function (exports) {
 	                    title: 'dreams',
 	                    class: 'di8 item',
 	                    icon: TieFighterIcon,
-	                    link: '/photo'
+	                    link: '/dreams'
 	                }
 	            ],
 	            rotation: 0,
@@ -21620,7 +21622,7 @@ var a = (function (exports) {
 	            ?
 	                'left-menu-wrapper'
 	            :
-	                'left-menu-wrapper menu-open'}, react_4("div", {className: 'menu-icons-wrapper'}, react_4(Home, {class: "menu-icons current-menu-icon"}), react_4(Repository, {class: "menu-icons", onClick: this.rightOpenMenu}), react_4("a", {href: '/about'}, react_4(About, {class: "menu-icons"})), react_4("a", {target: "_blank", href: 'http://ulm.us/'}, react_4(AFrameIcon, {styles: "menu-icons"})))), react_4("div", {className: this.state.risClosed
+	                'left-menu-wrapper menu-open'}, react_4("div", {className: 'menu-icons-wrapper'}, react_4(Home, {class: "menu-icons current-menu-icon"}), react_4(Repository, {class: "menu-icons", onClick: this.rightOpenMenu}), react_4("a", {href: '/about'}, react_4(About, {class: "menu-icons"})))), react_4("div", {className: this.state.risClosed
 	            ?
 	                'right-menu-wrapper'
 	            :
@@ -21832,6 +21834,306 @@ var a = (function (exports) {
 	    return Circle;
 	}(react_2));
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) { break; } } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) { _i["return"](); } } finally { if (_d) { throw _e; } } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+
+
+	var div = react.createElement.bind(react, 'div');
+	var iframe = react.createElement.bind(react, 'iframe');
+
+	var divStyle = {
+	  position: 'relative',
+	  height: 0,
+	  overflow: 'hidden',
+	  maxWidth: '100%'
+	};
+
+	var iframeStyle = {
+	  position: 'absolute',
+	  top: 0,
+	  left: 0,
+	  width: '100%',
+	  height: '100%'
+
+	  /*
+	   *  Turn `16:9` into `9 / 16` into `56.25%`
+	   *  Turn `4:3` into `3 / 4` into `75%`
+	   */
+	};var ratioToPercent = function ratioToPercent(ratio) {
+	  var _ratio$split$map = ratio.split(':').map(function (num) {
+	    return Number(num);
+	  }),
+	      _ratio$split$map2 = _slicedToArray(_ratio$split$map, 2),
+	      w = _ratio$split$map2[0],
+	      h = _ratio$split$map2[1];
+
+	  return h / w * 100 + '%';
+	};
+
+	/*
+	 *  Usage: <ResponsiveEmbed src='ace youtube video' ratio='4:3' />
+	 */
+	var ResponsiveEmbed = function ResponsiveEmbed(props) {
+	  var paddingBottom = ratioToPercent(props.ratio);
+	  var style = Object.assign({}, divStyle, { paddingBottom: paddingBottom });
+	  var iframeProps = Object.assign({ frameBorder: 0 }, props, { style: iframeStyle });
+	  delete iframeProps.ratio;
+	  return div({ style: style }, iframe(iframeProps));
+	};
+
+	ResponsiveEmbed.defaultProps = {
+	  src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+	  ratio: '16:9'
+	};
+
+	ResponsiveEmbed.propTypes = {
+	  src: propTypes.string,
+	  ratio: function ratio(props, propName, componentName) {
+	    if (!/\d+:\d+/.test(props[propName])) {
+	      return new Error('Invalid ratio supplied to ResponsiveEmbed. Expected a string like "16:9" or any 2 numbers seperated by a colon');
+	    }
+	  }
+	};
+
+	var lib$1 = ResponsiveEmbed;
+
+	var NewTest = (function (_super) {
+	    __extends(NewTest, _super);
+	    function NewTest(props) {
+	        _super.call(this, props);
+	    }
+	    NewTest.prototype.render = function () {
+	        return (react_4("div", null, react_4("h1", null, "hello react world"), react_4("div", {style: { width: '50vw' }}, react_4(lib$1, {src: 'https://www.youtube.com/embed/2yqz9zgoC-U', allowFullScreen: true}))));
+	    };
+	    return NewTest;
+	}(react_2));
+	var mapStateToProps$1 = function (state) {
+	};
+	var mapDispatchToProps$1 = function (dispatch) {
+	};
+	var TestApp = connect(mapStateToProps$1, mapDispatchToProps$1)(NewTest);
+
+	var Blinds$1 = (function (_super) {
+	    __extends(Blinds, _super);
+	    function Blinds(props) {
+	        _super.call(this, props);
+	        this.handleClick = this.handleClick.bind(this);
+	    }
+	    Blinds.prototype.componentWillMount = function () {
+	        // this.props.getPhotos(this.props.route)
+	        document.querySelector('body').classList.add('papaya-body');
+	    };
+	    Blinds.prototype.componentWillUnmount = function () {
+	        document.querySelector('body').classList.remove('papaya-body');
+	    };
+	    Blinds.prototype.handleClick = function (id, e) {
+	        e.preventDefault();
+	        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
+	        if (selectedAlbum.length !== 0) {
+	            if (selectedAlbum[0].id === id) {
+	                this.props.toggleBlinds(id, false);
+	            }
+	            else {
+	                this.props.toggleBlinds(id, true);
+	            }
+	        }
+	        else {
+	            this.props.toggleBlinds(id, true);
+	        }
+	    };
+	    Blinds.prototype.findCurrentSelection = function () {
+	        var selectedAlbum = this.props.albums.filter(function (album) { return album.selected; });
+	    };
+	    Blinds.prototype.render = function () {
+	        var _this = this;
+	        var duration = 400;
+	        var transitionStyles = {
+	            entering: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            entered: {
+	                opacity: 1,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            exiting: {
+	                opacity: .8,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            },
+	            exited: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	            }
+	        };
+	        var blinds = this.props.albums.map(function (album, index) {
+	            if (_this.props.albums.length !== 0) {
+	                var blindStyle = "wrapper";
+	                var photoWrapperStyle = 'album-wrapper';
+	                if (index % 2 === 0) {
+	                    blindStyle = "wrapper";
+	                    photoWrapperStyle = 'album-wrapper';
+	                }
+	                else {
+	                    blindStyle = "wrapper-flip";
+	                    photoWrapperStyle = 'album-wrapper-flip';
+	                }
+	                return (react_4("div", {key: album.id}, react_4(Blind$1, {style: blindStyle, selected: album.selected, content: album.title, description: album.description, onClick: function (e) { return _this.handleClick(album.id, e); }}), react_4("div", {className: photoWrapperStyle}, react_4(PhotoContainer$1, {album: album, selected: album.selected}))));
+	            }
+	        });
+	        return (react_4("div", null, react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true, componentWillLeave: this.componentWillLeave}, function (state) {
+	            return react_4("div", {style: transitionStyles[state], className: 'page-wrapper'}, react_4("div", {key: '1'}, react_4(Blind$1, {style: "thick-wrapper", selected: false, content: "ulmus procera", description: null, onClick: function (e) { return _this.handleClick('1', e); }})));
+	        })));
+	    };
+	    return Blinds;
+	}(react_2));
+	var Blind$1 = (function (_super) {
+	    __extends(Blind, _super);
+	    function Blind(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            off: {
+	                opacity: "0",
+	                transition: "200ms",
+	                height: "15px"
+	            },
+	            selected: {
+	                transition: "200ms",
+	                top: "0"
+	            },
+	        };
+	    }
+	    Blind.prototype.render = function () {
+	        return (react_4("div", {className: this.props.style, onClick: this.props.onClick}, react_4("div", {className: 'album-title-wrapper'}, this.props.selected
+	            ?
+	                react_4("p", {className: 'album-title album-title-selected'}, this.props.content)
+	            :
+	                react_4("p", {className: 'album-title'}, this.props.content), react_4("div", null, react_4("img", {src: '/icons/when-in-the-thick/mini-pink-1.png'})), this.props.selected
+	            ?
+	                react_4("div", {className: 'centered'}, react_4("div", {className: 'small-dot'}))
+	            :
+	                react_4("div", {className: 'centered'}, react_4("div", {className: 'no-dot'})))));
+	    };
+	    return Blind;
+	}(react_2));
+	var PhotoContainer$1 = (function (_super) {
+	    __extends(PhotoContainer, _super);
+	    function PhotoContainer(props) {
+	        _super.call(this, props);
+	        this.state = {
+	            currentImage: 0,
+	            expand: false
+	        };
+	        this.closeLightbox = this.closeLightbox.bind(this);
+	        this.openLightbox = this.openLightbox.bind(this);
+	        this.gotoNext = this.gotoNext.bind(this);
+	        this.gotoPrevious = this.gotoPrevious.bind(this);
+	        this.gotoSelected = this.gotoSelected.bind(this);
+	        this.expand = this.expand.bind(this);
+	    }
+	    PhotoContainer.prototype.openLightbox = function (event, obj) {
+	        this.setState({
+	            // currentImage: obj.index,
+	            lightboxIsOpen: true,
+	        });
+	    };
+	    PhotoContainer.prototype.closeLightbox = function () {
+	        this.setState({
+	            currentImage: 0,
+	            lightboxIsOpen: false,
+	        }, function () { return console.log('closed'); });
+	    };
+	    PhotoContainer.prototype.gotoPrevious = function () {
+	        if (this.state.currentImage - 1 < 0) {
+	            this.setState({
+	                currentImage: this.props.album.photos.length - 1
+	            });
+	        }
+	        else {
+	            this.setState({
+	                currentImage: this.state.currentImage - 1,
+	            });
+	        }
+	    };
+	    PhotoContainer.prototype.gotoNext = function () {
+	        if (this.state.currentImage + 1 >= this.props.album.photos.length) {
+	            this.setState({
+	                currentImage: 0
+	            });
+	        }
+	        else {
+	            this.setState({
+	                currentImage: this.state.currentImage + 1,
+	            });
+	        }
+	    };
+	    PhotoContainer.prototype.gotoSelected = function (event, number) {
+	        this.setState({
+	            currentImage: number
+	        });
+	    };
+	    PhotoContainer.prototype.expand = function (event) {
+	        event.preventDefault();
+	        this.setState({
+	            expand: !this.state.expand
+	        });
+	    };
+	    PhotoContainer.prototype.render = function () {
+	        var _this = this;
+	        var duration = 200;
+	        var transitionStyles = {
+	            entering: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
+	            },
+	            entered: {
+	                opacity: 1,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
+	            },
+	            exiting: {
+	                opacity: .8,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
+	            },
+	            exited: {
+	                opacity: 0,
+	                transition: "opacity " + duration + "ms ease-in-out",
+	                width: '100%'
+	            }
+	        };
+	        var items = react_4("h1", null);
+	        if (this.props.album.length !== 0 && this.props.selected) {
+	            items = this.props.album.photos.map(function (photo, index) {
+	                if (index < 1) {
+	                    return react_4("div", {className: 'photo-container-medium', key: photo.id, onMouseEnter: _this.expand, onMouseLeave: _this.expand}, react_4("img", {className: 'img', src: "/imgs/" + photo.src + ".JPG"}), react_4("div", {className: _this.state.expand ? 'expand-icon-wrapper' : 'expand-icon-wrapper-closed'}));
+	                }
+	            });
+	        }
+	        return (react_4(Transition, {in: true, timeout: duration, unmountOnExit: true, mountOnEnter: true, appear: true}, function (state) {
+	            return react_4("div", {style: transitionStyles[state]}, items, _this.props.selected
+	                ?
+	                    react_4("div", {className: 'album-info'}, react_4("p", {className: 'small-text album-description'}, _this.props.album.description), react_4("p", {className: 'small-text'}, _this.props.album.date), react_4(Lightbox, {photos: _this.props.album.photos, isOpen: _this.state.lightboxIsOpen, onClose: _this.closeLightbox, gotoPrevious: _this.gotoPrevious, gotoNext: _this.gotoNext, gotoSelected: _this.gotoSelected, currentImage: _this.state.currentImage}))
+	                :
+	                    null);
+	        }));
+	    };
+	    return PhotoContainer;
+	}(react_2));
+	var mapStateToProps$2 = function (state) {
+	    return {
+	        blinds: state.all.blinds,
+	        albums: state.all.albums
+	    };
+	};
+	var mapDispatchToProps$2 = function (dispatch) {
+	    return {
+	        toggleBlinds: function (id, isOpen) { return dispatch(toggleBlinds(id, isOpen)); },
+	        getPhotos: function (route) { return dispatch(fetchPhotos(route)); }
+	    };
+	};
+	var BlindsAction$1 = connect(mapStateToProps$2, mapDispatchToProps$2)(Blinds$1);
+
 	var POPULATE = 'POPULATE';
 	function populate(userData) {
 	    return {
@@ -21882,6 +22184,7 @@ var a = (function (exports) {
 	                    album.selected = false;
 	                });
 	            }
+	            console.log('inside res photos');
 	            return Object.assign({}, state, {
 	                isFetching: false,
 	                albums: action.albums
@@ -21944,8 +22247,11 @@ var a = (function (exports) {
 	    all: all
 	});
 	var store = createStore(reducer, reduxDevtoolsExtension_1(applyMiddleware(thunk)));
-	function blinds() {
-	    reactDom_1(react_4(Provider, {store: store}, react_4(BlindsAction, null)), document.getElementById('blinds'));
+	function test() {
+	    reactDom_1(react_4(Provider, {store: store}, react_4(TestApp, null)), document.getElementById('test'));
+	}
+	function blinds(route) {
+	    reactDom_1(react_4(Provider, {store: store}, react_4(BlindsAction, {route: route})), document.getElementById('blinds'));
 	}
 	function menu() {
 	    reactDom_1(react_4(Provider, {store: store}, react_4(HamburgerMenu, null)), document.getElementById('menu'));
@@ -21953,12 +22259,17 @@ var a = (function (exports) {
 	function shapely() {
 	    reactDom_1(react_4(Provider, {store: store}, react_4(Shapely, null)), document.getElementById('root'));
 	}
+	function blindsInTheThick() {
+	    reactDom_1(react_4(Provider, {store: store}, react_4(BlindsAction$1, null)), document.getElementById('whenInTheThick'));
+	}
 
 	exports.store = store;
 	exports.populate = populate;
 	exports.blinds = blinds;
 	exports.menu = menu;
 	exports.shapely = shapely;
+	exports.test = test;
+	exports.blindsInTheThick = blindsInTheThick;
 
 	return exports;
 

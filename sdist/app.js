@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express = require("express");
-var bodyParser = require("body-parser");
-var hbs = require("express-handlebars");
-var path = require("path");
-var session = require("express-session");
-var methodOverride = require("method-override");
-var cors = require("cors");
-var index_1 = require("./index");
-var db_connect_config_1 = require("./services/db-connect-config");
-var database_1 = require("./middleware/database");
-var app = express();
+const express = require("express");
+const bodyParser = require("body-parser");
+const hbs = require("express-handlebars");
+const path = require("path");
+const session = require("express-session");
+const methodOverride = require("method-override");
+const cors = require("cors");
+const index_1 = require("./index");
+const db_connect_config_1 = require("./services/db-connect-config");
+const database_1 = require("./middleware/database");
+const app = express();
 app.use(express.static(path.join(__dirname, './public/rollup')));
 app.use(methodOverride('_method'));
 app.use(bodyParser.json());
@@ -44,7 +44,7 @@ app.use('/', index_1.default);
 // ERROR STUFF
 // app.use(errors)
 // localhost
-app.listen(4000, 'localhost', function () { return console.log('start'); });
+app.listen(4000, 'localhost', () => console.log('start'));
 // server
 // app.listen(8000, '172.31.21.162', () => console.log('started on cloud'))
 //# sourceMappingURL=app.js.map

@@ -17,18 +17,22 @@ import {
 // } from 'react-router-dom';
 import Measure from 'react-measure'; 
 
+interface HamburgerMenuState {
+    isClosed: boolean;
+    risClosed: boolean;
+}
 
 export default class HamburgerMenu extends React.Component {
-    state: any;
     constructor(props) {
         super(props)
-        this.state = {
-            isClosed:true,
-            risClosed:true
-        }
         this.openMenu = this.openMenu.bind(this);
         this.rightOpenMenu = this.rightOpenMenu.bind(this);
         this.scrollLock = this.scrollLock.bind(this);
+    }
+
+    public readonly state : HamburgerMenuState = {
+        isClosed: true,
+        risClosed: true
     }
 
     openMenu(e) {
@@ -90,7 +94,7 @@ export default class HamburgerMenu extends React.Component {
                             <Home class = {"menu-icons current-menu-icon"}/>
                             <Repository class={"menu-icons"} onClick = {this.rightOpenMenu}/>
                             <a href = '/about'><About class={"menu-icons"} /></a>
-                            <a target="_blank" href= 'http://ulm.us/'><AFrameIcon styles={"menu-icons"} /></a>
+                            {/* <a href= '/current'><AFrameIcon styles={"menu-icons aFrame"} /></a> */}
                         </div>
                     {/* </BrowserRouter> */}
                 </div>

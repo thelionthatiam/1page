@@ -2,8 +2,6 @@ import * as V from '../services/validation';
 import * as R from '../services/value-objects';
 import * as pg from 'pg';
 
-import { AnalysisOptions } from 'aws-sdk/clients/cloudsearch';
-
 export default class QuerySvc {
     conn: pg.PoolClient;
 
@@ -56,4 +54,17 @@ export default class QuerySvc {
             })
     }
     
+
+    selectSpecificAlbums(values: string[]): Promise<pg.QueryResult> {
+        const text = 'SELECT * FROM albums WHERE category = $1'
+        return this.conn.query(text, values)
+            .then(result => {
+                if (result.rowCount === 0) {
+                    console.log('Select all albums shows nothing in the database')
+                    return ['empty']
+                } else {
+                    return result.rows
+                }
+            })
+    } 
 };

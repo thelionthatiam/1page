@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var connectPrompt = {
+const connectPrompt = {
     properties: {
         database: {
             description: "database name",
@@ -25,7 +25,7 @@ var connectPrompt = {
     }
 };
 exports.connectPrompt = connectPrompt;
-var prevConn = {
+const prevConn = {
     properties: {
         prevConn: {
             description: "Would you like to use true for previous connect information or false to delete previous?(boolean)",
@@ -37,7 +37,7 @@ var prevConn = {
     }
 };
 exports.prevConn = prevConn;
-var whatVersion = {
+let whatVersion = {
     properties: {
         version: {
             description: "What version of the database would you like to install? Enter for default up-to-date. (number)",
@@ -49,7 +49,7 @@ var whatVersion = {
     }
 };
 exports.whatVersion = whatVersion;
-var deleteTables = {
+const deleteTables = {
     properties: {
         versionDown: {
             description: "Which version would you like to go down to? 0 removes all. Enter for full delete. (number)",

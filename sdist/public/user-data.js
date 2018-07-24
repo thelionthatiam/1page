@@ -4,7 +4,7 @@ exports.POPULATE = 'POPULATE';
 function populate(userData) {
     return {
         type: exports.POPULATE,
-        userData: userData
+        userData
     };
 }
 exports.populate = populate;

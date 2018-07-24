@@ -7,10 +7,6 @@ import { PhotoIcon, X } from './svg/icons'
 import Measure from 'react-measure'; 
 
 
-
-
-
-
 const mapStateToProps = state => {
     return {
         blinds: state.all.blinds,

@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var child_process_1 = require("child_process");
-var prompt = require("prompt");
-var fs = require("fs");
-var tableDrop = psqlCommand(["DROP TABLE nonce", "DROP TABLE users"]);
+const child_process_1 = require("child_process");
+const prompt = require("prompt");
+const fs = require("fs");
+let tableDrop = psqlCommand(["DROP TABLE nonce", "DROP TABLE users"]);
 exports.tableDrop = tableDrop;
 function applyDefaults(obj) {
-    for (var k in obj) {
+    for (let k in obj) {
         if (k === 'database' && obj[k] === '') {
             obj.database = 'formapp';
             console.log(obj[k], "is the database");
@@ -28,9 +28,9 @@ function applyDefaults(obj) {
 }
 exports.applyDefaults = applyDefaults;
 function psqlCommand(array) {
-    var command = " --command=";
-    var finarr = [];
-    for (var i = 0; i < array.length; i++) {
+    const command = " --command=";
+    let finarr = [];
+    for (let i = 0; i < array.length; i++) {
         finarr.push(command);
         array[i] = '"' + array[i] + '"';
         finarr.push(array[i]);
@@ -39,7 +39,7 @@ function psqlCommand(array) {
 }
 exports.psqlCommand = psqlCommand;
 function connectCommand(user, host, database, password) {
-    var connectCommand = "PGPASSWORD=" + password +
+    let connectCommand = "PGPASSWORD=" + password +
         " psql" +
         " -U " + user +
         " -h " + host +
@@ -71,11 +71,11 @@ function childProcess(string, cb) {
     });
 }
 exports.childProcess = childProcess;
-var tablesExist = psqlCommand(["SELECT * FROM users", "SELECT * FROM nonce"]);
+let tablesExist = psqlCommand(["SELECT * FROM users", "SELECT * FROM nonce"]);
 exports.tablesExist = tablesExist;
 function fileChecker(path) {
     try {
-        var file = require(path);
+        let file = require(path);
         return true;
     }
     catch (e) {
@@ -95,32 +95,32 @@ function filesInDir(dir, cb) {
 }
 exports.filesInDir = filesInDir;
 function stringOfFiles(dir, array, version, rev) {
-    var finalArr = [];
+    let finalArr = [];
     if (rev) {
-        for (var i = array.length - 1; i >= version; i--) {
+        for (let i = array.length - 1; i >= version; i--) {
             finalArr.push("-f " + dir + '/' + array[i]);
         }
         return " -a " + finalArr.join(' ');
     }
     else {
-        for (var i = 0; i < version; i++) {
+        for (let i = 0; i < version; i++) {
             finalArr.push("-f " + dir + '/' + array[i]);
         }
         return " -a " + finalArr.join(' ');
     }
 }
 exports.stringOfFiles = stringOfFiles;
-var makeJSONfromObj = function (path, obj, cb) {
-    var data = JSON.stringify(obj);
-    fs.writeFile(path, data, function (err) {
+let makeJSONfromObj = function (path, obj, cb) {
+    let data = JSON.stringify(obj);
+    fs.writeFile(path, data, (err) => {
         if (err) {
             cb(err);
         }
     });
 };
 exports.makeJSONfromObj = makeJSONfromObj;
-var removeConfig = function (path, cb) {
-    fs.unlink(path, function (err) {
+let removeConfig = function (path, cb) {
+    fs.unlink(path, (err) => {
         if (err) {
             cb(err);
         }

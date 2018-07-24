@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var obj = require("./build-objects");
-var func = require("./build-functions");
-var fs = require("fs");
-var build_strings_1 = require("./build-strings");
-var command = " --command=";
-var informationSchema = '"SELECT * FROM information_schema.tables WHERE table_schema = \'public\'"';
-var tablesExists = command + informationSchema;
+const obj = require("./build-objects");
+const func = require("./build-functions");
+const fs = require("fs");
+const build_strings_1 = require("./build-strings");
+let command = " --command=";
+let informationSchema = '"SELECT * FROM information_schema.tables WHERE table_schema = \'public\'"';
+let tablesExists = command + informationSchema;
 function build(dbConnect, result, cb) {
-    var jsonConfig = result;
+    let jsonConfig = result;
     func.childProcess(dbConnect + tablesExists, function (err, stdout, stderr) {
         if (err) {
             console.log(err);
         }
         else { // if they do, ask to delete or exit
-            console.log("stdout: " + stdout);
+            console.log(`stdout: ${stdout}`);
             if (build_strings_1.noTable.test(stdout)) {
                 fs.readdir('./database-builds/up', function (err, files) {
                     if (err) {
@@ -32,16 +32,16 @@ function build(dbConnect, result, cb) {
                                         console.log(err);
                                     }
                                     else {
-                                        var fileString = func.stringOfFiles('./database-builds/up', files, result.version, false);
+                                        let fileString = func.stringOfFiles('./database-builds/up', files, result.version, false);
                                         console.log(fileString);
                                         func.childProcess(dbConnect + fileString, function (err, stdout, stderr) {
                                             if (err) {
-                                                console.error("exec error: " + err);
+                                                console.error(`exec error: ${err}`);
                                                 cb(err);
                                             }
                                             else {
-                                                console.log("stdout: " + stdout);
-                                                console.log("stderr: " + stderr);
+                                                console.log(`stdout: ${stdout}`);
+                                                console.log(`stderr: ${stderr}`);
                                                 console.log('tables added to empty database');
                                                 func.makeJSONfromObj('./sdist/config/connect-config.json', jsonConfig, function (err) {
                                                     if (err) {
@@ -76,16 +76,16 @@ function build(dbConnect, result, cb) {
                                 cb(err);
                             }
                             else {
-                                var fileString = func.stringOfFiles('./database-builds/down', files, result.versionDown, true);
+                                let fileString = func.stringOfFiles('./database-builds/down', files, result.versionDown, true);
                                 console.log(fileString);
                                 func.childProcess(dbConnect + fileString, function (err, stdout, stderr) {
                                     if (err) {
-                                        console.error("exec error: " + err);
+                                        console.error(`exec error: ${err}`);
                                         cb(err);
                                     }
                                     else {
-                                        console.log("stdout: " + stdout);
-                                        console.log("stderr: " + stderr);
+                                        console.log(`stdout: ${stdout}`);
+                                        console.log(`stderr: ${stderr}`);
                                         cb();
                                     }
                                 });
@@ -105,8 +105,8 @@ if (func.fileChecker('../connect-config.json')) {
             console.log(err);
         }
         else if (result.prevConn || result.prevConn === '') {
-            var connConfig = require('../connect-config.json');
-            var dbConnect = func.connectCommand(connConfig.user, connConfig.host, connConfig.database, connConfig.password);
+            let connConfig = require('../connect-config.json');
+            let dbConnect = func.connectCommand(connConfig.user, connConfig.host, connConfig.database, connConfig.password);
             build(dbConnect, connConfig, function (err) {
                 if (err) {
                     console.log('something went wrong with the build script. This is likely a bug, try again/contact developer here is the error: ' + err);
@@ -136,7 +136,7 @@ else {
         }
         else {
             result = func.applyDefaults(result);
-            var dbConnect = func.connectCommand(result.user, result.host, result.database, result.password);
+            let dbConnect = func.connectCommand(result.user, result.host, result.database, result.password);
             build(dbConnect, result, function (err) {
                 if (err) {
                     console.log('something went wrong with the build script. This is likely a bug, try again/contact developer here is the error: ' + err);
