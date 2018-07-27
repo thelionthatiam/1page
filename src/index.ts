@@ -10,7 +10,6 @@ index.route('/dreams')
         res.render('dreams')
     })
 
-
 index.route('/movement')
     .get((req, res) => {
         res.render('movement')
